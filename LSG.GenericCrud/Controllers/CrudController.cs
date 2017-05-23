@@ -8,13 +8,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LSG.GenericCrud.Controllers
 {
-    public class CrudController<T> : Controller where T : class/*, IEntity*/, new()
+    public class CrudController<T> : Controller where T : class, IEntity, new()
     {
-        private IDbContext _context;
+        /// <summary>
+        /// The _service
+        /// </summary>
+        private readonly Crud<T> _dal;
 
-        public CrudController(IDbContext context)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GenericCrudApiController{T, TEntity}"/> class.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        public CrudController(Crud<T> dal)
         {
-            _context = context;
+            _dal = dal;
         }
 
         /// <summary>
@@ -22,6 +29,10 @@ namespace LSG.GenericCrud.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult GetAll() => Ok(_context.Set<T>().ToList());
+        public IActionResult GetAll() => Ok(_dal.GetAll());
+
+        [Route("{id}")]
+        [HttpGet]
+        public IActionResult GetById(Guid id) => Ok(_dal.GetById(id));
     }
 }

@@ -21,6 +21,9 @@ namespace LSG.GenericCrud.TestApi.Controllers
 
         [HttpGet]
         public IActionResult GetAll() => Ok(_context.Items);
+        [Route("{id}")]
+        [HttpGet]
+        public IActionResult GetById(Guid id) => Ok(_context.Items.SingleOrDefault(_ => _.Id == id));
 
         [HttpPost]
         public IActionResult Create()

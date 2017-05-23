@@ -12,8 +12,6 @@ namespace LSG.GenericCrud.TestApi.Controllers
     [Route("api/[controller]")]
     public class ItemsController : CrudController<Item>
     {
-        public ItemsController(IDbContext context) : base(context)
-        {
-        }
+        public ItemsController(Crud<Item> dal) : base(dal) { }
     }
 }
