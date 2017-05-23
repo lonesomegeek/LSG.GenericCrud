@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LSG.GenericCrud", "LSG.GenericCrud\LSG.GenericCrud.csproj", "{BD5C3A6E-CCA4-4441-A97E-60F2739E20FA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LSG.GenericCrud.TestApi", "LSG.GenericCrud.TestApi\LSG.GenericCrud.TestApi.csproj", "{A3459CB2-F6C0-4F78-96AD-1AC3D5F99440}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{BD5C3A6E-CCA4-4441-A97E-60F2739E20FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD5C3A6E-CCA4-4441-A97E-60F2739E20FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD5C3A6E-CCA4-4441-A97E-60F2739E20FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3459CB2-F6C0-4F78-96AD-1AC3D5F99440}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3459CB2-F6C0-4F78-96AD-1AC3D5F99440}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3459CB2-F6C0-4F78-96AD-1AC3D5F99440}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3459CB2-F6C0-4F78-96AD-1AC3D5F99440}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
