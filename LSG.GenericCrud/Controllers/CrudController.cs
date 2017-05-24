@@ -34,5 +34,37 @@ namespace LSG.GenericCrud.Controllers
         [Route("{id}")]
         [HttpGet]
         public IActionResult GetById(Guid id) => Ok(_dal.GetById(id));
+
+        /// <summary>
+        /// Creates the specified entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        [HttpPost]
+        public IActionResult Create([FromBody] T entity) => Ok(_dal.Create(entity));
+
+        /// <summary>
+        /// Updates the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="entity">The entity.</param>
+        /// <exception cref="System.Web.Http.HttpResponseException"></exception>
+        [HttpPut("{id}")]
+        public IActionResult Update(Guid id, [FromBody] T entity)
+        {
+            _dal.Update(id, entity);
+            return Ok();
+        }
+
+        /// <summary>
+        /// Deletes the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <exception cref="System.Web.Http.HttpResponseException"></exception>
+        [HttpDelete("{id}")]
+        public IActionResult Delete(Guid id)
+        {
+            _dal.Delete(id);
+            return Ok();
+        }
     }
 }
