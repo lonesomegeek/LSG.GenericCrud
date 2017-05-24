@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LSG.GenericCrud.DAL;
+using LSG.GenericCrud.Models;
+using LSG.GenericCrud.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace LSG.GenericCrud.Controllers
 {

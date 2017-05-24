@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LSG.GenericCrud.DAL;
+using LSG.GenericCrud.Models;
 
 namespace LSG.GenericCrud.TestApi.Models
 {

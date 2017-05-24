@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LSG.GenericCrud.Controllers;
-using LSG.GenericCrud.DAL;
+﻿using LSG.GenericCrud.Controllers;
+using LSG.GenericCrud.Repositories;
 using LSG.GenericCrud.TestApi.Models;
 using Microsoft.AspNetCore.Mvc;
 

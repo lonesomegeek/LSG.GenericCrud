@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using LSG.GenericCrud.Models;
 
-namespace LSG.GenericCrud.DAL
+namespace LSG.GenericCrud.Repositories
 {
     public class Crud<T> : ICrud<T>
         where T : class, IEntity, new()
@@ -51,15 +50,6 @@ namespace LSG.GenericCrud.DAL
             _context.Set<T>().Remove(GetById(id));
             if (AutoCommit) _context.SaveChanges();
         }
-    }
-
-    public interface ICrud<TDto, TEntity>
-    {
-        IEnumerable<TDto> GetAll();
-        TDto GetById(Guid id);
-        TDto Create(TDto dto);
-        void Update(Guid id, TDto dto);
-        void Delete(Guid id);
     }
 
     public interface ICrud<T>
