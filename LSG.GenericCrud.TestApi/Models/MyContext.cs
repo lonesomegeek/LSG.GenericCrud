@@ -1,11 +1,12 @@
-﻿using LSG.GenericCrud.Repositories;
+﻿using LSG.GenericCrud.Models;
+using LSG.GenericCrud.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace LSG.GenericCrud.TestApi.Models
 {
-    public class MyContext : DbContext, IDbContext
+    public class MyContext : BaseEntityDbContext, IDbContext
     {
-        public MyContext(DbContextOptions<MyContext> options) : base(options)
+        public MyContext(DbContextOptions options) : base(options)
         {
         }
 
