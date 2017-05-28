@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using LSG.GenericCrud.Repositories;
+using LSG.GenericCrud.Repositories.DataFillers;
 
 namespace LSG.GenericCrud.TestApi
 {
