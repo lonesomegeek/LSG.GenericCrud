@@ -1,4 +1,5 @@
 ﻿using LSG.GenericCrud.Controllers;
+using LSG.GenericCrud.Middlewares;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.TestApi.Models;
 using Microsoft.AspNetCore.Builder;
@@ -52,6 +53,8 @@ namespace LSG.GenericCrud.TestApi
             loggerFactory.AddDebug();
 
             app.UseMvc();
+
+            app.UseMiddleware<AuthorizationMiddleware>();
         }
     }
 }
