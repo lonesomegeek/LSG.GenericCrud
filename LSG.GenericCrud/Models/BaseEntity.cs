@@ -7,7 +7,6 @@ namespace LSG.GenericCrud.Models
     /// </summary>
     public class BaseEntity
     {
-        public Guid Id { get; set; }
         /// <summary>
         /// Gets or sets the created date.
         /// </summary>
