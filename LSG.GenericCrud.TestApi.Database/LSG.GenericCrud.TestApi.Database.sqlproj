@@ -61,5 +61,6 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Items.sql" />
+    <Build Include="Tables\Carrots.sql" />
   </ItemGroup>
 </Project>

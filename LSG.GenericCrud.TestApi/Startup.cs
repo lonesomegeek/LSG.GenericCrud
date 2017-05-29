@@ -1,4 +1,5 @@
-﻿using LSG.GenericCrud.TestApi.Models;
+﻿using LSG.GenericCrud.Models;
+using LSG.GenericCrud.TestApi.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using LSG.GenericCrud.Repositories;
+using LSG.GenericCrud.Repositories.DataFillers;
 
 namespace LSG.GenericCrud.TestApi
 {
@@ -32,7 +34,10 @@ namespace LSG.GenericCrud.TestApi
             services.AddDbContext<MyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<IDbContext, MyContext>();
 
-            services.AddScoped<Crud<Item>>();
+            services.AddTransient<IEntityDataFiller<BaseEntity>, DateDataFiller>();
+            services.AddTransient<IEntityDataFiller<BaseEntity>, ByDataFiller>();
+
+            services.AddScoped<Crud<Item>>(); services.AddScoped<Crud<Carrot>>();
 
         }
 
