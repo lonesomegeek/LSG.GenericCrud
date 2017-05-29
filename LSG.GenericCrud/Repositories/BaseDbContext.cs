@@ -15,7 +15,7 @@ namespace LSG.GenericCrud.Repositories
         public BaseDbContext(DbContextOptions options, IServiceProvider serviceProvider) : base(options)
         {
             _serviceProvider = serviceProvider;
-            _dataFillers = ServiceProviderServiceExtensions.GetServices<IEntityDataFiller<BaseEntity>>(_serviceProvider);
+            _dataFillers = _serviceProvider.GetServices<IEntityDataFiller<BaseEntity>>();
 
         }
 
