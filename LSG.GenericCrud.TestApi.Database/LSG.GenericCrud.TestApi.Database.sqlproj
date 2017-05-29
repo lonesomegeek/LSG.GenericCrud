@@ -62,5 +62,6 @@
   <ItemGroup>
     <Build Include="Tables\Items.sql" />
     <Build Include="Tables\Carrots.sql" />
+    <Build Include="Tables\HistoricalEvents.sql" />
   </ItemGroup>
 </Project>

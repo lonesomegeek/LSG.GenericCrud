@@ -1,4 +1,5 @@
-﻿using LSG.GenericCrud.Models;
+﻿using LSG.GenericCrud.Controllers;
+using LSG.GenericCrud.Models;
 using LSG.GenericCrud.TestApi.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,7 +38,10 @@ namespace LSG.GenericCrud.TestApi
             services.AddTransient<IEntityDataFiller<BaseEntity>, DateDataFiller>();
             services.AddTransient<IEntityDataFiller<BaseEntity>, ByDataFiller>();
 
-            services.AddScoped<Crud<Item>>(); services.AddScoped<Crud<Carrot>>();
+            services.AddScoped<Crud<Item>>();
+            services.AddScoped<Crud<Carrot>>();
+            services.AddScoped<HistoricalCrud<Carrot>>();
+            services.AddScoped<HistoricalCrud<Item>>();
 
         }
 

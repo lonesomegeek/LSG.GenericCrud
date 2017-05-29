@@ -9,24 +9,24 @@ namespace LSG.GenericCrud.Repositories
     public class Crud<T> : ICrud<T>
         where T : class, IEntity, new()
     {
-        private readonly IDbContext _context;
+        protected IDbContext Context;
 
-        public bool AutoCommit { get; private set; }
+        public bool AutoCommit { get; set; }
 
         public Crud(IDbContext context)
         {
-            _context = context;
+            Context = context;
             AutoCommit = true;
         }
 
-        public IEnumerable<T> GetAll() => _context.Set<T>().AsEnumerable();
+        public IEnumerable<T> GetAll() => Context.Set<T>().AsEnumerable();
 
-        public T GetById(Guid id) => _context.Set<T>().SingleOrDefault(_ => _.Id == id);
+        public T GetById(Guid id) => Context.Set<T>().SingleOrDefault(_ => _.Id == id);
 
-        public T Create(T entity)
+        public virtual T Create(T entity)
         {
-            var returnEntity = _context.Set<T>().Add(entity).Entity;
-            if (AutoCommit) _context.SaveChanges();
+            var returnEntity = Context.Set<T>().Add(entity).Entity;
+            if (AutoCommit) Context.SaveChanges();
             return returnEntity;
         }
 
@@ -42,13 +42,13 @@ namespace LSG.GenericCrud.Repositories
                     originalProperty.SetValue(originalEntity, value);
                 }
             }
-            if (AutoCommit) _context.SaveChanges();
+            if (AutoCommit) Context.SaveChanges();
         }
 
-        public void Delete(Guid id)
+        public virtual void Delete(Guid id)
         {
-            _context.Set<T>().Remove(GetById(id));
-            if (AutoCommit) _context.SaveChanges();
+            Context.Set<T>().Remove(GetById(id));
+            if (AutoCommit) Context.SaveChanges();
         }
     }
 

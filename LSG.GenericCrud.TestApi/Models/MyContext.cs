@@ -15,5 +15,6 @@ namespace LSG.GenericCrud.TestApi.Models
 
         public DbSet<Item> Items { get; set; }
         public DbSet<Carrot> Carrots{ get; set; }
+        public DbSet<HistoricalEvent> HistoricalEvents { get; set; }
     }
 }
