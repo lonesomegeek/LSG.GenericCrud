@@ -52,9 +52,18 @@ namespace LSG.GenericCrud.TestApi
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseMvc();
+            var options = new JwtBearerOptions
+            {
+                Audience = "https://LSG.GenericCrud.TestApi",
+                Authority = "https://premiertechieg-dv.auth0.com/",
+
+            };
+            app.UseJwtBearerAuthentication(options);
 
             app.UseMiddleware<AuthorizationMiddleware>();
+
+            app.UseMvc();
+
         }
     }
 }
