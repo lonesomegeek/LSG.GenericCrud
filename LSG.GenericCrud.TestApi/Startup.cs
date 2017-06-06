@@ -41,8 +41,9 @@ namespace LSG.GenericCrud.TestApi
 
             services.AddScoped<Crud<Item>>();
             services.AddScoped<Crud<Carrot>>();
-            services.AddScoped<HistoricalCrudController<Carrot>>();
-            services.AddScoped<HistoricalCrudController<Item>>();
+            services.AddScoped<Crud<HistoricalEvent>>();
+            services.AddScoped<HistoricalCrud<Carrot>>();
+            services.AddScoped<HistoricalCrud<Item>>();
 
         }
 
@@ -60,7 +61,7 @@ namespace LSG.GenericCrud.TestApi
             };
             app.UseJwtBearerAuthentication(options);
 
-            app.UseMiddleware<AuthorizationMiddleware>();
+            //app.UseMiddleware<AuthorizationMiddleware>();
 
             app.UseMvc();
 
