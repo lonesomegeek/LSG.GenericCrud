@@ -1,4 +1,5 @@
 ﻿using LSG.GenericCrud.Controllers;
+using LSG.GenericCrud.Middlewares;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.TestApi.Models;
 using Microsoft.AspNetCore.Builder;
@@ -51,7 +52,18 @@ namespace LSG.GenericCrud.TestApi
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            var options = new JwtBearerOptions
+            {
+                Audience = "https://LSG.GenericCrud.TestApi",
+                Authority = "https://premiertechieg-dv.auth0.com/",
+
+            };
+            app.UseJwtBearerAuthentication(options);
+
+            app.UseMiddleware<AuthorizationMiddleware>();
+
             app.UseMvc();
+
         }
     }
 }
