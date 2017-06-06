@@ -41,8 +41,8 @@ namespace LSG.GenericCrud.TestApi
 
             services.AddScoped<Crud<Item>>();
             services.AddScoped<Crud<Carrot>>();
-            services.AddScoped<HistoricalCrud<Carrot>>();
-            services.AddScoped<HistoricalCrud<Item>>();
+            services.AddScoped<HistoricalCrudController<Carrot>>();
+            services.AddScoped<HistoricalCrudController<Item>>();
 
         }
 

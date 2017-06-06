@@ -8,6 +8,6 @@ namespace LSG.GenericCrud.TestApi.Controllers
     [Route("api/[controller]")]
     public class HistoricalCarrotsController : CrudController<Carrot>
     {
-        public HistoricalCarrotsController(HistoricalCrud<Carrot> dal) : base(dal) { }
+        public HistoricalCarrotsController(HistoricalCrudController<Carrot> dal) : base(dal) { }
     }
 }
