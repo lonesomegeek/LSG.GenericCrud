@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using LSG.GenericCrud.Models;
-using LSG.GenericCrud.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
-namespace LSG.GenericCrud.Controllers
+namespace LSG.GenericCrud.Repositories
 {
     public class HistoricalCrud<T> : Crud<T>
         where T : class, IEntity, new()
@@ -38,6 +37,7 @@ namespace LSG.GenericCrud.Controllers
             return entity;
         }
 
+
         public override void Update(Guid id, T entity)
         {
             var originalEntity = base.GetById(id);
@@ -54,9 +54,9 @@ namespace LSG.GenericCrud.Controllers
 
             // update original entity with modified fields
             foreach (var prop in originalEntity.GetType().GetProperties(
-                System.Reflection.BindingFlags.Public |
-                System.Reflection.BindingFlags.Instance |
-                System.Reflection.BindingFlags.DeclaredOnly))
+                        BindingFlags.Public |
+                        BindingFlags.Instance |
+                        BindingFlags.DeclaredOnly))
             {
                 if (prop.Name != "Id")
                 {
@@ -91,6 +91,19 @@ namespace LSG.GenericCrud.Controllers
             base.Delete(id);
 
             Context.SaveChanges();
+        }
+
+        public T Restore(Guid entityId)
+        {
+            var json = _historicalDal
+                .GetAll()
+                .SingleOrDefault(_ =>
+                    _.EntityId == entityId &&
+                    _.Action == HistoricalActions.Delete.ToString() /*&& _.EntityName == entityName*/)
+                .Changeset;
+            var obj = JsonConvert.DeserializeObject<T>(json);
+            var createdObject = Create(obj);
+            return createdObject;
         }
     }
 }

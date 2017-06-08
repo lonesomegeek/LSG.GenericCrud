@@ -36,7 +36,7 @@ namespace LSG.GenericCrud.Controllers
         /// Creates the specified entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
-        [HttpPost]
+        [HttpPost("")]
         public IActionResult Create([FromBody] T entity) => Ok(_dal.Create(entity));
 
         /// <summary>
