@@ -1,4 +1,5 @@
 ﻿using System;
+using LSG.GenericCrud.Exceptions;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +31,17 @@ namespace LSG.GenericCrud.Controllers
 
         [Route("{id}")]
         [HttpGet]
-        public IActionResult GetById(Guid id) => Ok(_dal.GetById(id));
+        public IActionResult GetById(Guid id)
+        {
+            try
+            {
+                return Ok(_dal.GetById(id));
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound();
+            }
+        }
 
         /// <summary>
         /// Creates the specified entity.
@@ -48,8 +59,15 @@ namespace LSG.GenericCrud.Controllers
         [HttpPut("{id}")]
         public IActionResult Update(Guid id, [FromBody] T entity)
         {
-            _dal.Update(id, entity);
-            return Ok();
+            try
+            {
+                _dal.Update(id, entity);
+                return Ok();
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound();
+            }
         }
 
         /// <summary>
@@ -60,8 +78,16 @@ namespace LSG.GenericCrud.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
-            _dal.Delete(id);
-            return Ok();
+            try
+            {
+                _dal.Delete(id);
+                return Ok();
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound();
+            }
+
         }
     }
 }

@@ -7,11 +7,26 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LSG.GenericCrud.Repositories
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="Microsoft.EntityFrameworkCore.DbContext" />
     public class BaseDbContext : DbContext
     {
+        /// <summary>
+        /// The service provider
+        /// </summary>
         private readonly IServiceProvider _serviceProvider;
+        /// <summary>
+        /// The data fillers
+        /// </summary>
         private readonly IEnumerable<IEntityDataFiller<BaseEntity>> _dataFillers;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseDbContext"/> class.
+        /// </summary>
+        /// <param name="options">The options.</param>
+        /// <param name="serviceProvider">The service provider.</param>
         public BaseDbContext(DbContextOptions options, IServiceProvider serviceProvider) : base(options)
         {
             _serviceProvider = serviceProvider;
@@ -19,6 +34,17 @@ namespace LSG.GenericCrud.Repositories
 
         }
 
+        /// <summary>
+        /// Saves all changes made in this context to the database.
+        /// </summary>
+        /// <returns>
+        /// The number of state entries written to the database.
+        /// </returns>
+        /// <remarks>
+        /// This method will automatically call <see cref="M:Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker.DetectChanges" /> to discover any
+        /// changes to entity instances before saving to the underlying database. This can be disabled via
+        /// <see cref="P:Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker.AutoDetectChangesEnabled" />.
+        /// </remarks>
         public override int SaveChanges()
         {
             var entries = ChangeTracker.Entries();
