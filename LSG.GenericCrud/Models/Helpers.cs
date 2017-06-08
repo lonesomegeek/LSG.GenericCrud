@@ -7,8 +7,18 @@ using Newtonsoft.Json;
 
 namespace LSG.GenericCrud.Models
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class Helpers
     {
+        /// <summary>
+        /// Detaileds the compare.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="originalEntity">The original entity.</param>
+        /// <param name="modifiedEntity">The modified entity.</param>
+        /// <returns></returns>
         public static string DetailedCompare<T>(this T originalEntity, T modifiedEntity)
         {
             Dictionary<String, object> dict = new Dictionary<string, object>();

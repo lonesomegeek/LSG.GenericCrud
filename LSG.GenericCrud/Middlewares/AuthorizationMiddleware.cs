@@ -7,15 +7,30 @@ using Microsoft.AspNetCore.Http;
 
 namespace LSG.GenericCrud.Middlewares
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class AuthorizationMiddleware
     {
+        /// <summary>
+        /// The next
+        /// </summary>
         private readonly RequestDelegate _next;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthorizationMiddleware"/> class.
+        /// </summary>
+        /// <param name="next">The next.</param>
         public AuthorizationMiddleware(RequestDelegate next)
         {
             _next = next;
         }
 
+        /// <summary>
+        /// Invokes the specified context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
         public async Task Invoke(HttpContext context)
         {
             var scopes = context.User.Claims.FirstOrDefault(_ => _.Type == "scope")?.Value.Split(' ');
@@ -40,12 +55,21 @@ namespace LSG.GenericCrud.Middlewares
 
         }
 
+        /// <summary>
+        /// Forbiddens the access.
+        /// </summary>
+        /// <param name="context">The context.</param>
         private async void ForbiddenAccess(HttpContext context)
         {
             context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
             await context.Response.WriteAsync("Access to the ressource is forbidden.");
         }
 
+        /// <summary>
+        /// Gets the required scope.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
         private string GetRequiredScope(HttpContext context)
         {
             var method = context.Request.Method;
