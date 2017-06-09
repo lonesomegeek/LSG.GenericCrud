@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using LSG.GenericCrud.Exceptions;
@@ -139,6 +140,18 @@ namespace LSG.GenericCrud.Repositories
             var obj = JsonConvert.DeserializeObject<T>(json);
             var createdObject = Create(obj);
             return createdObject;
+        }
+
+        /// <summary>
+        /// Gets the history.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        public IEnumerable<IEntity> GetHistory(Guid id)
+        {
+            return _historicalDal
+                .GetAll()
+                .Where(_ => _.EntityId == id);
         }
     }
 }
