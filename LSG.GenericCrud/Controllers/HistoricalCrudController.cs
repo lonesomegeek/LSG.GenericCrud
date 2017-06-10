@@ -46,5 +46,23 @@ namespace LSG.GenericCrud.Controllers
                 return NotFound();
             }
         }
+
+        /// <summary>
+        /// Gets the history.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        [HttpGet("{id}/history")]
+        public IActionResult GetHistory(Guid id)
+        {
+            try
+            {
+                return Ok(_historicalDal.GetHistory(id));
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound();
+            }
+        }
     }
 }
