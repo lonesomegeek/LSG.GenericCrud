@@ -1,6 +1,7 @@
 ﻿using LSG.GenericCrud.Controllers;
 using LSG.GenericCrud.Repositories;
 using LSG.GenericCrud.TestApi.Models;
+using LSG.GenericCrud.TestApi.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LSG.GenericCrud.TestApi.Controllers

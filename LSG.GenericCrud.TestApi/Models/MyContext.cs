@@ -1,6 +1,7 @@
 ﻿using System;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
+using LSG.GenericCrud.TestApi.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

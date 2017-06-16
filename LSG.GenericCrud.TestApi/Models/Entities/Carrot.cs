@@ -1,9 +1,9 @@
 ﻿using System;
 using LSG.GenericCrud.Models;
 
-namespace LSG.GenericCrud.TestApi.Models
+namespace LSG.GenericCrud.TestApi.Models.Entities
 {
-    public class Carrot : IEntity
+    public class Carrot : BaseEntity, IEntity
     {
         public Carrot()
         {
