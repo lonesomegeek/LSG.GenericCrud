@@ -30,7 +30,7 @@ namespace LSG.GenericCrud.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public virtual IActionResult GetAll() => Ok(_dal.GetAll());
+        public IActionResult GetAll() => Ok(_dal.GetAll());
 
         [Route("{id}")]
         [HttpGet]
