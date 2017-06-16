@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LSG.GenericCrud.Controllers;
 using LSG.GenericCrud.TestApi.Models;
+using LSG.GenericCrud.TestApi.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

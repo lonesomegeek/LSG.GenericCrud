@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using LSG.GenericCrud.Repositories;
 using LSG.GenericCrud.Repositories.DataFillers;
+using LSG.GenericCrud.TestApi.Models.DTOs;
+using LSG.GenericCrud.TestApi.Models.Entities;
 
 namespace LSG.GenericCrud.TestApi
 {
@@ -30,6 +32,19 @@ namespace LSG.GenericCrud.TestApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //http://dotnetthoughts.net/using-automapper-in-aspnet-core-project/
+            var automapperConfiguration = new AutoMapper.MapperConfiguration(_ =>
+            {
+                _.CreateMap<CarrotDto, Carrot>().ForMember(
+                    dest => dest.Color,
+                    opts => opts.MapFrom(src => src.Colorification));
+                _.CreateMap<Carrot, CarrotDto>().ForMember(
+                    dest => dest.Colorification,
+                    opts => opts.MapFrom(src => src.Color));
+            });
+            var mapper = automapperConfiguration.CreateMapper();
+            services.AddSingleton(mapper);
+            
             // Add framework services.
             services.AddMvc();
 
@@ -41,6 +56,7 @@ namespace LSG.GenericCrud.TestApi
 
             services.AddScoped<Crud<Item>>();
             services.AddScoped<Crud<Carrot>>();
+            services.AddScoped<Crud<CarrotDto>>();
             services.AddScoped<Crud<HistoricalEvent>>();
             services.AddScoped<HistoricalCrud<Carrot>>();
             services.AddScoped<HistoricalCrud<Item>>();

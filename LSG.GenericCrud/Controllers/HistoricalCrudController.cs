@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using AutoMapper;
 using LSG.GenericCrud.Exceptions;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
@@ -58,6 +59,32 @@ namespace LSG.GenericCrud.Controllers
             try
             {
                 return Ok(_historicalDal.GetHistory(id));
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound();
+            }
+        }
+    }
+
+    public class HistoricalCrudController<TDto, TEntity> :
+        CrudController<TDto, TEntity>
+        where TDto : class, IEntity, new()
+        where TEntity : class, IEntity, new()
+    {
+        private readonly HistoricalCrud<TEntity> _historicalDal;
+
+        public HistoricalCrudController(HistoricalCrud<TEntity> dal, IMapper mapper) : base(dal, mapper)
+        {
+            _historicalDal = dal;
+        }
+
+        [HttpPost("{entityId}/restore")]
+        public IActionResult Restore(Guid entityId /*, string entityName*/)
+        {
+            try
+            {
+                return Ok(_historicalDal.Restore(entityId));
             }
             catch (EntityNotFoundException ex)
             {

@@ -1,7 +1,7 @@
 ﻿using System;
 using LSG.GenericCrud.Models;
 
-namespace LSG.GenericCrud.TestApi.Models
+namespace LSG.GenericCrud.TestApi.Models.Entities
 {
     public class Item : BaseEntity, IEntity
     {
