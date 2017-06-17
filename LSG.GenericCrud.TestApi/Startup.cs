@@ -12,6 +12,7 @@ using LSG.GenericCrud.Repositories;
 using LSG.GenericCrud.Repositories.DataFillers;
 using LSG.GenericCrud.TestApi.Models.DTOs;
 using LSG.GenericCrud.TestApi.Models.Entities;
+using LSG.GenericCrud.TestApi.Repositories;
 
 namespace LSG.GenericCrud.TestApi
 {
@@ -53,6 +54,7 @@ namespace LSG.GenericCrud.TestApi
 
             services.AddTransient<IEntityDataFiller<BaseEntity>, DateDataFiller>();
             services.AddTransient<IEntityDataFiller<BaseEntity>, ByDataFiller>();
+            services.AddTransient<IUserInfoRepository, UserInfoRepository>();
 
             services.AddScoped<Crud<Item>>();
             services.AddScoped<Crud<Carrot>>();

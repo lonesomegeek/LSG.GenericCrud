@@ -83,7 +83,7 @@ namespace LSG.GenericCrud.Repositories
                 {
                     var originalProperty = originalEntity.GetType().GetProperty(prop.Name);
                     var value = prop.GetValue(entity, null);
-                    originalProperty.SetValue(originalEntity, value);
+                    if (value != null) originalProperty.SetValue(originalEntity, value);
                 }
             }
             if (AutoCommit) Context.SaveChanges();
