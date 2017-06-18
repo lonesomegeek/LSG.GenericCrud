@@ -10,6 +10,12 @@ namespace LSG.GenericCrud.Repositories.DataFillers
     /// <seealso cref="LSG.GenericCrud.Repositories.DataFillers.IEntityDataFiller{LSG.GenericCrud.Models.BaseEntity}" />
     public class ByDataFiller : IEntityDataFiller<BaseEntity>
     {
+        private readonly IUserInfoRepository _userInfoRepository;
+
+        public ByDataFiller(IUserInfoRepository userInfoRepository)
+        {
+            _userInfoRepository = userInfoRepository;
+        }
         /// <summary>
         /// Determines whether [is entity supported] [the specified entry].
         /// </summary>
@@ -31,8 +37,8 @@ namespace LSG.GenericCrud.Repositories.DataFillers
         public BaseEntity Fill(EntityEntry entry)
         {
             var entity = ((BaseEntity)entry.Entity);
-            entity.CreatedBy = "Not set yet!...";
-            entity.ModifiedBy = "Not set yet!...";
+            if (entry.State == EntityState.Added) entity.CreatedBy = _userInfoRepository?.GetUserInfo();
+            entity.ModifiedBy = _userInfoRepository?.GetUserInfo();
             return entity;
         }
     }
