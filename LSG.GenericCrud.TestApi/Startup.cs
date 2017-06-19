@@ -56,13 +56,6 @@ namespace LSG.GenericCrud.TestApi
             services.AddTransient<IEntityDataFiller<BaseEntity>, ByDataFiller>();
             services.AddTransient<IUserInfoRepository, UserInfoRepository>();
 
-            //services.AddScoped<Crud<Item>>();
-            //services.AddScoped<Crud<Carrot>>();
-            //services.AddScoped<Crud<CarrotDto>>();
-            //services.AddScoped<Crud<HistoricalEvent>>();
-            //services.AddScoped<HistoricalCrud<Carrot>>();
-            //services.AddScoped<HistoricalCrud<Item>>();
-
             services.AddScoped(typeof(Crud<>));
             services.AddScoped(typeof(HistoricalCrud<>));
 
