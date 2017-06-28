@@ -8,6 +8,37 @@ You need at least:
 # Introduction
 This library is used to provide CRUD operations with a Generic Crud Controller with a Generic Repository. This library allies injection (IoC), minimum codebase for maximum efficiency.
 
+# Getting started (simple scenario)
+
+This is the most simple scenario. To have more integration scenario, see the docs.
+
+1. Create a new ASP.NET Core Web Application (be sure to target ASP.NET Core 1.1+)
+2. In the template selection, select Empty, click OK
+3. When the solution is ready, go to Package Manager Console and execute the following command: `Install-Package LSG.GenericCrud`
+4. In Startup.cs
+   1. In ConfigureServices method, add the following lines:
+      
+      ```
+      services.AddMvc();
+      services.AddScoped(typeof(Crud<>));
+      ```
+5. Create new Controller, SampleController and:
+   1. Replace `: Controller` by `: CrudController<Sample>`
+   2. Implement an constructor override that should look like this: TODO
+   3. Your controller should look like this: TODO
+
+6. Create a new class `Sample` to represent your entity
+   1. Create class Sample.cs
+   2. Paste this to replace your actual empty class definition: TODO
+   3. We are adding the bare minimum to this object, an Id of type Guid and a Value of type string.
+
+7. Create a fake SampleRepository. Its role will be to return fake Sample objects (that are retreived with a database in a real scenario)
+   1. Create class SampleRepository.cs
+   2. Paste this to replace your actual empty class definition: TODO
+   3. We are adding the bare minimum to provide access to the in-memory dataset and to be able to retreive an asset by its id.
+
+More documentation is available here.
+
 # What is CRUD?
 
 Sample URLs:
