@@ -37,6 +37,8 @@ This is the most simple scenario. To have more integration scenario, see the doc
    2. Paste this to replace your actual empty class definition: TODO
    3. We are adding the bare minimum to provide access to the in-memory dataset and to be able to retreive an asset by its id.
 
+Need for Install-Package Microsoft.EntityFrameworkCore.InMemory
+
 More documentation is available here.
 
 # What is CRUD?
@@ -94,3 +96,6 @@ Sample URLs:
 
 And that's it!
 Enjoy!
+
+Exemples:
+https://stormpath.com/blog/tutorial-entity-framework-core-in-memory-database-asp-net-core
