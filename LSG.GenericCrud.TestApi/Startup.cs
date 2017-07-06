@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using LSG.GenericCrud.Repositories;
 using LSG.GenericCrud.Repositories.DataFillers;
+using LSG.GenericCrud.TestApi.Controllers;
 using LSG.GenericCrud.TestApi.Models.DTOs;
 using LSG.GenericCrud.TestApi.Models.Entities;
 using LSG.GenericCrud.TestApi.Repositories;
@@ -52,12 +53,16 @@ namespace LSG.GenericCrud.TestApi
             services.AddDbContext<MyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<IDbContext, MyContext>();
 
+            services.AddScoped<CustomDal>();
+
             services.AddTransient<IEntityDataFiller<BaseEntity>, DateDataFiller>();
             services.AddTransient<IEntityDataFiller<BaseEntity>, ByDataFiller>();
             services.AddTransient<IUserInfoRepository, UserInfoRepository>();
 
             services.AddScoped(typeof(Crud<>));
             services.AddScoped(typeof(HistoricalCrud<>));
+
+            services.AddTransient<ICrud<CustomCarrot>, CustomCarrotDal>();
 
         }
 
