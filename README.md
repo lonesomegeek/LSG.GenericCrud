@@ -2,11 +2,22 @@
 
 # Prerequisites
 You need at least:
-- a running instance of SQL server on your localhost
 - Visual Studio 2017
+- Visual Studio Code
 
 # Introduction
 This library is used to provide CRUD operations with a Generic Crud Controller with a Generic Repository. This library allies injection (IoC), minimum codebase for maximum efficiency.
+
+# What is CRUD?
+
+Sample URLs:
+- GET api/products (return all products)
+- POST api/products (create a product)
+- GET api/products/{id} (return a single product)
+- PUT api/products/{id} (updates a product)
+- DELETE api/products/{id} (deletes a product)
+- GET api/customers (return all customers)
+- GET api/customers/{id} (return a single customer)
 
 # Getting started (simple scenario)
 
@@ -14,7 +25,7 @@ This is the most simple scenario. To have more integration scenario, see the doc
 
 1. Create a new ASP.NET Core Web Application (be sure to target ASP.NET Core 1.1+)
 2. In the template selection, select Empty, click OK
-3. When the solution is ready, go to Package Manager Console and execute the following command: `Install-Package LSG.GenericCrud`
+3. When the solution is ready, go to Package Manager Console and execute the following command: `Install-Package LSG.GenericCrud Microsoft.EntityFrameworkCore.InMemory`
 4. In Startup.cs
    1. In ConfigureServices method, add the following lines:
       
@@ -37,20 +48,7 @@ This is the most simple scenario. To have more integration scenario, see the doc
    2. Paste this to replace your actual empty class definition: TODO
    3. We are adding the bare minimum to provide access to the in-memory dataset and to be able to retreive an asset by its id.
 
-Need for Install-Package Microsoft.EntityFrameworkCore.InMemory
-
-More documentation is available here.
-
-# What is CRUD?
-
-Sample URLs:
-- GET api/products (should return all created product entities)
-- POST api/products (create a product entity)
-- GET api/products/{id} (should return a single created product entity)
-- PUT api/products/{id} (updates a created product entity)
-- DELETE api/products/{id} (deletes a product entity)
-- GET api/customers (should return all created customers)
-- GET api/customers/{id} (should return a single created customer)
+More documentation is available ....
 
 # Sample: Create a CRUD ressource
 1. Create new entity to map in data model
@@ -99,3 +97,9 @@ Enjoy!
 
 Exemples:
 https://stormpath.com/blog/tutorial-entity-framework-core-in-memory-database-asp-net-core
+
+# Release Notes
+
+- v1.1.0: .NET Core 2.0 compatibility
+- v1.0.1: Adding support for interfacable repositories
+- v1.0.0: Initial version
