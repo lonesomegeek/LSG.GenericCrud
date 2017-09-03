@@ -50,7 +50,8 @@ namespace LSG.GenericCrud.TestApi
             // Add framework services.
             services.AddMvc();
 
-            services.AddDbContext<MyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDbContext<MyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<MyContext>(opt => opt.UseInMemoryDatabase());
             services.AddTransient<IDbContext, MyContext>();
 
             services.AddScoped<CustomDal>();
@@ -72,13 +73,13 @@ namespace LSG.GenericCrud.TestApi
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            var options = new JwtBearerOptions
-            {
-                Audience = "https://LSG.GenericCrud.TestApi",
-                Authority = "https://premiertechieg-dv.auth0.com/",
+            //var options = new JwtBearerOptions
+            //{
+            //    Audience = "https://LSG.GenericCrud.TestApi",
+            //    Authority = "https://premiertechieg-dv.auth0.com/",
 
-            };
-            app.UseJwtBearerAuthentication(options);
+            //};
+            //app.UseJwtBearerAuthentication(options);
 
             //app.UseMiddleware<AuthorizationMiddleware>();
 
