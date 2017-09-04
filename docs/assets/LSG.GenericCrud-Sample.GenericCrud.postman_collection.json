@@ -1,0 +1,113 @@
+{
+	"variables": [],
+	"info": {
+		"name": "LSG.GenericCrud - Sample.GenericCrud",
+		"_postman_id": "9103a70e-0e7b-2678-b82d-3962c9e80a1e",
+		"description": "Sample REST calls to your account CRUD controller.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create an account [POST /api/accounts]",
+			"request": {
+				"url": "http://localhost:5000/api/accounts",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": \"d5113069-11f2-4fea-a08c-64d87defd91a\",\n\t\"name\": \"Test Account!\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create an account (w/o specifying id) [POST /api/accounts]",
+			"request": {
+				"url": "http://localhost:5000/api/accounts",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Test Account w/o id, generated at runtime!\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get one account [GET /api/accounts/:id]",
+			"request": {
+				"url": "http://localhost:5000/api/accounts/d5113069-11f2-4fea-a08c-64d87defd91a",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "List all accounts [GET /api/accounts]",
+			"request": {
+				"url": "http://localhost:5000/api/accounts",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Update an account [PUT /api/accounts/:id]",
+			"request": {
+				"url": "http://localhost:5000/api/accounts/d5113069-11f2-4fea-a08c-64d87defd91a",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Test Account Updated!\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete an account [DELETE /api/accounts/:id]",
+			"request": {
+				"url": "http://localhost:5000/api/accounts/d5113069-11f2-4fea-a08c-64d87defd91a",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": \"d5113069-11f2-4fea-a08c-64d87defd91a\",\n\t\"name\": \"Test Account!\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
