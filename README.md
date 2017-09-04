@@ -12,9 +12,11 @@ Obviously, when you are working with databases and entities, you need to write s
 Enjoy!
 
 # Prerequisites
-You need at least:
+You need:
 - [.NET Core 2.0 SDK](https://github.com/dotnet/core/blob/master/release-notes/download-archives/2.0.0-download.md) (for any of the options below)
-- For Visual Studio, at least a version that supports aspnetcore (Visual Studio 2015 Update 3+)
+
+You also need one of these options below:
+- Visual Studio, at least a version that supports aspnetcore (Visual Studio 2015 Update 3+)
 - [Visual Studio Code](https://code.visualstudio.com/)
 - A command line and some will-power =P
 
