@@ -40,6 +40,15 @@ Here is a sample of RESTful CRUD URLs for an entity of type Account:
 I am presenting here really simple scenarios, more complex will come:
 - Account CRUD using Visual Studio Code (or command line): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudioCode.md)
 
+*These docs will come in a near future*:
+- DTO Pattern support
+- Entity history tracking
+- Entity to DTO pattern history tracking
+- DataFillers 
+- Custom repository logic
+- Custom security management (per controller/entity)
+- ...
+
 # Install this library
 
 If you already know what to do to get up'n'running with this library, use one of these commands to install my [NugetPackage](https://www.nuget.org/packages/LSG.GenericCrud/):
