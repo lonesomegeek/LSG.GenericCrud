@@ -27,6 +27,7 @@ See [wikipedia](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) d
 CRUD is not everything. You can do CRUD in many ways. But, in these days, we (as developers) are more in the JSON and in the REST things... This is what this library is for! Doing RESTful CRUD operations in a simplified way!
 
 Here is a sample of RESTful CRUD URLs for an entity of type Account:
+
 | VERB   | URL               | Description           |
 |--------|-------------------|-----------------------|
 | GET    | /api/accounts     | Retreive all accounts |
