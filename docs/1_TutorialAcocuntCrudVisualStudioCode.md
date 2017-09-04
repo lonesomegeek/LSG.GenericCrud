@@ -158,6 +158,8 @@ dotnet run
 
 - Go to **http://localhost:5000/api/accounts**, and you are done!
 
-To continue, use a tool named [Postman](https://www.getpostman.com/) to be able to test all routes to your **Account** CRUD controller!
+## Testing!
 
-Here is a Postman collection that you can import to test the different routes: [Link](assets/LSG.GenericCrud-Sample.GenericCrud.postman_collection.json)
+Here is a [Postman](https://www.getpostman.com/) collection to test your new RESTful CRUD api
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/090af27316cd23c61951)
