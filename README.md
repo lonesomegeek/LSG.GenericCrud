@@ -16,7 +16,7 @@ You need:
 - [.NET Core 2.0 SDK](https://github.com/dotnet/core/blob/master/release-notes/download-archives/2.0.0-download.md) (for any of the options below)
 
 You also need one of these options below:
-- Visual Studio, at least a version that supports aspnetcore (Visual Studio 2015 Update 3+)
+- [Visual Studio](https://www.visualstudio.com/downloads/), at least a version that supports aspnetcore (Visual Studio 2015 Update 3+)
 - [Visual Studio Code](https://code.visualstudio.com/)
 - A command line and some will-power =P
 
@@ -41,7 +41,9 @@ Here is a sample of RESTful CRUD URLs for an entity of type Account:
 # Getting started / Tutorials
 
 I am presenting here really simple scenarios, more complex will come:
-- Account CRUD using Visual Studio Code (or command line): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudioCode.md)
+- RESTFul CRUD API for *Account* Entity 
+    - Using Visual Studio Code (or command line): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudioCode.md)
+    - Using Visual Studio (2015 update 3+): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudio.md)
 
 *These docs will come in a near future*:
 - DTO Pattern support
