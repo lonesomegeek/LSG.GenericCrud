@@ -41,7 +41,7 @@ Here is a sample of RESTful CRUD URLs for an entity of type Account:
 # Features supported in this library
 
 I've designed this library to be pretty extensible. Here is some features supported and links to further documentation:
-- Support for entity history tracking: [More details](./docs/HistoricalCrudIntroduction.md)
+- Support for entity history tracking: [More details](./docs/FeatureHistoricalCrud.md)
 - Automatic DTO to Entity (and Entity to DTO) mapping for Crud<T> controllers: *more details to come*
 - Automatic DTO to Entity (and Entity to DTO) mapping for HistoricalCrud<T> controllers: *more details to come*
 - Automatic data fillers: *more details to come*
