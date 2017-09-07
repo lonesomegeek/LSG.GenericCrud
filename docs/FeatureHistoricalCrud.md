@@ -27,6 +27,7 @@ To enable the *Historical* feature, you have few steps to do to make the thing w
 - Change your controller definition to inherit from HistoricalCrudController\<T>
 - Change your controller constructor to be injected an *Historical-ready* repository (data access layer @ dal)
 - Adapt your database context to support *HistoricalEvents* dataset
+- Adapt DAL injection
 
 ### Controller adaptation
 Here is a configuration with CrudController\<T> controller:
@@ -54,6 +55,12 @@ Adjust your existing context class to include this property:
 public DbSet<HistoricalEvent> HistoricalEvents { get; set; }
 ```
 This inclusion will enables the HistoricalCrud\<T> DAL to do the tracking of all the events. In future release, I may put settings to let you choose where to drop the entity events (up to you).
+
+### DAL injection adaptation
+In **Startup.cs**, add a new injection configuration in *ConfigureServices(...)*
+```csharp
+services.AddScoped(typeof(HistoricalCrud<>));
+```
 
 ## It is a CrudController\<T> plus...
 This is programatically-talking a CrudController\<T> with history tracking but with more routes. As a reminder, here is the default routes provided with a CrudController\<T>:
