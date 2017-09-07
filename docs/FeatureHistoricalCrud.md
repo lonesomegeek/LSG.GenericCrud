@@ -86,4 +86,4 @@ The second route, will restore a previously deleted entity with a new Id. When y
 
 ## Samples
 
-*TODO: Samples will come* 
+Here is a link to an historical crud tutorial: [Link](https://github.com/lonesomegeek/LSG.GenericCrud.Samples/blob/master/Sample.HistoricalCrud/README.md)
