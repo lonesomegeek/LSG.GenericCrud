@@ -109,4 +109,4 @@ The differences are:
 
 ## Samples
 
-Here is a link to the DTO mapping source code sample: **to complete**
+Here is a link to the DTO mapping source code sample: [Link](https://github.com/lonesomegeek/LSG.GenericCrud.Samples/tree/master/Sample.Dto)
