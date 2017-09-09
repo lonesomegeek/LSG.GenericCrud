@@ -21,7 +21,10 @@ In this sample, I want to store at what time the entity is created and afterward
 ```csharp
 public class DateDataFiller : IEntityDataFiller<BaseEntity>
 {
-    public bool IsEntitySupported(EntityEntry entry) => entry.Entity is BaseEntity && (entry.State == EntityState.Added || entry.State == EntityState.Modified);
+    public bool IsEntitySupported(EntityEntry entry) {
+        return entry.Entity is BaseEntity && 
+            (entry.State == EntityState.Added || entry.State == EntityState.Modified);
+    }
     
     public BaseEntity Fill(EntityEntry entry)
     {
