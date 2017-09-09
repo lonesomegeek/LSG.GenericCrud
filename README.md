@@ -58,14 +58,7 @@ I am presenting here really simple scenarios, more complex will come:
     - Using Visual Studio Code (or command line): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudioCode.md)
     - Using Visual Studio (2015 update 3+): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudio.md)
 
-*These docs will come in a near future*:
-- DTO Pattern support
-- Entity history tracking
-- Entity to DTO pattern history tracking
-- DataFillers 
-- Custom repository logic
-- Custom security management (per controller/entity)
-- ...
+Want to have a look to more samples, take a look at the *samples* or clone it for more embedded fun =P: [Link](https://github.com/lonesomegeek/LSG.GenericCrud.Samples)
 
 # Install this library
 
