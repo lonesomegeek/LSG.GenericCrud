@@ -1,9 +1,9 @@
 # LSG.GenericCrud
 
 # Introduction
-This library is used to provide simplified RESTful CRUD apis with:
-- Untyped Crud Controller
-- Untyped Repository. 
+This library is used to provide simplified RESTful CRUD apis with a multilayer architecture:
+- Generic Crud Controller
+- Generic Entity Framework Repository. 
 
 This library allies injection (IoC), minimum codebase for maximum efficiency.
 
@@ -46,7 +46,7 @@ I've designed this library to be pretty extensible. Here is some features suppor
 - Automatic data fillers: [More details](./docs/FeatureDataFillers.md)
 - Support for custom repository logic: *more details to come*
 
-Actually unsupported features (but I'm working on it!):
+Actually unsupported features (feel free to help if you want!):
 - Per entity security policies
 - Full async pipeline
 - *and more*...
