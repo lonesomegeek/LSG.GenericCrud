@@ -68,15 +68,81 @@ namespace LSG.GenericCrud.Controllers
     }
 
     public class HistoricalCrudController<TDto, TEntity> :
-        CrudController<TDto, TEntity>
+        Controller
         where TDto : class, IEntity, new()
         where TEntity : class, IEntity, new()
     {
         private readonly HistoricalCrud<TEntity> _historicalDal;
+        private readonly IMapper _mapper;
 
-        public HistoricalCrudController(HistoricalCrud<TEntity> dal, IMapper mapper) : base(dal, mapper)
+        public HistoricalCrudController(HistoricalCrud<TEntity> dal, IMapper mapper)
         {
             _historicalDal = dal;
+            _mapper = mapper;
+        }
+
+        [HttpGet]
+        public new IActionResult GetAll()
+        {
+            var entities = _historicalDal.GetAll();
+            var dtos = entities.Select(_ => _mapper.Map<TDto>(_));
+            return Ok(dtos);
+        }
+
+        [Route("{id}")]
+        [HttpGet]
+        public IActionResult GetById(Guid id)
+        {
+            try
+            {
+                return Ok(_mapper.Map<TDto>(_historicalDal.GetById(id)));
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound();
+            }
+        }
+
+        /// <summary>
+        /// Creates the specified entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        [HttpPost("")]
+        public IActionResult Create([FromBody] TDto dto)
+        {
+            var entity = _mapper.Map<TEntity>(dto);
+            var createdEntity = _historicalDal.Create(entity);
+            return Ok(_mapper.Map<TDto>(createdEntity));
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Update(Guid id, [FromBody] TDto dto)
+        {
+            try
+            {
+                var entity = _mapper.Map<TEntity>(dto);
+                _historicalDal.Update(id, entity);
+                return Ok();
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(Guid id)
+        {
+            try
+            {
+                _historicalDal.Delete(id);
+                return Ok();
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound();
+            }
+
         }
 
         [HttpPost("{entityId}/restore")]
@@ -85,6 +151,24 @@ namespace LSG.GenericCrud.Controllers
             try
             {
                 return Ok(_historicalDal.Restore(entityId));
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound();
+            }
+        }
+
+        /// <summary>
+        /// Gets the history.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        [HttpGet("{id}/history")]
+        public IActionResult GetHistory(Guid id)
+        {
+            try
+            {
+                return Ok(_historicalDal.GetHistory(id));
             }
             catch (EntityNotFoundException ex)
             {
