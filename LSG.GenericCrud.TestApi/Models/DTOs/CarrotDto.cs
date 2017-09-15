@@ -8,6 +8,10 @@ namespace LSG.GenericCrud.TestApi.Models.DTOs
 {
     public class CarrotDto : IEntity
     {
+        public CarrotDto()
+        {
+            Id = Guid.NewGuid();
+        }
         public Guid Id { get; set; }
         public string Colorification { get; set; }
     }
