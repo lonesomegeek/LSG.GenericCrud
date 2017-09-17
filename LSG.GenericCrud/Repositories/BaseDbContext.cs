@@ -30,7 +30,7 @@ namespace LSG.GenericCrud.Repositories
         public BaseDbContext(DbContextOptions options, IServiceProvider serviceProvider) : base(options)
         {
             _serviceProvider = serviceProvider;
-            _dataFillers = _serviceProvider.GetServices<IEntityDataFiller<BaseEntity>>();
+            _dataFillers = _serviceProvider?.GetServices<IEntityDataFiller<BaseEntity>>();
 
         }
 
@@ -47,15 +47,17 @@ namespace LSG.GenericCrud.Repositories
         /// </remarks>
         public override int SaveChanges()
         {
-            var entries = ChangeTracker.Entries();
-            foreach (var entry in entries)
+            if (_dataFillers != null)
             {
-                foreach (var dataFiller in _dataFillers)
+                var entries = ChangeTracker.Entries();
+                foreach (var entry in entries)
                 {
-                    if (dataFiller.IsEntitySupported(entry)) dataFiller.Fill(entry);
+                    foreach (var dataFiller in _dataFillers)
+                    {
+                        if (dataFiller.IsEntitySupported(entry)) dataFiller.Fill(entry);
+                    }
                 }
             }
-
             return base.SaveChanges();
         }
     }
