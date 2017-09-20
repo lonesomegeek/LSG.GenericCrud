@@ -40,6 +40,9 @@ namespace LSG.GenericCrud.Repositories
         /// <returns></returns>
         public override T Create(T entity)
         {
+            // check for uninitialized id
+            if (entity.Id == Guid.Empty) entity.Id = Guid.NewGuid();
+
             var historicalEvent = new HistoricalEvent
             {
                 Action = HistoricalActions.Create.ToString(),
@@ -86,7 +89,7 @@ namespace LSG.GenericCrud.Repositories
                 {
                     var oldValue = prop.GetValue(originalEntity, null);
                     var newValue = prop.GetValue(entity, null);
-                    if (!oldValue.Equals(newValue))
+                    if (oldValue == null || !oldValue.Equals(newValue))
                     {
                         var originalProperty = originalEntity.GetType().GetProperty(prop.Name);
                         var value = prop.GetValue(entity, null);
