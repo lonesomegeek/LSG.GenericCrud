@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories.DataFillers;
 using Microsoft.EntityFrameworkCore;
@@ -59,6 +61,16 @@ namespace LSG.GenericCrud.Repositories
                 }
             }
             return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        public Task<int> SaveChangesAsync()
+        {
+            return base.SaveChangesAsync();
         }
     }
 }
