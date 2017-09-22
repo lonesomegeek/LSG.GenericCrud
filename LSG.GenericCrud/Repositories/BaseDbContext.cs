@@ -63,14 +63,20 @@ namespace LSG.GenericCrud.Repositories
             return base.SaveChanges();
         }
 
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        public async Task<int> SaveChangesAsync()
         {
-            return base.SaveChangesAsync(cancellationToken);
-        }
-
-        public Task<int> SaveChangesAsync()
-        {
-            return base.SaveChangesAsync();
+            if (_dataFillers != null)
+            {
+                var entries = ChangeTracker.Entries();
+                foreach (var entry in entries)
+                {
+                    foreach (var dataFiller in _dataFillers)
+                    {
+                        if (dataFiller.IsEntitySupported(entry)) await dataFiller.FillAsync(entry);
+                    }
+                }
+            }
+            return await base.SaveChangesAsync();
         }
     }
 }

@@ -91,7 +91,7 @@ namespace LSG.GenericCrud.Repositories
             return returnEntity;
         }
 
-        public async Task<T> CreateAsync(T entity)
+        public virtual async Task<T> CreateAsync(T entity)
         {
             var returnEntity = await Context.Set<T>().AddAsync(entity);
             if (AutoCommit) await Context.SaveChangesAsync();
@@ -117,6 +117,20 @@ namespace LSG.GenericCrud.Repositories
             }
             if (AutoCommit) Context.SaveChanges();
         }
+        public virtual async Task UpdateAsync(Guid id, T entity)
+        {
+            var originalEntity = await GetByIdAsync(id);
+            foreach (var prop in entity.GetType().GetProperties())
+            {
+                if (prop.Name != "Id")
+                {
+                    var originalProperty = originalEntity.GetType().GetProperty(prop.Name);
+                    var value = prop.GetValue(entity, null);
+                    if (value != null) originalProperty.SetValue(originalEntity, value);
+                }
+            }
+            if (AutoCommit) await Context.SaveChangesAsync();
+        }
 
         /// <summary>
         /// Deletes the specified identifier.
@@ -126,6 +140,12 @@ namespace LSG.GenericCrud.Repositories
         {
             Context.Set<T>().Remove(GetById(id));
             if (AutoCommit) Context.SaveChanges();
+        }
+
+        public virtual async Task DeleteAsync(Guid id)
+        {
+            Context.Set<T>().Remove(GetById(id));
+            if (AutoCommit) await Context.SaveChangesAsync();
         }
     }
 
@@ -165,11 +185,15 @@ namespace LSG.GenericCrud.Repositories
         /// <param name="id">The identifier.</param>
         /// <param name="entity">The entity.</param>
         void Update(Guid id, T entity);
+
+        Task UpdateAsync(Guid id, T entity);
         /// <summary>
         /// Deletes the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         void Delete(Guid id);
+
+        Task DeleteAsync(Guid id);
 
 
     }

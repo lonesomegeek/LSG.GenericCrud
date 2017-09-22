@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using LSG.GenericCrud.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -40,6 +42,11 @@ namespace LSG.GenericCrud.Repositories.DataFillers
             if (entry.State == EntityState.Added) entity.CreatedBy = _userInfoRepository?.GetUserInfo();
             entity.ModifiedBy = _userInfoRepository?.GetUserInfo();
             return entity;
+        }
+
+        public Task<BaseEntity> FillAsync(EntityEntry entry)
+        {
+            throw new NotImplementedException();
         }
     }
 }

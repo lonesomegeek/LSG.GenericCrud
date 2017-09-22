@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace LSG.GenericCrud.Repositories.DataFillers
 {
@@ -22,5 +23,11 @@ namespace LSG.GenericCrud.Repositories.DataFillers
         /// <param name="entry">The entry.</param>
         /// <returns></returns>
         T Fill(EntityEntry entry);
+        /// <summary>
+        /// Fills the specified entry async.
+        /// </summary>
+        /// <param name="entry">The entry.</param>
+        /// <returns></returns>
+        Task<T> FillAsync(EntityEntry entry);
     }
 }
