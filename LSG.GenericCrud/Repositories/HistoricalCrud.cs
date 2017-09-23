@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using LSG.GenericCrud.Exceptions;
 using LSG.GenericCrud.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,7 @@ namespace LSG.GenericCrud.Repositories
         /// <summary>
         /// The historical dal
         /// </summary>
-        private readonly Crud<HistoricalEvent> _historicalDal;
+        private readonly Crud<HistoricalEvent> _dal;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HistoricalCrud{T}"/> class.
@@ -29,8 +30,8 @@ namespace LSG.GenericCrud.Repositories
         public HistoricalCrud(IDbContext context) : base(context)
         {
             base.AutoCommit = false;
-            _historicalDal = new Crud<HistoricalEvent>(context);
-            _historicalDal.AutoCommit = false;
+            _dal = new Crud<HistoricalEvent>(context);
+            _dal.AutoCommit = false;
         }
 
         /// <summary>
@@ -52,9 +53,30 @@ namespace LSG.GenericCrud.Repositories
             };
 
             base.Create(entity);
-            _historicalDal.Create(historicalEvent);
+            _dal.Create(historicalEvent);
 
             Context.SaveChanges();
+
+            return entity;
+        }
+
+        public override async Task<T> CreateAsync(T entity)
+        {
+            // check for uninitialized id
+            if (entity.Id == Guid.Empty) entity.Id = Guid.NewGuid();
+
+            var historicalEvent = new HistoricalEvent
+            {
+                Action = HistoricalActions.Create.ToString(),
+                Changeset = new T().DetailedCompare(entity),
+                EntityId = entity.Id,
+                EntityName = entity.GetType().Name
+            };
+
+            await base.CreateAsync(entity);
+            await _dal.CreateAsync(historicalEvent);
+
+            await Context.SaveChangesAsync();
 
             return entity;
         }
@@ -77,7 +99,7 @@ namespace LSG.GenericCrud.Repositories
                 EntityId = originalEntity.Id,
                 EntityName = entity.GetType().Name
             };
-            _historicalDal.Create(historicalEvent);
+            _dal.Create(historicalEvent);
 
             // update original entity with modified fields
             foreach (var prop in originalEntity.GetType().GetProperties(
@@ -101,6 +123,42 @@ namespace LSG.GenericCrud.Repositories
             Context.SaveChanges();
         }
 
+        public override async Task UpdateAsync(Guid id, T entity)
+        {
+            var originalEntity = await base.GetByIdAsync(id);
+
+            // create historical change
+            var historicalEvent = new HistoricalEvent
+            {
+                Action = HistoricalActions.Update.ToString(),
+                Changeset = originalEntity.DetailedCompare(entity),
+                EntityId = originalEntity.Id,
+                EntityName = entity.GetType().Name
+            };
+            await _dal.CreateAsync(historicalEvent);
+
+            // update original entity with modified fields
+            foreach (var prop in originalEntity.GetType().GetProperties(
+                BindingFlags.Public |
+                BindingFlags.Instance |
+                BindingFlags.DeclaredOnly))
+            {
+                if (prop.Name != "Id")
+                {
+                    var oldValue = prop.GetValue(originalEntity, null);
+                    var newValue = prop.GetValue(entity, null);
+                    if (oldValue == null || !oldValue.Equals(newValue))
+                    {
+                        var originalProperty = originalEntity.GetType().GetProperty(prop.Name);
+                        var value = prop.GetValue(entity, null);
+                        originalProperty.SetValue(originalEntity, value);
+                    }
+                }
+            }
+
+            await Context.SaveChangesAsync();
+        }
+
         /// <summary>
         /// Deletes the specified identifier.
         /// </summary>
@@ -117,11 +175,34 @@ namespace LSG.GenericCrud.Repositories
                 EntityId = entity.Id,
                 EntityName = entity.GetType().Name
             };
-            _historicalDal.Create(historicalEvent);
+            _dal.Create(historicalEvent);
 
             base.Delete(id);
 
             Context.SaveChanges();
+        }
+
+        /// <summary>
+        /// Deletes the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        public override async Task DeleteAsync(Guid id)
+        {
+            var entity = await base.GetByIdAsync(id);
+
+            // store all object in historical event
+            var historicalEvent = new HistoricalEvent
+            {
+                Action = HistoricalActions.Delete.ToString(),
+                Changeset = new T().DetailedCompare(entity),
+                EntityId = entity.Id,
+                EntityName = entity.GetType().Name
+            };
+            await _dal.CreateAsync(historicalEvent);
+
+            await base.DeleteAsync(id);
+
+            await Context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -132,7 +213,7 @@ namespace LSG.GenericCrud.Repositories
         /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
         public T Restore(Guid entityId)
         {
-            var originalEntity = _historicalDal
+            var originalEntity = _dal
                 .GetAll()
                 .SingleOrDefault(_ =>
                     _.EntityId == entityId &&
@@ -145,6 +226,21 @@ namespace LSG.GenericCrud.Repositories
             return createdObject;
         }
 
+        public async Task<object> RestoreAsync(Guid entityId)
+        {
+            var originalEntity = _dal
+                .GetAll()
+                .SingleOrDefault(_ =>
+                    _.EntityId == entityId &&
+                    _.Action == HistoricalActions.Delete.ToString() /*&& _.EntityName == entityName*/);
+            if (originalEntity == null) throw new EntityNotFoundException();
+
+            var json = originalEntity.Changeset;
+            var obj = JsonConvert.DeserializeObject<T>(json);
+            var createdObject = await CreateAsync(obj);
+            return createdObject;
+        }
+
         /// <summary>
         /// Gets the history.
         /// </summary>
@@ -152,9 +248,23 @@ namespace LSG.GenericCrud.Repositories
         /// <returns></returns>
         public IEnumerable<IEntity> GetHistory(Guid id)
         {
-            return _historicalDal
+            return _dal
                 .GetAll()
                 .Where(_ => _.EntityId == id);
         }
+
+        /// <summary>
+        /// Gets the history.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        public async Task<IEnumerable<IEntity>> GetHistoryAsync(Guid id)
+        {
+            return _dal
+                .GetAll()
+                .Where(_ => _.EntityId == id);
+        }
+
+
     }
 }

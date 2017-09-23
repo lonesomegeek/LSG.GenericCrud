@@ -44,11 +44,11 @@ I've designed this library to be pretty extensible. Here is some features suppor
 - Support for entity history tracking: [More details](./docs/FeatureHistoricalCrud.md)
 - Automatic DTO to Entity (and Entity to DTO) mapping for Crud\<T> or HistoricalCrud\<T> controllers: [More details](./docs/FeatureDTO.md)
 - Automatic data fillers: [More details](./docs/FeatureDataFillers.md)
+- Full async pipeline: [More details](./docs/FeatureAsync.md)
 - Support for custom repository logic: *more details to come*
 
 Actually unsupported features (feel free to help if you want!):
 - Per entity security policies
-- Full async pipeline
 - *and more*...
 
 # Getting started / Tutorials
