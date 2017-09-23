@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using LSG.GenericCrud.Exceptions;
 using LSG.GenericCrud.Models;
@@ -14,20 +15,21 @@ namespace LSG.GenericCrud.Controllers
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="LSG.GenericCrud.Controllers.CrudController{T}" />
-    public class HistoricalCrudController<T> : CrudController<T> where T : class, IEntity, new()
+    public class HistoricalCrudAsyncController<T> : CrudAsyncController<T> where T : class, IEntity, new()
     {
         /// <summary>
         /// The historical dal
         /// </summary>
-        private readonly HistoricalCrud<T> _historicalDal;
+        private readonly HistoricalCrud<T> _dal;
 
+        /// <inheritdoc />
         /// <summary>
-        /// Initializes a new instance of the <see cref="HistoricalCrudController{T}"/> class.
+        /// Initializes a new instance of the <see cref="T:LSG.GenericCrud.Controllers.HistoricalCrudController`1" /> class.
         /// </summary>
         /// <param name="dal">The dal.</param>
-        public HistoricalCrudController(HistoricalCrud<T> dal) : base(dal)
+        public HistoricalCrudAsyncController(HistoricalCrud<T> dal) : base(dal)
         {
-            _historicalDal = dal;
+            _dal = dal;
         }
 
         /// <summary>
@@ -36,11 +38,11 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="entityId">The entity identifier.</param>
         /// <returns></returns>
         [HttpPost("{entityId}/restore")]
-        public IActionResult Restore(Guid entityId /*, string entityName*/)
+        public async Task<IActionResult> RestoreAsync(Guid entityId /*, string entityName*/)
         {
             try
             {
-                return Ok(_historicalDal.Restore(entityId));
+                return Ok(await _dal.RestoreAsync(entityId));
             }
             catch (EntityNotFoundException ex)
             {
@@ -54,11 +56,11 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpGet("{id}/history")]
-        public IActionResult GetHistory(Guid id)
+        public async Task<IActionResult> GetHistory(Guid id)
         {
             try
             {
-                return Ok(_historicalDal.GetHistory(id));
+                return Ok(await _dal.GetHistoryAsync(id));
             }
             catch (EntityNotFoundException ex)
             {
@@ -67,7 +69,7 @@ namespace LSG.GenericCrud.Controllers
         }
     }
 
-    public class HistoricalCrudController<TDto, TEntity> :
+    public class HistoricalCrudAsyncController<TDto, TEntity> :
         Controller
         where TDto : class, IEntity, new()
         where TEntity : class, IEntity, new()
@@ -75,27 +77,27 @@ namespace LSG.GenericCrud.Controllers
         private readonly HistoricalCrud<TEntity> _dal;
         private readonly IMapper _mapper;
 
-        public HistoricalCrudController(HistoricalCrud<TEntity> dal, IMapper mapper)
+        public HistoricalCrudAsyncController(HistoricalCrud<TEntity> dal, IMapper mapper)
         {
             _dal = dal;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public new IActionResult GetAll()
+        public new async Task<IActionResult> GetAll()
         {
-            var entities = _dal.GetAll();
+            var entities = await _dal.GetAllAsync();
             var dtos = entities.Select(_ => _mapper.Map<TDto>(_));
             return Ok(dtos);
         }
 
         [Route("{id}")]
         [HttpGet]
-        public IActionResult GetById(Guid id)
+        public async Task<IActionResult> GetById(Guid id)
         {
             try
             {
-                return Ok(_mapper.Map<TDto>(_dal.GetById(id)));
+                return Ok(_mapper.Map<TDto>(await _dal.GetByIdAsync(id)));
             }
             catch (EntityNotFoundException ex)
             {
@@ -108,20 +110,20 @@ namespace LSG.GenericCrud.Controllers
         /// </summary>
         /// <param name="entity">The entity.</param>
         [HttpPost("")]
-        public IActionResult Create([FromBody] TDto dto)
+        public async Task<IActionResult> Create([FromBody] TDto dto)
         {
             var entity = _mapper.Map<TEntity>(dto);
-            var createdEntity = _dal.Create(entity);
+            var createdEntity = await _dal.CreateAsync(entity);
             return Ok(_mapper.Map<TDto>(createdEntity));
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(Guid id, [FromBody] TDto dto)
+        public async Task<IActionResult> Update(Guid id, [FromBody] TDto dto)
         {
             try
             {
                 var entity = _mapper.Map<TEntity>(dto);
-                _dal.Update(id, entity);
+                await _dal.UpdateAsync(id, entity);
                 return Ok();
             }
             catch (EntityNotFoundException ex)
@@ -131,11 +133,11 @@ namespace LSG.GenericCrud.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             try
             {
-                _dal.Delete(id);
+                await _dal.DeleteAsync(id);
                 return Ok();
             }
             catch (EntityNotFoundException ex)
@@ -146,11 +148,11 @@ namespace LSG.GenericCrud.Controllers
         }
 
         [HttpPost("{entityId}/restore")]
-        public IActionResult Restore(Guid entityId /*, string entityName*/)
+        public async Task<IActionResult> Restore(Guid entityId /*, string entityName*/)
         {
             try
             {
-                return Ok(_dal.Restore(entityId));
+                return Ok(await _dal.RestoreAsync(entityId));
             }
             catch (EntityNotFoundException ex)
             {
@@ -164,11 +166,11 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpGet("{id}/history")]
-        public IActionResult GetHistory(Guid id)
+        public async Task<IActionResult> GetHistory(Guid id)
         {
             try
             {
-                return Ok(_dal.GetHistory(id));
+                return Ok(await _dal.GetHistoryAsync(id));
             }
             catch (EntityNotFoundException ex)
             {

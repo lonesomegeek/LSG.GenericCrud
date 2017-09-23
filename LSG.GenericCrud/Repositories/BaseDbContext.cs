@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories.DataFillers;
 using Microsoft.EntityFrameworkCore;
@@ -59,6 +61,22 @@ namespace LSG.GenericCrud.Repositories
                 }
             }
             return base.SaveChanges();
+        }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            if (_dataFillers != null)
+            {
+                var entries = ChangeTracker.Entries();
+                foreach (var entry in entries)
+                {
+                    foreach (var dataFiller in _dataFillers)
+                    {
+                        if (dataFiller.IsEntitySupported(entry)) await dataFiller.FillAsync(entry);
+                    }
+                }
+            }
+            return await base.SaveChangesAsync();
         }
     }
 }

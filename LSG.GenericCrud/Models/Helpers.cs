@@ -21,6 +21,7 @@ namespace LSG.GenericCrud.Models
         /// <returns></returns>
         public static string DetailedCompare<T>(this T originalEntity, T modifiedEntity)
         {
+            // TODO: Create an async version of this method
             Dictionary<String, object> dict = new Dictionary<string, object>();
 
             foreach (var prop in originalEntity.GetType().GetProperties(
