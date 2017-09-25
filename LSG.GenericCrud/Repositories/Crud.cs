@@ -32,6 +32,11 @@ namespace LSG.GenericCrud.Repositories
         public bool AutoCommit { get; set; }
 
         /// <summary>
+        /// Default parameterless consutrctor
+        /// </summary>
+        public Crud() { }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Crud{T}"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
@@ -45,7 +50,7 @@ namespace LSG.GenericCrud.Repositories
         /// Gets all.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<T> GetAll() => Context.Set<T>().AsEnumerable();
+        public virtual IEnumerable<T> GetAll() => Context.Set<T>().AsEnumerable();
 
         /// <summary>
         /// Get all async.
@@ -59,7 +64,7 @@ namespace LSG.GenericCrud.Repositories
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
-        public T GetById(Guid id)
+        public virtual T GetById(Guid id)
         {
             var entity = Context.Set<T>().SingleOrDefault(_ => _.Id == id);
             if (entity == null) throw new EntityNotFoundException();
