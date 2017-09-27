@@ -16,6 +16,7 @@ namespace LSG.GenericCrud.Tests.Controllers
     {
         private IList<TestEntity> _entities;
         private Faker<TestEntity> _entityFaker;
+        private TestEntity _entity;
 
         public CrudControllerTests()
         {
@@ -23,8 +24,8 @@ namespace LSG.GenericCrud.Tests.Controllers
             _entityFaker = new Faker<TestEntity>().
                     RuleFor(_ => _.Id, Guid.NewGuid()).
                     RuleFor(_ => _.Value, _ => _.Lorem.Word());
-            _entities = _entityFaker.
-                Generate(5);
+            _entities = _entityFaker.Generate(5);
+            _entity = _entityFaker.Generate();
         }
 
         [Fact]
@@ -74,11 +75,10 @@ namespace LSG.GenericCrud.Tests.Controllers
         [Fact]
         public void Create_ReturnsCreatedEntity()
         {
-            var entity = _entityFaker.Generate();
             var dalMock = new Mock<Crud<TestEntity>>();
             var controller = new CrudController<TestEntity>(dalMock.Object);
 
-            var actionResult = controller.Create(entity);
+            var actionResult = controller.Create(_entity);
 
             Assert.IsType<OkObjectResult>(actionResult);
             dalMock.Verify(_ => _.Create(It.IsAny<TestEntity>()), Times.Once);
@@ -87,11 +87,10 @@ namespace LSG.GenericCrud.Tests.Controllers
         [Fact]
         public void Update_ReturnsModifiedEntity()
         {
-            var entity = _entityFaker.Generate();
             var dalMock = new Mock<Crud<TestEntity>>();
             var controller = new CrudController<TestEntity>(dalMock.Object);
 
-            var actionResult = controller.Update(entity.Id, entity);
+            var actionResult = controller.Update(_entity.Id, _entity);
 
             Assert.IsType<OkResult>(actionResult);
             dalMock.Verify(_ => _.Update(It.IsAny<Guid>(), It.IsAny<TestEntity>()), Times.Once);
@@ -100,12 +99,11 @@ namespace LSG.GenericCrud.Tests.Controllers
         [Fact]
         public void Update_ReturnsNotFound()
         {
-            var entity = _entityFaker.Generate();
             var dalMock = new Mock<Crud<TestEntity>>();
             dalMock.Setup(_ => _.Update(It.IsAny<Guid>(), It.IsAny<TestEntity>())).Throws<EntityNotFoundException>();
             var controller = new CrudController<TestEntity>(dalMock.Object);
 
-            var actionResult = controller.Update(entity.Id, entity);
+            var actionResult = controller.Update(_entity.Id, _entity);
 
             Assert.IsType(typeof(NotFoundResult), actionResult);
             dalMock.Verify(_ => _.Update(It.IsAny<Guid>(), It.IsAny<TestEntity>()), Times.Once);
@@ -114,11 +112,10 @@ namespace LSG.GenericCrud.Tests.Controllers
         [Fact]
         public void Delete_ReturnsOk()
         {
-            var entity = _entityFaker.Generate();
             var dalMock = new Mock<Crud<TestEntity>>();
             var controller = new CrudController<TestEntity>(dalMock.Object);
 
-            var actionResult = controller.Delete(entity.Id);
+            var actionResult = controller.Delete(_entity.Id);
 
             Assert.IsType(typeof(OkResult), actionResult);
             dalMock.Verify(_ => _.Delete(It.IsAny<Guid>()), Times.Once);
@@ -127,12 +124,11 @@ namespace LSG.GenericCrud.Tests.Controllers
         [Fact]
         public void Delete_ReturnsNotFound()
         {
-            var entity = _entityFaker.Generate();
             var dalMock = new Mock<Crud<TestEntity>>();
             dalMock.Setup(_ => _.Delete(It.IsAny<Guid>())).Throws<EntityNotFoundException>();
             var controller = new CrudController<TestEntity>(dalMock.Object);
 
-            var actionResult = controller.Delete(entity.Id);
+            var actionResult = controller.Delete(_entity.Id);
 
             Assert.IsType(typeof(NotFoundResult), actionResult);
             dalMock.Verify(_ => _.Delete(It.IsAny<Guid>()), Times.Once);
