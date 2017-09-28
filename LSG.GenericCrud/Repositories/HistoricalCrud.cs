@@ -24,6 +24,11 @@ namespace LSG.GenericCrud.Repositories
         private readonly Crud<HistoricalEvent> _dal;
 
         /// <summary>
+        /// Default parameterless consutrctor
+        /// </summary>
+        public HistoricalCrud() { }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="HistoricalCrud{T}"/> class.
         /// </summary>
         /// <param name="context">The context.</param>

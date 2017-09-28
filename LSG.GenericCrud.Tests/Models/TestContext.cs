@@ -1,10 +1,9 @@
 using System;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
-using LSG.GenericCrud.Tests.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace LSG.GenericCrud.Tests
+namespace LSG.GenericCrud.Tests.Models
 {
     public class TestContext : BaseDbContext, IDbContext
     {
