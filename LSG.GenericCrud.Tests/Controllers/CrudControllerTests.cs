@@ -5,6 +5,7 @@ using Bogus;
 using LSG.GenericCrud.Controllers;
 using LSG.GenericCrud.Exceptions;
 using LSG.GenericCrud.Repositories;
+using LSG.GenericCrud.Tests.Models;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
@@ -14,18 +15,17 @@ namespace LSG.GenericCrud.Tests.Controllers
     
     public class CrudControllerTests
     {
-        private IList<TestEntity> _entities;
-        private Faker<TestEntity> _entityFaker;
-        private TestEntity _entity;
+        private readonly IList<TestEntity> _entities;
+        private readonly TestEntity _entity;
 
         public CrudControllerTests()
         {
             Randomizer.Seed = new Random(1234567);
-            _entityFaker = new Faker<TestEntity>().
-                    RuleFor(_ => _.Id, Guid.NewGuid()).
-                    RuleFor(_ => _.Value, _ => _.Lorem.Word());
-            _entities = _entityFaker.Generate(5);
-            _entity = _entityFaker.Generate();
+            var entityFaker = new Faker<TestEntity>().
+                RuleFor(_ => _.Id, Guid.NewGuid()).
+                RuleFor(_ => _.Value, _ => _.Lorem.Word());
+            _entities = entityFaker.Generate(5);
+            _entity = entityFaker.Generate();
         }
 
         [Fact]

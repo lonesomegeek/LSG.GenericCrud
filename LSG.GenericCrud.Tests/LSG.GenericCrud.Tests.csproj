@@ -19,8 +19,4 @@
     <ProjectReference Include="..\LSG.GenericCrud\LSG.GenericCrud.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>

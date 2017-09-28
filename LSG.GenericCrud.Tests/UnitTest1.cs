@@ -4,6 +4,7 @@ using System.Linq;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
 using LSG.GenericCrud.Repositories.DataFillers;
+using LSG.GenericCrud.Tests.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
