@@ -29,20 +29,20 @@ namespace LSG.GenericCrud.Tests.Controllers
             _entity = entityFaker.Generate();
         }
 
-        [Fact]
-        public async Task GetAll_ReturnsOk()
-        {
-            var dalMock = new Mock<Crud<TestEntity>>();
-            dalMock.Setup(_ => _.GetAll()).Returns(_entities);
-            var controller = new CrudAsyncController<TestEntity>(dalMock.Object);
+        //[Fact]
+        //public async Task GetAll_ReturnsOk()
+        //{
+        //    var dalMock = new Mock<Crud<TestEntity>>();
+        //    dalMock.Setup(_ => _.GetAll()).Returns(_entities);
+        //    var controller = new CrudAsyncController<TestEntity>(dalMock.Object);
 
-            var actionResult = await controller.GetAll();
-            var okResult = actionResult as OkObjectResult;
-            var model = okResult.Value as IEnumerable<TestEntity>;
+        //    var actionResult = await controller.GetAll();
+        //    var okResult = actionResult as OkObjectResult;
+        //    var model = okResult.Value as IEnumerable<TestEntity>;
 
-            Assert.Equal(model.Count(), _entities.Count);
-            dalMock.Verify(_ => _.GetAll(), Times.Once);
-        }
+        //    Assert.Equal(model.Count(), _entities.Count);
+        //    dalMock.Verify(_ => _.GetAll(), Times.Once);
+        //}
 
         //[Fact]
         //public void GetById_ReturnsOk()

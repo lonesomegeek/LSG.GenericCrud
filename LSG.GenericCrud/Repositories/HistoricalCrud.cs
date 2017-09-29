@@ -216,7 +216,7 @@ namespace LSG.GenericCrud.Repositories
         /// <param name="entityId">The entity identifier.</param>
         /// <returns></returns>
         /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
-        public T Restore(Guid entityId)
+        public virtual T Restore(Guid entityId)
         {
             var originalEntity = _dal
                 .GetAll()
@@ -251,7 +251,7 @@ namespace LSG.GenericCrud.Repositories
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public IEnumerable<IEntity> GetHistory(Guid id)
+        public virtual IEnumerable<IEntity> GetHistory(Guid id)
         {
             return _dal
                 .GetAll()
