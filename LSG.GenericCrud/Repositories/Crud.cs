@@ -56,7 +56,7 @@ namespace LSG.GenericCrud.Repositories
         /// Get all async.
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<T>> GetAllAsync() => await Context.Set<T>().ToListAsync();
+        public virtual async Task<IEnumerable<T>> GetAllAsync() => await Context.Set<T>().ToListAsync();
 
         /// <summary>
         /// Gets the by identifier.
@@ -77,7 +77,7 @@ namespace LSG.GenericCrud.Repositories
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
-        public async Task<T> GetByIdAsync(Guid id)
+        public virtual async Task<T> GetByIdAsync(Guid id)
         {
             var entity = await Context.Set<T>().SingleOrDefaultAsync(_ => _.Id == id);
             if (entity == null) throw new EntityNotFoundException();
