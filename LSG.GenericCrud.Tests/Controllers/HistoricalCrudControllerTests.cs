@@ -31,8 +31,7 @@ namespace LSG.GenericCrud.Tests.Controllers
             var historyFaker = new Faker<HistoricalEvent>();
             _events = historyFaker.Generate(2);
         }
-
-       
+        
         [Fact]
         public void Restore_ReturnsOk()
         {

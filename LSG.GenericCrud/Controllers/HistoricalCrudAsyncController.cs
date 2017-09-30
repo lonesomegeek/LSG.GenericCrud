@@ -38,7 +38,7 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="entityId">The entity identifier.</param>
         /// <returns></returns>
         [HttpPost("{entityId}/restore")]
-        public async Task<IActionResult> RestoreAsync(Guid entityId /*, string entityName*/)
+        public async Task<IActionResult> Restore(Guid entityId /*, string entityName*/)
         {
             try
             {

@@ -53,6 +53,112 @@ namespace LSG.GenericCrud.Tests.Controllers
         }
 
         [Fact]
+        public async Task GetAll_ReturnsOk()
+        {
+            var dalMock = new Mock<HistoricalCrud<TestEntity>>();
+            dalMock.Setup(_ => _.GetAllAsync()).ReturnsAsync(_entities);
+            var controller = new HistoricalCrudAsyncController<TestDto, TestEntity>(dalMock.Object, _mapper);
+
+            var actionResult = await controller.GetAll();
+            var okResult = actionResult as OkObjectResult;
+            var model = okResult.Value as IEnumerable<TestDto>;
+
+            Assert.Equal(model.Count(), _entities.Count);
+            dalMock.Verify(_ => _.GetAllAsync(), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetById_ReturnsOk()
+        {
+            var id = _entities[0].Id;
+            var dalMock = new Mock<HistoricalCrud<TestEntity>>();
+            dalMock.Setup(_ => _.GetByIdAsync(id)).ReturnsAsync(_entities[0]);
+            var controller = new HistoricalCrudAsyncController<TestDto, TestEntity>(dalMock.Object, _mapper);
+
+            var actionResult = await controller.GetById(id);
+            var okResult = actionResult as OkObjectResult;
+            var model = okResult.Value as TestDto;
+
+            Assert.Equal(model.Id, id);
+            dalMock.Verify(_ => _.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetById_ReturnsNotFound()
+        {
+            var dalMock = new Mock<HistoricalCrud<TestEntity>>();
+            dalMock.Setup(_ => _.GetByIdAsync(It.IsAny<Guid>())).ThrowsAsync(new EntityNotFoundException());
+            var controller = new HistoricalCrudAsyncController<TestDto, TestEntity>(dalMock.Object, _mapper);
+
+            var actionResult = await controller.GetById(Guid.NewGuid());
+
+            Assert.IsType(typeof(NotFoundResult), actionResult);
+            dalMock.Verify(_ => _.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task Create_ReturnsCreatedEntity()
+        {
+            var dalMock = new Mock<HistoricalCrud<TestEntity>>();
+            var controller = new HistoricalCrudAsyncController<TestDto, TestEntity>(dalMock.Object, _mapper);
+
+            var actionResult = await controller.Create(_dto);
+
+            Assert.IsType<OkObjectResult>(actionResult);
+            dalMock.Verify(_ => _.CreateAsync(It.IsAny<TestEntity>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task Update_ReturnsModifiedEntity()
+        {
+            var dalMock = new Mock<HistoricalCrud<TestEntity>>();
+            var controller = new HistoricalCrudAsyncController<TestDto, TestEntity>(dalMock.Object, _mapper);
+
+            var actionResult = await controller.Update(_entity.Id, _dto);
+
+            Assert.IsType<OkResult>(actionResult);
+            dalMock.Verify(_ => _.UpdateAsync(It.IsAny<Guid>(), It.IsAny<TestEntity>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task Update_ReturnsNotFound()
+        {
+            var dalMock = new Mock<HistoricalCrud<TestEntity>>();
+            dalMock.Setup(_ => _.UpdateAsync(It.IsAny<Guid>(), It.IsAny<TestEntity>())).ThrowsAsync(new EntityNotFoundException());
+            var controller = new HistoricalCrudAsyncController<TestDto, TestEntity>(dalMock.Object, _mapper);
+
+            var actionResult = await controller.Update(_entity.Id, _dto);
+
+            Assert.IsType(typeof(NotFoundResult), actionResult);
+            dalMock.Verify(_ => _.UpdateAsync(It.IsAny<Guid>(), It.IsAny<TestEntity>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task Delete_ReturnsOk()
+        {
+            var dalMock = new Mock<HistoricalCrud<TestEntity>>();
+            var controller = new HistoricalCrudAsyncController<TestDto, TestEntity>(dalMock.Object, _mapper);
+
+            var actionResult = await controller.Delete(_entity.Id);
+
+            Assert.IsType(typeof(OkResult), actionResult);
+            dalMock.Verify(_ => _.DeleteAsync(It.IsAny<Guid>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task Delete_ReturnsNotFound()
+        {
+            var dalMock = new Mock<HistoricalCrud<TestEntity>>();
+            dalMock.Setup(_ => _.DeleteAsync(It.IsAny<Guid>())).ThrowsAsync(new EntityNotFoundException());
+            var controller = new HistoricalCrudAsyncController<TestDto, TestEntity>(dalMock.Object, _mapper);
+
+            var actionResult = await controller.Delete(_entity.Id);
+
+            Assert.IsType(typeof(NotFoundResult), actionResult);
+            dalMock.Verify(_ => _.DeleteAsync(It.IsAny<Guid>()), Times.Once);
+        }
+
+        [Fact]
         public async Task Restore_ReturnsOk()
         {
             var dalMock = new Mock<HistoricalCrud<TestEntity>>();
