@@ -231,7 +231,7 @@ namespace LSG.GenericCrud.Repositories
             return createdObject;
         }
 
-        public async Task<object> RestoreAsync(Guid entityId)
+        public virtual async Task<object> RestoreAsync(Guid entityId)
         {
             var originalEntity = _dal
                 .GetAll()
@@ -263,7 +263,7 @@ namespace LSG.GenericCrud.Repositories
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public async Task<IEnumerable<IEntity>> GetHistoryAsync(Guid id)
+        public virtual async Task<IEnumerable<IEntity>> GetHistoryAsync(Guid id)
         {
             return _dal
                 .GetAll()
