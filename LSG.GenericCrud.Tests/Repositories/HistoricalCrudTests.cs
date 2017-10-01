@@ -5,6 +5,7 @@ using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
 using LSG.GenericCrud.Tests.Models;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using Xunit;
 
 namespace LSG.GenericCrud.Tests.Repositories
@@ -70,5 +71,15 @@ namespace LSG.GenericCrud.Tests.Repositories
             Assert.Contains("New Value", changeset);
         }
 
+        [Fact]
+        public void CreateChangesetWithValue_Success()
+        {
+            var originalEntity = new TestEntity() { Id = Guid.NewGuid(), Value = "Initial Value" };
+            var modifiedEntity = new TestEntity() { Id = originalEntity.Id, Value = "New Value" };
+
+            var changeset = originalEntity.DetailedCompare(modifiedEntity);
+
+            Assert.Contains("New Value", changeset);
+        }
     }
 }
