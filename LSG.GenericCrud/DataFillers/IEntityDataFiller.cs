@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace LSG.GenericCrud.Repositories.DataFillers
+namespace LSG.GenericCrud.DataFillers
 {
     /// <summary>
     /// 

@@ -1,23 +1,18 @@
 using System;
 using System.Threading.Tasks;
 using LSG.GenericCrud.Models;
+using LSG.GenericCrud.DataFillers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace LSG.GenericCrud.Repositories.DataFillers
+namespace LSG.GenericCrud.Extensions.DataFillers
 {
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="LSG.GenericCrud.Repositories.DataFillers.IEntityDataFiller{LSG.GenericCrud.Models.BaseEntity}" />
-    public class ByDataFiller : IEntityDataFiller<BaseEntity>
+    /// <seealso cref="BaseEntity" />
+    public class DateDataFiller : IEntityDataFiller<BaseEntity>
     {
-        private readonly IUserInfoRepository _userInfoRepository;
-
-        public ByDataFiller(IUserInfoRepository userInfoRepository)
-        {
-            _userInfoRepository = userInfoRepository;
-        }
         /// <summary>
         /// Determines whether [is entity supported] [the specified entry].
         /// </summary>
@@ -38,10 +33,9 @@ namespace LSG.GenericCrud.Repositories.DataFillers
         /// <returns></returns>
         public BaseEntity Fill(EntityEntry entry)
         {
-            var entity = ((BaseEntity)entry.Entity);
-            if (entry.State == EntityState.Added) entity.CreatedBy = _userInfoRepository?.GetUserInfo();
-            entity.ModifiedBy = _userInfoRepository?.GetUserInfo();
-            return entity;
+            if (entry.State == EntityState.Added) ((BaseEntity)entry.Entity).CreatedDate = DateTime.Now;
+            ((BaseEntity)entry.Entity).ModifiedDate = DateTime.Now;
+            return (BaseEntity)entry.Entity;
         }
 
         public Task<BaseEntity> FillAsync(EntityEntry entry)

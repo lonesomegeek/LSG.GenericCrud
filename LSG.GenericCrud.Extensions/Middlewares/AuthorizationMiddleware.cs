@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace LSG.GenericCrud.Middlewares
+namespace LSG.GenericCrud.Extensions.Middlewares
 {
     /// <summary>
     /// 
@@ -33,7 +33,7 @@ namespace LSG.GenericCrud.Middlewares
         /// <returns></returns>
         public async Task Invoke(HttpContext context)
         {
-            var scopes = context.User.Claims.FirstOrDefault(_ => _.Type == "scope")?.Value.Split(' ');
+            var scopes = Enumerable.FirstOrDefault<Claim>(context.User.Claims, _ => _.Type == "scope")?.Value.Split(' ');
             
             //if (scopes == null)
             //{
