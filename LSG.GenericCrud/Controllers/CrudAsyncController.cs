@@ -37,8 +37,17 @@ namespace LSG.GenericCrud.Controllers
 
         [Route("{id}")]
         [HttpGet]
-        public async Task<IActionResult> GetById(Guid id) => Ok(await _dal.GetByIdAsync(id));
-
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            try
+            {
+                return Ok(await _dal.GetByIdAsync(id));
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound();
+            }
+        }
         /// <summary>
         /// Creates the specified entity.
         /// </summary>

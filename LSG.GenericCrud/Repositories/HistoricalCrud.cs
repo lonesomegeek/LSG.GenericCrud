@@ -24,6 +24,11 @@ namespace LSG.GenericCrud.Repositories
         private readonly Crud<HistoricalEvent> _dal;
 
         /// <summary>
+        /// Default parameterless consutrctor
+        /// </summary>
+        public HistoricalCrud() { }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="HistoricalCrud{T}"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
@@ -211,7 +216,7 @@ namespace LSG.GenericCrud.Repositories
         /// <param name="entityId">The entity identifier.</param>
         /// <returns></returns>
         /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
-        public T Restore(Guid entityId)
+        public virtual T Restore(Guid entityId)
         {
             var originalEntity = _dal
                 .GetAll()
@@ -226,7 +231,7 @@ namespace LSG.GenericCrud.Repositories
             return createdObject;
         }
 
-        public async Task<object> RestoreAsync(Guid entityId)
+        public virtual async Task<object> RestoreAsync(Guid entityId)
         {
             var originalEntity = _dal
                 .GetAll()
@@ -246,7 +251,7 @@ namespace LSG.GenericCrud.Repositories
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public IEnumerable<IEntity> GetHistory(Guid id)
+        public virtual IEnumerable<IEntity> GetHistory(Guid id)
         {
             return _dal
                 .GetAll()
@@ -258,7 +263,7 @@ namespace LSG.GenericCrud.Repositories
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public async Task<IEnumerable<IEntity>> GetHistoryAsync(Guid id)
+        public virtual async Task<IEnumerable<IEntity>> GetHistoryAsync(Guid id)
         {
             return _dal
                 .GetAll()

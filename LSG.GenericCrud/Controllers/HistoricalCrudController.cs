@@ -82,7 +82,7 @@ namespace LSG.GenericCrud.Controllers
         }
 
         [HttpGet]
-        public new IActionResult GetAll()
+        public IActionResult GetAll()
         {
             var entities = _dal.GetAll();
             var dtos = entities.Select(_ => _mapper.Map<TDto>(_));

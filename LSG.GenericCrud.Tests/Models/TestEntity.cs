@@ -1,7 +1,7 @@
 using System;
 using LSG.GenericCrud.Models;
 
-namespace LSG.GenericCrud.Tests
+namespace LSG.GenericCrud.Tests.Models
 {
     public class TestEntity : IEntity
     {
