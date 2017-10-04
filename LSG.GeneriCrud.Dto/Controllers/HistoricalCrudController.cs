@@ -6,14 +6,14 @@ using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LSG.GeneriCrud.Dto.Controllers
+namespace LSG.GenericCrud.Dto.Controllers
 {
     /// <summary>
     /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <seealso cref="GeneriCrud.Dto.Controllers.CrudController{T}" />
-    public class HistoricalCrudController<T> : GeneriCrud.Dto.Controllers.CrudController<T> where T : class, IEntity, new()
+    /// <seealso cref="CrudController{T}" />
+    public class HistoricalCrudController<T> : CrudController<T> where T : class, IEntity, new()
     {
         /// <summary>
         /// The historical dal

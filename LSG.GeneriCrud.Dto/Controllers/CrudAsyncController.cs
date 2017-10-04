@@ -7,7 +7,7 @@ using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LSG.GeneriCrud.Dto.Controllers
+namespace LSG.GenericCrud.Dto.Controllers
 {
     public class CrudAsyncController<TDto, TEntity> :
       Controller

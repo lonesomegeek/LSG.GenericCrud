@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LSG.GenericCrud.Tests", "LS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LSG.GenericCrud.Extensions", "LSG.GenericCrud.Extensions\LSG.GenericCrud.Extensions.csproj", "{F343DDBD-9F1A-415C-BE8C-500B2619DD1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LSG.GeneriCrud.Dto", "LSG.GeneriCrud.Dto\LSG.GeneriCrud.Dto.csproj", "{4A41E77C-4ECC-49CA-8C23-8413D94B1FB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LSG.GenericCrud.Dto", "LSG.GeneriCrud.Dto\LSG.GenericCrud.Dto.csproj", "{4A41E77C-4ECC-49CA-8C23-8413D94B1FB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
