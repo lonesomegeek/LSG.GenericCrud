@@ -10,6 +10,7 @@ using LSG.GenericCrud.Exceptions;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
 using LSG.GenericCrud.Tests.Models;
+using LSG.GeneriCrud.Dto.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
