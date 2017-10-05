@@ -26,7 +26,7 @@ Using the command line, execute the following commands:
     dotnet new web -o Sample.GenericCrud
     ```
 
-*- Enter newly created folder
+- Enter newly created folder
 
     ```bash
     cd Sample.GenericCrud
