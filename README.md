@@ -42,7 +42,7 @@ Here is a sample of RESTful CRUD URLs for an entity of type Account:
 
 I've designed this library to be pretty extensible. Here is some features supported and links to further documentation:
 - Support for entity history tracking: [More details](./docs/FeatureHistoricalCrud.md)
-- Automatic DTO to Entity (and Entity to DTO) mapping for Crud\<T> or HistoricalCrud\<T> controllers: [More details](./docs/FeatureDTO.md)
+- Automatic DTO to Entity (and Entity to DTO) mapping for Crud\<T> or HistoricalCrud\<T> controllers, provided by [LSG.GenericCrud.Dto](https://www.nuget.org/packages/LSG.GenericCrud.Dto/): [More details](./docs/FeatureDTO.md)
 - Automatic data fillers: [More details](./docs/FeatureDataFillers.md)
 - Full async pipeline: [More details](./docs/FeatureAsync.md)
 - Support for custom repository logic: *more details to come*
@@ -73,6 +73,13 @@ If using Package Manager Console (in Visual Studio)
 ```bash
 Install-Package LSG.GenericCrud
 ```
+
+## More super powers!
+If you need other features that are not in the base library, you can install these libraries:
+- Dto/Entity mapping support: [LSG.GenericCrud.Dto](https://www.nuget.org/packages/LSG.GenericCrud.Dto/)
+- Data Fillers and middlewares: [LSG.GenericCrud.Extensions](https://www.nuget.org/packages/LSG.GenericCrud.Extensions)
+
+Note: There is actually missing documentation on what is included in these libraries. More documentation will come!
 
 # Release Notes
 
