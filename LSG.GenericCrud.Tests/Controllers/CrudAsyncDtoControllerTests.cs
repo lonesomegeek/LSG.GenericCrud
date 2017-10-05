@@ -6,6 +6,7 @@ using System.Transactions;
 using AutoMapper;
 using Bogus;
 using LSG.GenericCrud.Controllers;
+using LSG.GenericCrud.Dto.Controllers;
 using LSG.GenericCrud.Exceptions;
 using LSG.GenericCrud.Repositories;
 using LSG.GenericCrud.Tests.Models;

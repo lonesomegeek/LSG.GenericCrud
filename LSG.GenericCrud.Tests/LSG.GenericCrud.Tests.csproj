@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LSG.GenericCrud\LSG.GenericCrud.csproj" />
+      <ProjectReference Include="..\LSG.GenericCrud.Dto\LSG.GenericCrud.Dto.csproj" />
   </ItemGroup>
 
 </Project>
