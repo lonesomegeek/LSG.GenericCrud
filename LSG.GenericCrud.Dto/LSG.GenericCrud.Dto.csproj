@@ -2,14 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <Version>1.4.0-alpha</Version>
+    <Version>1.4.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>LSG.GenericCrud.Dto</PackageId>
-    <Authors>LSG.GenericCrud.Dto</Authors>
-    <Company>LSG.GenericCrud.Dto</Company>
+    <Authors>lonesomegeek</Authors>
+    <Company>lonesomegeek</Company>
     <Product>LSG.GenericCrud.Dto</Product>
     <RootNamespace>LSG.GenericCrud.Dto</RootNamespace>
     <AssemblyName>LSG.GenericCrud.Dto</AssemblyName>
+    <Description>This library provides a set of tools to enable CRUD rapidly on any aspnetcore Web APIs.</Description>
+    <PackageTags>generic crud webapi aspnetcore dto</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
