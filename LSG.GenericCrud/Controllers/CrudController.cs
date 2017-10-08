@@ -1,5 +1,6 @@
 ﻿using System;
 using LSG.GenericCrud.Exceptions;
+using LSG.GenericCrud.Middlwares;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,8 @@ namespace LSG.GenericCrud.Controllers
         /// </summary>
         protected readonly ICrud<T> _dal;
 
+        private readonly ICrudOptions<T> _options;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericCrudApiController{T, TEntity}"/> class.
         /// </summary>
@@ -22,12 +25,22 @@ namespace LSG.GenericCrud.Controllers
             _dal = dal;
         }
 
+        public CrudController(ICrud<T> dal, ICrudOptions<T> options)
+        {
+            _dal = dal;
+            _options = options;
+        }
+
         /// <summary>
         /// Gets all.
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult GetAll() => Ok(_dal.GetAll());
+        public IActionResult GetAll()
+        {
+            if (_options != null && _options.IsGetAllRouteEnabled) return Ok(_dal.GetAll());
+            return NotFound("Route not available");
+        }
 
         [Route("{id}")]
         [HttpGet]
