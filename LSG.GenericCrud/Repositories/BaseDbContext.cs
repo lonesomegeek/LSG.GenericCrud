@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using LSG.GenericCrud.DataFillers;
 using LSG.GenericCrud.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyModel;
 
 namespace LSG.GenericCrud.Repositories
 {
@@ -34,6 +38,68 @@ namespace LSG.GenericCrud.Repositories
             _serviceProvider = serviceProvider;
             _dataFillers = _serviceProvider?.GetServices<IEntityDataFiller<BaseEntity>>();
 
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            foreach (var type in GetEntityTypes())
+            {
+                var method = SetGlobalQueryMethod.MakeGenericMethod(type);
+                method.Invoke(this, new object[] {modelBuilder});
+            }
+
+            base.OnModelCreating(modelBuilder);
+        }
+
+        private static IList<Type> _entityTypeCache;
+
+        private static IList<Type> GetEntityTypes()
+        {
+            if (_entityTypeCache != null)
+            {
+                return _entityTypeCache.ToList();
+            }
+
+            _entityTypeCache = (from a in GetReferencingAssemblies()
+                from t in a.DefinedTypes
+                where typeof(ISoftDelete).IsAssignableFrom(t) && !t.IsAbstract
+                select t.AsType()).ToList();
+
+            return _entityTypeCache;
+        }
+
+        private static IEnumerable<Assembly> GetReferencingAssemblies()
+        {
+            var assemblies = new List<Assembly>();
+            var dependencies = DependencyContext.Default.RuntimeLibraries;
+
+            foreach (var library in dependencies)
+            {
+                try
+                {
+                    var assembly = Assembly.Load(new AssemblyName(library.Name));
+                    assemblies.Add(assembly);
+                }
+                catch (FileNotFoundException)
+                { }
+            }
+            return assemblies;
+        }
+
+        static readonly MethodInfo SetGlobalQueryMethod = typeof(BaseDbContext).GetMethods(BindingFlags.Public | BindingFlags.Instance).Single(t => t.IsGenericMethod && t.Name == "SetGlobalQuery");
+
+
+        public void SetGlobalQuery<T>(ModelBuilder builder) where T : BaseEntity
+        {
+            if (typeof(ISoftDelete).IsAssignableFrom(typeof(T)))
+            {
+                builder.Entity<T>().HasQueryFilter(_ => !((ISoftDelete)_).IsDeleted ?? false);
+
+            }
+
+            //builder.Entity<T>().HasKey(e => e.Id);
+            ////Debug.WriteLine("Adding global query for: " + typeof(T));
+            //builder.Entity<T>().HasQueryFilter(e => e.TenantId == _tenantId && !e.IsDeleted);
         }
 
         /// <summary>
