@@ -11,7 +11,7 @@ namespace LSG.GenericCrud.Controllers
     /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <seealso cref="LSG.GenericCrud.Controllers.CrudController{T}" />
+    /// <seealso cref="CrudControllerWithoutService{T}" />
     public class HistoricalCrudAsyncController<T> : CrudAsyncController<T> where T : class, IEntity, new()
     {
         /// <summary>
@@ -21,7 +21,7 @@ namespace LSG.GenericCrud.Controllers
 
         /// <inheritdoc />
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:LSG.GenericCrud.Controllers.HistoricalCrudController`1" /> class.
+        /// Initializes a new instance of the <see cref="T:LSG.GenericCrud.Controllers.HistoricalCrudControllerWithoutService`1" /> class.
         /// </summary>
         /// <param name="dal">The dal.</param>
         public HistoricalCrudAsyncController(HistoricalCrud<T> dal) : base(dal)

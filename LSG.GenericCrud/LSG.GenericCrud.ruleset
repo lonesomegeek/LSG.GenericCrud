@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="SonarQube - LSG.GenericCrud Sonar way" ToolsVersion="15.0">
+  <Include Path="..\sonarqube\e6538e5f2a5021bb39fb1d3efc72bd17ca4beb7acsharp.ruleset" Action="Default" />
+</RuleSet>

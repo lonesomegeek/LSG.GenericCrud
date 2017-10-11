@@ -37,7 +37,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var dalMock = new Mock<HistoricalCrud<TestEntity>>();
             dalMock.Setup(_ => _.Restore(It.IsAny<Guid>())).Returns(_entity);
-            var controller = new HistoricalCrudController<TestEntity>(dalMock.Object);
+            var controller = new HistoricalCrudControllerWithoutService<TestEntity>(dalMock.Object);
 
             var actionResult = controller.Restore(_entity.Id);
 
@@ -50,7 +50,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var dalMock = new Mock<HistoricalCrud<TestEntity>>();
             dalMock.Setup(_ => _.Restore(It.IsAny<Guid>())).Throws<EntityNotFoundException>();
-            var controller = new HistoricalCrudController<TestEntity>(dalMock.Object);
+            var controller = new HistoricalCrudControllerWithoutService<TestEntity>(dalMock.Object);
 
             var actionResult = controller.Restore(_entity.Id);
 
@@ -63,7 +63,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var dalMock = new Mock<HistoricalCrud<TestEntity>>();
             dalMock.Setup(_ => _.GetHistory(It.IsAny<Guid>())).Returns(_events);
-            var controller = new HistoricalCrudController<TestEntity>(dalMock.Object);
+            var controller = new HistoricalCrudControllerWithoutService<TestEntity>(dalMock.Object);
 
             var actionResult = controller.GetHistory(_entity.Id);
 
@@ -76,7 +76,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var dalMock = new Mock<HistoricalCrud<TestEntity>>();
             dalMock.Setup(_ => _.GetHistory(It.IsAny<Guid>())).Throws<EntityNotFoundException>();
-            var controller = new HistoricalCrudController<TestEntity>(dalMock.Object);
+            var controller = new HistoricalCrudControllerWithoutService<TestEntity>(dalMock.Object);
 
             var actionResult = controller.GetHistory(_entity.Id);
 
