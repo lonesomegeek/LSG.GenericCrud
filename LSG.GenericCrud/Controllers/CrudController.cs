@@ -1,4 +1,6 @@
-﻿using LSG.GenericCrud.Models;
+﻿using System;
+using LSG.GenericCrud.Exceptions;
+using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +15,52 @@ namespace LSG.GenericCrud.Controllers
             _service = service;
         }
 
+        [HttpGet]
         public IActionResult GetAll() => Ok(_service.GetAll());
+
+        [Route("{id}")]
+        [HttpGet]
+        public IActionResult GetById(Guid id)
+        {
+            try
+            {
+                return Ok(_service.GetById(id));
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost("")]
+        public IActionResult Create([FromBody] T entity) => Ok(_service.Create(entity));
+
+        [HttpPut("{id}")]
+        public IActionResult Update(Guid id, [FromBody] T entity)
+        {
+            try
+            {
+                _service.Update(id, entity);
+                return Ok();
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(Guid id)
+        {
+            try
+            {
+                _service.Delete(id);
+                return Ok();
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound();
+            }
+        }
     }
 }

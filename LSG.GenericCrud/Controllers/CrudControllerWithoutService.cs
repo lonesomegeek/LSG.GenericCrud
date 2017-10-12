@@ -11,13 +11,13 @@ namespace LSG.GenericCrud.Controllers
         /// <summary>
         /// The _service
         /// </summary>
-        protected readonly ICrud<T> _dal;
+        protected readonly ICrudRepository<T> _dal;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericCrudApiController{T, TEntity}"/> class.
         /// </summary>
         /// <param name="service">The service.</param>
-        public CrudControllerWithoutService(ICrud<T> dal)
+        public CrudControllerWithoutService(ICrudRepository<T> dal)
         {
             _dal = dal;
         }
