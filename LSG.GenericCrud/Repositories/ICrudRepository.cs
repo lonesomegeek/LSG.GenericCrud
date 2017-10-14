@@ -39,7 +39,7 @@ namespace LSG.GenericCrud.Repositories
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="entity">The entity.</param>
-        void Update(Guid id, T entity);
+        T Update(Guid id, T entity);
 
         Task UpdateAsync(Guid id, T entity);
         /// <summary>
@@ -50,6 +50,6 @@ namespace LSG.GenericCrud.Repositories
 
         Task DeleteAsync(Guid id);
 
-
+        void SaveChanges();
     }
 }

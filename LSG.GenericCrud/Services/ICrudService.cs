@@ -7,10 +7,11 @@ namespace LSG.GenericCrud.Services
 {
     public interface ICrudService<T>
     {
+        bool AutoCommit { get; set; }
         IEnumerable<T> GetAll();
         T GetById(Guid id);
-        T Create(IEntity entity);
-        void Update(Guid id, IEntity entity);
+        T Create(T entity);
+        T Update(Guid id, T entity);
         void Delete(Guid id);
     }
 }

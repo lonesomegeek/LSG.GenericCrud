@@ -92,7 +92,7 @@ namespace LSG.GenericCrud.Repositories
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="entity">The entity.</param>
-        public override void Update(Guid id, T entity)
+        public override T Update(Guid id, T entity)
         {
             var originalEntity = base.GetById(id);
 
@@ -126,6 +126,8 @@ namespace LSG.GenericCrud.Repositories
             }
 
             Context.SaveChanges();
+
+            return originalEntity;
         }
 
         public override async Task UpdateAsync(Guid id, T entity)

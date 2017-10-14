@@ -13,7 +13,10 @@ namespace LSG.GenericCrud.Services
         public CrudService(ICrudRepository<T> repository)
         {
             _repository = repository;
+            AutoCommit = true;
         }
+
+        public bool AutoCommit { get; set; }
 
         public IEnumerable<T> GetAll() => _repository.GetAll();
 
@@ -24,14 +27,27 @@ namespace LSG.GenericCrud.Services
             return entity;
         }
 
-        public T Create(IEntity entity)
+        public T Create(T entity)
         {
-            throw new NotImplementedException();
+            var createdEntity = _repository.Create(entity);
+            if (AutoCommit) _repository.SaveChanges();
+            return createdEntity;
         }
 
-        public void Update(Guid id, IEntity entity)
+        public T Update(Guid id, T entity)
         {
-            throw new NotImplementedException();
+            var originalEntity = GetById(id);
+            foreach (var prop in entity.GetType().GetProperties())
+            {
+                if (prop.Name != "Id")
+                {
+                    var originalProperty = originalEntity.GetType().GetProperty(prop.Name);
+                    var value = prop.GetValue(entity, null);
+                    if (value != null) originalProperty.SetValue(originalEntity, value);
+                }
+            }
+            if (AutoCommit) _repository.SaveChanges();
+            return originalEntity;
         }
 
         public void Delete(Guid id)

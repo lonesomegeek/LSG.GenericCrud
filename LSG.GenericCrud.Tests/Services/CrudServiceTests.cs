@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Bogus;
+using LSG.GenericCrud.Exceptions;
 using LSG.GenericCrud.Repositories;
 using LSG.GenericCrud.Services;
 using LSG.GenericCrud.Tests.Models;
@@ -24,6 +25,17 @@ namespace LSG.GenericCrud.Tests.Services
                 RuleFor(_ => _.Value, _ => _.Lorem.Word());
             _entities = entityFaker.Generate(5);
             _entity = entityFaker.Generate();
+        }
+
+        /// <summary>
+        /// TODO Not sure where the autocommit is going, in repo or servce...
+        /// </summary>
+        [Fact]
+        public void Constructor_SetAutoCommitToTrue()
+        {
+            var service = new CrudService<TestEntity>(null);
+
+            Assert.True(service.AutoCommit);
         }
 
         [Fact]
@@ -50,6 +62,54 @@ namespace LSG.GenericCrud.Tests.Services
 
             Assert.Equal(result.Id, _entity.Id);
             repositoryMock.Verify(_ => _.GetById(It.IsAny<Guid>()), Times.Once);
+        }
+
+        [Fact]
+        public void GetById_ThrowsEntityNotFoundException()
+        {
+            var repositoryMock = new Mock<ICrudRepository<TestEntity>>();
+            repositoryMock.Setup(_ => _.GetById(It.IsAny<Guid>())).Returns(default(TestEntity));
+            var service = new CrudService<TestEntity>(repositoryMock.Object);
+
+            Assert.Throws<EntityNotFoundException>(() => service.GetById(Guid.Empty));
+        }
+
+        [Fact]
+        public void Create_ReturnsCreatedElement()
+        {
+            var repositoryMock = new Mock<ICrudRepository<TestEntity>>();
+            repositoryMock.Setup(_ => _.Create(It.IsAny<TestEntity>())).Returns(_entity);
+            var service = new CrudService<TestEntity>(repositoryMock.Object);
+
+            var result = service.Create(_entity);
+
+            Assert.Equal(_entity.Id, result.Id);
+            repositoryMock.Verify(_ => _.Create(It.IsAny<TestEntity>()), Times.Once);
+            repositoryMock.Verify(_ => _.SaveChanges(), Times.Once);
+        }
+
+        [Fact]
+        public void Update_ReturnsUpdatedElement()
+        {
+            var repositoryMock = new Mock<ICrudRepository<TestEntity>>();
+            repositoryMock.Setup(_ => _.GetById(_entity.Id)).Returns(_entity);
+            var service = new CrudService<TestEntity>(repositoryMock.Object);
+
+            var result = service.Update(_entity.Id, _entity);
+
+            Assert.Equal(_entity.Id, result.Id);
+            repositoryMock.Verify(_ => _.GetById(It.IsAny<Guid>()), Times.Once());
+            repositoryMock.Verify(_ => _.SaveChanges(), Times.Once);
+        }
+
+        [Fact]
+        public void Update_ThrowsEntityNotFoundException()
+        {
+            var repositoryMock = new Mock<ICrudRepository<TestEntity>>();
+            repositoryMock.Setup(_ => _.GetById(It.IsAny<Guid>())).Throws<EntityNotFoundException>();
+            var service = new CrudService<TestEntity>(repositoryMock.Object);
+
+            Assert.Throws<EntityNotFoundException>(() => service.Update(Guid.Empty, _entity));
         }
     }
 }

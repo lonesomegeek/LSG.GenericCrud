@@ -108,7 +108,7 @@ namespace LSG.GenericCrud.Repositories
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="entity">The entity.</param>
-        public virtual void Update(Guid id, T entity)
+        public virtual T Update(Guid id, T entity)
         {
             var originalEntity = GetById(id);
             foreach (var prop in entity.GetType().GetProperties())
@@ -121,6 +121,7 @@ namespace LSG.GenericCrud.Repositories
                 }
             }
             if (AutoCommit) Context.SaveChanges();
+            return originalEntity;
         }
         public virtual async Task UpdateAsync(Guid id, T entity)
         {
@@ -151,6 +152,11 @@ namespace LSG.GenericCrud.Repositories
         {
             Context.Set<T>().Remove(GetById(id));
             if (AutoCommit) await Context.SaveChangesAsync();
+        }
+
+        public void SaveChanges()
+        {
+            Context.SaveChanges();
         }
     }
 }
