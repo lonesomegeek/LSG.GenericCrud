@@ -50,9 +50,12 @@ namespace LSG.GenericCrud.Services
             return originalEntity;
         }
 
-        public void Delete(Guid id)
+        public T Delete(Guid id)
         {
-            throw new NotImplementedException();
+            var entity = GetById(id);
+            _repository.Delete(id);
+            if (AutoCommit) _repository.SaveChanges();
+            return entity;
         }
     }
 }

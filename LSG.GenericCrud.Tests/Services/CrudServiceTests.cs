@@ -111,5 +111,30 @@ namespace LSG.GenericCrud.Tests.Services
 
             Assert.Throws<EntityNotFoundException>(() => service.Update(Guid.Empty, _entity));
         }
+
+        [Fact]
+        public void Delete_ReturnsDeletedElement()
+        {
+            var repositoryMock = new Mock<ICrudRepository<TestEntity>>();
+            repositoryMock.Setup(_ => _.GetById(_entity.Id)).Returns(_entity);
+            var service = new CrudService<TestEntity>(repositoryMock.Object);
+
+            var result = service.Delete(_entity.Id);
+
+            Assert.Equal(_entity.Id, result.Id);
+            repositoryMock.Verify(_ => _.GetById(It.IsAny<Guid>()), Times.Once());
+            repositoryMock.Verify(_ => _.Delete(It.IsAny<Guid>()), Times.Once);
+            repositoryMock.Verify(_ => _.SaveChanges(), Times.Once);
+        }
+
+        [Fact]
+        public void Delete_ThrowsEntityNotFoundException()
+        {
+            var repositoryMock = new Mock<ICrudRepository<TestEntity>>();
+            repositoryMock.Setup(_ => _.GetById(It.IsAny<Guid>())).Throws<EntityNotFoundException>();
+            var service = new CrudService<TestEntity>(repositoryMock.Object);
+
+            Assert.Throws<EntityNotFoundException>(() => service.Delete(Guid.Empty));
+        }
     }
 }

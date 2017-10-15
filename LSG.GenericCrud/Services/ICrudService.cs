@@ -12,6 +12,6 @@ namespace LSG.GenericCrud.Services
         T GetById(Guid id);
         T Create(T entity);
         T Update(Guid id, T entity);
-        void Delete(Guid id);
+        T Delete(Guid id);
     }
 }
