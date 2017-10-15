@@ -142,10 +142,11 @@ namespace LSG.GenericCrud.Repositories
         /// Deletes the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        public virtual void Delete(Guid id)
+        public virtual T Delete(Guid id)
         {
             Context.Set<T>().Remove(GetById(id));
             if (AutoCommit) Context.SaveChanges();
+            return null;
         }
 
         public virtual async Task DeleteAsync(Guid id)

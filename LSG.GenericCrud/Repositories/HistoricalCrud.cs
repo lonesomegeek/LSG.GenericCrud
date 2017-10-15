@@ -170,7 +170,7 @@ namespace LSG.GenericCrud.Repositories
         /// Deletes the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        public override void Delete(Guid id)
+        public override T Delete(Guid id)
         {
             var entity = base.GetById(id);
 
@@ -187,6 +187,8 @@ namespace LSG.GenericCrud.Repositories
             base.Delete(id);
 
             Context.SaveChanges();
+
+            return null;
         }
 
         /// <summary>

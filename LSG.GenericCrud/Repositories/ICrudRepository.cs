@@ -46,7 +46,7 @@ namespace LSG.GenericCrud.Repositories
         /// Deletes the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        void Delete(Guid id);
+        T Delete(Guid id);
 
         Task DeleteAsync(Guid id);
 
