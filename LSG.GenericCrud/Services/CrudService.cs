@@ -27,14 +27,14 @@ namespace LSG.GenericCrud.Services
             return entity;
         }
 
-        public T Create(T entity)
+        public virtual T Create(T entity)
         {
             var createdEntity = _repository.Create(entity);
             if (AutoCommit) _repository.SaveChanges();
             return createdEntity;
         }
 
-        public T Update(Guid id, T entity)
+        public virtual T Update(Guid id, T entity)
         {
             var originalEntity = GetById(id);
             foreach (var prop in entity.GetType().GetProperties())
@@ -50,7 +50,7 @@ namespace LSG.GenericCrud.Services
             return originalEntity;
         }
 
-        public T Delete(Guid id)
+        public virtual T Delete(Guid id)
         {
             var entity = GetById(id);
             _repository.Delete(id);

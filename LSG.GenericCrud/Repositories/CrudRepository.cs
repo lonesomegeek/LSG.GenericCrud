@@ -12,11 +12,16 @@ namespace LSG.GenericCrud.Repositories
     {
         private readonly IDbContext _context;
 
+        public CrudRepository()
+        {
+            
+        }
+
         public CrudRepository(IDbContext context)
         {
             _context = context;
         }
-        public IEnumerable<T> GetAll()
+        public virtual IEnumerable<T> GetAll()
         {
             return _context.Set<T>();
         }

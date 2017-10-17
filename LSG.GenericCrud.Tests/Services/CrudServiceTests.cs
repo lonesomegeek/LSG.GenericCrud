@@ -27,9 +27,6 @@ namespace LSG.GenericCrud.Tests.Services
             _entity = entityFaker.Generate();
         }
 
-        /// <summary>
-        /// TODO Not sure where the autocommit is going, in repo or servce...
-        /// </summary>
         [Fact]
         public void Constructor_SetAutoCommitToTrue()
         {
