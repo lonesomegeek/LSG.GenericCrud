@@ -41,7 +41,7 @@ namespace LSG.GenericCrud.Repositories
             throw new NotImplementedException();
         }
 
-        public T Create(T entity)
+        public virtual T Create(T entity)
         {
             return _context.Set<T>().Add(entity).Entity;
         }

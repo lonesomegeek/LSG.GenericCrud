@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Bogus;
+using LSG.GenericCrud.Exceptions;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
 using LSG.GenericCrud.Services;
@@ -28,7 +29,8 @@ namespace LSG.GenericCrud.Tests.Services
             var eventFaker = new Faker<HistoricalEvent>().
                 RuleFor(_ => _.Id, Guid.NewGuid).
                 RuleFor(_ => _.Action, HistoricalActions.Delete.ToString).
-                RuleFor(_ => _.EntityId, _entity.Id);
+                RuleFor(_ => _.EntityId, _entity.Id).
+                RuleFor(_ => _.Changeset, "{}");
             _events = new List<HistoricalEvent>() {eventFaker.Generate()};
         }
 
@@ -41,16 +43,71 @@ namespace LSG.GenericCrud.Tests.Services
         }
 
         [Fact]
+        public void Create_ReturnsCreatedElement()
+        {
+            var eventRepositoryMock = new Mock<CrudRepository<HistoricalEvent>>();
+            var entityRepositoryMock = new Mock<CrudRepository<TestEntity>>();
+            entityRepositoryMock.Setup(_ => _.Create(It.IsAny<TestEntity>())).Returns(_entity);
+            var service = new HistoricalCrudService<TestEntity>(entityRepositoryMock.Object, eventRepositoryMock.Object);
+
+            var result = service.Create(_entity);
+
+            Assert.Equal(_entity.Id, result.Id);
+            eventRepositoryMock.Verify(_ => _.Create(It.IsAny<HistoricalEvent>()), Times.Once);
+            entityRepositoryMock.Verify(_ => _.Create(It.IsAny<TestEntity>()), Times.Once);
+            entityRepositoryMock.Verify(_ => _.SaveChanges(), Times.Once);
+
+            // TODO: Check if I need two save changes, one, or a UoW
+        }
+
+        [Fact]
         public void Restore_ReturnsCreatedElement()
         {
             var eventRepositoryMock = new Mock<CrudRepository<HistoricalEvent>>();
             eventRepositoryMock.Setup(_ => _.GetAll()).Returns(_events);
             var entityRepositoryMock = new Mock<CrudRepository<TestEntity>>();
+            entityRepositoryMock.Setup(_ => _.Create(It.IsAny<TestEntity>())).Returns(_entity);
             var service = new HistoricalCrudService<TestEntity>(entityRepositoryMock.Object, eventRepositoryMock.Object);
 
             var result = service.Restore(_entity.Id);
             
+            Assert.Equal(_entity.Id, result.Id);
             entityRepositoryMock.Verify(_ => _.Create(It.IsAny<TestEntity>()), Times.Once);
         }
+
+        [Fact]
+        public void Restore_ThrowsEntityNotFoundException()
+        {
+            var eventRepositoryMock = new Mock<CrudRepository<HistoricalEvent>>();
+            eventRepositoryMock.Setup(_ => _.GetAll()).Returns(new List<HistoricalEvent>());
+            var entityRepositoryMock = new Mock<CrudRepository<TestEntity>>();
+            var service = new HistoricalCrudService<TestEntity>(entityRepositoryMock.Object, eventRepositoryMock.Object);
+
+            Assert.Throws<EntityNotFoundException>(() => service.Restore(_entity.Id));
+        }
+
+        [Fact]
+        public void GetHistory_ReturnsHistory()
+        {
+            var eventRepositoryMock = new Mock<CrudRepository<HistoricalEvent>>();
+            eventRepositoryMock.Setup(_ => _.GetAll()).Returns(_events);
+            var service = new HistoricalCrudService<TestEntity>(null, eventRepositoryMock.Object);
+
+            var result = service.GetHistory(_entity.Id);
+
+            Assert.NotEmpty(result);
+        }
+
+        [Fact]
+        public void GetHistory_ThrowsEntityNotFoundException()
+        {
+            var eventRepositoryMock = new Mock<CrudRepository<HistoricalEvent>>();
+            eventRepositoryMock.Setup(_ => _.GetAll()).Returns(new List<HistoricalEvent>());
+            var service = new HistoricalCrudService<TestEntity>(null, eventRepositoryMock.Object);
+
+            Assert.Throws<EntityNotFoundException>(() => service.GetHistory(_entity.Id));
+        }
+
+
     }
 }

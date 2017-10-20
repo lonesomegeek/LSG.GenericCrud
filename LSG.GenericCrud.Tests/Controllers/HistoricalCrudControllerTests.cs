@@ -73,12 +73,12 @@ namespace LSG.GenericCrud.Tests.Controllers
         public void GetHistory_ThrowsEntityNotFoundException()
         {
             var serviceMock = new Mock<IHistoricalCrudService<TestEntity>>();
-            serviceMock.Setup(_ => _.Restore(It.IsAny<Guid>())).Throws<EntityNotFoundException>();
+            serviceMock.Setup(_ => _.GetHistory(It.IsAny<Guid>())).Throws<EntityNotFoundException>();
             var controller = new HistoricalCrudController<TestEntity>(serviceMock.Object);
 
             var result = controller.GetHistory(_entity.Id);
 
-            Assert.IsType<OkObjectResult>(result);
+            Assert.IsType<NotFoundResult>(result);
             serviceMock.Verify(_ => _.GetHistory(It.IsAny<Guid>()), Times.Once);
         }
 
