@@ -91,7 +91,7 @@ namespace LSG.GenericCrud.Tests.Controllers
 
             var actionResult = controller.Update(_entity.Id, _entity);
 
-            Assert.IsType<OkResult>(actionResult);
+            Assert.IsType<OkObjectResult>(actionResult);
             serviceMock.Verify(_ => _.Update(It.IsAny<Guid>(), It.IsAny<TestEntity>()), Times.Once);
         }
 
@@ -116,7 +116,7 @@ namespace LSG.GenericCrud.Tests.Controllers
 
             var actionResult = controller.Delete(_entity.Id);
 
-            Assert.IsType<OkResult>(actionResult);
+            Assert.IsType<OkObjectResult>(actionResult);
             serviceMock.Verify(_ => _.Delete(It.IsAny<Guid>()), Times.Once);
         }
 

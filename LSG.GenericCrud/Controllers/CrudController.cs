@@ -40,8 +40,7 @@ namespace LSG.GenericCrud.Controllers
         {
             try
             {
-                _service.Update(id, entity);
-                return Ok();
+                return Ok(_service.Update(id, entity));
             }
             catch (EntityNotFoundException ex)
             {
@@ -54,8 +53,7 @@ namespace LSG.GenericCrud.Controllers
         {
             try
             {
-                _service.Delete(id);
-                return Ok();
+                return Ok(_service.Delete(id));
             }
             catch (EntityNotFoundException ex)
             {

@@ -71,7 +71,7 @@ namespace LSG.GenericCrud.Repositories
             throw new NotImplementedException();
         }
 
-        public void SaveChanges()
+        public virtual void SaveChanges()
         {
             _context.SaveChanges();
         }

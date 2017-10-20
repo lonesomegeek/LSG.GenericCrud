@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using LSG.GenericCrud.Exceptions;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Newtonsoft.Json;
 
 namespace LSG.GenericCrud.Services
@@ -35,18 +37,48 @@ namespace LSG.GenericCrud.Services
 
             _eventRepository.Create(historicalEvent);
             _entityRepository.SaveChanges();
+            _eventRepository.SaveChanges();
             // TODO: Do I need to call the other repo for both repositories, or do I need a UoW
             return createdEntity;
         }
 
         public override T Update(Guid id, T entity)
         {
-            return base.Update(id, entity);
+            var modifiedEntity = base.Update(id, entity);
+
+            // create historical change
+            var historicalEvent = new HistoricalEvent
+            {
+                Action = HistoricalActions.Update.ToString(),
+                Changeset = modifiedEntity.DetailedCompare(entity),
+                EntityId = modifiedEntity.Id,
+                EntityName = entity.GetType().Name
+            };
+
+            _eventRepository.Create(historicalEvent);
+            _entityRepository.SaveChanges();
+            _eventRepository.SaveChanges();
+
+            return modifiedEntity;
         }
 
         public override T Delete(Guid id)
         {
-            return base.Delete(id);
+            var entity = base.Delete(id);
+
+            // store all object in historical event
+            var historicalEvent = new HistoricalEvent
+            {
+                Action = HistoricalActions.Delete.ToString(),
+                Changeset = new T().DetailedCompare(entity),
+                EntityId = entity.Id,
+                EntityName = entity.GetType().Name
+            };
+            _eventRepository.Create(historicalEvent);
+            _entityRepository.SaveChanges();
+            _eventRepository.SaveChanges();
+
+            return entity;
         }
 
         public T Restore(Guid id)
@@ -60,6 +92,7 @@ namespace LSG.GenericCrud.Services
             var json = entity.Changeset;
             var obj = JsonConvert.DeserializeObject<T>(json);
             var createdObject = Create(obj);
+
             return createdObject;
         }
 

@@ -46,8 +46,10 @@ namespace LSG.GenericCrud.Tests.Services
         public void Create_ReturnsCreatedElement()
         {
             var eventRepositoryMock = new Mock<CrudRepository<HistoricalEvent>>();
+            eventRepositoryMock.Setup(_ => _.SaveChanges());
             var entityRepositoryMock = new Mock<CrudRepository<TestEntity>>();
             entityRepositoryMock.Setup(_ => _.Create(It.IsAny<TestEntity>())).Returns(_entity);
+            entityRepositoryMock.Setup(_ => _.SaveChanges());
             var service = new HistoricalCrudService<TestEntity>(entityRepositoryMock.Object, eventRepositoryMock.Object);
 
             var result = service.Create(_entity);
