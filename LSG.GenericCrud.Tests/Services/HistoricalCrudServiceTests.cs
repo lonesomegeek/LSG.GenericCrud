@@ -46,10 +46,8 @@ namespace LSG.GenericCrud.Tests.Services
         public void Create_ReturnsCreatedElement()
         {
             var eventRepositoryMock = new Mock<CrudRepository<HistoricalEvent>>();
-            eventRepositoryMock.Setup(_ => _.SaveChanges());
             var entityRepositoryMock = new Mock<CrudRepository<TestEntity>>();
             entityRepositoryMock.Setup(_ => _.Create(It.IsAny<TestEntity>())).Returns(_entity);
-            entityRepositoryMock.Setup(_ => _.SaveChanges());
             var service = new HistoricalCrudService<TestEntity>(entityRepositoryMock.Object, eventRepositoryMock.Object);
 
             var result = service.Create(_entity);
@@ -58,9 +56,42 @@ namespace LSG.GenericCrud.Tests.Services
             eventRepositoryMock.Verify(_ => _.Create(It.IsAny<HistoricalEvent>()), Times.Once);
             entityRepositoryMock.Verify(_ => _.Create(It.IsAny<TestEntity>()), Times.Once);
             entityRepositoryMock.Verify(_ => _.SaveChanges(), Times.Once);
-
-            // TODO: Check if I need two save changes, one, or a UoW
+            eventRepositoryMock.Verify(_ => _.SaveChanges(), Times.Once);
         }
+
+        [Fact]
+        public void Delete_ReturnsDeletedElement()
+        {
+            var eventRepositoryMock = new Mock<CrudRepository<HistoricalEvent>>();
+            var entityRepositoryMock = new Mock<CrudRepository<TestEntity>>();
+            entityRepositoryMock.Setup(_ => _.GetById(It.IsAny<Guid>())).Returns(_entity);
+            var service = new HistoricalCrudService<TestEntity>(entityRepositoryMock.Object, eventRepositoryMock.Object);
+
+            var result = service.Delete(_entity.Id);
+
+            Assert.Equal(_entity.Id, result.Id);
+            eventRepositoryMock.Verify(_ => _.Create(It.IsAny<HistoricalEvent>()), Times.Once);
+            entityRepositoryMock.Verify(_ => _.Delete(It.IsAny<Guid>()), Times.Once);
+            entityRepositoryMock.Verify(_ => _.SaveChanges(), Times.Once);
+            eventRepositoryMock.Verify(_ => _.SaveChanges(), Times.Once);
+        }
+
+        [Fact]
+        public void Update_ReturnsUpdatedElement()
+        {
+            var eventRepositoryMock = new Mock<CrudRepository<HistoricalEvent>>();
+            var entityRepositoryMock = new Mock<CrudRepository<TestEntity>>();
+            entityRepositoryMock.Setup(_ => _.GetById(It.IsAny<Guid>())).Returns(_entity);
+            var service = new HistoricalCrudService<TestEntity>(entityRepositoryMock.Object, eventRepositoryMock.Object);
+
+            var result = service.Update(_entity.Id, _entity);
+
+            Assert.Equal(_entity.Id, result.Id);
+            eventRepositoryMock.Verify(_ => _.Create(It.IsAny<HistoricalEvent>()), Times.Once);
+            entityRepositoryMock.Verify(_ => _.SaveChanges(), Times.Once);
+            eventRepositoryMock.Verify(_ => _.SaveChanges(), Times.Once);
+        }
+
 
         [Fact]
         public void Restore_ReturnsCreatedElement()

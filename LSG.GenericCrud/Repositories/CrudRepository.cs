@@ -31,7 +31,7 @@ namespace LSG.GenericCrud.Repositories
             throw new NotImplementedException();
         }
 
-        public T GetById(Guid id)
+        public virtual T GetById(Guid id)
         {
             return _context.Set<T>().SingleOrDefault(_ => _.Id == id);
         }
@@ -61,7 +61,7 @@ namespace LSG.GenericCrud.Repositories
             throw new NotImplementedException();
         }
 
-        public T Delete(Guid id)
+        public virtual T Delete(Guid id)
         {
             return _context.Set<T>().Remove(GetById(id)).Entity;
         }
