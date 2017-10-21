@@ -43,6 +43,25 @@ namespace LSG.GenericCrud.Services
             return createdEntity;
         }
 
+        public override async Task<T> CreateAsync(T entity)
+        {
+            var createdEntity = await base.CreateAsync(entity);
+
+            var historicalEvent = new HistoricalEvent
+            {
+                Action = HistoricalActions.Create.ToString(),
+                Changeset = new T().DetailedCompare(entity),
+                EntityId = entity.Id,
+                EntityName = entity.GetType().Name
+            };
+
+            await _eventRepository.CreateAsync(historicalEvent);
+            _entityRepository.SaveChanges();
+            _eventRepository.SaveChanges();
+            // TODO: Do I need to call the other repo for both repositories, or do I need a UoW (bugfix created)
+            return createdEntity;
+        }
+
         public override T Update(Guid id, T entity)
         {
             var originalEntity = base.GetById(id);
@@ -56,6 +75,25 @@ namespace LSG.GenericCrud.Services
             var modifiedEntity = base.Update(id, entity);
 
             _eventRepository.Create(historicalEvent);
+            _entityRepository.SaveChanges();
+            _eventRepository.SaveChanges();
+
+            return modifiedEntity;
+        }
+
+        public override async Task<T> UpdateAsync(Guid id, T entity)
+        {
+            var originalEntity = await base.GetByIdAsync(id);
+            var historicalEvent = new HistoricalEvent
+            {
+                Action = HistoricalActions.Update.ToString(),
+                Changeset = originalEntity.DetailedCompare(entity),
+                EntityId = originalEntity.Id,
+                EntityName = entity.GetType().Name
+            };
+            var modifiedEntity = await base.UpdateAsync(id, entity);
+
+            await _eventRepository.CreateAsync(historicalEvent);
             _entityRepository.SaveChanges();
             _eventRepository.SaveChanges();
 
@@ -81,6 +119,25 @@ namespace LSG.GenericCrud.Services
             return entity;
         }
 
+        public override async Task<T> DeleteAsync(Guid id)
+        {
+            var entity = await base.DeleteAsync(id);
+
+            // store all object in historical event
+            var historicalEvent = new HistoricalEvent
+            {
+                Action = HistoricalActions.Delete.ToString(),
+                Changeset = new T().DetailedCompare(entity),
+                EntityId = entity.Id,
+                EntityName = entity.GetType().Name
+            };
+            await _eventRepository.CreateAsync(historicalEvent);
+            _entityRepository.SaveChanges();
+            _eventRepository.SaveChanges();
+
+            return entity;
+        }
+
         public T Restore(Guid id)
         {
             var entity = _eventRepository
@@ -96,6 +153,22 @@ namespace LSG.GenericCrud.Services
             return createdObject;
         }
 
+        public async Task<T> RestoreAsync(Guid id)
+        {
+            var entity = _eventRepository
+                .GetAllAsync()
+                .Result
+                .SingleOrDefault(_ =>
+                    _.EntityId == id &&
+                    _.Action == HistoricalActions.Delete.ToString());
+            if (entity == null) throw new EntityNotFoundException();
+            var json = entity.Changeset;
+            var obj = JsonConvert.DeserializeObject<T>(json);
+            var createdObject = await CreateAsync(obj);
+
+            return createdObject;
+        }
+
         public IEnumerable<IEntity> GetHistory(Guid id)
         {
             var events = _eventRepository
@@ -105,14 +178,14 @@ namespace LSG.GenericCrud.Services
             return events;
         }
 
-        public Task<T> RestoreAsync(Guid id)
+        public async Task<IEnumerable<IEntity>> GetHistoryAsync(Guid id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<IEntity>> GetHistoryAsync(Guid id)
-        {
-            throw new NotImplementedException();
+            var events =  await _eventRepository.GetAllAsync();
+            var filteredEvents = events
+                .Where(_ => _.EntityId == id)
+                .ToList();
+            if (!filteredEvents.Any()) throw new EntityNotFoundException();
+            return filteredEvents;
         }
     }
 }

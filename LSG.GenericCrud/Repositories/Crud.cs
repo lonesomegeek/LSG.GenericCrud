@@ -149,15 +149,18 @@ namespace LSG.GenericCrud.Repositories
             return null;
         }
 
-        public virtual async Task DeleteAsync(Guid id)
+        public virtual async Task<T> DeleteAsync(Guid id)
         {
-            Context.Set<T>().Remove(GetById(id));
+            var entity = await GetByIdAsync(id);
+            Context.Set<T>().Remove(entity);
             if (AutoCommit) await Context.SaveChangesAsync();
+            return entity;
         }
 
         public void SaveChanges()
         {
             Context.SaveChanges();
         }
+        
     }
 }

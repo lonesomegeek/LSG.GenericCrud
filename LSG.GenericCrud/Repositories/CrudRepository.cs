@@ -26,7 +26,7 @@ namespace LSG.GenericCrud.Repositories
             return _context.Set<T>();
         }
 
-        public Task<IEnumerable<T>> GetAllAsync()
+        public virtual Task<IEnumerable<T>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
@@ -36,7 +36,7 @@ namespace LSG.GenericCrud.Repositories
             return _context.Set<T>().SingleOrDefault(_ => _.Id == id);
         }
 
-        public Task<T> GetByIdAsync(Guid id)
+        public virtual Task<T> GetByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -46,7 +46,7 @@ namespace LSG.GenericCrud.Repositories
             return _context.Set<T>().Add(entity).Entity;
         }
 
-        public Task<T> CreateAsync(T entity)
+        public virtual Task<T> CreateAsync(T entity)
         {
             throw new NotImplementedException();
         }
@@ -66,7 +66,7 @@ namespace LSG.GenericCrud.Repositories
             return _context.Set<T>().Remove(GetById(id)).Entity;
         }
 
-        public Task DeleteAsync(Guid id)
+        public virtual Task<T> DeleteAsync(Guid id)
         {
             throw new NotImplementedException();
         }

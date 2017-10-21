@@ -48,7 +48,7 @@ namespace LSG.GenericCrud.Repositories
         /// <param name="id">The identifier.</param>
         T Delete(Guid id);
 
-        Task DeleteAsync(Guid id);
+        Task<T> DeleteAsync(Guid id);
 
         void SaveChanges();
     }

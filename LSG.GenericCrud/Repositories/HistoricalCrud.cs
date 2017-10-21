@@ -195,7 +195,7 @@ namespace LSG.GenericCrud.Repositories
         /// Deletes the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        public override async Task DeleteAsync(Guid id)
+        public override async Task<T> DeleteAsync(Guid id)
         {
             var entity = await base.GetByIdAsync(id);
 
@@ -212,6 +212,8 @@ namespace LSG.GenericCrud.Repositories
             await base.DeleteAsync(id);
 
             await Context.SaveChangesAsync();
+
+            return null;
         }
 
         /// <summary>
