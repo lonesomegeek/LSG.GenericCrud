@@ -12,57 +12,57 @@ namespace LSG.GenericCrud.Controllers
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="CrudControllerWithoutService{T}" />
-    public class HistoricalCrudAsyncControllerWithoutService<T> : CrudAsyncControllerWithoutService<T> where T : class, IEntity, new()
-    {
-        /// <summary>
-        /// The historical dal
-        /// </summary>
-        private readonly HistoricalCrud<T> _dal;
+    //public class HistoricalCrudAsyncControllerWithoutService<T> : CrudAsyncControllerWithoutService<T> where T : class, IEntity, new()
+    //{
+    //    /// <summary>
+    //    /// The historical dal
+    //    /// </summary>
+    //    private readonly HistoricalCrud<T> _dal;
 
-        /// <inheritdoc />
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:LSG.GenericCrud.Controllers.HistoricalCrudControllerWithoutService`1" /> class.
-        /// </summary>
-        /// <param name="dal">The dal.</param>
-        public HistoricalCrudAsyncControllerWithoutService(HistoricalCrud<T> dal) : base(dal)
-        {
-            _dal = dal;
-        }
+    //    /// <inheritdoc />
+    //    /// <summary>
+    //    /// Initializes a new instance of the <see cref="T:LSG.GenericCrud.Controllers.HistoricalCrudControllerWithoutService`1" /> class.
+    //    /// </summary>
+    //    /// <param name="dal">The dal.</param>
+    //    public HistoricalCrudAsyncControllerWithoutService(HistoricalCrud<T> dal) : base(dal)
+    //    {
+    //        _dal = dal;
+    //    }
 
-        /// <summary>
-        /// Restores the specified entity identifier.
-        /// </summary>
-        /// <param name="entityId">The entity identifier.</param>
-        /// <returns></returns>
-        [HttpPost("{entityId}/restore")]
-        public async Task<IActionResult> Restore(Guid entityId /*, string entityName*/)
-        {
-            try
-            {
-                return Ok(await _dal.RestoreAsync(entityId));
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return NotFound();
-            }
-        }
+    //    /// <summary>
+    //    /// Restores the specified entity identifier.
+    //    /// </summary>
+    //    /// <param name="entityId">The entity identifier.</param>
+    //    /// <returns></returns>
+    //    [HttpPost("{entityId}/restore")]
+    //    public async Task<IActionResult> Restore(Guid entityId /*, string entityName*/)
+    //    {
+    //        try
+    //        {
+    //            return Ok(await _dal.RestoreAsync(entityId));
+    //        }
+    //        catch (EntityNotFoundException ex)
+    //        {
+    //            return NotFound();
+    //        }
+    //    }
 
-        /// <summary>
-        /// Gets the history.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        [HttpGet("{id}/history")]
-        public async Task<IActionResult> GetHistory(Guid id)
-        {
-            try
-            {
-                return Ok(await _dal.GetHistoryAsync(id));
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return NotFound();
-            }
-        }
-    }
+    //    /// <summary>
+    //    /// Gets the history.
+    //    /// </summary>
+    //    /// <param name="id">The identifier.</param>
+    //    /// <returns></returns>
+    //    [HttpGet("{id}/history")]
+    //    public async Task<IActionResult> GetHistory(Guid id)
+    //    {
+    //        try
+    //        {
+    //            return Ok(await _dal.GetHistoryAsync(id));
+    //        }
+    //        catch (EntityNotFoundException ex)
+    //        {
+    //            return NotFound();
+    //        }
+    //    }
+    //}
 }
