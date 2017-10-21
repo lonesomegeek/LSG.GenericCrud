@@ -2,34 +2,22 @@
 using System.Threading.Tasks;
 using LSG.GenericCrud.Exceptions;
 using LSG.GenericCrud.Models;
-using LSG.GenericCrud.Repositories;
+using LSG.GenericCrud.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LSG.GenericCrud.Controllers
 {
     public class CrudAsyncController<T> : Controller where T : class, IEntity, new()
     {
-        /// <summary>
-        /// The _service
-        /// </summary>
-        protected readonly ICrudRepository<T> _dal;
+        private readonly ICrudService<T> _service;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GenericCrudApiController{T, TEntity}"/> class.
-        /// </summary>
-        /// <param name="service">The service.</param>
-        public CrudAsyncController(ICrudRepository<T> dal)
+        public CrudAsyncController(ICrudService<T> service)
         {
-            _dal = dal;
+            _service = service;
         }
 
-        /// <summary>
-        /// Gets all.
-        /// </summary>
-        /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetAll() => Ok(await _dal.GetAllAsync());
-
+        public async Task<IActionResult> GetAll() => Ok(await _service.GetAllAsync());
 
         [Route("{id}")]
         [HttpGet]
@@ -37,33 +25,23 @@ namespace LSG.GenericCrud.Controllers
         {
             try
             {
-                return Ok(await _dal.GetByIdAsync(id));
+                return Ok(await _service.GetByIdAsync(id));
             }
             catch (EntityNotFoundException ex)
             {
                 return NotFound();
             }
         }
-        /// <summary>
-        /// Creates the specified entity.
-        /// </summary>
-        /// <param name="entity">The entity.</param>
-        [HttpPost("")]
-        public async Task<IActionResult> Create([FromBody] T entity) => Ok(await _dal.CreateAsync(entity));
 
-        /// <summary>
-        /// Updates the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <param name="entity">The entity.</param>
-        /// <exception cref="WebRequestMethods.Http.HttpResponseException"></exception>
+        [HttpPost("")]
+        public async Task<IActionResult> Create([FromBody] T entity) => Ok(await _service.CreateAsync(entity));
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] T entity)
         {
             try
             {
-                await _dal.UpdateAsync(id, entity);
-                return Ok();
+                return Ok(await _service.UpdateAsync(id, entity));
             }
             catch (EntityNotFoundException ex)
             {
@@ -71,24 +49,17 @@ namespace LSG.GenericCrud.Controllers
             }
         }
 
-        /// <summary>
-        /// Deletes the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <exception cref="WebRequestMethods.Http.HttpResponseException"></exception>
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             try
             {
-                await _dal.DeleteAsync(id);
-                return Ok();
+                return Ok(await _service.DeleteAsync(id));
             }
             catch (EntityNotFoundException ex)
             {
                 return NotFound();
             }
-
         }
     }
 }

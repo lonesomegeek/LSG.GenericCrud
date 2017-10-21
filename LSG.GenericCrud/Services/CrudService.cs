@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using LSG.GenericCrud.Exceptions;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
@@ -19,6 +20,8 @@ namespace LSG.GenericCrud.Services
         public bool AutoCommit { get; set; }
 
         public IEnumerable<T> GetAll() => _repository.GetAll();
+
+        public async Task<IEnumerable<T>> GetAllAsync() => await _repository.GetAllAsync();
 
         public T GetById(Guid id)
         {
@@ -56,6 +59,27 @@ namespace LSG.GenericCrud.Services
             _repository.Delete(id);
             if (AutoCommit) _repository.SaveChanges();
             return entity;
+        }
+
+        
+        public Task<T> GetByIdAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> CreateAsync(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> UpdateAsync(Guid id, T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> DeleteAsync(Guid id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

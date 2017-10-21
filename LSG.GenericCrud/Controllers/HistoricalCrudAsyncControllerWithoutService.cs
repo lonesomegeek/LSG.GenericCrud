@@ -12,7 +12,7 @@ namespace LSG.GenericCrud.Controllers
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="CrudControllerWithoutService{T}" />
-    public class HistoricalCrudAsyncController<T> : CrudAsyncController<T> where T : class, IEntity, new()
+    public class HistoricalCrudAsyncControllerWithoutService<T> : CrudAsyncControllerWithoutService<T> where T : class, IEntity, new()
     {
         /// <summary>
         /// The historical dal
@@ -24,7 +24,7 @@ namespace LSG.GenericCrud.Controllers
         /// Initializes a new instance of the <see cref="T:LSG.GenericCrud.Controllers.HistoricalCrudControllerWithoutService`1" /> class.
         /// </summary>
         /// <param name="dal">The dal.</param>
-        public HistoricalCrudAsyncController(HistoricalCrud<T> dal) : base(dal)
+        public HistoricalCrudAsyncControllerWithoutService(HistoricalCrud<T> dal) : base(dal)
         {
             _dal = dal;
         }

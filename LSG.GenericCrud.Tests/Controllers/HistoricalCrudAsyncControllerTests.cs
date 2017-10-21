@@ -38,7 +38,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var dalMock = new Mock<HistoricalCrud<TestEntity>>();
             dalMock.Setup(_ => _.RestoreAsync(It.IsAny<Guid>())).ReturnsAsync(_entity);
-            var controller = new HistoricalCrudAsyncController<TestEntity>(dalMock.Object);
+            var controller = new HistoricalCrudAsyncControllerWithoutService<TestEntity>(dalMock.Object);
 
             var actionResult = await controller.Restore(_entity.Id);
 
@@ -51,7 +51,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var dalMock = new Mock<HistoricalCrud<TestEntity>>();
             dalMock.Setup(_ => _.RestoreAsync(It.IsAny<Guid>())).ThrowsAsync(new EntityNotFoundException());
-            var controller = new HistoricalCrudAsyncController<TestEntity>(dalMock.Object);
+            var controller = new HistoricalCrudAsyncControllerWithoutService<TestEntity>(dalMock.Object);
 
             var actionResult = await controller.Restore(_entity.Id);
 
@@ -64,7 +64,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var dalMock = new Mock<HistoricalCrud<TestEntity>>();
             dalMock.Setup(_ => _.GetHistoryAsync(It.IsAny<Guid>())).ReturnsAsync(_events);
-            var controller = new HistoricalCrudAsyncController<TestEntity>(dalMock.Object);
+            var controller = new HistoricalCrudAsyncControllerWithoutService<TestEntity>(dalMock.Object);
 
             var actionResult = await controller.GetHistory(_entity.Id);
 
@@ -77,7 +77,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var dalMock = new Mock<HistoricalCrud<TestEntity>>();
             dalMock.Setup(_ => _.GetHistoryAsync(It.IsAny<Guid>())).ThrowsAsync(new EntityNotFoundException());
-            var controller = new HistoricalCrudAsyncController<TestEntity>(dalMock.Object);
+            var controller = new HistoricalCrudAsyncControllerWithoutService<TestEntity>(dalMock.Object);
 
             var actionResult = await controller.GetHistory(_entity.Id);
 
