@@ -30,9 +30,25 @@ namespace LSG.GenericCrud.Services
             return entity;
         }
 
+        public async Task<T> GetByIdAsync(Guid id)
+        {
+            var entity = await _repository.GetByIdAsync(id);
+            if (entity == null) throw new EntityNotFoundException();
+            return entity;
+        }
+
         public virtual T Create(T entity)
         {
             var createdEntity = _repository.Create(entity);
+            if (AutoCommit) _repository.SaveChanges();
+            return createdEntity;
+        }
+
+
+
+        public async Task<T> CreateAsync(T entity)
+        {
+            var createdEntity = await _repository.CreateAsync(entity);
             if (AutoCommit) _repository.SaveChanges();
             return createdEntity;
         }
@@ -53,6 +69,23 @@ namespace LSG.GenericCrud.Services
             return originalEntity;
         }
 
+
+        public async Task<T> UpdateAsync(Guid id, T entity)
+        {
+            var originalEntity = await GetByIdAsync(id);
+            foreach (var prop in entity.GetType().GetProperties())
+            {
+                if (prop.Name != "Id")
+                {
+                    var originalProperty = originalEntity.GetType().GetProperty(prop.Name);
+                    var value = prop.GetValue(entity, null);
+                    if (value != null) originalProperty.SetValue(originalEntity, value);
+                }
+            }
+            if (AutoCommit) _repository.SaveChanges();
+            return originalEntity;
+        }
+
         public virtual T Delete(Guid id)
         {
             var entity = GetById(id);
@@ -60,26 +93,13 @@ namespace LSG.GenericCrud.Services
             if (AutoCommit) _repository.SaveChanges();
             return entity;
         }
-
         
-        public Task<T> GetByIdAsync(Guid id)
+        public async Task<T> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<T> CreateAsync(T entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<T> UpdateAsync(Guid id, T entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<T> DeleteAsync(Guid id)
-        {
-            throw new NotImplementedException();
+            var entity = await GetByIdAsync(id);
+            await _repository.DeleteAsync(id);
+            if (AutoCommit) _repository.SaveChanges();
+            return entity;
         }
     }
 }
