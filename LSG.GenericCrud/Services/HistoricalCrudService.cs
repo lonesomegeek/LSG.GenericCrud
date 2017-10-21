@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using LSG.GenericCrud.Exceptions;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
@@ -104,6 +105,14 @@ namespace LSG.GenericCrud.Services
             return events;
         }
 
+        public Task<T> RestoreAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
 
+        public Task<IEnumerable<IEntity>> GetHistoryAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
