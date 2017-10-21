@@ -38,22 +38,21 @@ namespace LSG.GenericCrud.Services
             _eventRepository.Create(historicalEvent);
             _entityRepository.SaveChanges();
             _eventRepository.SaveChanges();
-            // TODO: Do I need to call the other repo for both repositories, or do I need a UoW
+            // TODO: Do I need to call the other repo for both repositories, or do I need a UoW (bugfix created)
             return createdEntity;
         }
 
         public override T Update(Guid id, T entity)
         {
-            var modifiedEntity = base.Update(id, entity);
-
-            // create historical change
+            var originalEntity = base.GetById(id);
             var historicalEvent = new HistoricalEvent
             {
                 Action = HistoricalActions.Update.ToString(),
-                Changeset = modifiedEntity.DetailedCompare(entity),
-                EntityId = modifiedEntity.Id,
+                Changeset = originalEntity.DetailedCompare(entity),
+                EntityId = originalEntity.Id,
                 EntityName = entity.GetType().Name
             };
+            var modifiedEntity = base.Update(id, entity);
 
             _eventRepository.Create(historicalEvent);
             _entityRepository.SaveChanges();
