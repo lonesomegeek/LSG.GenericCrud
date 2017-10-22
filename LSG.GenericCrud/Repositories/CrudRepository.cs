@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LSG.GenericCrud.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Extensions.Internal;
 
 namespace LSG.GenericCrud.Repositories
 {
@@ -26,9 +28,9 @@ namespace LSG.GenericCrud.Repositories
             return _context.Set<T>();
         }
 
-        public virtual Task<IEnumerable<T>> GetAllAsync()
+        public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Set<T>().ToListAsync();
         }
 
         public virtual T GetById(Guid id)
@@ -36,9 +38,9 @@ namespace LSG.GenericCrud.Repositories
             return _context.Set<T>().SingleOrDefault(_ => _.Id == id);
         }
 
-        public virtual Task<T> GetByIdAsync(Guid id)
+        public virtual async Task<T> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _context.Set<T>().SingleOrDefaultAsync(_ => _.Id == id);
         }
 
         public virtual T Create(T entity)
@@ -46,9 +48,10 @@ namespace LSG.GenericCrud.Repositories
             return _context.Set<T>().Add(entity).Entity;
         }
 
-        public virtual Task<T> CreateAsync(T entity)
+        public virtual async Task<T> CreateAsync(T entity)
         {
-            throw new NotImplementedException();
+            var result = await _context.Set<T>().AddAsync(entity);
+            return result.Entity;
         }
 
         public T Update(Guid id, T entity)
@@ -66,9 +69,10 @@ namespace LSG.GenericCrud.Repositories
             return _context.Set<T>().Remove(GetById(id)).Entity;
         }
 
-        public virtual Task<T> DeleteAsync(Guid id)
+        public virtual async Task<T> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var entity = await GetByIdAsync(id);
+            return _context.Set<T>().Remove(entity).Entity;
         }
 
         public virtual void SaveChanges()
