@@ -35,15 +35,14 @@ namespace LSG.GenericCrud.Dto.Services
         {
             return _mapper.Map<TDto>(base.GetById(id));
         }
-
-
+        
         public new async Task<TDto> GetByIdAsync(Guid id)
         {
             var result = await base.GetByIdAsync(id);
             return _mapper.Map<TDto>(result);
         }
 
-        public virtual TDto Create(TDto dto)
+        public TDto Create(TDto dto)
         {
             var entity = _mapper.Map<TEntity>(dto);
             var createdEntity = base.Create(entity);

@@ -126,7 +126,7 @@ namespace LSG.GenericCrud.Tests.Services
             repositoryMock.Setup(_ => _.Create(It.IsAny<TestEntity>())).Returns(_entity);
             var service = new CrudService<TestDto, TestEntity>(repositoryMock.Object, _mapper);
 
-            var result = service.Create(_entity);
+            var result = service.Create(_dto);
 
             Assert.Equal(_entity.Id, result.Id);
             repositoryMock.Verify(_ => _.Create(It.IsAny<TestEntity>()), Times.Once);
@@ -140,7 +140,7 @@ namespace LSG.GenericCrud.Tests.Services
             repositoryMock.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
             var service = new CrudService<TestDto, TestEntity>(repositoryMock.Object, _mapper);
 
-            var result = await service.CreateAsync(_entity);
+            var result = await service.CreateAsync(_dto);
 
             Assert.Equal(_entity.Id, result.Id);
             repositoryMock.Verify(_ => _.CreateAsync(It.IsAny<TestEntity>()), Times.Once);
@@ -154,7 +154,7 @@ namespace LSG.GenericCrud.Tests.Services
             repositoryMock.Setup(_ => _.GetById(_entity.Id)).Returns(_entity);
             var service = new CrudService<TestDto, TestEntity>(repositoryMock.Object, _mapper);
 
-            var result = service.Update(_entity.Id, _entity);
+            var result = service.Update(_entity.Id, _dto);
 
             Assert.Equal(_entity.Id, result.Id);
             repositoryMock.Verify(_ => _.GetById(It.IsAny<Guid>()), Times.Once());
@@ -168,7 +168,7 @@ namespace LSG.GenericCrud.Tests.Services
             repositoryMock.Setup(_ => _.GetByIdAsync(_entity.Id)).ReturnsAsync(_entity);
             var service = new CrudService<TestDto, TestEntity>(repositoryMock.Object, _mapper);
 
-            var result = await service.UpdateAsync(_entity.Id, _entity);
+            var result = await service.UpdateAsync(_entity.Id, _dto);
 
             Assert.Equal(_entity.Id, result.Id);
             repositoryMock.Verify(_ => _.GetByIdAsync(It.IsAny<Guid>()), Times.Once());
