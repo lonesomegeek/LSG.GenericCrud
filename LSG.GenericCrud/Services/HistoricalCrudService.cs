@@ -24,7 +24,7 @@ namespace LSG.GenericCrud.Services
             AutoCommit = false;
         }
 
-        public override T Create(T entity)
+        public new T Create(T entity)
         {
             var createdEntity = base.Create(entity);
 
@@ -43,7 +43,7 @@ namespace LSG.GenericCrud.Services
             return createdEntity;
         }
 
-        public override async Task<T> CreateAsync(T entity)
+        public new async Task<T> CreateAsync(T entity)
         {
             var createdEntity = await base.CreateAsync(entity);
 
@@ -62,7 +62,7 @@ namespace LSG.GenericCrud.Services
             return createdEntity;
         }
 
-        public override T Update(Guid id, T entity)
+        public new T Update(Guid id, T entity)
         {
             var originalEntity = base.GetById(id);
             var historicalEvent = new HistoricalEvent
@@ -81,7 +81,7 @@ namespace LSG.GenericCrud.Services
             return modifiedEntity;
         }
 
-        public override async Task<T> UpdateAsync(Guid id, T entity)
+        public new async Task<T> UpdateAsync(Guid id, T entity)
         {
             var originalEntity = await base.GetByIdAsync(id);
             var historicalEvent = new HistoricalEvent
@@ -100,7 +100,7 @@ namespace LSG.GenericCrud.Services
             return modifiedEntity;
         }
 
-        public override T Delete(Guid id)
+        public new T Delete(Guid id)
         {
             var entity = base.Delete(id);
 
@@ -119,7 +119,7 @@ namespace LSG.GenericCrud.Services
             return entity;
         }
 
-        public override async Task<T> DeleteAsync(Guid id)
+        public new async Task<T> DeleteAsync(Guid id)
         {
             var entity = await base.DeleteAsync(id);
 

@@ -19,6 +19,5 @@ namespace LSG.GenericCrud.Services
         Task<T> CreateAsync(T entity);
         Task<T> UpdateAsync(Guid id, T entity);
         Task<T> DeleteAsync(Guid id);
-
     }
 }

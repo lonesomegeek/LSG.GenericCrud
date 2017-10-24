@@ -37,21 +37,21 @@ namespace LSG.GenericCrud.Services
             return entity;
         }
 
-        public virtual T Create(T entity)
+        public T Create(T entity)
         {
             var createdEntity = _repository.Create(entity);
             if (AutoCommit) _repository.SaveChanges();
             return createdEntity;
         }
 
-        public virtual async Task<T> CreateAsync(T entity)
+        public async Task<T> CreateAsync(T entity)
         {
             var createdEntity = await _repository.CreateAsync(entity);
             if (AutoCommit) _repository.SaveChanges();
             return createdEntity;
         }
 
-        public virtual T Update(Guid id, T entity)
+        public T Update(Guid id, T entity)
         {
             var originalEntity = GetById(id);
             foreach (var prop in entity.GetType().GetProperties())
@@ -68,7 +68,7 @@ namespace LSG.GenericCrud.Services
         }
 
 
-        public virtual async Task<T> UpdateAsync(Guid id, T entity)
+        public async Task<T> UpdateAsync(Guid id, T entity)
         {
             var originalEntity = await GetByIdAsync(id);
             foreach (var prop in entity.GetType().GetProperties())
@@ -84,7 +84,7 @@ namespace LSG.GenericCrud.Services
             return originalEntity;
         }
 
-        public virtual T Delete(Guid id)
+        public T Delete(Guid id)
         {
             var entity = GetById(id);
             _repository.Delete(id);
@@ -92,7 +92,7 @@ namespace LSG.GenericCrud.Services
             return entity;
         }
         
-        public virtual async Task<T> DeleteAsync(Guid id)
+        public async Task<T> DeleteAsync(Guid id)
         {
             var entity = await GetByIdAsync(id);
             await _repository.DeleteAsync(id);
