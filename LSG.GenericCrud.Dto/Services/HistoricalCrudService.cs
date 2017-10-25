@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -20,64 +21,68 @@ namespace LSG.GenericCrud.Dto.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<TDto> GetAll()
+        public IEnumerable<TDto> GetAll() => base.GetAll().Select(_ => _mapper.Map<TDto>(_));
+
+        public TDto GetById(Guid id) => _mapper.Map<TDto>(base.GetById(id));
+
+        public TDto Create(TDto dto)
         {
-            throw new NotImplementedException();
+            var createdEntity = base.Create(_mapper.Map<TEntity>(dto));
+            return _mapper.Map<TDto>(createdEntity);
         }
 
-        public TDto GetById(Guid id)
+        public TDto Update(Guid id, TDto dto)
         {
-            throw new NotImplementedException();
-        }
-
-        public TDto Create(TDto entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TDto Update(Guid id, TDto entity)
-        {
-            throw new NotImplementedException();
+            var updatedEntity = base.Update(id, _mapper.Map<TEntity>(dto));
+            return _mapper.Map<TDto>(updatedEntity);
         }
 
         public TDto Delete(Guid id)
         {
-            throw new NotImplementedException();
+            var deletedEntity = base.Delete(id);
+            return _mapper.Map<TDto>(deletedEntity);
         }
 
-        public Task<IEnumerable<TDto>> GetAllAsync()
+        public async Task<IEnumerable<TDto>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var entities = await base.GetAllAsync();
+            return entities.Select(_ => _mapper.Map<TDto>(_));
         }
 
-        public Task<TDto> GetByIdAsync(Guid id)
+        public async Task<TDto> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var entity = await base.GetByIdAsync(id);
+            return _mapper.Map<TDto>(entity);
         }
 
-        public Task<TDto> CreateAsync(TDto entity)
+        public async Task<TDto> CreateAsync(TDto dto)
         {
-            throw new NotImplementedException();
+            var createdEntity = await base.CreateAsync(_mapper.Map<TEntity>(dto));
+            return _mapper.Map<TDto>(createdEntity);
         }
 
-        public Task<TDto> UpdateAsync(Guid id, TDto entity)
+        public async Task<TDto> UpdateAsync(Guid id, TDto dto)
         {
-            throw new NotImplementedException();
+            var updatedEntity = await base.UpdateAsync(id, _mapper.Map<TEntity>(dto));
+            return _mapper.Map<TDto>(updatedEntity);
         }
 
-        public Task<TDto> DeleteAsync(Guid id)
+        public async Task<TDto> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var deletedEntity = await base.DeleteAsync(id);
+            return _mapper.Map<TDto>(deletedEntity);
         }
 
         public TDto Restore(Guid id)
         {
-            throw new NotImplementedException();
+            var restoredEntity = base.Restore(id);
+            return _mapper.Map<TDto>(restoredEntity);
         }
 
-        public Task<TDto> RestoreAsync(Guid id)
+        public async Task<TDto> RestoreAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var restoredEntity = await base.RestoreAsync(id);
+            return _mapper.Map<TDto>(restoredEntity);
         }
     }
 }
