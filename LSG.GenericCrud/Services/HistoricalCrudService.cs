@@ -12,11 +12,28 @@ using Newtonsoft.Json;
 
 namespace LSG.GenericCrud.Services
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <seealso cref="LSG.GenericCrud.Services.CrudService{T}" />
+    /// <seealso cref="LSG.GenericCrud.Services.IHistoricalCrudService{T}" />
     public class HistoricalCrudService<T> : CrudService<T>, IHistoricalCrudService<T> where T : IEntity, new()
     {
+        /// <summary>
+        /// The event repository
+        /// </summary>
         private readonly ICrudRepository<HistoricalEvent> _eventRepository;
+        /// <summary>
+        /// The entity repository
+        /// </summary>
         private readonly ICrudRepository<T> _entityRepository;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HistoricalCrudService{T}"/> class.
+        /// </summary>
+        /// <param name="repository">The repository.</param>
+        /// <param name="eventRepository">The event repository.</param>
         public HistoricalCrudService(ICrudRepository<T> repository, ICrudRepository<HistoricalEvent> eventRepository) : base(repository)
         {
             _entityRepository = repository;
@@ -24,6 +41,11 @@ namespace LSG.GenericCrud.Services
             AutoCommit = false;
         }
 
+        /// <summary>
+        /// Creates the specified entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns></returns>
         public new T Create(T entity)
         {
             var createdEntity = base.Create(entity);
@@ -43,6 +65,11 @@ namespace LSG.GenericCrud.Services
             return createdEntity;
         }
 
+        /// <summary>
+        /// Creates the asynchronous.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns></returns>
         public new async Task<T> CreateAsync(T entity)
         {
             var createdEntity = await base.CreateAsync(entity);
@@ -62,6 +89,12 @@ namespace LSG.GenericCrud.Services
             return createdEntity;
         }
 
+        /// <summary>
+        /// Updates the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="entity">The entity.</param>
+        /// <returns></returns>
         public new T Update(Guid id, T entity)
         {
             var originalEntity = base.GetById(id);
@@ -81,6 +114,12 @@ namespace LSG.GenericCrud.Services
             return modifiedEntity;
         }
 
+        /// <summary>
+        /// Updates the asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="entity">The entity.</param>
+        /// <returns></returns>
         public new async Task<T> UpdateAsync(Guid id, T entity)
         {
             var originalEntity = await base.GetByIdAsync(id);
@@ -100,6 +139,11 @@ namespace LSG.GenericCrud.Services
             return modifiedEntity;
         }
 
+        /// <summary>
+        /// Deletes the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         public new T Delete(Guid id)
         {
             var entity = base.Delete(id);
@@ -119,6 +163,11 @@ namespace LSG.GenericCrud.Services
             return entity;
         }
 
+        /// <summary>
+        /// Deletes the asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         public new async Task<T> DeleteAsync(Guid id)
         {
             var entity = await base.DeleteAsync(id);
@@ -138,6 +187,12 @@ namespace LSG.GenericCrud.Services
             return entity;
         }
 
+        /// <summary>
+        /// Restores the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
         public T Restore(Guid id)
         {
             var entity = _eventRepository
@@ -153,6 +208,12 @@ namespace LSG.GenericCrud.Services
             return createdObject;
         }
 
+        /// <summary>
+        /// Restores the asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
         public async Task<T> RestoreAsync(Guid id)
         {
             var entity = _eventRepository
@@ -169,6 +230,12 @@ namespace LSG.GenericCrud.Services
             return createdObject;
         }
 
+        /// <summary>
+        /// Gets the history.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
         public IEnumerable<IEntity> GetHistory(Guid id)
         {
             var events = _eventRepository
@@ -178,6 +245,12 @@ namespace LSG.GenericCrud.Services
             return events;
         }
 
+        /// <summary>
+        /// Gets the history asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
         public async Task<IEnumerable<IEntity>> GetHistoryAsync(Guid id)
         {
             var events =  await _eventRepository.GetAllAsync();

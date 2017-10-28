@@ -10,11 +10,19 @@ namespace LSG.GenericCrud.Extensions.DataFillers
     /// <summary>
     /// 
     /// </summary>
+    /// <seealso cref="LSG.GenericCrud.DataFillers.IEntityDataFiller{LSG.GenericCrud.Models.BaseEntity}" />
     /// <seealso cref="BaseEntity" />
     public class ByDataFiller : IEntityDataFiller<BaseEntity>
     {
+        /// <summary>
+        /// The user information repository
+        /// </summary>
         private readonly IUserInfoRepository _userInfoRepository;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ByDataFiller"/> class.
+        /// </summary>
+        /// <param name="userInfoRepository">The user information repository.</param>
         public ByDataFiller(IUserInfoRepository userInfoRepository)
         {
             _userInfoRepository = userInfoRepository;
@@ -45,6 +53,12 @@ namespace LSG.GenericCrud.Extensions.DataFillers
             return entity;
         }
 
+        /// <summary>
+        /// Fills the specified entry async.
+        /// </summary>
+        /// <param name="entry">The entry.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public Task<BaseEntity> FillAsync(EntityEntry entry)
         {
             throw new NotImplementedException();

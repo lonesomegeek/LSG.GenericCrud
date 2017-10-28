@@ -29,7 +29,7 @@ namespace LSG.GenericCrud.Repositories
         public HistoricalCrud() { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HistoricalCrud{T}"/> class.
+        /// Initializes a new instance of the <see cref="HistoricalCrud{T}" /> class.
         /// </summary>
         /// <param name="context">The context.</param>
         public HistoricalCrud(IDbContext context) : base(context)
@@ -65,6 +65,11 @@ namespace LSG.GenericCrud.Repositories
             return entity;
         }
 
+        /// <summary>
+        /// Creates the asynchronous.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns></returns>
         public override async Task<T> CreateAsync(T entity)
         {
             // check for uninitialized id
@@ -92,6 +97,7 @@ namespace LSG.GenericCrud.Repositories
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="entity">The entity.</param>
+        /// <returns></returns>
         public override T Update(Guid id, T entity)
         {
             var originalEntity = base.GetById(id);
@@ -130,6 +136,12 @@ namespace LSG.GenericCrud.Repositories
             return originalEntity;
         }
 
+        /// <summary>
+        /// Updates the asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="entity">The entity.</param>
+        /// <returns></returns>
         public override async Task UpdateAsync(Guid id, T entity)
         {
             var originalEntity = await base.GetByIdAsync(id);
@@ -170,6 +182,7 @@ namespace LSG.GenericCrud.Repositories
         /// Deletes the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         public override T Delete(Guid id)
         {
             var entity = base.GetById(id);
@@ -195,6 +208,7 @@ namespace LSG.GenericCrud.Repositories
         /// Deletes the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         public override async Task<T> DeleteAsync(Guid id)
         {
             var entity = await base.GetByIdAsync(id);
@@ -237,6 +251,12 @@ namespace LSG.GenericCrud.Repositories
             return createdObject;
         }
 
+        /// <summary>
+        /// Restores the asynchronous.
+        /// </summary>
+        /// <param name="entityId">The entity identifier.</param>
+        /// <returns></returns>
+        /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
         public virtual async Task<object> RestoreAsync(Guid entityId)
         {
             var originalEntity = _dal

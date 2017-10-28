@@ -18,7 +18,7 @@ namespace LSG.GenericCrud.Extensions.Middlewares
         private readonly RequestDelegate _next;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuthorizationMiddleware"/> class.
+        /// Initializes a new instance of the <see cref="AuthorizationMiddleware" /> class.
         /// </summary>
         /// <param name="next">The next.</param>
         public AuthorizationMiddleware(RequestDelegate next)

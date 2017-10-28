@@ -14,6 +14,7 @@ namespace LSG.GenericCrud.Repositories
     /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    /// <seealso cref="LSG.GenericCrud.Repositories.ICrudRepository{T}" />
     /// <seealso cref="ICrudRepository{T}" />
     public class Crud<T> : ICrudRepository<T>
         where T : class, IEntity, new()
@@ -37,7 +38,7 @@ namespace LSG.GenericCrud.Repositories
         public Crud() { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Crud{T}"/> class.
+        /// Initializes a new instance of the <see cref="Crud{T}" /> class.
         /// </summary>
         /// <param name="context">The context.</param>
         public Crud(IDbContext context)
@@ -96,6 +97,11 @@ namespace LSG.GenericCrud.Repositories
             return returnEntity;
         }
 
+        /// <summary>
+        /// Creates the asynchronous.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns></returns>
         public virtual async Task<T> CreateAsync(T entity)
         {
             var returnEntity = await Context.Set<T>().AddAsync(entity);
@@ -108,6 +114,7 @@ namespace LSG.GenericCrud.Repositories
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="entity">The entity.</param>
+        /// <returns></returns>
         public virtual T Update(Guid id, T entity)
         {
             var originalEntity = GetById(id);
@@ -123,6 +130,12 @@ namespace LSG.GenericCrud.Repositories
             if (AutoCommit) Context.SaveChanges();
             return originalEntity;
         }
+        /// <summary>
+        /// Updates the asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="entity">The entity.</param>
+        /// <returns></returns>
         public virtual async Task UpdateAsync(Guid id, T entity)
         {
             var originalEntity = await GetByIdAsync(id);
@@ -142,6 +155,7 @@ namespace LSG.GenericCrud.Repositories
         /// Deletes the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         public virtual T Delete(Guid id)
         {
             Context.Set<T>().Remove(GetById(id));
@@ -149,6 +163,11 @@ namespace LSG.GenericCrud.Repositories
             return null;
         }
 
+        /// <summary>
+        /// Deletes the asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         public virtual async Task<T> DeleteAsync(Guid id)
         {
             var entity = await GetByIdAsync(id);
@@ -157,6 +176,9 @@ namespace LSG.GenericCrud.Repositories
             return entity;
         }
 
+        /// <summary>
+        /// Saves the changes.
+        /// </summary>
         public void SaveChanges()
         {
             Context.SaveChanges();

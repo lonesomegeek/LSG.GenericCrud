@@ -5,6 +5,10 @@
     /// </summary>
     public interface IUserInfoRepository
     {
+        /// <summary>
+        /// Gets the user information.
+        /// </summary>
+        /// <returns></returns>
         string GetUserInfo();
     }
 }
