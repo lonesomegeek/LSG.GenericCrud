@@ -6,8 +6,8 @@
     <Authors>lonesomegeek</Authors>
     <Company />
     <PackageTags>generic crud webapi aspnetcore</PackageTags>
-    <AssemblyVersion>1.4.0.0</AssemblyVersion>
-    <FileVersion>1.4.0.0</FileVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
     <Description>This library provides a set of tools to enable CRUD rapidly on any aspnetcore Web APIs.</Description>
     <Version>2.0.0-alpha</Version>
     <CodeAnalysisRuleSet>LSG.GenericCrud.ruleset</CodeAnalysisRuleSet>
@@ -17,7 +17,5 @@
     <PackageReference Include="Microsoft.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.0" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="6.4.1.3596" />
-    <PackageReference Include="xunit" Version="2.3.0" />
   </ItemGroup>
 </Project>
