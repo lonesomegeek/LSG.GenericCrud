@@ -91,16 +91,16 @@ Here is a CrudController\<T> (CrudController\<TEntity>)
 [Route("api/[controller]")]
 public class AccountsController : CrudController<AccountModel>
 {
-    public AccountsController(Crud<AccountModel> dal) : base(dal) { }
+    public AccountsController(ICrudService<AccountModel> service) : base(service)
 }
 ```
 
 Here is a controller ready for DTO mapping (CrudController\<TDto, TEntity>)
 ```csharp
 [Route("api/[controller]")]
-public class AccountsController : CrudController<AccountDto, Account>
+public class AccountsController : CrudController<AccountDto>
 {
-    public AccountsController(Crud<Account> dal, IMapper mapper) : base(dal, mapper) { }
+    public AccountsControllerCrudService<AccountDto, AccountModel> service) : base(service)
 }
 ```
 
