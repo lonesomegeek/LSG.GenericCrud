@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LSG.GenericCrud.Models;
 
 namespace LSG.GenericCrud.Repositories
 {
@@ -8,45 +9,46 @@ namespace LSG.GenericCrud.Repositories
     /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface ICrudRepository<T>
+    public interface ICrudRepository
     {
         /// <summary>
         /// Gets all.
         /// </summary>
         /// <returns></returns>
-        IEnumerable<T> GetAll();
+        IEnumerable<T> GetAll<T>() where T : class, IEntity, new();
 
         /// <summary>
         /// Gets all asynchronous.
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> GetAllAsync<T>() where T : class, IEntity, new();
 
         /// <summary>
         /// Gets the by identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        T GetById(Guid id);
+        T GetById<T>(Guid id) where T : class, IEntity, new();
+
         /// <summary>
         /// Gets the by identifier asynchronous.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        Task<T> GetByIdAsync(Guid id);
+        Task<T> GetByIdAsync<T>(Guid id) where T : class, IEntity, new();
 
         /// <summary>
         /// Creates the specified entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        T Create(T entity);
+        T Create<T>(T entity) where T : class, IEntity, new();
         /// <summary>
         /// Creates the asynchronous.
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        Task<T> CreateAsync(T entity);
+        Task<T> CreateAsync<T>(T entity) where T : class, IEntity, new();
 
         /// <summary>
         /// Updates the specified identifier.
@@ -54,7 +56,7 @@ namespace LSG.GenericCrud.Repositories
         /// <param name="id">The identifier.</param>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        T Update(Guid id, T entity);
+        T Update<T>(Guid id, T entity) where T : class, IEntity, new();
 
         /// <summary>
         /// Updates the asynchronous.
@@ -62,20 +64,20 @@ namespace LSG.GenericCrud.Repositories
         /// <param name="id">The identifier.</param>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        Task UpdateAsync(Guid id, T entity);
+        Task UpdateAsync<T>(Guid id, T entity) where T : class, IEntity, new();
         /// <summary>
         /// Deletes the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        T Delete(Guid id);
+        T Delete<T>(Guid id) where T : class, IEntity, new();
 
         /// <summary>
         /// Deletes the asynchronous.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        Task<T> DeleteAsync(Guid id);
+        Task<T> DeleteAsync<T>(Guid id) where T : class, IEntity, new();
 
         /// <summary>
         /// Saves the changes.

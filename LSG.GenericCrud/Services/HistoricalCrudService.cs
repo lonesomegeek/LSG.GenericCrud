@@ -18,26 +18,26 @@ namespace LSG.GenericCrud.Services
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="LSG.GenericCrud.Services.CrudService{T}" />
     /// <seealso cref="LSG.GenericCrud.Services.IHistoricalCrudService{T}" />
-    public class HistoricalCrudService<T> : CrudService<T>, IHistoricalCrudService<T> where T : IEntity, new()
+    public class HistoricalCrudService<T> : CrudService<T>, IHistoricalCrudService<T> where T : class, IEntity, new()
     {
+        ///// <summary>
+        ///// The event repository
+        ///// </summary>
+        //private readonly ICrudRepository<HistoricalEvent> _eventRepository;
+        
         /// <summary>
-        /// The event repository
+        /// The repository
         /// </summary>
-        private readonly ICrudRepository<HistoricalEvent> _eventRepository;
-        /// <summary>
-        /// The entity repository
-        /// </summary>
-        private readonly ICrudRepository<T> _entityRepository;
+        private readonly ICrudRepository _repository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HistoricalCrudService{T}"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="eventRepository">The event repository.</param>
-        public HistoricalCrudService(ICrudRepository<T> repository, ICrudRepository<HistoricalEvent> eventRepository) : base(repository)
+        public HistoricalCrudService(ICrudRepository repository) : base(repository)
         {
-            _entityRepository = repository;
-            _eventRepository = eventRepository;
+            _repository = repository;
             AutoCommit = false;
         }
 
@@ -58,9 +58,8 @@ namespace LSG.GenericCrud.Services
                 EntityName = entity.GetType().Name
             };
 
-            _eventRepository.Create(historicalEvent);
-            _entityRepository.SaveChanges();
-            _eventRepository.SaveChanges();
+            _repository.Create(historicalEvent);
+            _repository.SaveChanges();
             // TODO: Do I need to call the other repo for both repositories, or do I need a UoW (bugfix created)
             return createdEntity;
         }
@@ -82,9 +81,8 @@ namespace LSG.GenericCrud.Services
                 EntityName = entity.GetType().Name
             };
 
-            await _eventRepository.CreateAsync(historicalEvent);
-            _entityRepository.SaveChanges();
-            _eventRepository.SaveChanges();
+            await _repository.CreateAsync(historicalEvent);
+            _repository.SaveChanges();
             // TODO: Do I need to call the other repo for both repositories, or do I need a UoW (bugfix created)
             return createdEntity;
         }
@@ -107,9 +105,8 @@ namespace LSG.GenericCrud.Services
             };
             var modifiedEntity = base.Update(id, entity);
 
-            _eventRepository.Create(historicalEvent);
-            _entityRepository.SaveChanges();
-            _eventRepository.SaveChanges();
+            _repository.Create(historicalEvent);
+            _repository.SaveChanges();
 
             return modifiedEntity;
         }
@@ -132,9 +129,8 @@ namespace LSG.GenericCrud.Services
             };
             var modifiedEntity = await base.UpdateAsync(id, entity);
 
-            await _eventRepository.CreateAsync(historicalEvent);
-            _entityRepository.SaveChanges();
-            _eventRepository.SaveChanges();
+            await _repository.CreateAsync(historicalEvent);
+            _repository.SaveChanges();
 
             return modifiedEntity;
         }
@@ -156,9 +152,8 @@ namespace LSG.GenericCrud.Services
                 EntityId = entity.Id,
                 EntityName = entity.GetType().Name
             };
-            _eventRepository.Create(historicalEvent);
-            _entityRepository.SaveChanges();
-            _eventRepository.SaveChanges();
+            _repository.Create(historicalEvent);
+            _repository.SaveChanges();
 
             return entity;
         }
@@ -180,9 +175,8 @@ namespace LSG.GenericCrud.Services
                 EntityId = entity.Id,
                 EntityName = entity.GetType().Name
             };
-            await _eventRepository.CreateAsync(historicalEvent);
-            _entityRepository.SaveChanges();
-            _eventRepository.SaveChanges();
+            await _repository.CreateAsync(historicalEvent);
+            _repository.SaveChanges();
 
             return entity;
         }
@@ -195,8 +189,8 @@ namespace LSG.GenericCrud.Services
         /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
         public T Restore(Guid id)
         {
-            var entity = _eventRepository
-                .GetAll()
+            var entity = _repository
+                .GetAll<HistoricalEvent>()
                 .SingleOrDefault(_ =>
                     _.EntityId == id &&
                     _.Action == HistoricalActions.Delete.ToString());
@@ -216,8 +210,8 @@ namespace LSG.GenericCrud.Services
         /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
         public async Task<T> RestoreAsync(Guid id)
         {
-            var entity = _eventRepository
-                .GetAllAsync()
+            var entity = _repository
+                .GetAllAsync<HistoricalEvent>()
                 .Result
                 .SingleOrDefault(_ =>
                     _.EntityId == id &&
@@ -238,8 +232,8 @@ namespace LSG.GenericCrud.Services
         /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
         public IEnumerable<IEntity> GetHistory(Guid id)
         {
-            var events = _eventRepository
-                .GetAll()
+            var events = _repository
+                .GetAll<HistoricalEvent>()
                 .Where(_ => _.EntityId == id).ToList();
             if (!events.Any()) throw new EntityNotFoundException();
             return events;
@@ -253,7 +247,7 @@ namespace LSG.GenericCrud.Services
         /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
         public async Task<IEnumerable<IEntity>> GetHistoryAsync(Guid id)
         {
-            var events =  await _eventRepository.GetAllAsync();
+            var events =  await _repository.GetAllAsync<HistoricalEvent>();
             var filteredEvents = events
                 .Where(_ => _.EntityId == id)
                 .ToList();

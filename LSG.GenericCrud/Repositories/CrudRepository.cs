@@ -14,8 +14,8 @@ namespace LSG.GenericCrud.Repositories
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="LSG.GenericCrud.Repositories.ICrudRepository{T}" />
-    public class CrudRepository<T> : ICrudRepository<T>
-        where T : class, IEntity, new()
+    public class CrudRepository : ICrudRepository
+       
     {
         /// <summary>
         /// The context
@@ -42,7 +42,7 @@ namespace LSG.GenericCrud.Repositories
         /// Gets all.
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerable<T> GetAll()
+        public virtual IEnumerable<T> GetAll<T>() where T : class, IEntity, new()
         {
             return _context.Set<T>();
         }
@@ -51,7 +51,7 @@ namespace LSG.GenericCrud.Repositories
         /// Gets all asynchronous.
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<IEnumerable<T>> GetAllAsync()
+        public virtual async Task<IEnumerable<T>> GetAllAsync<T>() where T : class, IEntity, new()
         {
             return await _context.Set<T>().ToListAsync();
         }
@@ -61,7 +61,7 @@ namespace LSG.GenericCrud.Repositories
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public virtual T GetById(Guid id)
+        public virtual T GetById<T>(Guid id) where T : class, IEntity, new()
         {
             return _context.Set<T>().SingleOrDefault(_ => _.Id == id);
         }
@@ -71,7 +71,7 @@ namespace LSG.GenericCrud.Repositories
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public virtual async Task<T> GetByIdAsync(Guid id)
+        public virtual async Task<T> GetByIdAsync<T>(Guid id) where T : class, IEntity, new()
         {
             return await _context.Set<T>().SingleOrDefaultAsync(_ => _.Id == id);
         }
@@ -81,7 +81,7 @@ namespace LSG.GenericCrud.Repositories
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        public virtual T Create(T entity)
+        public virtual T Create<T>(T entity) where T : class, IEntity, new()
         {
             return _context.Set<T>().Add(entity).Entity;
         }
@@ -91,7 +91,7 @@ namespace LSG.GenericCrud.Repositories
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        public virtual async Task<T> CreateAsync(T entity)
+        public virtual async Task<T> CreateAsync<T>(T entity) where T : class, IEntity, new()
         {
             var result = await _context.Set<T>().AddAsync(entity);
             return result.Entity;
@@ -104,7 +104,7 @@ namespace LSG.GenericCrud.Repositories
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public T Update(Guid id, T entity)
+        public T Update<T>(Guid id, T entity) where T : class, IEntity, new()
         {
             throw new NotImplementedException();
         }
@@ -116,7 +116,7 @@ namespace LSG.GenericCrud.Repositories
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task UpdateAsync(Guid id, T entity)
+        public Task UpdateAsync<T>(Guid id, T entity) where T : class, IEntity, new()
         {
             throw new NotImplementedException();
         }
@@ -126,9 +126,9 @@ namespace LSG.GenericCrud.Repositories
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public virtual T Delete(Guid id)
+        public virtual T Delete<T>(Guid id) where T : class, IEntity, new()
         {
-            return _context.Set<T>().Remove(GetById(id)).Entity;
+            return _context.Set<T>().Remove(GetById<T>(id)).Entity;
         }
 
         /// <summary>
@@ -136,9 +136,9 @@ namespace LSG.GenericCrud.Repositories
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public virtual async Task<T> DeleteAsync(Guid id)
+        public virtual async Task<T> DeleteAsync<T>(Guid id) where T : class, IEntity, new()
         {
-            var entity = await GetByIdAsync(id);
+            var entity = await GetByIdAsync<T>(id);
             return _context.Set<T>().Remove(entity).Entity;
         }
 

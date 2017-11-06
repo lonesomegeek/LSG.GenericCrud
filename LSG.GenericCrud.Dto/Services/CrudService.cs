@@ -19,7 +19,7 @@ namespace LSG.GenericCrud.Dto.Services
     /// <seealso cref="LSG.GenericCrud.Services.ICrudService{TDto}" />
     public class CrudService<TDto, TEntity> : CrudService<TEntity>, ICrudService<TDto>
         where TDto : IEntity 
-        where TEntity : IEntity
+        where TEntity : class, IEntity, new()
     {
         /// <summary>
         /// The mapper
@@ -31,7 +31,7 @@ namespace LSG.GenericCrud.Dto.Services
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="mapper">The mapper.</param>
-        public CrudService(ICrudRepository<TEntity> repository, IMapper mapper) : base(repository)
+        public CrudService(ICrudRepository repository, IMapper mapper) : base(repository)
         {
             _mapper = mapper;
         }

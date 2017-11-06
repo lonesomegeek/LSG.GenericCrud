@@ -18,7 +18,7 @@ namespace LSG.GenericCrud.Dto.Services
     /// <seealso cref="LSG.GenericCrud.Services.IHistoricalCrudService{TDto}" />
     public class HistoricalCrudService<TDto, TEntity> : HistoricalCrudService<TEntity>, IHistoricalCrudService<TDto>
         where TDto : IEntity
-        where TEntity : IEntity, new()
+        where TEntity : class, IEntity, new()
     {
         /// <summary>
         /// The mapper
@@ -31,7 +31,7 @@ namespace LSG.GenericCrud.Dto.Services
         /// <param name="repository">The repository.</param>
         /// <param name="eventRepository">The event repository.</param>
         /// <param name="mapper">The mapper.</param>
-        public HistoricalCrudService(ICrudRepository<TEntity> repository, ICrudRepository<HistoricalEvent> eventRepository, IMapper mapper) : base(repository, eventRepository)
+        public HistoricalCrudService(ICrudRepository repository, IMapper mapper) : base(repository)
         {
             _mapper = mapper;
         }
