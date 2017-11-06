@@ -22,7 +22,7 @@ namespace LSG.GenericCrud.Repositories
         /// <summary>
         /// The data fillers
         /// </summary>
-        private readonly IEnumerable<IEntityDataFiller<BaseEntity>> _dataFillers;
+        private readonly IEnumerable<IEntityDataFiller<IEntity>> _dataFillers;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseDbContext" /> class.
@@ -32,7 +32,7 @@ namespace LSG.GenericCrud.Repositories
         public BaseDbContext(DbContextOptions options, IServiceProvider serviceProvider) : base(options)
         {
             _serviceProvider = serviceProvider;
-            _dataFillers = _serviceProvider?.GetServices<IEntityDataFiller<BaseEntity>>();
+            _dataFillers = _serviceProvider?.GetServices<IEntityDataFiller<IEntity>>();
 
         }
 
