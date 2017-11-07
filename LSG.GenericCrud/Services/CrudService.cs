@@ -12,18 +12,18 @@ namespace LSG.GenericCrud.Services
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="LSG.GenericCrud.Services.ICrudService{T}" />
-    public class CrudService<T> : ICrudService<T>
+    public class CrudService<T> : ICrudService<T> where T : class, IEntity, new()
     {
         /// <summary>
         /// The repository
         /// </summary>
-        private readonly ICrudRepository<T> _repository;
+        private readonly ICrudRepository _repository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CrudService{T}"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
-        public CrudService(ICrudRepository<T> repository)
+        public CrudService(ICrudRepository repository)
         {
             _repository = repository;
             AutoCommit = true;
@@ -41,13 +41,13 @@ namespace LSG.GenericCrud.Services
         /// Gets all.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<T> GetAll() => _repository.GetAll();
+        public IEnumerable<T> GetAll() => _repository.GetAll<T>();
 
         /// <summary>
         /// Gets all asynchronous.
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<T>> GetAllAsync() => await _repository.GetAllAsync();
+        public async Task<IEnumerable<T>> GetAllAsync() => await _repository.GetAllAsync<T>();
 
         /// <summary>
         /// Gets the by identifier.
@@ -57,7 +57,7 @@ namespace LSG.GenericCrud.Services
         /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
         public T GetById(Guid id)
         {
-            var entity = _repository.GetById(id);
+            var entity = _repository.GetById<T>(id);
             if (entity == null) throw new EntityNotFoundException();
             return entity;
         }
@@ -70,7 +70,7 @@ namespace LSG.GenericCrud.Services
         /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
         public async Task<T> GetByIdAsync(Guid id)
         {
-            var entity = await _repository.GetByIdAsync(id);
+            var entity = await _repository.GetByIdAsync<T>(id);
             if (entity == null) throw new EntityNotFoundException();
             return entity;
         }
@@ -152,7 +152,7 @@ namespace LSG.GenericCrud.Services
         public T Delete(Guid id)
         {
             var entity = GetById(id);
-            _repository.Delete(id);
+            _repository.Delete<T>(id);
             if (AutoCommit) _repository.SaveChanges();
             return entity;
         }
@@ -165,7 +165,7 @@ namespace LSG.GenericCrud.Services
         public async Task<T> DeleteAsync(Guid id)
         {
             var entity = await GetByIdAsync(id);
-            await _repository.DeleteAsync(id);
+            await _repository.DeleteAsync<T>(id);
             if (AutoCommit) _repository.SaveChanges();
             return entity;
         }
