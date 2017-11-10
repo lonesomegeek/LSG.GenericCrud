@@ -43,7 +43,7 @@
    - After:
    ```csharp
     services.AddScoped(typeof(ICrudService<>), typeof(CrudService<>));
-    services.AddScoped(typeof(ICrudRepository<>), typeof(CrudRepository<>));
+    services.AddScoped(typeof(ICrudRepository), typeof(CrudRepository));
     ```
 
 - Startup configuration now requires to be explicit on service layer with dto feature
