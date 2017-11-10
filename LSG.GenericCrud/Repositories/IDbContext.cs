@@ -14,7 +14,7 @@ namespace LSG.GenericCrud.Repositories
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <returns></returns>
         DbSet<TEntity> Set<TEntity>() where TEntity : class;
-        
+
         /// <summary>
         /// Saves the changes.
         /// </summary>

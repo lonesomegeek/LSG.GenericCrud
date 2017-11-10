@@ -22,17 +22,17 @@ namespace LSG.GenericCrud.Repositories
         /// <summary>
         /// The data fillers
         /// </summary>
-        private readonly IEnumerable<IEntityDataFiller<BaseEntity>> _dataFillers;
+        private readonly IEnumerable<IEntityDataFiller<IEntity>> _dataFillers;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseDbContext"/> class.
+        /// Initializes a new instance of the <see cref="BaseDbContext" /> class.
         /// </summary>
         /// <param name="options">The options.</param>
         /// <param name="serviceProvider">The service provider.</param>
         public BaseDbContext(DbContextOptions options, IServiceProvider serviceProvider) : base(options)
         {
             _serviceProvider = serviceProvider;
-            _dataFillers = _serviceProvider?.GetServices<IEntityDataFiller<BaseEntity>>();
+            _dataFillers = _serviceProvider?.GetServices<IEntityDataFiller<IEntity>>();
 
         }
 
@@ -63,6 +63,10 @@ namespace LSG.GenericCrud.Repositories
             return base.SaveChanges();
         }
 
+        /// <summary>
+        /// Saves the changes asynchronous.
+        /// </summary>
+        /// <returns></returns>
         public async Task<int> SaveChangesAsync()
         {
             if (_dataFillers != null)

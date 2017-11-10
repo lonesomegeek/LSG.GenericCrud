@@ -17,6 +17,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LSG.GenericCrud.Dto", "LSG.
 		{722007F7-B2C5-40E3-B6A8-57AD5A9745F8} = {722007F7-B2C5-40E3-B6A8-57AD5A9745F8}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SonarQube", "SonarQube", "{06CEFFB6-CF22-4423-AB70-915B9696FFC6}"
+	ProjectSection(SolutionItems) = preProject
+		SonarQube\e6538e5f2a5021bb39fb1d3efc72bd17ca4beb7aCSharp.ruleset = SonarQube\e6538e5f2a5021bb39fb1d3efc72bd17ca4beb7aCSharp.ruleset
+		SonarQube\SolutionBinding.sqconfig = SonarQube\SolutionBinding.sqconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

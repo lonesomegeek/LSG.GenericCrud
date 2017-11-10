@@ -94,7 +94,9 @@ namespace Sample.GenericCrud.Controllers
     [Route("api/[controller]")]
     public class AccountsController : CrudController<Account>
     {
-        public AccountsController(Crud<Account> dal) : base(dal) { }
+        public AccountsController(ICrudService<Account> service) : base(service)
+        {
+        }
     }
 }
 ```
@@ -112,8 +114,9 @@ public class Startup
         // to load an InMemory EntityFramework context
         services.AddDbContext<SampleContext>(opt => opt.UseInMemoryDatabase());
         services.AddTransient<IDbContext, SampleContext>();
-        // to dynamically inject any type of Crud repository of type T in any controllers
-        services.AddScoped(typeof(Crud<>));
+        // inject needed service and repository layers
+        services.AddScoped(typeof(ICrudService<>), typeof(CrudService<>));
+        services.AddScoped(typeof(ICrudRepository<>), typeof(CrudRepository<>));
     }
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)

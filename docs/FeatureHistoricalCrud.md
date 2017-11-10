@@ -36,7 +36,7 @@ Here is a configuration with CrudController\<T> controller:
 [Route("api/[controller]")]
 public class AccountsController : CrudController<Account>
 {
-    public AccountsController(Crud<Account> dal) : base(dal) { }
+    public AccountsController(ICrudService<Account> service) : base(service)
 }
 ```
 
@@ -45,7 +45,7 @@ Here is a configuration with HistoricalCrudController\<T> controller:
 [Route("api/[controller]")]
 public class AccountsController : HistoricalCrudController<Account>
 {
-    public AccountsController(HistoricalCrud<Account> dal) : base(dal) { }
+    public AccountsController(IHistoricalCrudService<Account> service) : base(service)
 }
 ```
 
@@ -59,7 +59,7 @@ This inclusion will enables the HistoricalCrud\<T> DAL to do the tracking of all
 ### DAL injection adaptation
 In **Startup.cs**, add a new injection configuration in *ConfigureServices(...)*
 ```csharp
-services.AddScoped(typeof(HistoricalCrud<>));
+services.AddScoped(typeof(IHistoricalCrudService<>), typeof(HistoricalCrudService<>));
 ```
 
 ## It is a CrudController\<T> plus...

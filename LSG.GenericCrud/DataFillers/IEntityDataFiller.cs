@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 namespace LSG.GenericCrud.DataFillers
 {
     /// <summary>
-    /// 
+    /// EntityDataFiller definition
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public interface IEntityDataFiller<T>

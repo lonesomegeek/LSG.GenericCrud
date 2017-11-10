@@ -1,25 +1,30 @@
 ﻿using System;
 using LSG.GenericCrud.Exceptions;
 using LSG.GenericCrud.Models;
-using LSG.GenericCrud.Repositories;
+using LSG.GenericCrud.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LSG.GenericCrud.Controllers
 {
+    /// <summary>
+    /// Crud Controller endpoints
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
     public class CrudController<T> : Controller where T : class, IEntity, new()
     {
         /// <summary>
-        /// The _service
+        /// The service
         /// </summary>
-        protected readonly ICrud<T> _dal;
+        private readonly ICrudService<T> _service;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GenericCrudApiController{T, TEntity}"/> class.
+        /// Initializes a new instance of the <see cref="CrudController{T}"/> class.
         /// </summary>
         /// <param name="service">The service.</param>
-        public CrudController(ICrud<T> dal)
+        public CrudController(ICrudService<T> service)
         {
-            _dal = dal;
+            _service = service;
         }
 
         /// <summary>
@@ -27,15 +32,20 @@ namespace LSG.GenericCrud.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult GetAll() => Ok(_dal.GetAll());
+        public IActionResult GetAll() => Ok(_service.GetAll());
 
+        /// <summary>
+        /// Gets the by identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         [Route("{id}")]
         [HttpGet]
         public IActionResult GetById(Guid id)
         {
             try
             {
-                return Ok(_dal.GetById(id));
+                return Ok(_service.GetById(id));
             }
             catch (EntityNotFoundException ex)
             {
@@ -47,22 +57,22 @@ namespace LSG.GenericCrud.Controllers
         /// Creates the specified entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
+        /// <returns></returns>
         [HttpPost("")]
-        public IActionResult Create([FromBody] T entity) => Ok(_dal.Create(entity));
+        public IActionResult Create([FromBody] T entity) => Ok(_service.Create(entity));
 
         /// <summary>
         /// Updates the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="entity">The entity.</param>
-        /// <exception cref="System.Web.Http.HttpResponseException"></exception>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public IActionResult Update(Guid id, [FromBody] T entity)
         {
             try
             {
-                _dal.Update(id, entity);
-                return Ok();
+                return Ok(_service.Update(id, entity));
             }
             catch (EntityNotFoundException ex)
             {
@@ -74,20 +84,18 @@ namespace LSG.GenericCrud.Controllers
         /// Deletes the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <exception cref="System.Web.Http.HttpResponseException"></exception>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
             try
             {
-                _dal.Delete(id);
-                return Ok();
+                return Ok(_service.Delete(id));
             }
             catch (EntityNotFoundException ex)
             {
                 return NotFound();
             }
-
         }
     }
 }

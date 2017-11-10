@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Bogus;
 using LSG.GenericCrud.Controllers;
 using LSG.GenericCrud.Exceptions;
 using LSG.GenericCrud.Models;
-using LSG.GenericCrud.Repositories;
+using LSG.GenericCrud.Services;
 using LSG.GenericCrud.Tests.Models;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -13,7 +12,6 @@ using Xunit;
 
 namespace LSG.GenericCrud.Tests.Controllers
 {
-    
     public class HistoricalCrudControllerTests
     {
         private readonly IList<TestEntity> _entities;
@@ -31,57 +29,57 @@ namespace LSG.GenericCrud.Tests.Controllers
             var historyFaker = new Faker<HistoricalEvent>();
             _events = historyFaker.Generate(2);
         }
-        
+
         [Fact]
         public void Restore_ReturnsOk()
         {
-            var dalMock = new Mock<HistoricalCrud<TestEntity>>();
-            dalMock.Setup(_ => _.Restore(It.IsAny<Guid>())).Returns(_entity);
-            var controller = new HistoricalCrudController<TestEntity>(dalMock.Object);
+            var serviceMock = new Mock<IHistoricalCrudService<TestEntity>>();
+            serviceMock.Setup(_ => _.Restore(It.IsAny<Guid>())).Returns(_entity);
+            var controller = new HistoricalCrudController<TestEntity>(serviceMock.Object);
 
-            var actionResult = controller.Restore(_entity.Id);
+            var result = controller.Restore(_entity.Id);
 
-            Assert.IsType<OkObjectResult>(actionResult);
-            dalMock.Verify(_ => _.Restore(It.IsAny<Guid>()), Times.Once);
+            Assert.IsType<OkObjectResult>(result);
+            serviceMock.Verify(_ => _.Restore(It.IsAny<Guid>()), Times.Once);
         }
 
         [Fact]
-        public void Restore_ReturnsNotFound()
+        public void Restore_ThrowsEntityNotFoundException()
         {
-            var dalMock = new Mock<HistoricalCrud<TestEntity>>();
-            dalMock.Setup(_ => _.Restore(It.IsAny<Guid>())).Throws<EntityNotFoundException>();
-            var controller = new HistoricalCrudController<TestEntity>(dalMock.Object);
+            var serviceMock = new Mock<IHistoricalCrudService<TestEntity>>();
+            serviceMock.Setup(_ => _.Restore(It.IsAny<Guid>())).Throws<EntityNotFoundException>();
+            var controller = new HistoricalCrudController<TestEntity>(serviceMock.Object);
 
-            var actionResult = controller.Restore(_entity.Id);
+            var result = controller.Restore(_entity.Id);
 
-            Assert.IsType<NotFoundResult>(actionResult);
-            dalMock.Verify(_ => _.Restore(It.IsAny<Guid>()), Times.Once);
+            Assert.IsType<NotFoundResult>(result);
+            serviceMock.Verify(_ => _.Restore(It.IsAny<Guid>()), Times.Once);
         }
 
         [Fact]
         public void GetHistory_ReturnsOk()
         {
-            var dalMock = new Mock<HistoricalCrud<TestEntity>>();
-            dalMock.Setup(_ => _.GetHistory(It.IsAny<Guid>())).Returns(_events);
-            var controller = new HistoricalCrudController<TestEntity>(dalMock.Object);
+            var serviceMock = new Mock<IHistoricalCrudService<TestEntity>>();
+            serviceMock.Setup(_ => _.GetHistory(It.IsAny<Guid>())).Returns(_events);
+            var controller = new HistoricalCrudController<TestEntity>(serviceMock.Object);
 
-            var actionResult = controller.GetHistory(_entity.Id);
+            var result = controller.GetHistory(_entity.Id);
 
-            Assert.IsType<OkObjectResult>(actionResult);
-            dalMock.Verify(_ => _.GetHistory(It.IsAny<Guid>()), Times.Once);
+            Assert.IsType<OkObjectResult>(result);
+            serviceMock.Verify(_ => _.GetHistory(It.IsAny<Guid>()), Times.Once);
         }
 
         [Fact]
-        public void GetHistory_ReturnsNotFound()
+        public void GetHistory_ThrowsEntityNotFoundException()
         {
-            var dalMock = new Mock<HistoricalCrud<TestEntity>>();
-            dalMock.Setup(_ => _.GetHistory(It.IsAny<Guid>())).Throws<EntityNotFoundException>();
-            var controller = new HistoricalCrudController<TestEntity>(dalMock.Object);
+            var serviceMock = new Mock<IHistoricalCrudService<TestEntity>>();
+            serviceMock.Setup(_ => _.GetHistory(It.IsAny<Guid>())).Throws<EntityNotFoundException>();
+            var controller = new HistoricalCrudController<TestEntity>(serviceMock.Object);
 
-            var actionResult = controller.GetHistory(_entity.Id);
+            var result = controller.GetHistory(_entity.Id);
 
-            Assert.IsType<NotFoundResult>(actionResult);
-            dalMock.Verify(_ => _.GetHistory(It.IsAny<Guid>()), Times.Once);
+            Assert.IsType<NotFoundResult>(result);
+            serviceMock.Verify(_ => _.GetHistory(It.IsAny<Guid>()), Times.Once);
         }
 
     }

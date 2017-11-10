@@ -2,49 +2,30 @@
 using System.Threading.Tasks;
 using LSG.GenericCrud.Exceptions;
 using LSG.GenericCrud.Models;
-using LSG.GenericCrud.Repositories;
+using LSG.GenericCrud.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LSG.GenericCrud.Controllers
 {
     /// <summary>
-    /// 
+    /// Asynchronous Historical Crud Controller endpoints
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <seealso cref="LSG.GenericCrud.Controllers.CrudController{T}" />
+    /// <seealso cref="LSG.GenericCrud.Controllers.CrudAsyncController{T}" />
     public class HistoricalCrudAsyncController<T> : CrudAsyncController<T> where T : class, IEntity, new()
     {
         /// <summary>
-        /// The historical dal
+        /// The historical crud service
         /// </summary>
-        private readonly HistoricalCrud<T> _dal;
-
-        /// <inheritdoc />
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:LSG.GenericCrud.Controllers.HistoricalCrudController`1" /> class.
-        /// </summary>
-        /// <param name="dal">The dal.</param>
-        public HistoricalCrudAsyncController(HistoricalCrud<T> dal) : base(dal)
-        {
-            _dal = dal;
-        }
+        private readonly IHistoricalCrudService<T> _historicalCrudService;
 
         /// <summary>
-        /// Restores the specified entity identifier.
+        /// Initializes a new instance of the <see cref="HistoricalCrudAsyncController{T}"/> class.
         /// </summary>
-        /// <param name="entityId">The entity identifier.</param>
-        /// <returns></returns>
-        [HttpPost("{entityId}/restore")]
-        public async Task<IActionResult> Restore(Guid entityId /*, string entityName*/)
+        /// <param name="historicalCrudService">The historical crud service.</param>
+        public HistoricalCrudAsyncController(IHistoricalCrudService<T> historicalCrudService) : base(historicalCrudService)
         {
-            try
-            {
-                return Ok(await _dal.RestoreAsync(entityId));
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return NotFound();
-            }
+            _historicalCrudService = historicalCrudService;
         }
 
         /// <summary>
@@ -57,9 +38,27 @@ namespace LSG.GenericCrud.Controllers
         {
             try
             {
-                return Ok(await _dal.GetHistoryAsync(id));
+                return Ok(await _historicalCrudService.GetHistoryAsync(id));
             }
-            catch (EntityNotFoundException ex)
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        /// <summary>
+        /// Restores the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        [HttpPost("{id}/restore")]
+        public async Task<IActionResult> Restore(Guid id)
+        {
+            try
+            {
+                return Ok(await _historicalCrudService.RestoreAsync(id));
+            }
+            catch (EntityNotFoundException)
             {
                 return NotFound();
             }

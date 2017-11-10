@@ -10,7 +10,7 @@ namespace LSG.GenericCrud.Models
     /// </summary>
     /// <seealso cref="LSG.GenericCrud.Models.BaseEntity" />
     /// <seealso cref="LSG.GenericCrud.Models.IEntity" />
-    public class HistoricalEvent : BaseEntity, IEntity
+    public class HistoricalEvent : IEntity
     {
         /// <summary>
         /// Gets or sets the identifier.

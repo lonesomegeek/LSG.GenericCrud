@@ -1,48 +1,30 @@
 ﻿using System;
 using LSG.GenericCrud.Exceptions;
 using LSG.GenericCrud.Models;
-using LSG.GenericCrud.Repositories;
+using LSG.GenericCrud.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LSG.GenericCrud.Controllers
 {
     /// <summary>
-    /// 
+    /// Historical Crud Controller endpoints
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="LSG.GenericCrud.Controllers.CrudController{T}" />
     public class HistoricalCrudController<T> : CrudController<T> where T : class, IEntity, new()
     {
         /// <summary>
-        /// The historical dal
+        /// The historical crud service
         /// </summary>
-        private readonly HistoricalCrud<T> _historicalDal;
+        private readonly IHistoricalCrudService<T> _historicalCrudService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HistoricalCrudController{T}"/> class.
         /// </summary>
-        /// <param name="dal">The dal.</param>
-        public HistoricalCrudController(HistoricalCrud<T> dal) : base(dal)
+        /// <param name="historicalCrudService">The historical crud service.</param>
+        public HistoricalCrudController(IHistoricalCrudService<T> historicalCrudService) : base(historicalCrudService)
         {
-            _historicalDal = dal;
-        }
-
-        /// <summary>
-        /// Restores the specified entity identifier.
-        /// </summary>
-        /// <param name="entityId">The entity identifier.</param>
-        /// <returns></returns>
-        [HttpPost("{entityId}/restore")]
-        public IActionResult Restore(Guid entityId /*, string entityName*/)
-        {
-            try
-            {
-                return Ok(_historicalDal.Restore(entityId));
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return NotFound();
-            }
+            _historicalCrudService = historicalCrudService;
         }
 
         /// <summary>
@@ -55,9 +37,27 @@ namespace LSG.GenericCrud.Controllers
         {
             try
             {
-                return Ok(_historicalDal.GetHistory(id));
+                return Ok(_historicalCrudService.GetHistory(id));
             }
-            catch (EntityNotFoundException ex)
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        /// <summary>
+        /// Restores the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        [HttpPost("{id}/restore")]
+        public IActionResult Restore(Guid id)
+        {
+            try
+            {
+                return Ok(_historicalCrudService.Restore(id));
+            }
+            catch (EntityNotFoundException)
             {
                 return NotFound();
             }

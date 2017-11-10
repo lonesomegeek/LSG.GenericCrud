@@ -81,7 +81,10 @@ If you need other features that are not in the base library, you can install the
 
 Note: There is actually missing documentation on what is included in these libraries. More documentation will come!
 
-# Release Notes
+# Breaking changes
+- [From v1.* to v2.*](docs/BreakingChangesFrom-v1-to-v2.md)
+
+# Old Release Notes
 
 - v1.1.2:
     - Bugfix: 

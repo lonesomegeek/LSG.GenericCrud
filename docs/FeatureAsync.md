@@ -19,7 +19,7 @@ Sample:
 ```csharp
     public class MyAsyncController : CrudAsyncController<MyObject>
     {
-        public MyAsyncController(Crud<MyObject> dal) : base(dal)
+        public MyAsyncController(ICrudService<MyObject> service) : base(service)
         {
         }
     }

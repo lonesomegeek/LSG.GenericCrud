@@ -10,6 +10,7 @@ namespace LSG.GenericCrud.Extensions.DataFillers
     /// <summary>
     /// 
     /// </summary>
+    /// <seealso cref="LSG.GenericCrud.DataFillers.IEntityDataFiller{LSG.GenericCrud.Models.BaseEntity}" />
     /// <seealso cref="BaseEntity" />
     public class DateDataFiller : IEntityDataFiller<BaseEntity>
     {
@@ -38,6 +39,12 @@ namespace LSG.GenericCrud.Extensions.DataFillers
             return (BaseEntity)entry.Entity;
         }
 
+        /// <summary>
+        /// Fills the specified entry async.
+        /// </summary>
+        /// <param name="entry">The entry.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public Task<BaseEntity> FillAsync(EntityEntry entry)
         {
             throw new NotImplementedException();
