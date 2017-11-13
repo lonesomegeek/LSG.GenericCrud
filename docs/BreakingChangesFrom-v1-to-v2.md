@@ -1,4 +1,8 @@
 # Breaking changes from v1.* to v2.*
+## Introduction
+Here is the things that have changed in the library from v1.* to v2.* that needs to be changed in order to make your code working again!
+
+## Changes
 - CrudControllers using standard CRUD now needs a service layer instead of a repository in the class constructor
    - Before: ```public AccountsAsyncController(Crud<Account> dal) : base(dal) { }```
    - After: ```public AccountsAsyncController(ICrudService<Account> service) : base(service) { }```
