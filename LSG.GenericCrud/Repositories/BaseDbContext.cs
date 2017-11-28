@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using LSG.GenericCrud.DataFillers;
@@ -22,7 +23,7 @@ namespace LSG.GenericCrud.Repositories
         /// <summary>
         /// The data fillers
         /// </summary>
-        private readonly IEnumerable<IEntityDataFiller<IEntity>> _dataFillers;
+        private readonly IEnumerable<IEntityDataFiller> _dataFillers;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseDbContext" /> class.
@@ -32,7 +33,7 @@ namespace LSG.GenericCrud.Repositories
         public BaseDbContext(DbContextOptions options, IServiceProvider serviceProvider) : base(options)
         {
             _serviceProvider = serviceProvider;
-            _dataFillers = _serviceProvider?.GetServices<IEntityDataFiller<IEntity>>();
+            _dataFillers = _serviceProvider?.GetServices<IEntityDataFiller>();
 
         }
 
