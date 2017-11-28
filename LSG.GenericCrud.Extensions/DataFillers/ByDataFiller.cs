@@ -12,7 +12,7 @@ namespace LSG.GenericCrud.Extensions.DataFillers
     /// </summary>
     /// <seealso cref="LSG.GenericCrud.DataFillers.IEntityDataFiller{LSG.GenericCrud.Models.BaseEntity}" />
     /// <seealso cref="BaseEntity" />
-    public class ByDataFiller : IEntityDataFiller<BaseEntity>
+    public class ByDataFiller : IEntityDataFiller
     {
         /// <summary>
         /// The user information repository
@@ -45,7 +45,7 @@ namespace LSG.GenericCrud.Extensions.DataFillers
         /// </summary>
         /// <param name="entry">The entry.</param>
         /// <returns></returns>
-        public BaseEntity Fill(EntityEntry entry)
+        public object Fill(EntityEntry entry)
         {
             var entity = ((BaseEntity)entry.Entity);
             if (entry.State == EntityState.Added) entity.CreatedBy = _userInfoRepository?.GetUserInfo();
@@ -59,7 +59,7 @@ namespace LSG.GenericCrud.Extensions.DataFillers
         /// <param name="entry">The entry.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<BaseEntity> FillAsync(EntityEntry entry)
+        public Task<object> FillAsync(EntityEntry entry)
         {
             throw new NotImplementedException();
         }

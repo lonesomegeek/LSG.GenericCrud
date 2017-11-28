@@ -12,7 +12,7 @@ namespace LSG.GenericCrud.Extensions.DataFillers
     /// </summary>
     /// <seealso cref="LSG.GenericCrud.DataFillers.IEntityDataFiller{LSG.GenericCrud.Models.BaseEntity}" />
     /// <seealso cref="BaseEntity" />
-    public class DateDataFiller : IEntityDataFiller<BaseEntity>
+    public class DateDataFiller : IEntityDataFiller
     {
         /// <summary>
         /// Determines whether [is entity supported] [the specified entry].
@@ -32,7 +32,7 @@ namespace LSG.GenericCrud.Extensions.DataFillers
         /// </summary>
         /// <param name="entry">The entry.</param>
         /// <returns></returns>
-        public BaseEntity Fill(EntityEntry entry)
+        public object Fill(EntityEntry entry)
         {
             if (entry.State == EntityState.Added) ((BaseEntity)entry.Entity).CreatedDate = DateTime.Now;
             ((BaseEntity)entry.Entity).ModifiedDate = DateTime.Now;
@@ -45,7 +45,7 @@ namespace LSG.GenericCrud.Extensions.DataFillers
         /// <param name="entry">The entry.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<BaseEntity> FillAsync(EntityEntry entry)
+        public Task<object> FillAsync(EntityEntry entry)
         {
             throw new NotImplementedException();
         }

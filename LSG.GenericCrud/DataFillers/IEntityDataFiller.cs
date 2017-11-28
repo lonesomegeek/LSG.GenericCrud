@@ -7,7 +7,7 @@ namespace LSG.GenericCrud.DataFillers
     /// EntityDataFiller definition
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IEntityDataFiller<T>
+    public interface IEntityDataFiller
     {
         /// <summary>
         /// Determines whether [is entity supported] [the specified entry].
@@ -22,12 +22,12 @@ namespace LSG.GenericCrud.DataFillers
         /// </summary>
         /// <param name="entry">The entry.</param>
         /// <returns></returns>
-        T Fill(EntityEntry entry);
+        object Fill(EntityEntry entry);
         /// <summary>
         /// Fills the specified entry async.
         /// </summary>
         /// <param name="entry">The entry.</param>
         /// <returns></returns>
-        Task<T> FillAsync(EntityEntry entry);
+        Task<object> FillAsync(EntityEntry entry);
     }
 }
