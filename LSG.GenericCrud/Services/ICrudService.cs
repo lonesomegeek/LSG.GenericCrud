@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using LSG.GenericCrud.Models;
 using Microsoft.AspNetCore.Mvc;
+using Remotion.Linq.Clauses;
 
 namespace LSG.GenericCrud.Services
 {
@@ -30,6 +31,9 @@ namespace LSG.GenericCrud.Services
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         T GetById(Guid id);
+
+        T GetById<TEntityIdType>(TEntityIdType id) where TEntityIdType : class, IEntity<TEntityIdType>;
+        
         /// <summary>
         /// Creates the specified entity.
         /// </summary>

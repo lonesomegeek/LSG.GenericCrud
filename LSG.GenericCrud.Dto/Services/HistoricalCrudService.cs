@@ -49,6 +49,11 @@ namespace LSG.GenericCrud.Dto.Services
         /// <returns></returns>
         public TDto GetById(Guid id) => _mapper.Map<TDto>(base.GetById(id));
 
+        public TDto GetById<TEntityIdType>(TEntityIdType id) where TEntityIdType : class, IEntity<TEntityIdType>
+        {
+            return _mapper.Map<TDto>(base.GetById<TEntityIdType>(id));
+        }
+
         /// <summary>
         /// Creates the specified dto.
         /// </summary>

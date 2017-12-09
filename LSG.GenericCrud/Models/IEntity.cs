@@ -15,4 +15,9 @@ namespace LSG.GenericCrud.Models
         /// </value>
         Guid Id { get; set; }
     }
+
+    public interface IEntity<T>
+    {
+        T Id { get; set; }
+    }
 }

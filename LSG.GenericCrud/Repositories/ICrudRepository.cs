@@ -30,6 +30,11 @@ namespace LSG.GenericCrud.Repositories
         /// <returns></returns>
         T GetById<T>(Guid id) where T : class, IEntity, new();
 
+
+        TEntityType GetById<TEntityType, TEntityIdType>(TEntityIdType id) where TEntityType : class, IEntity<TEntityIdType>;
+
+        Task<TEntityType> GetByIdAsync<TEntityType, TEntityIdType>(TEntityIdType id) where TEntityType : class, IEntity<TEntityIdType>;
+
         /// <summary>
         /// Gets the by identifier asynchronous.
         /// </summary>

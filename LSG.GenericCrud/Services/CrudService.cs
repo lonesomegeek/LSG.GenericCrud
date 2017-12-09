@@ -62,6 +62,11 @@ namespace LSG.GenericCrud.Services
             return entity;
         }
 
+        public T GetById<TEntityIdType>(TEntityIdType id)
+        {
+            return _repository.GetById<T, TEntityIdType>(id);
+        }
+
         /// <summary>
         /// Gets the by identifier asynchronous.
         /// </summary>

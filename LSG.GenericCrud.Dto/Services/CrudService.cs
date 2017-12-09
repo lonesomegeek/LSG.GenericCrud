@@ -64,6 +64,11 @@ namespace LSG.GenericCrud.Dto.Services
             return _mapper.Map<TDto>(base.GetById(id));
         }
 
+        public TDto GetById<TEntityIdType>(TEntityIdType id) where TEntityIdType : class, IEntity<TEntityIdType>
+        {
+            return _mapper.Map<TDto>(base.GetById<TEntityIdType>(id));
+        }
+
         /// <summary>
         /// Gets the by identifier asynchronous.
         /// </summary>

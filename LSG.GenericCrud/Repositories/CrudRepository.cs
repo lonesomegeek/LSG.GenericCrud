@@ -15,7 +15,6 @@ namespace LSG.GenericCrud.Repositories
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="LSG.GenericCrud.Repositories.ICrudRepository{T}" />
     public class CrudRepository : ICrudRepository
-       
     {
         /// <summary>
         /// The context
@@ -64,6 +63,16 @@ namespace LSG.GenericCrud.Repositories
         public virtual T GetById<T>(Guid id) where T : class, IEntity, new()
         {
             return _context.Set<T>().SingleOrDefault(_ => _.Id == id);
+        }
+
+        public TEntityType GetById<TEntityType, TEntityIdType>(TEntityIdType id) where TEntityType : class, IEntity<TEntityIdType>
+        {
+            return _context.Set<TEntityType>().SingleOrDefault(_ => EqualityComparer<TEntityIdType>.Default.Equals(_.Id, id));
+        }
+
+        public async Task<TEntityType> GetByIdAsync<TEntityType, TEntityIdType>(TEntityIdType id) where TEntityType : class, IEntity<TEntityIdType>
+        {
+            return await _context.Set<TEntityType>().SingleOrDefaultAsync(_ => EqualityComparer<TEntityIdType>.Default.Equals(_.Id, id));
         }
 
         /// <summary>
