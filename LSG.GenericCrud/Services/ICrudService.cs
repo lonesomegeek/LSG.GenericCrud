@@ -32,8 +32,9 @@ namespace LSG.GenericCrud.Services
         /// <returns></returns>
         T GetById(Guid id);
 
-        T GetById<TEntityIdType>(TEntityIdType id) where TEntityIdType : class, IEntity<TEntityIdType>;
-        
+        TEntityType GetById<TEntityType, TEntityIdType>(TEntityIdType id)
+            where TEntityType : class, IEntity<TEntityIdType>;
+
         /// <summary>
         /// Creates the specified entity.
         /// </summary>

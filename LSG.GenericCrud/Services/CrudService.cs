@@ -62,9 +62,9 @@ namespace LSG.GenericCrud.Services
             return entity;
         }
 
-        public T GetById<TEntityIdType>(TEntityIdType id)
+        public TEntityType GetById<TEntityType, TEntityIdType>(TEntityIdType id) where TEntityType : class, IEntity<TEntityIdType>
         {
-            return _repository.GetById<T, TEntityIdType>(id);
+            return _repository.GetById<TEntityType, TEntityIdType>(id);
         }
 
         /// <summary>

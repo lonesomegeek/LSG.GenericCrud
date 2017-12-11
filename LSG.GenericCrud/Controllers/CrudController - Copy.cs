@@ -43,11 +43,11 @@ namespace LSG.GenericCrud.Controllers
         /// <returns></returns>
         [Route("{id}")]
         [HttpGet]
-        public IActionResult GetById(Guid id)
+        public IActionResult GetById(TEntityIdType id)
         {
             try
             {
-                return Ok(_service.GetById(id));
+                return Ok(_service.GetById<TEntityType, TEntityIdType>(id));
             }
             catch (EntityNotFoundException ex)
             {

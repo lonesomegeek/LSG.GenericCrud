@@ -64,9 +64,9 @@ namespace LSG.GenericCrud.Dto.Services
             return _mapper.Map<TDto>(base.GetById(id));
         }
 
-        public TDto GetById<TEntityIdType>(TEntityIdType id) where TEntityIdType : class, IEntity<TEntityIdType>
+        public TDto GetById<TEntityType, TEntityIdType>(TEntityIdType id) where TEntityType : class, IEntity<TEntityIdType>
         {
-            return _mapper.Map<TDto>(base.GetById<TEntityIdType>(id));
+            return _mapper.Map<TDto>(base.GetById<TEntityType, TEntityIdType>(id));
         }
 
         /// <summary>
