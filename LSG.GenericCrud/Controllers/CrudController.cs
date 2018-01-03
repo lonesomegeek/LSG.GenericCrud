@@ -32,7 +32,7 @@ namespace LSG.GenericCrud.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult GetAll() => Ok(_service.GetAll());
+        public virtual IActionResult GetAll() => Ok(_service.GetAll());
 
         /// <summary>
         /// Gets the by identifier.
@@ -41,7 +41,7 @@ namespace LSG.GenericCrud.Controllers
         /// <returns></returns>
         [Route("{id}")]
         [HttpGet]
-        public IActionResult GetById(Guid id)
+        public virtual IActionResult GetById(Guid id)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
         [HttpPost("")]
-        public IActionResult Create([FromBody] T entity) => Ok(_service.Create(entity));
+        public virtual IActionResult Create([FromBody] T entity) => Ok(_service.Create(entity));
 
         /// <summary>
         /// Updates the specified identifier.
@@ -68,7 +68,7 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public IActionResult Update(Guid id, [FromBody] T entity)
+        public virtual IActionResult Update(Guid id, [FromBody] T entity)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
+        public virtual IActionResult Delete(Guid id)
         {
             try
             {

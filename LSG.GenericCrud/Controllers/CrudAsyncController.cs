@@ -33,7 +33,7 @@ namespace LSG.GenericCrud.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetAll() => Ok(await _service.GetAllAsync());
+        public virtual async Task<IActionResult> GetAll() => Ok(await _service.GetAllAsync());
 
         /// <summary>
         /// Gets the by identifier.
@@ -42,7 +42,7 @@ namespace LSG.GenericCrud.Controllers
         /// <returns></returns>
         [Route("{id}")]
         [HttpGet]
-        public async Task<IActionResult> GetById(Guid id)
+        public virtual async Task<IActionResult> GetById(Guid id)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
         [HttpPost("")]
-        public async Task<IActionResult> Create([FromBody] T entity) => Ok(await _service.CreateAsync(entity));
+        public virtual async Task<IActionResult> Create([FromBody] T entity) => Ok(await _service.CreateAsync(entity));
 
         /// <summary>
         /// Updates the specified identifier.
@@ -69,7 +69,7 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] T entity)
+        public virtual async Task<IActionResult> Update(Guid id, [FromBody] T entity)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        public virtual async Task<IActionResult> Delete(Guid id)
         {
             try
             {
