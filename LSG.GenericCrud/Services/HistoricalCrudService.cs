@@ -46,7 +46,7 @@ namespace LSG.GenericCrud.Services
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        public new T Create(T entity)
+        public new virtual T Create(T entity)
         {
             var createdEntity = base.Create(entity);
 
@@ -69,7 +69,7 @@ namespace LSG.GenericCrud.Services
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        public new async Task<T> CreateAsync(T entity)
+        public new virtual async Task<T> CreateAsync(T entity)
         {
             var createdEntity = await base.CreateAsync(entity);
 
@@ -93,7 +93,7 @@ namespace LSG.GenericCrud.Services
         /// <param name="id">The identifier.</param>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        public new T Update(Guid id, T entity)
+        public new virtual T Update(Guid id, T entity)
         {
             var originalEntity = base.GetById(id);
             var historicalEvent = new HistoricalEvent
@@ -117,7 +117,7 @@ namespace LSG.GenericCrud.Services
         /// <param name="id">The identifier.</param>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        public new async Task<T> UpdateAsync(Guid id, T entity)
+        public new virtual async Task<T> UpdateAsync(Guid id, T entity)
         {
             var originalEntity = await base.GetByIdAsync(id);
             var historicalEvent = new HistoricalEvent
@@ -140,7 +140,7 @@ namespace LSG.GenericCrud.Services
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public new T Delete(Guid id)
+        public new virtual T Delete(Guid id)
         {
             var entity = base.Delete(id);
 
@@ -163,7 +163,7 @@ namespace LSG.GenericCrud.Services
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public new async Task<T> DeleteAsync(Guid id)
+        public new virtual async Task<T> DeleteAsync(Guid id)
         {
             var entity = await base.DeleteAsync(id);
 
@@ -187,7 +187,7 @@ namespace LSG.GenericCrud.Services
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
-        public T Restore(Guid id)
+        public virtual T Restore(Guid id)
         {
             var entity = _repository
                 .GetAll<HistoricalEvent>()
@@ -208,7 +208,7 @@ namespace LSG.GenericCrud.Services
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
-        public async Task<T> RestoreAsync(Guid id)
+        public virtual async Task<T> RestoreAsync(Guid id)
         {
             var entity = _repository
                 .GetAllAsync<HistoricalEvent>()
@@ -230,7 +230,7 @@ namespace LSG.GenericCrud.Services
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
-        public IEnumerable<IEntity> GetHistory(Guid id)
+        public virtual IEnumerable<IEntity> GetHistory(Guid id)
         {
             var events = _repository
                 .GetAll<HistoricalEvent>()
@@ -245,7 +245,7 @@ namespace LSG.GenericCrud.Services
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
-        public async Task<IEnumerable<IEntity>> GetHistoryAsync(Guid id)
+        public virtual async Task<IEnumerable<IEntity>> GetHistoryAsync(Guid id)
         {
             var events =  await _repository.GetAllAsync<HistoricalEvent>();
             var filteredEvents = events

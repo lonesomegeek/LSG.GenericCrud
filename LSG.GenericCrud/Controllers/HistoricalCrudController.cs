@@ -33,7 +33,7 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpGet("{id}/history")]
-        public IActionResult GetHistory(Guid id)
+        public virtual IActionResult GetHistory(Guid id)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpPost("{id}/restore")]
-        public IActionResult Restore(Guid id)
+        public virtual IActionResult Restore(Guid id)
         {
             try
             {
