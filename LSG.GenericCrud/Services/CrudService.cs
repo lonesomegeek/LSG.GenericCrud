@@ -41,13 +41,13 @@ namespace LSG.GenericCrud.Services
         /// Gets all.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<T> GetAll() => _repository.GetAll<T>();
+        public virtual IEnumerable<T> GetAll() => _repository.GetAll<T>();
 
         /// <summary>
         /// Gets all asynchronous.
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<T>> GetAllAsync() => await _repository.GetAllAsync<T>();
+        public virtual async Task<IEnumerable<T>> GetAllAsync() => await _repository.GetAllAsync<T>();
 
         /// <summary>
         /// Gets the by identifier.
@@ -55,7 +55,7 @@ namespace LSG.GenericCrud.Services
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
-        public T GetById(Guid id)
+        public virtual T GetById(Guid id)
         {
             var entity = _repository.GetById<T>(id);
             if (entity == null) throw new EntityNotFoundException();
@@ -68,7 +68,7 @@ namespace LSG.GenericCrud.Services
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
-        public async Task<T> GetByIdAsync(Guid id)
+        public virtual async Task<T> GetByIdAsync(Guid id)
         {
             var entity = await _repository.GetByIdAsync<T>(id);
             if (entity == null) throw new EntityNotFoundException();
@@ -80,7 +80,7 @@ namespace LSG.GenericCrud.Services
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        public T Create(T entity)
+        public virtual T Create(T entity)
         {
             var createdEntity = _repository.Create(entity);
             if (AutoCommit) _repository.SaveChanges();
@@ -92,7 +92,7 @@ namespace LSG.GenericCrud.Services
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        public async Task<T> CreateAsync(T entity)
+        public virtual async Task<T> CreateAsync(T entity)
         {
             var createdEntity = await _repository.CreateAsync(entity);
             if (AutoCommit) _repository.SaveChanges();
@@ -105,7 +105,7 @@ namespace LSG.GenericCrud.Services
         /// <param name="id">The identifier.</param>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        public T Update(Guid id, T entity)
+        public virtual T Update(Guid id, T entity)
         {
             var originalEntity = GetById(id);
             foreach (var prop in entity.GetType().GetProperties())
@@ -128,7 +128,7 @@ namespace LSG.GenericCrud.Services
         /// <param name="id">The identifier.</param>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        public async Task<T> UpdateAsync(Guid id, T entity)
+        public virtual async Task<T> UpdateAsync(Guid id, T entity)
         {
             var originalEntity = await GetByIdAsync(id);
             foreach (var prop in entity.GetType().GetProperties())
@@ -149,7 +149,7 @@ namespace LSG.GenericCrud.Services
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public T Delete(Guid id)
+        public virtual T Delete(Guid id)
         {
             var entity = GetById(id);
             _repository.Delete<T>(id);
@@ -162,7 +162,7 @@ namespace LSG.GenericCrud.Services
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public async Task<T> DeleteAsync(Guid id)
+        public virtual async Task<T> DeleteAsync(Guid id)
         {
             var entity = await GetByIdAsync(id);
             await _repository.DeleteAsync<T>(id);

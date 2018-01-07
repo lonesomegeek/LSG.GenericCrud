@@ -40,7 +40,7 @@ namespace LSG.GenericCrud.Dto.Services
         /// Gets all.
         /// </summary>
         /// <returns></returns>
-        public new IEnumerable<TDto> GetAll()
+        public new virtual IEnumerable<TDto> GetAll()
         {
             return base.GetAll().Select(_ => _mapper.Map<TDto>(_));
         }
@@ -48,7 +48,7 @@ namespace LSG.GenericCrud.Dto.Services
         /// Gets all asynchronous.
         /// </summary>
         /// <returns></returns>
-        public new async Task<IEnumerable<TDto>> GetAllAsync()
+        public new virtual async Task<IEnumerable<TDto>> GetAllAsync()
         {
             var results = await base.GetAllAsync();
             return results.Select(_ => _mapper.Map<TDto>(_));
@@ -59,7 +59,7 @@ namespace LSG.GenericCrud.Dto.Services
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public new TDto GetById(Guid id)
+        public new virtual TDto GetById(Guid id)
         {
             return _mapper.Map<TDto>(base.GetById(id));
         }
@@ -69,7 +69,7 @@ namespace LSG.GenericCrud.Dto.Services
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public new async Task<TDto> GetByIdAsync(Guid id)
+        public new virtual async Task<TDto> GetByIdAsync(Guid id)
         {
             var result = await base.GetByIdAsync(id);
             return _mapper.Map<TDto>(result);
@@ -80,7 +80,7 @@ namespace LSG.GenericCrud.Dto.Services
         /// </summary>
         /// <param name="dto">The dto.</param>
         /// <returns></returns>
-        public TDto Create(TDto dto)
+        public virtual TDto Create(TDto dto)
         {
             var entity = _mapper.Map<TEntity>(dto);
             var createdEntity = base.Create(entity);
@@ -92,7 +92,7 @@ namespace LSG.GenericCrud.Dto.Services
         /// </summary>
         /// <param name="dto">The dto.</param>
         /// <returns></returns>
-        public async Task<TDto> CreateAsync(TDto dto)
+        public virtual async Task<TDto> CreateAsync(TDto dto)
         {
             var entity = _mapper.Map<TEntity>(dto);
             var createdEntity = await base.CreateAsync(entity);
@@ -105,7 +105,7 @@ namespace LSG.GenericCrud.Dto.Services
         /// <param name="id">The identifier.</param>
         /// <param name="dto">The dto.</param>
         /// <returns></returns>
-        public TDto Update(Guid id, TDto dto)
+        public virtual TDto Update(Guid id, TDto dto)
         {
             var entity = _mapper.Map<TEntity>(dto);
             var updatedEntity = base.Update(id, entity);
@@ -118,7 +118,7 @@ namespace LSG.GenericCrud.Dto.Services
         /// <param name="id">The identifier.</param>
         /// <param name="dto">The dto.</param>
         /// <returns></returns>
-        public async Task<TDto> UpdateAsync(Guid id, TDto dto)
+        public virtual async Task<TDto> UpdateAsync(Guid id, TDto dto)
         {
             var entity = _mapper.Map<TEntity>(dto);
             var updatedEntity = await base.UpdateAsync(id, entity);
@@ -130,7 +130,7 @@ namespace LSG.GenericCrud.Dto.Services
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public new TDto Delete(Guid id)
+        public new virtual TDto Delete(Guid id)
         {
             var deletedEntity = base.Delete(id);
             return _mapper.Map<TDto>(deletedEntity);
@@ -141,7 +141,7 @@ namespace LSG.GenericCrud.Dto.Services
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public new async Task<TDto> DeleteAsync(Guid id)
+        public new virtual async Task<TDto> DeleteAsync(Guid id)
         {
             var deletedEntity = await base.DeleteAsync(id);
             return _mapper.Map<TDto>(deletedEntity);
