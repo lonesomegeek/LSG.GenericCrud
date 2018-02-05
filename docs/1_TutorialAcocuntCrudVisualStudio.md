@@ -115,8 +115,7 @@ public class Startup
         services.AddDbContext<SampleContext>(opt => opt.UseInMemoryDatabase());
         services.AddTransient<IDbContext, SampleContext>();
         // inject needed service and repository layers
-        services.AddScoped(typeof(ICrudService<>), typeof(CrudService<>));
-        services.AddScoped(typeof(ICrudRepository<>), typeof(CrudRepository<>));
+        services.AddCrud();
     }
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)

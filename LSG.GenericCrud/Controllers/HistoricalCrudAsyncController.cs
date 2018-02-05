@@ -34,7 +34,7 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpGet("{id}/history")]
-        public async Task<IActionResult> GetHistory(Guid id)
+        public virtual async Task<IActionResult> GetHistory(Guid id)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpPost("{id}/restore")]
-        public async Task<IActionResult> Restore(Guid id)
+        public virtual async Task<IActionResult> Restore(Guid id)
         {
             try
             {
