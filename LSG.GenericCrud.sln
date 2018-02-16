@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LSG.GenericCrud", "LSG.GenericCrud\LSG.GenericCrud.csproj", "{722007F7-B2C5-40E3-B6A8-57AD5A9745F8}"
 EndProject
@@ -22,6 +22,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SonarQube", "SonarQube", "{
 		SonarQube\e6538e5f2a5021bb39fb1d3efc72bd17ca4beb7aCSharp.ruleset = SonarQube\e6538e5f2a5021bb39fb1d3efc72bd17ca4beb7aCSharp.ruleset
 		SonarQube\SolutionBinding.sqconfig = SonarQube\SolutionBinding.sqconfig
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{D5FFE0A3-B474-498D-A249-10C592991289}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Async", "LSG.GenericCrud.Samples\Sample.Async\Sample.Async\Sample.Async.csproj", "{242A4C63-7B80-4120-B3A6-F50000ECC047}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Complete", "LSG.GenericCrud.Samples\Sample.Complete\Sample.Complete\Sample.Complete.csproj", "{833B5EDC-42CC-4454-8583-B90A97191666}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.DataFiller", "LSG.GenericCrud.Samples\Sample.DataFiller\Sample.DataFiller\Sample.DataFiller.csproj", "{88D73C91-BD33-45E6-B353-4064C6C744B5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Dto", "LSG.GenericCrud.Samples\Sample.Dto\Sample.Dto\Sample.Dto.csproj", "{7F62390E-4350-4023-ABF1-3757C7253FC7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.GenericCrud", "LSG.GenericCrud.Samples\Sample.GenericCrud.VS\Sample.GenericCrud\Sample.GenericCrud.csproj", "{40A5BF27-0354-4290-A26D-F50E35A09D93}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.GlobalFilters", "LSG.GenericCrud.Samples\Sample.GlobalFilters\Sample.GlobalFilters\Sample.GlobalFilters.csproj", "{1164C3D1-9307-4665-B998-429A9B054940}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.HistoricalCrud", "LSG.GenericCrud.Samples\Sample.HistoricalCrud\Sample.HistoricalCrud\Sample.HistoricalCrud.csproj", "{9DA1E838-BA7C-4F7F-B566-2B2827652D1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,9 +61,46 @@ Global
 		{4A41E77C-4ECC-49CA-8C23-8413D94B1FB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A41E77C-4ECC-49CA-8C23-8413D94B1FB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A41E77C-4ECC-49CA-8C23-8413D94B1FB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{242A4C63-7B80-4120-B3A6-F50000ECC047}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{242A4C63-7B80-4120-B3A6-F50000ECC047}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{242A4C63-7B80-4120-B3A6-F50000ECC047}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{242A4C63-7B80-4120-B3A6-F50000ECC047}.Release|Any CPU.Build.0 = Release|Any CPU
+		{833B5EDC-42CC-4454-8583-B90A97191666}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{833B5EDC-42CC-4454-8583-B90A97191666}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{833B5EDC-42CC-4454-8583-B90A97191666}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{833B5EDC-42CC-4454-8583-B90A97191666}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88D73C91-BD33-45E6-B353-4064C6C744B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88D73C91-BD33-45E6-B353-4064C6C744B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88D73C91-BD33-45E6-B353-4064C6C744B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88D73C91-BD33-45E6-B353-4064C6C744B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F62390E-4350-4023-ABF1-3757C7253FC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F62390E-4350-4023-ABF1-3757C7253FC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F62390E-4350-4023-ABF1-3757C7253FC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F62390E-4350-4023-ABF1-3757C7253FC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40A5BF27-0354-4290-A26D-F50E35A09D93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40A5BF27-0354-4290-A26D-F50E35A09D93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40A5BF27-0354-4290-A26D-F50E35A09D93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40A5BF27-0354-4290-A26D-F50E35A09D93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1164C3D1-9307-4665-B998-429A9B054940}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1164C3D1-9307-4665-B998-429A9B054940}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1164C3D1-9307-4665-B998-429A9B054940}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1164C3D1-9307-4665-B998-429A9B054940}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DA1E838-BA7C-4F7F-B566-2B2827652D1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DA1E838-BA7C-4F7F-B566-2B2827652D1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DA1E838-BA7C-4F7F-B566-2B2827652D1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DA1E838-BA7C-4F7F-B566-2B2827652D1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{242A4C63-7B80-4120-B3A6-F50000ECC047} = {D5FFE0A3-B474-498D-A249-10C592991289}
+		{833B5EDC-42CC-4454-8583-B90A97191666} = {D5FFE0A3-B474-498D-A249-10C592991289}
+		{88D73C91-BD33-45E6-B353-4064C6C744B5} = {D5FFE0A3-B474-498D-A249-10C592991289}
+		{7F62390E-4350-4023-ABF1-3757C7253FC7} = {D5FFE0A3-B474-498D-A249-10C592991289}
+		{40A5BF27-0354-4290-A26D-F50E35A09D93} = {D5FFE0A3-B474-498D-A249-10C592991289}
+		{1164C3D1-9307-4665-B998-429A9B054940} = {D5FFE0A3-B474-498D-A249-10C592991289}
+		{9DA1E838-BA7C-4F7F-B566-2B2827652D1F} = {D5FFE0A3-B474-498D-A249-10C592991289}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D667528F-F5FB-49E5-BD4A-0F54FB313738}
