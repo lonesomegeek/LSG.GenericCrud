@@ -58,7 +58,7 @@ I am presenting here really simple scenarios, more complex will come:
     - Using Visual Studio Code (or command line): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudioCode.md)
     - Using Visual Studio (2015 update 3+): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudio.md)
 
-Want to have a look to more samples, take a look at the *samples* or clone it for more embedded fun =P: [Link](https://github.com/lonesomegeek/LSG.GenericCrud.Samples)
+> Want to have a look to *more samples*, take a look at these *samples*: [Link](LSG.GenericCrud.Samples/README.md)
 
 # Install this library
 
@@ -84,15 +84,4 @@ Note: There is actually missing documentation on what is included in these libra
 # Breaking changes
 - [From v2.0 to v2.1](docs/BreakingChangesFrom-v2.0-to-v2.1.md)
 - [From v1.* to v2.*](docs/BreakingChangesFrom-v1-to-v2.md)
-
-# Old Release Notes
-
-- v1.1.2:
-    - Bugfix: 
-        - [#28](https://github.com/lonesomegeek/LSG.GenericCrud/issues/28)
-        - [#30](https://github.com/lonesomegeek/LSG.GenericCrud/issues/30)
-- v1.1.1:
-  - Bugfix [#29](https://github.com/lonesomegeek/LSG.GenericCrud/issues/29)
-- v1.1.0: Support/Compatibility for .NET Core 2.0 and .NET Standard 2.0
-- v1.0.1: Adding support for interfacable repositories
-- v1.0.0: Initial version
+- [Previous notes](docs/OldReleaseNotes.md)
