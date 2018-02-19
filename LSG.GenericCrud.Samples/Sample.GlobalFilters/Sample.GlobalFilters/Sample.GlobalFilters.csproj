@@ -10,17 +10,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="LSG.GenericCrud" Version="2.2.0-alpha" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="LSG.GenericCrud">
-      <HintPath>..\..\..\LSG.GenericCrud\LSG.GenericCrud\bin\Debug\netstandard2.0\LSG.GenericCrud.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>
