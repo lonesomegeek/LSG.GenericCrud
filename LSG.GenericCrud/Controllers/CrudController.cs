@@ -97,5 +97,17 @@ namespace LSG.GenericCrud.Controllers
                 return NotFound();
             }
         }
+
+        /// <summary>
+        /// Determines if entity with the specified identifier exists
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpHead("{id}")]
+        public virtual IActionResult Head(Guid id)
+        {
+            if (_service.Head(id)) return Ok();
+            else return NotFound();
+        }
     }
 }

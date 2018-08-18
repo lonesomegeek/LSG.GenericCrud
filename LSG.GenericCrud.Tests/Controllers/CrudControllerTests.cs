@@ -132,5 +132,31 @@ namespace LSG.GenericCrud.Tests.Controllers
             Assert.IsType<NotFoundResult>(actionResult);
             serviceMock.Verify(_ => _.Delete(It.IsAny<Guid>()), Times.Once);
         }
+
+        [Fact]
+        public void Head_ReturnsOk()
+        {
+            var serviceMock = new Mock<ICrudService<TestEntity>>();
+            serviceMock.Setup(_ => _.Head(It.IsAny<Guid>())).Returns(true);
+            var controller = new CrudController<TestEntity>(serviceMock.Object);
+
+            var actionResult = controller.Head(_entity.Id);
+
+            Assert.IsType<OkResult>(actionResult);
+            serviceMock.Verify(_ => _.Head(It.IsAny<Guid>()));
+        }
+
+        [Fact]
+        public void Head_ReturnsNotFound()
+        {
+            var serviceMock = new Mock<ICrudService<TestEntity>>();
+            serviceMock.Setup(_ => _.Head(It.IsAny<Guid>())).Returns(false);
+            var controller = new CrudController<TestEntity>(serviceMock.Object);
+
+            var actionResult = controller.Head(_entity.Id);
+
+            Assert.IsType<NotFoundResult>(actionResult);
+            serviceMock.Verify(_ => _.Head(It.IsAny<Guid>()));
+        }
     }
 }

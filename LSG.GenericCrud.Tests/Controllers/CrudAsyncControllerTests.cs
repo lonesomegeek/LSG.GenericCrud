@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Bogus;
 using LSG.GenericCrud.Controllers;
 using LSG.GenericCrud.Exceptions;
@@ -131,6 +132,32 @@ namespace LSG.GenericCrud.Tests.Controllers
 
             Assert.IsType<NotFoundResult>(actionResult);
             serviceMock.Verify(_ => _.DeleteAsync(It.IsAny<Guid>()), Times.Once);
+        }
+
+        [Fact]
+        public async void Head_ReturnsOk()
+        {
+            var serviceMock = new Mock<ICrudService<TestEntity>>();
+            serviceMock.Setup(_ => _.HeadAsync(It.IsAny<Guid>())).ReturnsAsync(true);
+            var controller = new CrudAsyncController<TestEntity>(serviceMock.Object);
+
+            var actionResult = await controller.Head(_entity.Id);
+
+            Assert.IsType<OkResult>(actionResult);
+            serviceMock.Verify(_ => _.HeadAsync(It.IsAny<Guid>()));
+        }
+
+        [Fact]
+        public async void Head_ReturnsNotFound()
+        {
+            var serviceMock = new Mock<ICrudService<TestEntity>>();
+            serviceMock.Setup(_ => _.HeadAsync(It.IsAny<Guid>())).ReturnsAsync(false);
+            var controller = new CrudAsyncController<TestEntity>(serviceMock.Object);
+
+            var actionResult = await controller.Head(_entity.Id);
+
+            Assert.IsType<NotFoundResult>(actionResult);
+            serviceMock.Verify(_ => _.HeadAsync(It.IsAny<Guid>()));
         }
     }
 }

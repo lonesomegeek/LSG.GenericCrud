@@ -79,5 +79,17 @@ namespace LSG.GenericCrud.Services
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         Task<T> DeleteAsync(Guid id);
+        /// <summary>
+        /// Check for existence of an element
+        /// </summary>
+        /// <param name="isAny"></param>
+        /// <returns></returns>
+        bool Head(Guid id);
+        /// <summary>
+        /// Check for existence of an element asynchronous
+        /// </summary>
+        /// <param name="isAny"></param>
+        /// <returns></returns>
+        Task<bool> HeadAsync(Guid id);
     }
 }

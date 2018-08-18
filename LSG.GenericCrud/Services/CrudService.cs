@@ -169,5 +169,15 @@ namespace LSG.GenericCrud.Services
             if (AutoCommit) _repository.SaveChanges();
             return entity;
         }
+
+        public bool Head(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> HeadAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

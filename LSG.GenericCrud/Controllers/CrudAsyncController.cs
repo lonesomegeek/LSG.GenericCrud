@@ -98,5 +98,12 @@ namespace LSG.GenericCrud.Controllers
                 return NotFound();
             }
         }
+
+        [HttpHead("{id}")]
+        public virtual async Task<IActionResult> Head(Guid id)
+        {
+            if (await _service.HeadAsync(id)) return Ok();
+            else return NotFound();
+        }
     }
 }
