@@ -170,14 +170,34 @@ namespace LSG.GenericCrud.Services
             return entity;
         }
 
-        public bool Head(Guid id)
+        public virtual bool Head(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var entity = GetById(id);
+                if (entity != null) return true;
+            }
+            catch (EntityNotFoundException )
+            {
+                return false;
+            }
+
+            return false;
         }
 
-        public Task<bool> HeadAsync(Guid id)
+        public virtual async Task<bool> HeadAsync(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var entity = await GetByIdAsync(id);
+                if (entity != null) return true;
+            }
+            catch (EntityNotFoundException)
+            {
+                return false;
+            }
+
+            return false;
         }
     }
 }

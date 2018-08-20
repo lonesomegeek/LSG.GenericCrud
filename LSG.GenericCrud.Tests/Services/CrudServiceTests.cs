@@ -232,5 +232,58 @@ namespace LSG.GenericCrud.Tests.Services
 
             await Assert.ThrowsAsync<EntityNotFoundException>(() => service.DeleteAsync(Guid.Empty));
         }
+
+        [Fact]
+        public void Head_ReturnsTrue()
+        {
+            var repositoryMock = new Mock<ICrudRepository>();
+            repositoryMock.Setup(_ => _.GetById<TestEntity>(It.IsAny<Guid>())).Returns(_entity);
+            var service = new CrudService<TestEntity>(repositoryMock.Object);
+
+            var result = service.Head(_entity.Id);
+
+            Assert.True(result);
+            repositoryMock.Verify(_ => _.GetById<TestEntity>(It.IsAny<Guid>()), Times.Once);
+        }
+
+        [Fact]
+        public void Head_ReturnsFalse()
+        {
+            var repositoryMock = new Mock<ICrudRepository>();
+            repositoryMock.Setup(_ => _.GetById<TestEntity>(It.IsAny<Guid>())).Throws<EntityNotFoundException>();
+            var service = new CrudService<TestEntity>(repositoryMock.Object);
+
+            var result = service.Head(_entity.Id);
+
+            Assert.False(result);
+            repositoryMock.Verify(_ => _.GetById<TestEntity>(It.IsAny<Guid>()), Times.Once);
+        }
+
+        [Fact]
+        public async void HeadAsync_ReturnsTrue()
+        {
+            var repositoryMock = new Mock<ICrudRepository>();
+            repositoryMock.Setup(_ => _.GetByIdAsync<TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
+            var service = new CrudService<TestEntity>(repositoryMock.Object);
+
+            var result = await service.HeadAsync(_entity.Id);
+
+            Assert.True(result);
+            repositoryMock.Verify(_ => _.GetByIdAsync<TestEntity>(It.IsAny<Guid>()), Times.Once);
+        }
+
+        [Fact]
+        public async void HeadAsync_ReturnsFalse()
+        {
+            var repositoryMock = new Mock<ICrudRepository>();
+            repositoryMock.Setup(_ => _.GetByIdAsync<TestEntity>(It.IsAny<Guid>())).Throws<EntityNotFoundException>();
+            var service = new CrudService<TestEntity>(repositoryMock.Object);
+
+            var result = await service.HeadAsync(_entity.Id);
+
+            Assert.False(result);
+            repositoryMock.Verify(_ => _.GetByIdAsync<TestEntity>(It.IsAny<Guid>()), Times.Once);
+        }
+
     }
 }
