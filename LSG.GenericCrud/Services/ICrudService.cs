@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LSG.GenericCrud.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LSG.GenericCrud.Services
@@ -91,5 +92,7 @@ namespace LSG.GenericCrud.Services
         /// <param name="isAny"></param>
         /// <returns></returns>
         Task<bool> HeadAsync(Guid id);
+
+        void Patch<T>(Guid id, JsonPatchDocument<T> patches) where T : class, IEntity, new();
     }
 }

@@ -2,6 +2,7 @@
 using LSG.GenericCrud.Exceptions;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Services;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LSG.GenericCrud.Controllers
@@ -108,6 +109,12 @@ namespace LSG.GenericCrud.Controllers
         {
             if (_service.Head(id)) return Ok();
             else return NotFound();
+        }
+
+        [HttpPatch("{id}")]
+        public virtual IActionResult Patch(Guid id, [FromBody] JsonPatchDocument<T> patches)
+        {
+            _service.Patch(id, patches);
         }
     }
 }
