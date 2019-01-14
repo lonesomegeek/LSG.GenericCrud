@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using LSG.GenericCrud.Exceptions;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Services;
@@ -7,10 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace LSG.GenericCrud.Controllers
 {
     /// <summary>
-    /// Historical Crud Controller endpoints
+    /// Asynchronous Historical Crud Controller endpoints
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <seealso cref="LSG.GenericCrud.Controllers.CrudController{T}" />
+    /// <seealso cref="LSG.GenericCrud.Controllers.CrudAsyncController{T}" />
     public class HistoricalCrudController<T> : CrudController<T> where T : class, IEntity, new()
     {
         /// <summary>
@@ -19,7 +20,7 @@ namespace LSG.GenericCrud.Controllers
         private readonly IHistoricalCrudService<T> _historicalCrudService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HistoricalCrudController{T}"/> class.
+        /// Initializes a new instance of the <see cref="HistoricalCrudAsyncController{T}"/> class.
         /// </summary>
         /// <param name="historicalCrudService">The historical crud service.</param>
         public HistoricalCrudController(IHistoricalCrudService<T> historicalCrudService) : base(historicalCrudService)
@@ -33,11 +34,11 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpGet("{id}/history")]
-        public virtual IActionResult GetHistory(Guid id)
+        public virtual async Task<IActionResult> GetHistory(Guid id)
         {
             try
             {
-                return Ok(_historicalCrudService.GetHistory(id));
+                return Ok(await _historicalCrudService.GetHistoryAsync(id));
             }
             catch (EntityNotFoundException)
             {
@@ -51,11 +52,11 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpPost("{id}/restore")]
-        public virtual IActionResult Restore(Guid id)
+        public virtual async Task<IActionResult> Restore(Guid id)
         {
             try
             {
-                return Ok(_historicalCrudService.Restore(id));
+                return Ok(await _historicalCrudService.RestoreAsync(id));
             }
             catch (EntityNotFoundException)
             {
