@@ -12,7 +12,7 @@ namespace LSG.GenericCrud.Controllers
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="LSG.GenericCrud.Controllers.CrudAsyncController{T}" />
-    public class HistoricalCrudController<T> : CrudController<T> where T : class, IEntity, new()
+    public class HistoricalCrudController<T> : ControllerBase, IHistoricalCrudController<T> where T : class, IEntity, new()
     {
         /// <summary>
         /// The historical crud service
@@ -23,7 +23,7 @@ namespace LSG.GenericCrud.Controllers
         /// Initializes a new instance of the <see cref="HistoricalCrudAsyncController{T}"/> class.
         /// </summary>
         /// <param name="historicalCrudService">The historical crud service.</param>
-        public HistoricalCrudController(IHistoricalCrudService<T> historicalCrudService) : base(historicalCrudService)
+        public HistoricalCrudController(IHistoricalCrudService<T> historicalCrudService)
         {
             _historicalCrudService = historicalCrudService;
         }

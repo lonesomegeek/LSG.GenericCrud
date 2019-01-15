@@ -13,7 +13,7 @@ namespace LSG.GenericCrud.Controllers
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
-    public class CrudController<T> : ControllerBase where T : class, IEntity, new()
+    public class CrudController<T> : ControllerBase, ICrudController<T> where T : class, IEntity, new()
     {
         /// <summary>
         /// The service
@@ -61,7 +61,12 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
         [HttpPost]
-        public virtual async Task<ActionResult<T>> Create([FromBody] T entity) => CreatedAtAction("GetById", await _service.CreateAsync(entity));
+        public virtual async Task<ActionResult<T>> Create([FromBody] T entity)
+        {
+            var createdEntity = await _service.CreateAsync(entity);
+            return CreatedAtAction(nameof(GetById), new { id = createdEntity.Id }, createdEntity);
+        }
+        
 
         /// <summary>
         /// Updates the specified identifier.
