@@ -32,11 +32,10 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<ICrudService<TestEntity>>();
             serviceMock.Setup(_ => _.GetAllAsync()).ReturnsAsync(_entities);
-            var controller = new CrudAsyncController<TestEntity>(serviceMock.Object);
+            var controller = new CrudController<TestEntity>(serviceMock.Object);
 
             var actionResult = await controller.GetAll();
-            var okResult = actionResult as OkObjectResult;
-            var model = okResult.Value as IEnumerable<TestEntity>;
+            var model = actionResult.Value as IEnumerable<TestEntity>;
 
             Assert.Equal(model.Count(), _entities.Count);
             serviceMock.Verify(_ => _.GetAllAsync(), Times.Once);
@@ -48,11 +47,10 @@ namespace LSG.GenericCrud.Tests.Controllers
             var id = _entities[0].Id;
             var serviceMock = new Mock<ICrudService<TestEntity>>();
             serviceMock.Setup(_ => _.GetByIdAsync(id)).ReturnsAsync(_entities[0]);
-            var controller = new CrudAsyncController<TestEntity>(serviceMock.Object);
+            var controller = new CrudController<TestEntity>(serviceMock.Object);
 
             var actionResult = await controller.GetById(id);
-            var okResult = actionResult as OkObjectResult;
-            var model = okResult.Value as TestEntity;
+            var model = actionResult.Value as TestEntity;
 
             Assert.Equal(model.Id, id);
             serviceMock.Verify(_ => _.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
@@ -63,7 +61,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<ICrudService<TestEntity>>();
             serviceMock.Setup(_ => _.GetByIdAsync(It.IsAny<Guid>())).Throws(new EntityNotFoundException());
-            var controller = new CrudAsyncController<TestEntity>(serviceMock.Object);
+            var controller = new CrudController<TestEntity>(serviceMock.Object);
 
             var actionResult = await controller.GetById(Guid.NewGuid());
 
@@ -75,7 +73,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         public async void Create_ReturnsAsyncCreatedEntity()
         {
             var serviceMock = new Mock<ICrudService<TestEntity>>();
-            var controller = new CrudAsyncController<TestEntity>(serviceMock.Object);
+            var controller = new CrudController<TestEntity>(serviceMock.Object);
 
             var actionResult = await controller.Create(_entity);
 
@@ -87,7 +85,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         public async void Update_ReturnsAsyncModifiedEntity()
         {
             var serviceMock = new Mock<ICrudService<TestEntity>>();
-            var controller = new CrudAsyncController<TestEntity>(serviceMock.Object);
+            var controller = new CrudController<TestEntity>(serviceMock.Object);
 
             var actionResult = await controller.Update(_entity.Id, _entity);
 
@@ -100,7 +98,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<ICrudService<TestEntity>>();
             serviceMock.Setup(_ => _.UpdateAsync(It.IsAny<Guid>(), It.IsAny<TestEntity>())).Throws<EntityNotFoundException>();
-            var controller = new CrudAsyncController<TestEntity>(serviceMock.Object);
+            var controller = new CrudController<TestEntity>(serviceMock.Object);
 
             var actionResult = await controller.Update(_entity.Id, _entity);
 
@@ -112,7 +110,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         public async void Delete_ReturnsAsyncOk()
         {
             var serviceMock = new Mock<ICrudService<TestEntity>>();
-            var controller = new CrudAsyncController<TestEntity>(serviceMock.Object);
+            var controller = new CrudController<TestEntity>(serviceMock.Object);
 
             var actionResult = await controller.Delete(_entity.Id);
 
@@ -125,7 +123,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<ICrudService<TestEntity>>();
             serviceMock.Setup(_ => _.DeleteAsync(It.IsAny<Guid>())).Throws<EntityNotFoundException>();
-            var controller = new CrudAsyncController<TestEntity>(serviceMock.Object);
+            var controller = new CrudController<TestEntity>(serviceMock.Object);
 
             var actionResult = await controller.Delete(_entity.Id);
 

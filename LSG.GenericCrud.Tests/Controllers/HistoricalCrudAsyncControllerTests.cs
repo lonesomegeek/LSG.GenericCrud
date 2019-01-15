@@ -35,7 +35,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<TestEntity>>();
             serviceMock.Setup(_ => _.RestoreAsync(It.IsAny<Guid>())).ReturnsAsync(_entity);
-            var controller = new HistoricalCrudAsyncController<TestEntity>(serviceMock.Object);
+            var controller = new HistoricalCrudController<TestEntity>(serviceMock.Object);
 
             var result = await controller.Restore(_entity.Id);
 
@@ -48,7 +48,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<TestEntity>>();
             serviceMock.Setup(_ => _.RestoreAsync(It.IsAny<Guid>())).ThrowsAsync(new EntityNotFoundException());
-            var controller = new HistoricalCrudAsyncController<TestEntity>(serviceMock.Object);
+            var controller = new HistoricalCrudController<TestEntity>(serviceMock.Object);
 
             var result = await controller.Restore(_entity.Id);
 
@@ -61,7 +61,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<TestEntity>>();
             serviceMock.Setup(_ => _.GetHistoryAsync(It.IsAny<Guid>())).ReturnsAsync(_events);
-            var controller = new HistoricalCrudAsyncController<TestEntity>(serviceMock.Object);
+            var controller = new HistoricalCrudController<TestEntity>(serviceMock.Object);
 
             var result = await controller.GetHistory(_entity.Id);
 
@@ -74,7 +74,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<TestEntity>>();
             serviceMock.Setup(_ => _.GetHistoryAsync(It.IsAny<Guid>())).ThrowsAsync(new EntityNotFoundException());
-            var controller = new HistoricalCrudAsyncController<TestEntity>(serviceMock.Object);
+            var controller = new HistoricalCrudController<TestEntity>(serviceMock.Object);
 
             var result = await controller.GetHistory(_entity.Id);
 
