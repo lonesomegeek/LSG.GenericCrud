@@ -30,7 +30,7 @@ namespace LSG.GenericCrud.Controllers
         [Route("read")]
         public virtual async Task<IActionResult> MarkAllAsRead()
         {
-            await _service.MarkAsRead();
+            await _service.MarkAllAsRead();
             return NoContent();
         }
 
@@ -38,7 +38,7 @@ namespace LSG.GenericCrud.Controllers
         [Route("read/{id}")]
         public virtual async Task<IActionResult> MarkOneAsRead(Guid id)
         {
-            await _service.MarkAsRead(id);
+            await _service.MarkOneAsRead(id);
             return NoContent();
         }
 
@@ -46,7 +46,7 @@ namespace LSG.GenericCrud.Controllers
         [Route("unread")]
         public virtual async Task<IActionResult> MarkAllAsUnread()
         {
-            await _service.MarkAsUnread();
+            await _service.MarkAllAsUnread();
             return NoContent();
         }
         [HttpPost]

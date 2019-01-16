@@ -83,5 +83,11 @@ namespace LSG.GenericCrud.Repositories
         /// Saves the changes.
         /// </summary>
         void SaveChanges();
+
+        /// <summary>
+        /// Saves the changes asyncronous.
+        /// </summary>
+        /// <returns></returns>
+        Task<int> SaveChangesAsync();
     }
 }
