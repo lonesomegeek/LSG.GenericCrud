@@ -48,7 +48,7 @@ namespace LSG.GenericCrud.Services
                         NewStuffAvailable = !((a.ModifiedDate == null && au1.LastViewed >= a.CreatedDate) || (a.ModifiedDate != null && au1.LastViewed >= a.ModifiedDate))
                     }
                 };
-            return null;
+            return result;
         }
 
         public async Task<int> MarkAllAsRead()

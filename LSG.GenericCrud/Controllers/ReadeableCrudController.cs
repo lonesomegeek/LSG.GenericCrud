@@ -8,9 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LSG.GenericCrud.Controllers
 {
-    public class ReadeableCrudController<T> : 
-        ControllerBase
-        where T : class, IEntity, new()
+    public class ReadeableCrudController<T> :
+        ControllerBase, IReadeableCrudController<T> where T : class, IEntity, new()
     {
         private readonly IReadeableCrudService<T> _service;
 
@@ -24,7 +23,7 @@ namespace LSG.GenericCrud.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public virtual async Task<ActionResult<IEnumerable<T>>> GetAll() => Ok(await _service.GetAllAsync());
+        public virtual async Task<IActionResult> GetAllReadStatus() => Ok(await _service.GetAllAsync());
 
         [HttpPost]
         [Route("read")]
