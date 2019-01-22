@@ -10,15 +10,8 @@ namespace LSG.GenericCrud.Models
     /// </summary>
     /// <seealso cref="LSG.GenericCrud.Models.BaseEntity" />
     /// <seealso cref="LSG.GenericCrud.Models.IEntity" />
-    public class HistoricalEvent : IEntity
+    public class HistoricalEvent : BaseEntity, IEntity
     {
-        /// <summary>
-        /// Gets or sets the identifier.
-        /// </summary>
-        /// <value>
-        /// The identifier.
-        /// </value>
-        public Guid Id { get; set; }
         /// <summary>
         /// Gets or sets the entity identifier.
         /// </summary>
@@ -47,19 +40,5 @@ namespace LSG.GenericCrud.Models
         /// The changeset.
         /// </value>
         public string Changeset { get; set; }
-        /// <summary>
-        /// Gets or sets the action date.
-        /// </summary>
-        /// <value>
-        /// The action date.
-        /// </value>
-        public DateTime? ActionDate { get; set; }
-        /// <summary>
-        /// Gets or sets the user or system that triggered the action.
-        /// </summary>
-        /// <value>
-        /// The user or system that triggered the action.
-        /// </value>
-        public string TriggeredBy { get; set; }
     }
 }

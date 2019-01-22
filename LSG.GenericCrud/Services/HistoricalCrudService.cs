@@ -18,25 +18,27 @@ namespace LSG.GenericCrud.Services
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="LSG.GenericCrud.Services.CrudService{T}" />
     /// <seealso cref="LSG.GenericCrud.Services.IHistoricalCrudService{T}" />
-    public class HistoricalCrudService<T> : CrudService<T>, IHistoricalCrudService<T> where T : class, IEntity, new()
+    public class HistoricalCrudService<T> : 
+        ICrudService<T>,
+        IHistoricalCrudService<T> where T : class, IEntity, new()
     {
-        ///// <summary>
-        ///// The event repository
-        ///// </summary>
-        //private readonly ICrudRepository<HistoricalEvent> _eventRepository;
-        
+        private readonly ICrudService<T> _service;
+
         /// <summary>
         /// The repository
         /// </summary>
         private readonly ICrudRepository _repository;
+
+        public bool AutoCommit { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HistoricalCrudService{T}"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="eventRepository">The event repository.</param>
-        public HistoricalCrudService(ICrudRepository repository) : base(repository)
+        public HistoricalCrudService(ICrudService<T> service, ICrudRepository repository)
         {
+            _service = service;
             _repository = repository;
             AutoCommit = false;
         }
@@ -46,9 +48,9 @@ namespace LSG.GenericCrud.Services
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        public new virtual T Create(T entity)
+        public virtual T Create(T entity)
         {
-            var createdEntity = base.Create(entity);
+            var createdEntity = _service.Create(entity);
 
             var historicalEvent = new HistoricalEvent
             {
@@ -69,9 +71,9 @@ namespace LSG.GenericCrud.Services
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        public new virtual async Task<T> CreateAsync(T entity)
+        public virtual async Task<T> CreateAsync(T entity)
         {
-            var createdEntity = await base.CreateAsync(entity);
+            var createdEntity = await _service.CreateAsync(entity);
 
             var historicalEvent = new HistoricalEvent
             {
@@ -93,9 +95,9 @@ namespace LSG.GenericCrud.Services
         /// <param name="id">The identifier.</param>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        public new virtual T Update(Guid id, T entity)
+        public virtual T Update(Guid id, T entity)
         {
-            var originalEntity = base.GetById(id);
+            var originalEntity = _service.GetById(id);
             var historicalEvent = new HistoricalEvent
             {
                 Action = HistoricalActions.Update.ToString(),
@@ -103,7 +105,7 @@ namespace LSG.GenericCrud.Services
                 EntityId = originalEntity.Id,
                 EntityName = entity.GetType().Name
             };
-            var modifiedEntity = base.Update(id, entity);
+            var modifiedEntity = _service.Update(id, entity);
 
             _repository.Create(historicalEvent);
             _repository.SaveChanges();
@@ -117,9 +119,9 @@ namespace LSG.GenericCrud.Services
         /// <param name="id">The identifier.</param>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        public new virtual async Task<T> UpdateAsync(Guid id, T entity)
+        public virtual async Task<T> UpdateAsync(Guid id, T entity)
         {
-            var originalEntity = await base.GetByIdAsync(id);
+            var originalEntity = await _service.GetByIdAsync(id);
             var historicalEvent = new HistoricalEvent
             {
                 Action = HistoricalActions.Update.ToString(),
@@ -127,7 +129,7 @@ namespace LSG.GenericCrud.Services
                 EntityId = originalEntity.Id,
                 EntityName = entity.GetType().Name
             };
-            var modifiedEntity = await base.UpdateAsync(id, entity);
+            var modifiedEntity = await _service.UpdateAsync(id, entity);
 
             await _repository.CreateAsync(historicalEvent);
             _repository.SaveChanges();
@@ -140,9 +142,9 @@ namespace LSG.GenericCrud.Services
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public new virtual T Delete(Guid id)
+        public virtual T Delete(Guid id)
         {
-            var entity = base.Delete(id);
+            var entity = _service.Delete(id);
 
             // store all object in historical event
             var historicalEvent = new HistoricalEvent
@@ -163,9 +165,9 @@ namespace LSG.GenericCrud.Services
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public new virtual async Task<T> DeleteAsync(Guid id)
+        public virtual async Task<T> DeleteAsync(Guid id)
         {
-            var entity = await base.DeleteAsync(id);
+            var entity = await _service.DeleteAsync(id);
 
             // store all object in historical event
             var historicalEvent = new HistoricalEvent
@@ -254,5 +256,13 @@ namespace LSG.GenericCrud.Services
             if (!filteredEvents.Any()) throw new EntityNotFoundException();
             return filteredEvents;
         }
+
+        public virtual IEnumerable<T> GetAll() => _service.GetAll();
+
+        public virtual T GetById(Guid id) => _service.GetById(id);
+
+        public virtual async Task<IEnumerable<T>> GetAllAsync() => await _service.GetAllAsync();
+
+        public virtual async Task<T> GetByIdAsync(Guid id) => await _service.GetByIdAsync(id);
     }
 }

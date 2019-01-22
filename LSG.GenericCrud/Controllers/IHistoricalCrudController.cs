@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LSG.GenericCrud.Controllers
 {
-    public interface IHistoricalCrudController<T> where T : class, IEntity, new()
+    public interface IHistoricalCrudController<T> : ICrudController<T> where T : class, IEntity, new()
     {
         /// <summary>
         /// Gets the history.
