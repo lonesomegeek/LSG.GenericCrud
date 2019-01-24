@@ -35,7 +35,8 @@ namespace LSG.GenericCrud.Tests.Controllers
             var controller = new CrudController<TestEntity>(serviceMock.Object);
 
             var actionResult = await controller.GetAll();
-            var model = actionResult.Value as IEnumerable<TestEntity>;
+            var objectResult = actionResult.Result as OkObjectResult;
+            var model = objectResult.Value as IEnumerable<TestEntity>;
 
             Assert.Equal(model.Count(), _entities.Count);
             serviceMock.Verify(_ => _.GetAllAsync(), Times.Once);
@@ -50,7 +51,8 @@ namespace LSG.GenericCrud.Tests.Controllers
             var controller = new CrudController<TestEntity>(serviceMock.Object);
 
             var actionResult = await controller.GetById(id);
-            var model = actionResult.Value as TestEntity;
+            var objectResult = actionResult.Result as OkObjectResult;
+            var model = objectResult.Value as TestEntity;
 
             Assert.Equal(model.Id, id);
             serviceMock.Verify(_ => _.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
@@ -65,7 +67,7 @@ namespace LSG.GenericCrud.Tests.Controllers
 
             var actionResult = await controller.GetById(Guid.NewGuid());
 
-            Assert.IsType<NotFoundResult>(actionResult);
+            Assert.IsType<NotFoundResult>(actionResult.Result);
             serviceMock.Verify(_ => _.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
         }
 
@@ -73,11 +75,12 @@ namespace LSG.GenericCrud.Tests.Controllers
         public async void Create_ReturnsAsyncCreatedEntity()
         {
             var serviceMock = new Mock<ICrudService<TestEntity>>();
+            serviceMock.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
             var controller = new CrudController<TestEntity>(serviceMock.Object);
 
             var actionResult = await controller.Create(_entity);
 
-            Assert.IsType<OkObjectResult>(actionResult);
+            Assert.IsType<CreatedAtActionResult>(actionResult.Result);
             serviceMock.Verify(_ => _.CreateAsync(It.IsAny<TestEntity>()), Times.Once);
         }
 
@@ -89,7 +92,7 @@ namespace LSG.GenericCrud.Tests.Controllers
 
             var actionResult = await controller.Update(_entity.Id, _entity);
 
-            Assert.IsType<OkObjectResult>(actionResult);
+            Assert.IsType<NoContentResult>(actionResult);
             serviceMock.Verify(_ => _.UpdateAsync(It.IsAny<Guid>(), It.IsAny<TestEntity>()), Times.Once);
         }
 
@@ -114,7 +117,7 @@ namespace LSG.GenericCrud.Tests.Controllers
 
             var actionResult = await controller.Delete(_entity.Id);
 
-            Assert.IsType<OkObjectResult>(actionResult);
+            Assert.IsType<OkObjectResult>(actionResult.Result);
             serviceMock.Verify(_ => _.DeleteAsync(It.IsAny<Guid>()), Times.Once);
         }
 
@@ -127,7 +130,7 @@ namespace LSG.GenericCrud.Tests.Controllers
 
             var actionResult = await controller.Delete(_entity.Id);
 
-            Assert.IsType<NotFoundResult>(actionResult);
+            Assert.IsType<NotFoundResult>(actionResult.Result);
             serviceMock.Verify(_ => _.DeleteAsync(It.IsAny<Guid>()), Times.Once);
         }
     }

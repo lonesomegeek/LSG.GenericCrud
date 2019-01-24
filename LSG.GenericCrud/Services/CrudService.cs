@@ -85,7 +85,7 @@ namespace LSG.GenericCrud.Services
         public virtual async Task<T> CreateAsync(T entity)
         {
             var createdEntity = await _repository.CreateAsync(entity);
-            if (AutoCommit) _repository.SaveChanges();
+            if (AutoCommit) await _repository.SaveChangesAsync();
             return createdEntity;
         }
 
@@ -116,7 +116,7 @@ namespace LSG.GenericCrud.Services
                     if (value != null) originalProperty.SetValue(originalEntity, value);
                 }
             }
-            if (AutoCommit) _repository.SaveChanges();
+            if (AutoCommit) await _repository.SaveChangesAsync();
             return originalEntity;
         }
 
@@ -136,7 +136,7 @@ namespace LSG.GenericCrud.Services
         {
             var entity = await GetByIdAsync(id);
             await _repository.DeleteAsync<T>(id);
-            if (AutoCommit) _repository.SaveChanges();
+            if (AutoCommit) await _repository.SaveChangesAsync();
             return entity;
         }
     }
