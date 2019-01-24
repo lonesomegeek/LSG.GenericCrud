@@ -48,23 +48,7 @@ namespace LSG.GenericCrud.Services
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        public virtual T Create(T entity)
-        {
-            var createdEntity = _service.Create(entity);
-
-            var historicalEvent = new HistoricalEvent
-            {
-                Action = HistoricalActions.Create.ToString(),
-                Changeset = new T().DetailedCompare(entity),
-                EntityId = entity.Id,
-                EntityName = entity.GetType().Name
-            };
-
-            _repository.Create(historicalEvent);
-            _repository.SaveChanges();
-            // TODO: Do I need to call the other repo for both repositories, or do I need a UoW (bugfix created)
-            return createdEntity;
-        }
+        public virtual T Create(T entity) => CreateAsync(entity).GetAwaiter().GetResult();
 
         /// <summary>
         /// Creates the asynchronous.
@@ -84,7 +68,7 @@ namespace LSG.GenericCrud.Services
             };
 
             await _repository.CreateAsync(historicalEvent);
-            _repository.SaveChanges();
+            await _repository.SaveChangesAsync();
             // TODO: Do I need to call the other repo for both repositories, or do I need a UoW (bugfix created)
             return createdEntity;
         }
@@ -95,23 +79,7 @@ namespace LSG.GenericCrud.Services
         /// <param name="id">The identifier.</param>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        public virtual T Update(Guid id, T entity)
-        {
-            var originalEntity = _service.GetById(id);
-            var historicalEvent = new HistoricalEvent
-            {
-                Action = HistoricalActions.Update.ToString(),
-                Changeset = originalEntity.DetailedCompare(entity),
-                EntityId = originalEntity.Id,
-                EntityName = entity.GetType().Name
-            };
-            var modifiedEntity = _service.Update(id, entity);
-
-            _repository.Create(historicalEvent);
-            _repository.SaveChanges();
-
-            return modifiedEntity;
-        }
+        public virtual T Update(Guid id, T entity) => UpdateAsync(id, entity).GetAwaiter().GetResult();
 
         /// <summary>
         /// Updates the asynchronous.
@@ -132,7 +100,7 @@ namespace LSG.GenericCrud.Services
             var modifiedEntity = await _service.UpdateAsync(id, entity);
 
             await _repository.CreateAsync(historicalEvent);
-            _repository.SaveChanges();
+            await _repository.SaveChangesAsync();
 
             return modifiedEntity;
         }
@@ -142,23 +110,7 @@ namespace LSG.GenericCrud.Services
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public virtual T Delete(Guid id)
-        {
-            var entity = _service.Delete(id);
-
-            // store all object in historical event
-            var historicalEvent = new HistoricalEvent
-            {
-                Action = HistoricalActions.Delete.ToString(),
-                Changeset = new T().DetailedCompare(entity),
-                EntityId = entity.Id,
-                EntityName = entity.GetType().Name
-            };
-            _repository.Create(historicalEvent);
-            _repository.SaveChanges();
-
-            return entity;
-        }
+        public virtual T Delete(Guid id) => DeleteAsync(id).GetAwaiter().GetResult();
 
         /// <summary>
         /// Deletes the asynchronous.
@@ -178,7 +130,7 @@ namespace LSG.GenericCrud.Services
                 EntityName = entity.GetType().Name
             };
             await _repository.CreateAsync(historicalEvent);
-            _repository.SaveChanges();
+            await _repository.SaveChangesAsync();
 
             return entity;
         }
@@ -189,20 +141,7 @@ namespace LSG.GenericCrud.Services
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
-        public virtual T Restore(Guid id)
-        {
-            var entity = _repository
-                .GetAll<HistoricalEvent>()
-                .SingleOrDefault(_ =>
-                    _.EntityId == id &&
-                    _.Action == HistoricalActions.Delete.ToString());
-            if (entity == null) throw new EntityNotFoundException();
-            var json = entity.Changeset;
-            var obj = JsonConvert.DeserializeObject<T>(json);
-            var createdObject = Create(obj);
-
-            return createdObject;
-        }
+        public virtual T Restore(Guid id) => RestoreAsync(id).GetAwaiter().GetResult();
 
         /// <summary>
         /// Restores the asynchronous.
@@ -232,14 +171,7 @@ namespace LSG.GenericCrud.Services
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
-        public virtual IEnumerable<IEntity> GetHistory(Guid id)
-        {
-            var events = _repository
-                .GetAll<HistoricalEvent>()
-                .Where(_ => _.EntityId == id).ToList();
-            if (!events.Any()) throw new EntityNotFoundException();
-            return events;
-        }
+        public virtual IEnumerable<IEntity> GetHistory(Guid id) => GetHistoryAsync(id).GetAwaiter().GetResult();
 
         /// <summary>
         /// Gets the history asynchronous.
@@ -257,9 +189,9 @@ namespace LSG.GenericCrud.Services
             return filteredEvents;
         }
 
-        public virtual IEnumerable<T> GetAll() => _service.GetAll();
+        public virtual IEnumerable<T> GetAll() => GetAllAsync().GetAwaiter().GetResult();
 
-        public virtual T GetById(Guid id) => _service.GetById(id);
+        public virtual T GetById(Guid id) => GetByIdAsync(id).GetAwaiter().GetResult();
 
         public virtual async Task<IEnumerable<T>> GetAllAsync() => await _service.GetAllAsync();
 

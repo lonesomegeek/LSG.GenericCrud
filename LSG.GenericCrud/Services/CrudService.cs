@@ -41,7 +41,7 @@ namespace LSG.GenericCrud.Services
         /// Gets all.
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerable<T> GetAll() => _repository.GetAll<T>();
+        public virtual IEnumerable<T> GetAll() => GetAllAsync().GetAwaiter().GetResult();
 
         /// <summary>
         /// Gets all asynchronous.
@@ -55,12 +55,7 @@ namespace LSG.GenericCrud.Services
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
-        public virtual T GetById(Guid id)
-        {
-            var entity = _repository.GetById<T>(id);
-            if (entity == null) throw new EntityNotFoundException();
-            return entity;
-        }
+        public virtual T GetById(Guid id) => GetByIdAsync(id).GetAwaiter().GetResult();
 
         /// <summary>
         /// Gets the by identifier asynchronous.
@@ -80,12 +75,7 @@ namespace LSG.GenericCrud.Services
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        public virtual T Create(T entity)
-        {
-            var createdEntity = _repository.Create(entity);
-            if (AutoCommit) _repository.SaveChanges();
-            return createdEntity;
-        }
+        public virtual T Create(T entity) => CreateAsync(entity).GetAwaiter().GetResult();
 
         /// <summary>
         /// Creates the asynchronous.
@@ -105,21 +95,7 @@ namespace LSG.GenericCrud.Services
         /// <param name="id">The identifier.</param>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        public virtual T Update(Guid id, T entity)
-        {
-            var originalEntity = GetById(id);
-            foreach (var prop in entity.GetType().GetProperties())
-            {
-                if (prop.Name != "Id")
-                {
-                    var originalProperty = originalEntity.GetType().GetProperty(prop.Name);
-                    var value = prop.GetValue(entity, null);
-                    if (value != null) originalProperty.SetValue(originalEntity, value);
-                }
-            }
-            if (AutoCommit) _repository.SaveChanges();
-            return originalEntity;
-        }
+        public virtual T Update(Guid id, T entity) => UpdateAsync(id, entity).GetAwaiter().GetResult();
 
 
         /// <summary>
@@ -149,13 +125,7 @@ namespace LSG.GenericCrud.Services
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public virtual T Delete(Guid id)
-        {
-            var entity = GetById(id);
-            _repository.Delete<T>(id);
-            if (AutoCommit) _repository.SaveChanges();
-            return entity;
-        }
+        public virtual T Delete(Guid id) => DeleteAsync(id).GetAwaiter().GetResult();
 
         /// <summary>
         /// Deletes the asynchronous.

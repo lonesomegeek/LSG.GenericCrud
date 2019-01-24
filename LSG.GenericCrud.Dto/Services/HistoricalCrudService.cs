@@ -16,148 +16,73 @@ namespace LSG.GenericCrud.Dto.Services
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     /// <seealso cref="LSG.GenericCrud.Services.HistoricalCrudService{TEntity}" />
     /// <seealso cref="LSG.GenericCrud.Services.IHistoricalCrudService{TDto}" />
-    public class HistoricalCrudService<TDto, TEntity> : HistoricalCrudService<TEntity>, IHistoricalCrudService<TDto>
+    public class HistoricalCrudService<TDto, TEntity> :
+        ICrudService<TDto>,
+        IHistoricalCrudService<TDto>
         where TDto : IEntity
         where TEntity : class, IEntity, new()
     {
-        /// <summary>
-        /// The mapper
-        /// </summary>
+        private readonly IHistoricalCrudService<TEntity> _service;
+        private readonly ICrudRepository _repository;
         private readonly IMapper _mapper;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HistoricalCrudService{TDto, TEntity}"/> class.
-        /// </summary>
-        /// <param name="repository">The repository.</param>
-        /// <param name="eventRepository">The event repository.</param>
-        /// <param name="mapper">The mapper.</param>
-        public HistoricalCrudService(ICrudRepository repository, IMapper mapper) : base(repository)
+        public HistoricalCrudService(IHistoricalCrudService<TEntity> service, ICrudRepository repository, IMapper mapper)
         {
+            _service = service;
+            _repository = repository;
             _mapper = mapper;
+            AutoCommit = false;
         }
 
-        /// <summary>
-        /// Gets all.
-        /// </summary>
-        /// <returns></returns>
-        public virtual IEnumerable<TDto> GetAll() => base.GetAll().Select(_ => _mapper.Map<TDto>(_));
+        public bool AutoCommit { get; set; }
 
-        /// <summary>
-        /// Gets the by identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        public virtual TDto GetById(Guid id) => _mapper.Map<TDto>(base.GetById(id));
+        public virtual TDto Create(TDto dto) => CreateAsync(dto).GetAwaiter().GetResult();
 
-        /// <summary>
-        /// Creates the specified dto.
-        /// </summary>
-        /// <param name="dto">The dto.</param>
-        /// <returns></returns>
-        public virtual TDto Create(TDto dto)
+        public virtual async Task<TDto> CreateAsync(TDto dto)
         {
-            var createdEntity = base.Create(_mapper.Map<TEntity>(dto));
+            var entity = _mapper.Map<TEntity>(dto);
+            var createdEntity = await _service.CreateAsync(entity);
             return _mapper.Map<TDto>(createdEntity);
         }
 
-        /// <summary>
-        /// Updates the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <param name="dto">The dto.</param>
-        /// <returns></returns>
-        public virtual TDto Update(Guid id, TDto dto)
-        {
-            var updatedEntity = base.Update(id, _mapper.Map<TEntity>(dto));
-            return _mapper.Map<TDto>(updatedEntity);
-        }
+        public virtual TDto Delete(Guid id) => DeleteAsync(id).GetAwaiter().GetResult();
 
-        /// <summary>
-        /// Deletes the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        public virtual TDto Delete(Guid id)
+        public virtual async Task<TDto> DeleteAsync(Guid id)
         {
-            var deletedEntity = base.Delete(id);
+            var deletedEntity = await _service.DeleteAsync(id);
             return _mapper.Map<TDto>(deletedEntity);
         }
 
-        /// <summary>
-        /// Gets all asynchronous.
-        /// </summary>
-        /// <returns></returns>
+        public virtual IEnumerable<TDto> GetAll() => GetAllAsync().GetAwaiter().GetResult();
+
         public virtual async Task<IEnumerable<TDto>> GetAllAsync()
         {
-            var entities = await base.GetAllAsync();
+            var entities = await _service.GetAllAsync();
             return entities.Select(_ => _mapper.Map<TDto>(_));
         }
 
-        /// <summary>
-        /// Gets the by identifier asynchronous.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        public virtual async Task<TDto> GetByIdAsync(Guid id)
-        {
-            var entity = await base.GetByIdAsync(id);
-            return _mapper.Map<TDto>(entity);
-        }
+        public virtual async Task<TDto> GetByIdAsync(Guid id) => _mapper.Map<TDto>(await _service.GetByIdAsync(id));
 
-        /// <summary>
-        /// Creates the asynchronous.
-        /// </summary>
-        /// <param name="dto">The dto.</param>
-        /// <returns></returns>
-        public virtual async Task<TDto> CreateAsync(TDto dto)
-        {
-            var createdEntity = await base.CreateAsync(_mapper.Map<TEntity>(dto));
-            return _mapper.Map<TDto>(createdEntity);
-        }
+        public virtual TDto GetById(Guid id) => GetByIdAsync(id).GetAwaiter().GetResult();
 
-        /// <summary>
-        /// Updates the asynchronous.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <param name="dto">The dto.</param>
-        /// <returns></returns>
-        public virtual async Task<TDto> UpdateAsync(Guid id, TDto dto)
-        {
-            var updatedEntity = await base.UpdateAsync(id, _mapper.Map<TEntity>(dto));
-            return _mapper.Map<TDto>(updatedEntity);
-        }
+        public virtual IEnumerable<IEntity> GetHistory(Guid id) => GetHistoryAsync(id).GetAwaiter().GetResult();
 
-        /// <summary>
-        /// Deletes the asynchronous.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        public virtual async Task<TDto> DeleteAsync(Guid id)
-        {
-            var deletedEntity = await base.DeleteAsync(id);
-            return _mapper.Map<TDto>(deletedEntity);
-        }
+        public virtual async Task<IEnumerable<IEntity>> GetHistoryAsync(Guid id) => await _service.GetHistoryAsync(id);
 
-        /// <summary>
-        /// Restores the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        public virtual TDto Restore(Guid id)
-        {
-            var restoredEntity = base.Restore(id);
-            return _mapper.Map<TDto>(restoredEntity);
-        }
+        public virtual TDto Restore(Guid id) => RestoreAsync(id).GetAwaiter().GetResult();
 
-        /// <summary>
-        /// Restores the asynchronous.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
         public virtual async Task<TDto> RestoreAsync(Guid id)
         {
-            var restoredEntity = await base.RestoreAsync(id);
+            var restoredEntity = await _service.RestoreAsync(id);
             return _mapper.Map<TDto>(restoredEntity);
+        }
+
+        public virtual TDto Update(Guid id, TDto dto) => UpdateAsync(id, dto).GetAwaiter().GetResult();
+
+        public virtual async Task<TDto> UpdateAsync(Guid id, TDto dto)
+        {
+            var updatedEntity = await _service.UpdateAsync(id, _mapper.Map<TEntity>(dto));
+            return _mapper.Map<TDto>(updatedEntity);
         }
     }
 }
