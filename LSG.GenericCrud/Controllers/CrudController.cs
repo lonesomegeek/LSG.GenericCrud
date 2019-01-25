@@ -13,7 +13,10 @@ namespace LSG.GenericCrud.Controllers
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
-    public class CrudController<T> : ControllerBase, ICrudController<T> where T : class, IEntity, new()
+    public class CrudController<T> : 
+        ControllerBase, 
+        ICrudController<T> 
+        where T : class, IEntity, new()
     {
         /// <summary>
         /// The service

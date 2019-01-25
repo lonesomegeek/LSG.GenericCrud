@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using LSG.GenericCrud.Extensions.Services;
 using LSG.GenericCrud.Models;
-using LSG.GenericCrud.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LSG.GenericCrud.Controllers
+namespace LSG.GenericCrud.Extensions.Controllers
 {
     public class ReadeableCrudController<T> :
         ControllerBase, IReadeableCrudController<T> where T : class, IEntity, new()

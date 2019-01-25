@@ -1,8 +1,8 @@
-﻿using System;
+﻿using LSG.GenericCrud.Models;
+using System;
 using System.Threading.Tasks;
-using LSG.GenericCrud.Models;
 
-namespace LSG.GenericCrud.Services
+namespace LSG.GenericCrud.Extensions.Services
 {
     public interface IReadeableCrudService<T> where T : class, IEntity, new()
     {

@@ -1,12 +1,11 @@
-﻿using LSG.GenericCrud.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using LSG.GenericCrud.Extensions.Repositories;
+using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
-using System.Threading.Tasks;
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace LSG.GenericCrud.Services
+namespace LSG.GenericCrud.Extensions.Services
 {
     public class ReadeableCrudService<T> : 
         IReadeableCrudService<T>
