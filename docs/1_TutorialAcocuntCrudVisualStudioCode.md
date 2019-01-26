@@ -119,22 +119,26 @@ Adjust **Startup.cs** class to enable injection and GenericCrud modules. The cla
 ```csharp
 public class Startup
 {
-    public void ConfigureServices(IServiceCollection services)
-    {
-        // to activate mvc service
-        services.AddMvc();
-        // to load an InMemory EntityFramework context
-        services.AddDbContext<SampleContext>(opt => opt.UseInMemoryDatabase());
-        services.AddTransient<IDbContext, SampleContext>();
-        // inject needed service and repository layers
-        services.AddCrud();
-    }
+        public void ConfigureServices(IServiceCollection services)
+        {
+            // to activate mvc service
+            services.AddMvc();
+            // to load an InMemory EntityFramework context
+            services.AddDbContext<SampleContext>(opt => opt.UseInMemoryDatabase("Sample.GenericCrud"));
+            services.AddTransient<IDbContext, SampleContext>();
+            // inject needed service and repository layers
+            services.AddCrud();
+        }
 
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-    {
-        // activate mvc routing
-        app.UseMvc();
-    }
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseMvc();
+        }
 }
 ```
 

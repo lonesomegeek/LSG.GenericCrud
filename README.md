@@ -17,10 +17,10 @@ Enjoy!
 
 # Prerequisites
 You need:
-- [.NET Core 2.0 SDK](https://github.com/dotnet/core/blob/master/release-notes/download-archives/2.0.0-download.md) (for any of the options below)
+- [.NET Core 2.2 SDK](https://dotnet.microsoft.com/download/dotnet-core/2.2) (for any of the options below)
 
 You also need one of these options below:
-- [Visual Studio](https://www.visualstudio.com/downloads/), at least a version that supports aspnetcore (Visual Studio 2015 Update 3+)
+- [Visual Studio](https://www.visualstudio.com/downloads/), at least a version that supports aspnetcore (Visual Studio 2017 Update 9+ - v15.9+)
 - [Visual Studio Code](https://code.visualstudio.com/)
 - A command line and some will-power =P
 
@@ -60,7 +60,7 @@ Actually unsupported features (feel free to help if you want!):
 I am presenting here really simple scenarios, more complex will come:
 - RESTFul CRUD API for *Account* Entity 
     - Using Visual Studio Code (or command line): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudioCode.md)
-    - Using Visual Studio (2015 update 3+): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudio.md)
+    - Using Visual Studio (2017 update 9+ - v15.9+): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudio.md)
 
 > Want to have a look to *more samples*, take a look at these *samples*: [Link](LSG.GenericCrud.Samples/README.md)
 
@@ -86,6 +86,7 @@ If you need other features that are not in the base library, you can install the
 Note: There is actually missing documentation on what is included in these libraries. More documentation will come!
 
 # Breaking changes
+- [From v2.1 to v3.0](docs/BreakingChangesFrom-v2.1-to-v3.0.md)
 - [From v2.0 to v2.1](docs/BreakingChangesFrom-v2.0-to-v2.1.md)
 - [From v1.* to v2.*](docs/BreakingChangesFrom-v1-to-v2.md)
 - [Previous notes](docs/OldReleaseNotes.md)
