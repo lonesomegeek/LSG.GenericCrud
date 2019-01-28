@@ -6,12 +6,13 @@
 
 # Introduction
 This library is used to provide simplified RESTful CRUD apis with a multilayer architecture:
-- Generic Crud Controller
-- Generic Entity Framework Repository. 
+- Generic CRUD Controller layer
+- Generic CRUD Service layer
+- Generic CRUD Repository layer 
 
 This library allies injection (IoC), minimum codebase for maximum efficiency.
 
-Obviously, when you are working with databases and entities, you need to write some code to be able to manage these entities. And, when working with multiple kind of entities, you are **forced** to rewrite code that is similar for each  entities. This library is getting rid of the duplicated code and keeps everything **DRY**.
+Obviously, when you are working with databases and entities, you need to write some code to be able to manage these entities. And, when working with multiple kind of entities, you are **forced** to rewrite code that is similar for each entities. This library is getting rid of the duplicated code and keeps everything **DRY**.
 
 Enjoy!
 
@@ -48,6 +49,7 @@ I've designed this library to be pretty extensible. Here is some features suppor
 - Support for entity history tracking: [More details](./docs/FeatureHistoricalCrud.md)
 - Automatic DTO to Entity (and Entity to DTO) mapping for Crud\<T> or HistoricalCrud\<T> controllers, provided by [LSG.GenericCrud.Dto](https://www.nuget.org/packages/LSG.GenericCrud.Dto/): [More details](./docs/FeatureDTO.md)
 - Automatic data fillers: [More details](./docs/FeatureDataFillers.md)
+- Readeable CRUD, to let you know personaly if something has changed since last view: [More details](./docs/Feature)
 - Full async pipeline: [More details](./docs/FeatureAsync.md)
 - Support for custom repository logic: *more details to come*
 
@@ -57,8 +59,7 @@ Actually unsupported features (feel free to help if you want!):
 
 # Getting started / Tutorials
 
-I am presenting here really simple scenarios, more complex will come:
-- RESTFul CRUD API for *Account* Entity 
+Simpliest scenarios:
     - Using Visual Studio Code (or command line): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudioCode.md)
     - Using Visual Studio (2017 update 9+ - v15.9+): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudio.md)
 
@@ -90,3 +91,6 @@ Note: There is actually missing documentation on what is included in these libra
 - [From v2.0 to v2.1](docs/BreakingChangesFrom-v2.0-to-v2.1.md)
 - [From v1.* to v2.*](docs/BreakingChangesFrom-v1-to-v2.md)
 - [Previous notes](docs/OldReleaseNotes.md)
+
+TODOs
+- How to start with VS and VSCode + Command line, not clear
