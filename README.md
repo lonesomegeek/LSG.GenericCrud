@@ -51,9 +51,9 @@ I've designed this library to be pretty extensible. Here is some features suppor
     - Support for entity history tracking: [More details](./docs/FeatureHistoricalCrud.md)
     - Data fillers: [More details](./docs/FeatureDataFillers.md)
 - [LSG.GenericCrud.Dto](./TODO)
-    - DTO to Entity (and Entity to DTO) mapping for Crud\<T> or HistoricalCrud\<T> controllers, provided by [LSG.GenericCrud.Dto](https://www.nuget.org/packages/LSG.GenericCrud.Dto/): [More details]
+    - DTO to Entity (and Entity to DTO) mapping for Crud\<T> or HistoricalCrud\<T> controllers: [More details]
 - [LSG.GenericCrud.Extensions](./TODO)
-    - Readeable CRUD, to let you know personaly if something has changed since last view: , provided by [LSG.GenericCrud.Extensions](https://www.nuget.org/packages/LSG.GenericCrud.Extensions/)[More details](./docs/FeatureReadeableCrud)
+    - Readeable CRUD, to let you know personaly if something has changed since last view: [More details](./docs/FeatureReadeableCrud)
     - More middlewares...
 
 > Note that all libraries supports customized layer for each layer: *more details to come*
