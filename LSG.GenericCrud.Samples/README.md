@@ -15,9 +15,3 @@ Here is an exhausted list of the samples with explaination:
 | [Sample.Complete](./Sample.Complete/README.md) | Full sample with many entities and many scenarios | * | * | Visual Studio |
 | [Sample.GlobalFilters](./Sample.GlobalFilters/README.md) | A more complex sample to show the work of this library with Entity Framework GlobalFilters. | * | * | Visual Studio |
 | [Sample.CrudOptions](./Sample.CrudOptions/README.md) | A sample with OpenId/OAuth2.0 AuthN/AuthZ and customizable routing options. | * | * | Visual Studio |
-
-Keep Only:
-- simple samples (vs, vscode)
-- historical
-- dto
-- remove async
