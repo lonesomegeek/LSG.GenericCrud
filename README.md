@@ -47,12 +47,12 @@ Here is a sample of RESTful CRUD URLs for an entity of type Account:
 
 I've designed this library to be pretty extensible. Here is some features supported and links to further documentation:
 
-- [LSG.GenericCrud](./)
+- [LSG.GenericCrud](./TODO)
     - Support for entity history tracking: [More details](./docs/FeatureHistoricalCrud.md)
     - Data fillers: [More details](./docs/FeatureDataFillers.md)
-- [LSG.GenericCrud.Dto](./)
+- [LSG.GenericCrud.Dto](./TODO)
     - DTO to Entity (and Entity to DTO) mapping for Crud\<T> or HistoricalCrud\<T> controllers, provided by [LSG.GenericCrud.Dto](https://www.nuget.org/packages/LSG.GenericCrud.Dto/): [More details]
-- [LSG.GenericCrud.Extensions](./)
+- [LSG.GenericCrud.Extensions](./TODO)
     - Readeable CRUD, to let you know personaly if something has changed since last view: , provided by [LSG.GenericCrud.Extensions](https://www.nuget.org/packages/LSG.GenericCrud.Extensions/)[More details](./docs/FeatureReadeableCrud)
     - More middlewares...
 
@@ -67,6 +67,8 @@ Actually unsupported features (feel free to help if you want!):
 Simpliest scenarios:
 - Using Visual Studio Code (or command line): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudioCode.md)
 - Using Visual Studio (2017 update 9+ - v15.9+): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudio.md)
+
+Before diving into more complex scenarios, you should take a rapid view at [this explaniation of the new architecture in v3.*](./docs/v3.0-new-architecture.md).
 
 > Want to have a look to *more samples*, take a look at these *samples*: [Link](LSG.GenericCrud.Samples/README.md)
 
