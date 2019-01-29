@@ -15,7 +15,7 @@ namespace LSG.GenericCrud.Controllers
     /// <seealso cref="LSG.GenericCrud.Controllers.CrudAsyncController{T}" />
     public class HistoricalCrudController<T> : 
         ControllerBase,
-        ICrudController<T>,
+        //ICrudController<T> TODO: Check in tests,
         IHistoricalCrudController<T> where T : class, IEntity, new()
     {
         private readonly ICrudController<T> _crudController;

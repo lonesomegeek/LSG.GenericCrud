@@ -12,7 +12,7 @@ This library is used to provide simplified RESTful CRUD apis with a multilayer a
 
 This library allies injection (IoC), minimum codebase for maximum efficiency.
 
-Obviously, when you are working with databases and entities, you need to write some code to be able to manage these entities. And, when working with multiple kind of entities, you are **forced** to rewrite code that is similar for each entities. This library is getting rid of the duplicated code and keeps everything **DRY**.
+Obviously, when you are working with databases and entities, you need to write some code to be able to manage these entities. And, when working with multiple kind of entities, you need to rewrite code that is similar for each entities. This library is getting rid of the duplicated code and keeps everything **DRY**.
 
 Enjoy!
 
@@ -21,9 +21,9 @@ You need:
 - [.NET Core 2.2 SDK](https://dotnet.microsoft.com/download/dotnet-core/2.2) (for any of the options below)
 
 You also need one of these options below:
-- [Visual Studio](https://www.visualstudio.com/downloads/), at least a version that supports aspnetcore (Visual Studio 2017 Update 9+ - v15.9+)
+- [Visual Studio](https://www.visualstudio.com/downloads/), at least a version that supports aspnetcore 2.2 (Visual Studio 2017 Update 9+ - v15.9+)
 - [Visual Studio Code](https://code.visualstudio.com/)
-- A command line and some will-power =P
+- For superheroes: A command line, notepad, and some will-power =P
 
 # What is CRUD?
 
@@ -43,15 +43,20 @@ Here is a sample of RESTful CRUD URLs for an entity of type Account:
 | PUT    | /api/accounts/:id | Update one account    |
 | DELETE | /api/accounts/:id | Delete one account    |
 
-# Features supported in this library
+# Features supported, by library
 
 I've designed this library to be pretty extensible. Here is some features supported and links to further documentation:
-- Support for entity history tracking: [More details](./docs/FeatureHistoricalCrud.md)
-- Automatic DTO to Entity (and Entity to DTO) mapping for Crud\<T> or HistoricalCrud\<T> controllers, provided by [LSG.GenericCrud.Dto](https://www.nuget.org/packages/LSG.GenericCrud.Dto/): [More details](./docs/FeatureDTO.md)
-- Automatic data fillers: [More details](./docs/FeatureDataFillers.md)
-- Readeable CRUD, to let you know personaly if something has changed since last view: [More details](./docs/Feature)
-- Full async pipeline: [More details](./docs/FeatureAsync.md)
-- Support for custom repository logic: *more details to come*
+
+- [LSG.GenericCrud](./)
+    - Support for entity history tracking: [More details](./docs/FeatureHistoricalCrud.md)
+    - Data fillers: [More details](./docs/FeatureDataFillers.md)
+- [LSG.GenericCrud.Dto](./)
+    - DTO to Entity (and Entity to DTO) mapping for Crud\<T> or HistoricalCrud\<T> controllers, provided by [LSG.GenericCrud.Dto](https://www.nuget.org/packages/LSG.GenericCrud.Dto/): [More details]
+- [LSG.GenericCrud.Extensions](./)
+    - Readeable CRUD, to let you know personaly if something has changed since last view: , provided by [LSG.GenericCrud.Extensions](https://www.nuget.org/packages/LSG.GenericCrud.Extensions/)[More details](./docs/FeatureReadeableCrud)
+    - More middlewares...
+
+> Note that all libraries supports customized layer for each layer: *more details to come*
 
 Actually unsupported features (feel free to help if you want!):
 - Per entity security policies
@@ -60,8 +65,8 @@ Actually unsupported features (feel free to help if you want!):
 # Getting started / Tutorials
 
 Simpliest scenarios:
-    - Using Visual Studio Code (or command line): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudioCode.md)
-    - Using Visual Studio (2017 update 9+ - v15.9+): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudio.md)
+- Using Visual Studio Code (or command line): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudioCode.md)
+- Using Visual Studio (2017 update 9+ - v15.9+): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudio.md)
 
 > Want to have a look to *more samples*, take a look at these *samples*: [Link](LSG.GenericCrud.Samples/README.md)
 
