@@ -33,7 +33,7 @@ namespace Sample.GlobalFilters.DataFillers
 
         public Task<object> FillAsync(EntityEntry entry)
         {
-            throw new NotSupportedException();
+            return Task.Run(() => Fill(entry));
         }
     }
 }

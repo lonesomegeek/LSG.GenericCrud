@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LSG.GenericCrud.Helpers;
 using LSG.GenericCrud.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Sample.HistoricalCrud.Models;
 using LSG.GenericCrud.Services;
+using LSG.GenericCrud.Controllers;
 
 namespace Sample.HistoricalCrud
 {
@@ -26,9 +28,10 @@ namespace Sample.HistoricalCrud
             services.AddTransient<IDbContext, SampleContext>();
             // to dynamically inject any type of Crud repository of type T in any controllers
             // LSG.GenericCrud generics injection
-            services.AddScoped(typeof(ICrudService<>), typeof(CrudService<>));
-            services.AddScoped(typeof(ICrudRepository), typeof(CrudRepository));
-            services.AddScoped(typeof(IHistoricalCrudService<>), typeof(HistoricalCrudService<>));
+            services.AddCrud();
+            services.AddScoped(typeof(ICrudController<>), typeof(CrudController<>)); // TODO INCLUDE IN ALPHA2
+            services.AddScoped(typeof(IHistoricalCrudController<>), typeof(HistoricalCrudController<>)); // TODO INCLUDE IN ALPHA2
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

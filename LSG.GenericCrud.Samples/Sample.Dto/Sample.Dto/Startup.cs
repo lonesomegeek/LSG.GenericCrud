@@ -11,6 +11,7 @@ using Sample.Dto.Models.Entities;
 using LSG.GenericCrud.Services;
 using LSG.GenericCrud.Dto.Services;
 using LSG.GenericCrud.Helpers;
+using LSG.GenericCrud.Controllers;
 
 namespace Sample.Dto
 {
@@ -37,6 +38,12 @@ namespace Sample.Dto
             // to dynamically inject any type of Crud repository of type T in any controllers
             services.AddCrud();
             services.AddCrudDto();
+
+            services.AddScoped(typeof(ICrudController<>), typeof(CrudController<>)); // TODO INCLUDE IN ALPHA2
+            services.AddScoped(typeof(IHistoricalCrudController<>), typeof(HistoricalCrudController<>)); // TODO INCLUDE IN ALPHA2
+
+            services.AddScoped(typeof(ICrudService<AccountDto>), typeof(CrudService<AccountDto, Account>));
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

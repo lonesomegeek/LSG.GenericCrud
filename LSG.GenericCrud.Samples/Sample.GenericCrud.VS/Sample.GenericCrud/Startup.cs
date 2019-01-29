@@ -1,4 +1,5 @@
-﻿using LSG.GenericCrud.Helpers;
+﻿using LSG.GenericCrud.Controllers;
+using LSG.GenericCrud.Helpers;
 using LSG.GenericCrud.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -19,6 +20,7 @@ namespace Sample.GenericCrud
             services.AddTransient<IDbContext, SampleContext>();
             // to dynamically inject any type of Crud repository of type T in any controllers
             services.AddCrud();
+            services.AddScoped(typeof(ICrudController<>), typeof(CrudController<>)); // TODO INCLUDE IN ALPHA2
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

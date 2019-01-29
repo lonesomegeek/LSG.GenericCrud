@@ -22,7 +22,7 @@ namespace Sample.GlobalFilters.DataFillers
 
         public Task<object> FillAsync(EntityEntry entry)
         {
-            throw new NotImplementedException();
+            return Task.Run(() => Fill(entry));
         }
 
         public bool IsEntitySupported(EntityEntry entry)
