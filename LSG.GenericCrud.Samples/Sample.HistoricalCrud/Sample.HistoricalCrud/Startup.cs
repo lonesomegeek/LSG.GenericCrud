@@ -29,9 +29,6 @@ namespace Sample.HistoricalCrud
             // to dynamically inject any type of Crud repository of type T in any controllers
             // LSG.GenericCrud generics injection
             services.AddCrud();
-            services.AddScoped(typeof(ICrudController<>), typeof(CrudController<>)); // TODO INCLUDE IN ALPHA2
-            services.AddScoped(typeof(IHistoricalCrudController<>), typeof(HistoricalCrudController<>)); // TODO INCLUDE IN ALPHA2
-
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

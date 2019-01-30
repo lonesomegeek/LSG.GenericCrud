@@ -26,8 +26,6 @@ namespace Sample.DataFiller
             services.AddTransient<IDbContext, SampleContext>();
             // to dynamically inject any type of Crud repository of type T in any controllers
             services.AddCrud();
-            services.AddScoped(typeof(ICrudController<>), typeof(CrudController<>)); // TODO INCLUDE IN ALPHA2
-
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

@@ -9,8 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="LSG.GenericCrud" Version="3.0.0-alpha1" />
-    <PackageReference Include="LSG.GenericCrud.Extensions" Version="3.0.0-alpha1" />
+    <PackageReference Include="LSG.GenericCrud" Version="3.0.0-alpha2" />
+    <PackageReference Include="LSG.GenericCrud.Extensions" Version="3.0.0-alpha2" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
   </ItemGroup>
 

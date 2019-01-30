@@ -50,7 +50,6 @@ namespace Sample.GlobalFilters
 
             // adding lsg.generic crud stack
             services.AddCrud();
-            services.AddScoped(typeof(ICrudController<>), typeof(CrudController<>)); // TODO INCLUDE IN ALPHA2
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

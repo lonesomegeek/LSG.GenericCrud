@@ -39,11 +39,7 @@ namespace Sample.Dto
             services.AddCrud();
             services.AddCrudDto();
 
-            services.AddScoped(typeof(ICrudController<>), typeof(CrudController<>)); // TODO INCLUDE IN ALPHA2
-            services.AddScoped(typeof(IHistoricalCrudController<>), typeof(HistoricalCrudController<>)); // TODO INCLUDE IN ALPHA2
-
             services.AddScoped(typeof(ICrudService<AccountDto>), typeof(CrudService<AccountDto, Account>));
-
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
