@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LSG.GenericCrud.Helpers;
+using LSG.GenericCrud.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Sample.App.Api.Models;
 
 namespace Sample.App.Api
 {
@@ -26,6 +30,12 @@ namespace Sample.App.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            // to load an InMemory EntityFramework context
+            services.AddDbContext<SampleContext>(opt => opt.UseInMemoryDatabase("Sample.App.Api"));
+            services.AddTransient<IDbContext, SampleContext>();
+            // to dynamically inject any type of Crud repository of type T in any controllers
+            services.AddCrud();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

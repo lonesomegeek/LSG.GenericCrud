@@ -12,5 +12,7 @@ namespace Sample.App.Api.Models
         public string Model { get; set; }
         public string Color { get; set; }
         public string PictureUrl { get; set; }
+
+        //public IEnumerable<Friend> Friends { get; set; }
     }
 }
