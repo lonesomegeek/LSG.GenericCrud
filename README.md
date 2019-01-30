@@ -98,3 +98,6 @@ Note: There is actually missing documentation on what is included in these libra
 - [From v2.0 to v2.1](docs/BreakingChangesFrom-v2.0-to-v2.1.md)
 - [From v1.* to v2.*](docs/BreakingChangesFrom-v1-to-v2.md)
 - [Previous notes](docs/OldReleaseNotes.md)
+
+# Release notes
+- [v3.0 Release Notes](docs/ReleaseNotes-v3.0.md)

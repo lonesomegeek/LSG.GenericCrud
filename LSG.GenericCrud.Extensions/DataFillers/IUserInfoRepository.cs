@@ -1,4 +1,4 @@
-﻿namespace LSG.GenericCrud.Extensions.Repositories
+﻿namespace LSG.GenericCrud.Extensions.DataFillers
 {
     public interface IUserInfoRepository
     {
