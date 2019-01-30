@@ -1,10 +1,11 @@
 ﻿using LSG.GenericCrud.Extensions.DataFillers;
+using LSG.GenericCrud.Extensions.Repositories;
 using LSG.GenericCrud.Repositories;
 using Microsoft.AspNetCore.Http;
 
 namespace Sample.Complete.Repositories
 {
-    public class UserInfoRepository : IUserInfoRepository
+    public class UserInfoRepository : LSG.GenericCrud.Services.IUserInfoRepository
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 

@@ -62,7 +62,7 @@ namespace LSG.GenericCrud.Extensions.DataFillers
         /// <exception cref="NotImplementedException"></exception>
         public Task<object> FillAsync(EntityEntry entry)
         {
-            throw new NotImplementedException();
+            return Task.Run(() => Fill(entry));
         }
     }
 }

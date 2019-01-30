@@ -2,7 +2,6 @@
 using LSG.GenericCrud.DataFillers;
 using LSG.GenericCrud.Dto.Helpers;
 using LSG.GenericCrud.Extensions.DataFillers;
-using LSG.GenericCrud.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -15,8 +14,8 @@ using Sample.Complete.Models.DTOs;
 using Sample.Complete.Models.Entities;
 using Sample.Complete.Repositories;
 using LSG.GenericCrud.Services;
-using LSG.GenericCrud.Dto.Services;
 using LSG.GenericCrud.Helpers;
+using LSG.GenericCrud.Controllers;
 
 namespace Sample.Complete
 {
@@ -57,6 +56,8 @@ namespace Sample.Complete
             // LSG.GenericCrud generics injection
             services.AddCrud();
             services.AddCrudDto();
+            services.AddScoped(typeof(ICrudController<>), typeof(CrudController<>)); // TODO INCLUDE IN ALPHA2
+            services.AddScoped(typeof(IHistoricalCrudController<>), typeof(HistoricalCrudController<>)); // TODO INCLUDE IN ALPHA2
 
         }
 

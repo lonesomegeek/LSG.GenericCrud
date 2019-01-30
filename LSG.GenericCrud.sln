@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.DataFiller", "LSG.Ge
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Dto", "LSG.GenericCrud.Samples\Sample.Dto\Sample.Dto\Sample.Dto.csproj", "{7F62390E-4350-4023-ABF1-3757C7253FC7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.GenericCrud", "LSG.GenericCrud.Samples\Sample.GenericCrud.VS\Sample.GenericCrud\Sample.GenericCrud.csproj", "{40A5BF27-0354-4290-A26D-F50E35A09D93}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.GenericCrud.VS", "LSG.GenericCrud.Samples\Sample.GenericCrud.VS\Sample.GenericCrud\Sample.GenericCrud.VS.csproj", "{40A5BF27-0354-4290-A26D-F50E35A09D93}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.GlobalFilters", "LSG.GenericCrud.Samples\Sample.GlobalFilters\Sample.GlobalFilters\Sample.GlobalFilters.csproj", "{1164C3D1-9307-4665-B998-429A9B054940}"
 EndProject
