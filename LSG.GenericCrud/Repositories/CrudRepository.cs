@@ -149,5 +149,14 @@ namespace LSG.GenericCrud.Repositories
         {
             _context.SaveChanges();
         }
+
+        /// <summary>
+        /// Saves the changes asynchronous.
+        /// </summary>
+        /// <returns>Number of elements saved.</returns>
+        public virtual async Task<int> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync();
+        }
     }
 }

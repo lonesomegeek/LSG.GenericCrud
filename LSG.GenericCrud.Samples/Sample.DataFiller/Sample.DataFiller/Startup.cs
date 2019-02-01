@@ -1,4 +1,6 @@
-﻿using LSG.GenericCrud.DataFillers;
+﻿using LSG.GenericCrud.Controllers;
+using LSG.GenericCrud.DataFillers;
+using LSG.GenericCrud.Helpers;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
 using LSG.GenericCrud.Services;
@@ -23,8 +25,7 @@ namespace Sample.DataFiller
             services.AddDbContext<SampleContext>(opt => opt.UseInMemoryDatabase());
             services.AddTransient<IDbContext, SampleContext>();
             // to dynamically inject any type of Crud repository of type T in any controllers
-            services.AddScoped(typeof(ICrudService<>), typeof(CrudService<>));
-            services.AddScoped(typeof(ICrudRepository), typeof(CrudRepository));
+            services.AddCrud();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

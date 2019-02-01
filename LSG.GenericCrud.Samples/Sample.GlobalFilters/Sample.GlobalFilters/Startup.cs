@@ -1,4 +1,5 @@
 ﻿using System;
+using LSG.GenericCrud.Controllers;
 using LSG.GenericCrud.DataFillers;
 using LSG.GenericCrud.Helpers;
 using LSG.GenericCrud.Repositories;

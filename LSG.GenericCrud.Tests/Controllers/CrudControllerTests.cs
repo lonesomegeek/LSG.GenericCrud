@@ -28,109 +28,110 @@ namespace LSG.GenericCrud.Tests.Controllers
         }
 
         [Fact]
-        public void GetAll_ReturnsOk()
+        public async void GetAll_ReturnsAsyncOk()
         {
             var serviceMock = new Mock<ICrudService<TestEntity>>();
-            serviceMock.Setup(_ => _.GetAll()).Returns(_entities);
+            serviceMock.Setup(_ => _.GetAllAsync()).ReturnsAsync(_entities);
             var controller = new CrudController<TestEntity>(serviceMock.Object);
 
-            var actionResult = controller.GetAll();
-            var okResult = actionResult as OkObjectResult;
-            var model = okResult.Value as IEnumerable<TestEntity>;
+            var actionResult = await controller.GetAll();
+            var objectResult = actionResult.Result as OkObjectResult;
+            var model = objectResult.Value as IEnumerable<TestEntity>;
 
             Assert.Equal(model.Count(), _entities.Count);
-            serviceMock.Verify(_ => _.GetAll(), Times.Once);
+            serviceMock.Verify(_ => _.GetAllAsync(), Times.Once);
         }
 
         [Fact]
-        public void GetById_ReturnsOk()
+        public async void GetById_ReturnsAsyncOk()
         {
             var id = _entities[0].Id;
             var serviceMock = new Mock<ICrudService<TestEntity>>();
-            serviceMock.Setup(_ => _.GetById(id)).Returns(_entities[0]);
+            serviceMock.Setup(_ => _.GetByIdAsync(id)).ReturnsAsync(_entities[0]);
             var controller = new CrudController<TestEntity>(serviceMock.Object);
 
-            var actionResult = controller.GetById(id);
-            var okResult = actionResult as OkObjectResult;
-            var model = okResult.Value as TestEntity;
+            var actionResult = await controller.GetById(id);
+            var objectResult = actionResult.Result as OkObjectResult;
+            var model = objectResult.Value as TestEntity;
 
             Assert.Equal(model.Id, id);
-            serviceMock.Verify(_ => _.GetById(It.IsAny<Guid>()), Times.Once);
+            serviceMock.Verify(_ => _.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
         }
 
         [Fact]
-        public void GetById_ReturnsNotFound()
+        public async void GetById_ReturnsAsyncNotFound()
         {
             var serviceMock = new Mock<ICrudService<TestEntity>>();
-            serviceMock.Setup(_ => _.GetById(It.IsAny<Guid>())).Throws(new EntityNotFoundException());
+            serviceMock.Setup(_ => _.GetByIdAsync(It.IsAny<Guid>())).Throws(new EntityNotFoundException());
             var controller = new CrudController<TestEntity>(serviceMock.Object);
 
-            var actionResult = controller.GetById(Guid.NewGuid());
+            var actionResult = await controller.GetById(Guid.NewGuid());
+
+            Assert.IsType<NotFoundResult>(actionResult.Result);
+            serviceMock.Verify(_ => _.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
+        }
+
+        [Fact]
+        public async void Create_ReturnsAsyncCreatedEntity()
+        {
+            var serviceMock = new Mock<ICrudService<TestEntity>>();
+            serviceMock.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
+            var controller = new CrudController<TestEntity>(serviceMock.Object);
+
+            var actionResult = await controller.Create(_entity);
+
+            Assert.IsType<CreatedAtActionResult>(actionResult.Result);
+            serviceMock.Verify(_ => _.CreateAsync(It.IsAny<TestEntity>()), Times.Once);
+        }
+
+        [Fact]
+        public async void Update_ReturnsAsyncModifiedEntity()
+        {
+            var serviceMock = new Mock<ICrudService<TestEntity>>();
+            var controller = new CrudController<TestEntity>(serviceMock.Object);
+
+            var actionResult = await controller.Update(_entity.Id, _entity);
+
+            Assert.IsType<NoContentResult>(actionResult);
+            serviceMock.Verify(_ => _.UpdateAsync(It.IsAny<Guid>(), It.IsAny<TestEntity>()), Times.Once);
+        }
+
+        [Fact]
+        public async void Update_ReturnsAsyncNotFound()
+        {
+            var serviceMock = new Mock<ICrudService<TestEntity>>();
+            serviceMock.Setup(_ => _.UpdateAsync(It.IsAny<Guid>(), It.IsAny<TestEntity>())).Throws<EntityNotFoundException>();
+            var controller = new CrudController<TestEntity>(serviceMock.Object);
+
+            var actionResult = await controller.Update(_entity.Id, _entity);
 
             Assert.IsType<NotFoundResult>(actionResult);
-            serviceMock.Verify(_ => _.GetById(It.IsAny<Guid>()), Times.Once);
+            serviceMock.Verify(_ => _.UpdateAsync(It.IsAny<Guid>(), It.IsAny<TestEntity>()), Times.Once);
         }
 
         [Fact]
-        public void Create_ReturnsCreatedEntity()
+        public async void Delete_ReturnsAsyncOk()
         {
             var serviceMock = new Mock<ICrudService<TestEntity>>();
             var controller = new CrudController<TestEntity>(serviceMock.Object);
 
-            var actionResult = controller.Create(_entity);
+            var actionResult = await controller.Delete(_entity.Id);
 
-            Assert.IsType<OkObjectResult>(actionResult);
-            serviceMock.Verify(_ => _.Create(It.IsAny<TestEntity>()), Times.Once);
+            Assert.IsType<OkObjectResult>(actionResult.Result);
+            serviceMock.Verify(_ => _.DeleteAsync(It.IsAny<Guid>()), Times.Once);
         }
 
         [Fact]
-        public void Update_ReturnsModifiedEntity()
+        public async void Delete_ReturnsAsyncNotFound()
         {
             var serviceMock = new Mock<ICrudService<TestEntity>>();
+            serviceMock.Setup(_ => _.DeleteAsync(It.IsAny<Guid>())).Throws<EntityNotFoundException>();
             var controller = new CrudController<TestEntity>(serviceMock.Object);
 
-            var actionResult = controller.Update(_entity.Id, _entity);
+            var actionResult = await controller.Delete(_entity.Id);
 
-            Assert.IsType<OkObjectResult>(actionResult);
-            serviceMock.Verify(_ => _.Update(It.IsAny<Guid>(), It.IsAny<TestEntity>()), Times.Once);
-        }
-
-        [Fact]
-        public void Update_ReturnsNotFound()
-        {
-            var serviceMock = new Mock<ICrudService<TestEntity>>();
-            serviceMock.Setup(_ => _.Update(It.IsAny<Guid>(), It.IsAny<TestEntity>())).Throws<EntityNotFoundException>();
-            var controller = new CrudController<TestEntity>(serviceMock.Object);
-
-            var actionResult = controller.Update(_entity.Id, _entity);
-
-            Assert.IsType<NotFoundResult>(actionResult);
-            serviceMock.Verify(_ => _.Update(It.IsAny<Guid>(), It.IsAny<TestEntity>()), Times.Once);
-        }
-
-        [Fact]
-        public void Delete_ReturnsOk()
-        {
-            var serviceMock = new Mock<ICrudService<TestEntity>>();
-            var controller = new CrudController<TestEntity>(serviceMock.Object);
-
-            var actionResult = controller.Delete(_entity.Id);
-
-            Assert.IsType<OkObjectResult>(actionResult);
-            serviceMock.Verify(_ => _.Delete(It.IsAny<Guid>()), Times.Once);
-        }
-
-        [Fact]
-        public void Delete_ReturnsNotFound()
-        {
-            var serviceMock = new Mock<ICrudService<TestEntity>>();
-            serviceMock.Setup(_ => _.Delete(It.IsAny<Guid>())).Throws<EntityNotFoundException>();
-            var controller = new CrudController<TestEntity>(serviceMock.Object);
-
-            var actionResult = controller.Delete(_entity.Id);
-
-            Assert.IsType<NotFoundResult>(actionResult);
-            serviceMock.Verify(_ => _.Delete(It.IsAny<Guid>()), Times.Once);
+            Assert.IsType<NotFoundResult>(actionResult.Result);
+            serviceMock.Verify(_ => _.DeleteAsync(It.IsAny<Guid>()), Times.Once);
         }
     }
 }

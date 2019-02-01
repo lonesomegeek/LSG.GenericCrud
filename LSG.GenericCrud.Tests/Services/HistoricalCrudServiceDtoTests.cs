@@ -55,23 +55,13 @@ namespace LSG.GenericCrud.Tests.Services
         [Fact]
         public void GetAll_ReturnElements()
         {
-            var entityRepositoryMock = new Mock<CrudRepository>();
-            entityRepositoryMock.Setup(_ => _.GetAll<TestEntity>()).Returns(_entities);
-            var service = new HistoricalCrudService<TestDto, TestEntity>(entityRepositoryMock.Object, _mapper);
+            var repositoryMock = new Mock<CrudRepository>();
+            repositoryMock.Setup(_ => _.GetAllAsync<TestEntity>()).ReturnsAsync(_entities);
+            var crudService = new CrudService<TestEntity>(repositoryMock.Object);
+            var entityService = new HistoricalCrudService<TestEntity>(crudService, repositoryMock.Object);
+            var service = new HistoricalCrudService<TestDto, TestEntity>(entityService, repositoryMock.Object, _mapper);
 
             var results = service.GetAll();
-
-            Assert.Equal(_entities.Count, results.Count());
-            Assert.IsAssignableFrom<IEnumerable<TestDto>>(results);
-        }
-        [Fact]
-        public async void GetAllAsync_ReturnElements()
-        {
-            var entityRepositoryMock = new Mock<CrudRepository>();
-            entityRepositoryMock.Setup(_ => _.GetAllAsync<TestEntity>()).ReturnsAsync(_entities);
-            var service = new HistoricalCrudService<TestDto, TestEntity>(entityRepositoryMock.Object, _mapper);
-
-            var results = await service.GetAllAsync();
 
             Assert.Equal(_entities.Count, results.Count());
             Assert.IsAssignableFrom<IEnumerable<TestDto>>(results);
@@ -80,24 +70,13 @@ namespace LSG.GenericCrud.Tests.Services
         [Fact]
         public void GetById_ReturnElements()
         {
-            var entityRepositoryMock = new Mock<CrudRepository>();
-            entityRepositoryMock.Setup(_ => _.GetById<TestEntity>(It.IsAny<Guid>())).Returns(_entity);
-            var service = new HistoricalCrudService<TestDto, TestEntity>(entityRepositoryMock.Object, _mapper);
+            var repositoryMock = new Mock<CrudRepository>();
+            repositoryMock.Setup(_ => _.GetByIdAsync<TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
+            var crudService = new CrudService<TestEntity>(repositoryMock.Object);
+            var entityService = new HistoricalCrudService<TestEntity>(crudService, repositoryMock.Object);
+            var service = new HistoricalCrudService<TestDto, TestEntity>(entityService, repositoryMock.Object, _mapper);
 
             var result = service.GetById(_entity.Id);
-
-            Assert.Equal(_entity.Id, result.Id);
-            Assert.IsAssignableFrom<TestDto>(result);
-        }
-
-        [Fact]
-        public async void GetByIdAsync_ReturnElements()
-        {
-            var entityRepositoryMock = new Mock<CrudRepository>();
-            entityRepositoryMock.Setup(_ => _.GetByIdAsync<TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
-            var service = new HistoricalCrudService<TestDto, TestEntity>(entityRepositoryMock.Object, _mapper);
-
-            var result = await service.GetByIdAsync(_entity.Id);
 
             Assert.Equal(_entity.Id, result.Id);
             Assert.IsAssignableFrom<TestDto>(result);
@@ -107,116 +86,67 @@ namespace LSG.GenericCrud.Tests.Services
         public void Create_ReturnsCreatedElement()
         {
             var repositoryMock = new Mock<CrudRepository>();
-            repositoryMock.Setup(_ => _.Create(It.IsAny<TestEntity>())).Returns(_entity);
-            var service = new HistoricalCrudService<TestDto, TestEntity>(repositoryMock.Object, _mapper);
+            repositoryMock.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
+            var crudService = new CrudService<TestEntity>(repositoryMock.Object);
+            var entityService = new HistoricalCrudService<TestEntity>(crudService, repositoryMock.Object);
+            var service = new HistoricalCrudService<TestDto, TestEntity>(entityService, repositoryMock.Object, _mapper);
 
             var result = service.Create(_dto);
 
             Assert.Equal(_entity.Id, result.Id);
-            repositoryMock.Verify(_ => _.Create(It.IsAny<HistoricalEvent>()), Times.Once);
-            repositoryMock.Verify(_ => _.Create(It.IsAny<TestEntity>()), Times.Once);
-            repositoryMock.Verify(_ => _.SaveChanges(), Times.Once);
-        }
-
-        [Fact]
-        public async void CreateAsync_ReturnsCreatedElement()
-        {
-            var repositoryMock = new Mock<CrudRepository>();
-            repositoryMock.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
-            var service = new HistoricalCrudService<TestDto, TestEntity>(repositoryMock.Object, _mapper);
-
-            var result = await service.CreateAsync(_dto);
-
-            Assert.Equal(_entity.Id, result.Id);
             repositoryMock.Verify(_ => _.CreateAsync(It.IsAny<HistoricalEvent>()), Times.Once);
             repositoryMock.Verify(_ => _.CreateAsync(It.IsAny<TestEntity>()), Times.Once);
-            repositoryMock.Verify(_ => _.SaveChanges(), Times.Once);
+            repositoryMock.Verify(_ => _.SaveChangesAsync(), Times.Once);
         }
 
         [Fact]
         public void Update_ReturnsUpdatedElement()
         {
             var repositoryMock = new Mock<CrudRepository>();
-            repositoryMock.Setup(_ => _.GetById<TestEntity>(It.IsAny<Guid>())).Returns(_entity);
-            var service = new HistoricalCrudService<TestDto, TestEntity>(repositoryMock.Object, _mapper);
+            repositoryMock.Setup(_ => _.GetByIdAsync<TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
+            var crudService = new CrudService<TestEntity>(repositoryMock.Object);
+            var entityService = new HistoricalCrudService<TestEntity>(crudService, repositoryMock.Object);
+            var service = new HistoricalCrudService<TestDto, TestEntity>(entityService, repositoryMock.Object, _mapper);
 
             var result = service.Update(_dto.Id, _dto);
 
             Assert.Equal(_entity.Id, result.Id);
-            repositoryMock.Verify(_ => _.Create(It.IsAny<HistoricalEvent>()), Times.Once);
-            repositoryMock.Verify(_ => _.SaveChanges(), Times.Once);
-        }
-
-        [Fact]
-        public async void UpdateAsync_ReturnsUpdatedElement()
-        {
-            var repositoryMock = new Mock<CrudRepository>();
-            repositoryMock.Setup(_ => _.GetByIdAsync<TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
-            var service = new HistoricalCrudService<TestDto, TestEntity>(repositoryMock.Object, _mapper);
-
-            var result = await service.UpdateAsync(_dto.Id, _dto);
-
-            Assert.Equal(_entity.Id, result.Id);
             repositoryMock.Verify(_ => _.CreateAsync(It.IsAny<HistoricalEvent>()), Times.Once);
-            repositoryMock.Verify(_ => _.SaveChanges(), Times.Once);
+            repositoryMock.Verify(_ => _.SaveChangesAsync(), Times.Once);
         }
 
         [Fact]
         public void Delete_ReturnsDeletedElement()
         {
             var repositoryMock = new Mock<CrudRepository>();
-            repositoryMock.Setup(_ => _.GetById<TestEntity>(It.IsAny<Guid>())).Returns(_entity);
-            var service = new HistoricalCrudService<TestDto, TestEntity>(repositoryMock.Object, _mapper);
-
-            var result = service.Delete(_entity.Id);
-
-            Assert.Equal(_entity.Id, result.Id);
-            repositoryMock.Verify(_ => _.Create(It.IsAny<HistoricalEvent>()), Times.Once);
-            repositoryMock.Verify(_ => _.Delete<TestEntity>(It.IsAny<Guid>()), Times.Once);
-            repositoryMock.Verify(_ => _.SaveChanges(), Times.Once);
-        }
-
-        [Fact]
-        public async void DeleteAsync_ReturnsDeletedElement()
-        {
-            var repositoryMock = new Mock<CrudRepository>();
             repositoryMock.Setup(_ => _.GetByIdAsync<TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
-            var service = new HistoricalCrudService<TestDto, TestEntity>(repositoryMock.Object, _mapper);
-
-            var result = await service.DeleteAsync(_entity.Id);
+            var crudService = new CrudService<TestEntity>(repositoryMock.Object);
+            var entityService = new HistoricalCrudService<TestEntity>(crudService, repositoryMock.Object);
+            var service = new HistoricalCrudService<TestDto, TestEntity>(entityService, repositoryMock.Object, _mapper);
+            
+            var result = service.Delete(_entity.Id);
 
             Assert.Equal(_entity.Id, result.Id);
             repositoryMock.Verify(_ => _.CreateAsync(It.IsAny<HistoricalEvent>()), Times.Once);
             repositoryMock.Verify(_ => _.DeleteAsync<TestEntity>(It.IsAny<Guid>()), Times.Once);
-            repositoryMock.Verify(_ => _.SaveChanges(), Times.Once);
+            repositoryMock.Verify(_ => _.SaveChangesAsync(), Times.Once);
         }
 
         [Fact]
         public void Restore_ReturnsCreatedElement()
         {
             var repositoryMock = new Mock<CrudRepository>();
-            repositoryMock.Setup(_ => _.GetAll<HistoricalEvent>()).Returns(_events);
-            repositoryMock.Setup(_ => _.Create(It.IsAny<TestEntity>())).Returns(_entity);
-            var service = new HistoricalCrudService<TestDto, TestEntity>(repositoryMock.Object, _mapper);
+            repositoryMock.Setup(_ => _.GetAllAsync<HistoricalEvent>()).ReturnsAsync(_events);
+            repositoryMock.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
+            var crudService = new CrudService<TestEntity>(repositoryMock.Object);
+            var entityService = new HistoricalCrudService<TestEntity>(crudService, repositoryMock.Object);
+            var service = new HistoricalCrudService<TestDto, TestEntity>(entityService, repositoryMock.Object, _mapper);
 
             var result = service.Restore(_entity.Id);
 
             Assert.Equal(_entity.Id, result.Id);
-            repositoryMock.Verify(_ => _.Create(It.IsAny<TestEntity>()), Times.Once);
-        }
-
-        [Fact]
-        public async void RestoreAsync_ReturnsCreatedElement()
-        {
-            var repositoryMock = new Mock<CrudRepository>();
-            repositoryMock.Setup(_ => _.GetAllAsync<HistoricalEvent>()).ReturnsAsync(_events);
-            repositoryMock.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
-            var service = new HistoricalCrudService<TestDto, TestEntity>(repositoryMock.Object, _mapper);
-
-            var result = await service.RestoreAsync(_entity.Id);
-
-            Assert.Equal(_entity.Id, result.Id);
             repositoryMock.Verify(_ => _.CreateAsync(It.IsAny<TestEntity>()), Times.Once);
         }
+
     }
 }

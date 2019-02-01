@@ -6,23 +6,24 @@
 
 # Introduction
 This library is used to provide simplified RESTful CRUD apis with a multilayer architecture:
-- Generic Crud Controller
-- Generic Entity Framework Repository. 
+- Generic CRUD Controller layer
+- Generic CRUD Service layer
+- Generic CRUD Repository layer 
 
 This library allies injection (IoC), minimum codebase for maximum efficiency.
 
-Obviously, when you are working with databases and entities, you need to write some code to be able to manage these entities. And, when working with multiple kind of entities, you are **forced** to rewrite code that is similar for each  entities. This library is getting rid of the duplicated code and keeps everything **DRY**.
+Obviously, when you are working with databases and entities, you need to write some code to be able to manage these entities. And, when working with multiple kind of entities, you need to rewrite code that is similar for each entities. This library is getting rid of the duplicated code and keeps everything **DRY**.
 
 Enjoy!
 
 # Prerequisites
 You need:
-- [.NET Core 2.0 SDK](https://github.com/dotnet/core/blob/master/release-notes/download-archives/2.0.0-download.md) (for any of the options below)
+- [.NET Core 2.2 SDK](https://dotnet.microsoft.com/download/dotnet-core/2.2) (for any of the options below)
 
 You also need one of these options below:
-- [Visual Studio](https://www.visualstudio.com/downloads/), at least a version that supports aspnetcore (Visual Studio 2015 Update 3+)
+- [Visual Studio](https://www.visualstudio.com/downloads/), at least a version that supports aspnetcore 2.2 (Visual Studio 2017 Update 9+ - v15.9+)
 - [Visual Studio Code](https://code.visualstudio.com/)
-- A command line and some will-power =P
+- For superheroes: A command line, notepad, and some will-power =P
 
 # What is CRUD?
 
@@ -42,14 +43,20 @@ Here is a sample of RESTful CRUD URLs for an entity of type Account:
 | PUT    | /api/accounts/:id | Update one account    |
 | DELETE | /api/accounts/:id | Delete one account    |
 
-# Features supported in this library
+# Features supported, by library
 
 I've designed this library to be pretty extensible. Here is some features supported and links to further documentation:
-- Support for entity history tracking: [More details](./docs/FeatureHistoricalCrud.md)
-- Automatic DTO to Entity (and Entity to DTO) mapping for Crud\<T> or HistoricalCrud\<T> controllers, provided by [LSG.GenericCrud.Dto](https://www.nuget.org/packages/LSG.GenericCrud.Dto/): [More details](./docs/FeatureDTO.md)
-- Automatic data fillers: [More details](./docs/FeatureDataFillers.md)
-- Full async pipeline: [More details](./docs/FeatureAsync.md)
-- Support for custom repository logic: *more details to come*
+
+- [LSG.GenericCrud](./TODO)
+    - Support for entity history tracking: [More details](./docs/FeatureHistoricalCrud.md)
+    - Data fillers: [More details](./docs/FeatureDataFillers.md)
+- [LSG.GenericCrud.Dto](./TODO)
+    - DTO to Entity (and Entity to DTO) mapping for Crud\<T> or HistoricalCrud\<T> controllers: [More details]
+- [LSG.GenericCrud.Extensions](./TODO)
+    - Readeable CRUD, to let you know personaly if something has changed since last view: [More details](./docs/FeatureReadeableCrud)
+    - More middlewares...
+
+> Note that all libraries supports customized layer for each layer: *more details to come*
 
 Actually unsupported features (feel free to help if you want!):
 - Per entity security policies
@@ -57,10 +64,11 @@ Actually unsupported features (feel free to help if you want!):
 
 # Getting started / Tutorials
 
-I am presenting here really simple scenarios, more complex will come:
-- RESTFul CRUD API for *Account* Entity 
-    - Using Visual Studio Code (or command line): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudioCode.md)
-    - Using Visual Studio (2015 update 3+): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudio.md)
+Simpliest scenarios:
+- Using Visual Studio Code (or command line): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudioCode.md)
+- Using Visual Studio (2017 update 9+ - v15.9+): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudio.md)
+
+Before diving into more complex scenarios, you should take a rapid view at [this explaniation of the new architecture in v3.*](./docs/v3.0-new-architecture.md).
 
 > Want to have a look to *more samples*, take a look at these *samples*: [Link](LSG.GenericCrud.Samples/README.md)
 
@@ -86,6 +94,10 @@ If you need other features that are not in the base library, you can install the
 Note: There is actually missing documentation on what is included in these libraries. More documentation will come!
 
 # Breaking changes
+- [From v2.1 to v3.0](docs/BreakingChangesFrom-v2.1-to-v3.0.md)
 - [From v2.0 to v2.1](docs/BreakingChangesFrom-v2.0-to-v2.1.md)
 - [From v1.* to v2.*](docs/BreakingChangesFrom-v1-to-v2.md)
 - [Previous notes](docs/OldReleaseNotes.md)
+
+# Release notes
+- [v3.0 Release Notes](docs/ReleaseNotes-v3.0.md)

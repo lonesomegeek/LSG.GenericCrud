@@ -1,4 +1,5 @@
-﻿using LSG.GenericCrud.Helpers;
+﻿using LSG.GenericCrud.Controllers;
+using LSG.GenericCrud.Helpers;
 using LSG.GenericCrud.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

@@ -9,7 +9,6 @@ Here is an exhausted list of the samples with explaination:
 |----------------|-------------|----------------|-------------|-------------|
 | [Sample.GenericCrud.VS](./Sample.GenericCrud.VS/README.md) | Simple CRUD for Account Entity | CrudController\<T> | Crud\<T> | Visual Studio |
 | [Sample.GenericCrud.VSCode](./Sample.GenericCrud.VSCode/README.md) | Simple CRUD for Account Entity | CrudController\<T> | Crud\<T> | Visual Studio Code |
-| [Sample.Async](./Sample.Async/README.md) | Simple Asynchronous CRUD for Account Entity | CrudAsyncController\<T> | Crud\<T> | Visual Studio |
 | [Sample.HistoricalCrud](./Sample.HistoricalCrud/README.md) | Simple Historical CRUD with Account Entity | HistoricalCrudController\<T> | HistoricalCrud\<T> | Visual Studio |
 | [Sample.Dto](./Sample.Dto/README.md) | CRUD with DTO pattern | CrudController\<T> | Crud\<T> | Visual Studio |
 | [Sample.DataFiller](./Sample.DataFiller/README.md) | Use of data filler with crud | CrudController\<T> | Crud\<T> | Visual Studio |

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using LSG.GenericCrud.Exceptions;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Services;
@@ -7,11 +9,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace LSG.GenericCrud.Controllers
 {
     /// <summary>
-    /// Crud Controller endpoints
+    /// Asynchronous Crud Controller endpoints
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
-    public class CrudController<T> : Controller where T : class, IEntity, new()
+    public class CrudController<T> : 
+        ControllerBase, 
+        ICrudController<T> 
+        where T : class, IEntity, new()
     {
         /// <summary>
         /// The service
@@ -19,7 +24,7 @@ namespace LSG.GenericCrud.Controllers
         private readonly ICrudService<T> _service;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CrudController{T}"/> class.
+        /// Initializes a new instance of the <see cref="CrudAsyncController{T}"/> class.
         /// </summary>
         /// <param name="service">The service.</param>
         public CrudController(ICrudService<T> service)
@@ -32,20 +37,20 @@ namespace LSG.GenericCrud.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public virtual IActionResult GetAll() => Ok(_service.GetAll());
+        public virtual async Task<ActionResult<IEnumerable<T>>> GetAll() => Ok(await _service.GetAllAsync());
 
         /// <summary>
-        /// Gets the by identifier.
+        /// Gets the by identifier if it exists.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [Route("{id}")]
         [HttpGet]
-        public virtual IActionResult GetById(Guid id)
+        public virtual async Task<ActionResult<T>> GetById(Guid id)
         {
             try
             {
-                return Ok(_service.GetById(id));
+                return Ok(await _service.GetByIdAsync(id));
             }
             catch (EntityNotFoundException ex)
             {
@@ -58,21 +63,29 @@ namespace LSG.GenericCrud.Controllers
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        [HttpPost("")]
-        public virtual IActionResult Create([FromBody] T entity) => Ok(_service.Create(entity));
+        [HttpPost]
+        public virtual async Task<ActionResult<T>> Create([FromBody] T entity)
+        {
+            var createdEntity = await _service.CreateAsync(entity);
+            return CreatedAtAction(nameof(GetById), new { id = createdEntity.Id }, createdEntity);
+        }
+        
 
         /// <summary>
-        /// Updates the specified identifier.
+        /// Updates the specified identifier if it exists.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public virtual IActionResult Update(Guid id, [FromBody] T entity)
+        public virtual async Task<IActionResult> Update(Guid id, [FromBody] T entity)
         {
+            // TODO: Add an null id detection
             try
             {
-                return Ok(_service.Update(id, entity));
+                await _service.UpdateAsync(id, entity);
+
+                return NoContent();
             }
             catch (EntityNotFoundException ex)
             {
@@ -81,16 +94,16 @@ namespace LSG.GenericCrud.Controllers
         }
 
         /// <summary>
-        /// Deletes the specified identifier.
+        /// Deletes the specified identifier if it exists.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public virtual IActionResult Delete(Guid id)
+        public virtual async Task<ActionResult<T>> Delete(Guid id)
         {
             try
             {
-                return Ok(_service.Delete(id));
+                return Ok(await _service.DeleteAsync(id));
             }
             catch (EntityNotFoundException ex)
             {

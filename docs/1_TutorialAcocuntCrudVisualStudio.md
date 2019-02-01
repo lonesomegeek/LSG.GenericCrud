@@ -1,8 +1,13 @@
-LSG.GenericCrud - Visual Studio Code Sample #1
+LSG.GenericCrud - Visual Studio Simple Scenario
 =
-This sample show you all the steps required to use this library using Visual Studio 2015 update 3+.
 
-At this end of this tutorial, your Visual Studio Code workspace should look like this:
+Complete source code is available [here](https://github.com/lonesomegeek/LSG.GenericCrud/tree/master/LSG.GenericCrud.Samples/Sample.GenericCrud.VSCode)
+
+## What you will create in this tutorial
+
+This sample show you all the steps required to use this library using Visual Studio 2017 update 9+ - v15.9+.
+
+At this end of this tutorial, your Visual Studio workspace should look like this:
 
 ![](img/2017-09-05-12-22-03.png)
 
@@ -16,37 +21,39 @@ and you will have these routes available for the account entity
 | PUT    | /api/accounts/:id | Update one account    |
 | DELETE | /api/accounts/:id | Delete one account    |
 
+## Prerequisites
+- Visual Studio 2017 update 9+ (v15.9+)
+- .NET core 2.2 SDK
+
 ## Getting started
 In Visual Studio, execute the following actions:
 - Create a new project:
+    - Category: **Visual C#, Web**
     - Project Type: **ASP.NET Core Web Application**
-    - Name: Sample.GenericCrud
-- Select in the next windows **Web API**    
+    - Name: **Sample.GenericCrud**
+
+- Select in the next windows 
+    - Framework: .NET Framework or .NET Core
+    - Version: ASP.NET Core 2.2
+    - Model: **API**    
     
-    **Note:** You can choose to target .NET Framework 4.6.1+ or .NET Core 2.0+ because the LSG.GenericCrud library is .NET Standard 2.0 Compliant. The important thing is to use the new **ASP.NET Core Web Application**.
+    **Note:** You can choose to target .NET Framework or .NET Core because the LSG.GenericCrud library is .NET Standard 2.0 Compliant. The important thing is to use the **ASP.NET Core Web Application** architecture.
 
-When the project is created, you need to refer to an external library **LSG.GenericCrud**. To do so:
-- Right-click dependencies, Manage Nuget Packages...
-- Browse for **LSG.GenericCrud**
-- Click **Install**
-
-    Note: You can pass through **Package management console** and type directly the **Install-Package** command instead of doing all these previous steps.
+- When the project is created, make sure you add a reference to these Nuget packages:
+    - LSG.GenericCrud
+    - Microsoft.EntityFrameworkCore.InMemory
 
 ## Create needed assets
 These steps will create needed assets required to make work a simple controller connected to an InMemory EntityFrameworkCore entity CRUD.
+
+Note: For sake of clarity, the documentation does not include references (using). 
 
 ### Create data models and database context
 
 - Create a new folder named: **Models**
 
 - Add a new class, in **Models** folder, named: **Account.cs**
-
-```csharp
-using System;
-using LSG.GenericCrud.Models;
-
-namespace Sample.GenericCrud.Models
-{
+    ```csharp
     public class Account : IEntity
     {
         public Account()
@@ -56,50 +63,33 @@ namespace Sample.GenericCrud.Models
         public Guid Id { get; set; }
         public string Name { get; set; }
     }
-}
-```
+    ```
 
 - Add a new class, in **Models** folder, named: **SampleContext.cs**
-
-```csharp
-using System;
-using LSG.GenericCrud.Repositories;
-using Microsoft.EntityFrameworkCore;
-
-namespace Sample.GenericCrud.Models
-{
+    ```csharp
     public class SampleContext : BaseDbContext, IDbContext
     {
         public SampleContext(DbContextOptions options, IServiceProvider serviceProvider) : base(options, serviceProvider) {}
 
         public DbSet<Account> Accounts { get; set; }
     }
-}
-```
+    ```
 
-### Create WebApi controller
+### Create API controller
 
 - Create a new folder named (if not already created): **Controllers**
 
-- Add a new class, in **Controllers* folder, named: **AccountsController.cs**
-
-```csharp
-using LSG.GenericCrud.Controllers;
-using LSG.GenericCrud.Repositories;
-using Microsoft.AspNetCore.Mvc;
-using Sample.GenericCrud.Models;
-
-namespace Sample.GenericCrud.Controllers
-{
+- Add a new class, in **Controllers** folder, named: **AccountsController.cs**
+    ```csharp
     [Route("api/[controller]")]
+    [ApiController]
     public class AccountsController : CrudController<Account>
     {
         public AccountsController(ICrudService<Account> service) : base(service)
         {
         }
     }
-}
-```
+    ```
 
 ### Final adjustments
 Adjust **Startup.cs** class to enable injection and GenericCrud modules. The class should look like this.
@@ -112,7 +102,7 @@ public class Startup
         // to activate mvc service
         services.AddMvc();
         // to load an InMemory EntityFramework context
-        services.AddDbContext<SampleContext>(opt => opt.UseInMemoryDatabase());
+        services.AddDbContext<SampleContext>(opt => opt.UseInMemoryDatabase("Sample.GenericCrud"));
         services.AddTransient<IDbContext, SampleContext>();
         // inject needed service and repository layers
         services.AddCrud();
@@ -120,7 +110,11 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
     {
-        // activate mvc routing
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+        }
+
         app.UseMvc();
     }
 }
@@ -139,7 +133,3 @@ Note: If you want to use this postman collection, you will have to change the We
 Here is a [Postman](https://www.getpostman.com/) collection to test your new RESTful CRUD api
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/090af27316cd23c61951)
-
-## Source
-
-Sample source code is available [here](https://github.com/lonesomegeek/LSG.GenericCrud.Samples).

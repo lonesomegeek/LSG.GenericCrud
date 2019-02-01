@@ -22,7 +22,7 @@ namespace Sample.DataFiller.Models.DataFillers
 
         public Task<object> FillAsync(EntityEntry entry)
         {
-            throw new System.NotImplementedException();
+            return Task.Run(() => Fill(entry));
         }
     }
 }

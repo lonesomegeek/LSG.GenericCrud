@@ -4,6 +4,7 @@ using LSG.GenericCrud.Models;
 using LSG.GenericCrud.DataFillers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using LSG.GenericCrud.Services;
 
 namespace LSG.GenericCrud.Extensions.DataFillers
 {
@@ -61,7 +62,7 @@ namespace LSG.GenericCrud.Extensions.DataFillers
         /// <exception cref="NotImplementedException"></exception>
         public Task<object> FillAsync(EntityEntry entry)
         {
-            throw new NotImplementedException();
+            return Task.Run(() => Fill(entry));
         }
     }
 }

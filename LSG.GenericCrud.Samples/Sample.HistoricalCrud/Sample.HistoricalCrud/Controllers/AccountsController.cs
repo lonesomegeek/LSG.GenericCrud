@@ -3,12 +3,40 @@ using LSG.GenericCrud.Repositories;
 using LSG.GenericCrud.Services;
 using Microsoft.AspNetCore.Mvc;
 using Sample.HistoricalCrud.Models;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Sample.HistoricalCrud.Controllers
 {
     [Route("api/[controller]")]
-    public class AccountsController : HistoricalCrudController<Account>
+    [ApiController]
+    public class AccountsController :
+        ControllerBase,
+        ICrudController<Account>,
+        IHistoricalCrudController<Account>
     {
-        public AccountsController(IHistoricalCrudService<Account> service) : base(service) { }
+        private readonly IHistoricalCrudController<Account> _controller;
+
+        public AccountsController(IHistoricalCrudController<Account> controller)
+        {
+            _controller = controller;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Account>> Create([FromBody] Account entity) => await _controller.Create(entity);
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Account>> Delete(Guid id) => await _controller.Delete(id);
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Account>>> GetAll() => await _controller.GetAll();
+        [Route("{id}")]
+        [HttpGet]
+        public async Task<ActionResult<Account>> GetById(Guid id) => await _controller.GetById(id);
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] Account entity) => await _controller.Update(id, entity);
+        [HttpGet("{id}/history")]
+        public async Task<IActionResult> GetHistory(Guid id) => await _controller.GetHistory(id);
+        [HttpPost("{id}/restore")]
+        public async Task<IActionResult> Restore(Guid id) => await _controller.Restore(id);
     }
 }
