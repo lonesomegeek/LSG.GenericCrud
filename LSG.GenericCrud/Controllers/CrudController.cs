@@ -40,7 +40,7 @@ namespace LSG.GenericCrud.Controllers
         public virtual async Task<ActionResult<IEnumerable<T>>> GetAll() => Ok(await _service.GetAllAsync());
 
         /// <summary>
-        /// Gets the by identifier.
+        /// Gets the by identifier if it exists.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
@@ -72,7 +72,7 @@ namespace LSG.GenericCrud.Controllers
         
 
         /// <summary>
-        /// Updates the specified identifier.
+        /// Updates the specified identifier if it exists.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="entity">The entity.</param>
@@ -94,7 +94,7 @@ namespace LSG.GenericCrud.Controllers
         }
 
         /// <summary>
-        /// Deletes the specified identifier.
+        /// Deletes the specified identifier if it exists.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>

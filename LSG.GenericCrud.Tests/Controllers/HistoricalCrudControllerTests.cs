@@ -30,57 +30,57 @@ namespace LSG.GenericCrud.Tests.Controllers
             _events = historyFaker.Generate(2);
         }
 
-        //[Fact]
-        //public void Restore_ReturnsOk()
-        //{
-        //    var serviceMock = new Mock<IHistoricalCrudService<TestEntity>>();
-        //    serviceMock.Setup(_ => _.Restore(It.IsAny<Guid>())).Returns(_entity);
-        //    var controller = new HistoricalCrudController<TestEntity>(serviceMock.Object);
+        [Fact]
+        public async void RestoreAsync_ReturnsOk()
+        {
+            var serviceMock = new Mock<IHistoricalCrudService<TestEntity>>();
+            serviceMock.Setup(_ => _.RestoreAsync(It.IsAny<Guid>())).ReturnsAsync(_entity);
+            var controller = new HistoricalCrudController<TestEntity>(null, serviceMock.Object);
 
-        //    var result = controller.Restore(_entity.Id);
+            var result = await controller.Restore(_entity.Id);
 
-        //    Assert.IsType<OkObjectResult>(result);
-        //    serviceMock.Verify(_ => _.Restore(It.IsAny<Guid>()), Times.Once);
-        //}
+            Assert.IsType<OkObjectResult>(result);
+            serviceMock.Verify(_ => _.RestoreAsync(It.IsAny<Guid>()), Times.Once);
+        }
 
-        //[Fact]
-        //public void Restore_ThrowsEntityNotFoundException()
-        //{
-        //    var serviceMock = new Mock<IHistoricalCrudService<TestEntity>>();
-        //    serviceMock.Setup(_ => _.Restore(It.IsAny<Guid>())).Throws<EntityNotFoundException>();
-        //    var controller = new HistoricalCrudController<TestEntity>(serviceMock.Object);
+        [Fact]
+        public async void Restore_ThrowsEntityNotFoundException()
+        {
+            var serviceMock = new Mock<IHistoricalCrudService<TestEntity>>();
+            serviceMock.Setup(_ => _.RestoreAsync(It.IsAny<Guid>())).ThrowsAsync(new EntityNotFoundException());
+            var controller = new HistoricalCrudController<TestEntity>(null, serviceMock.Object);
 
-        //    var result = controller.Restore(_entity.Id);
+            var result = await controller.Restore(_entity.Id);
 
-        //    Assert.IsType<NotFoundResult>(result);
-        //    serviceMock.Verify(_ => _.Restore(It.IsAny<Guid>()), Times.Once);
-        //}
+            Assert.IsType<NotFoundResult>(result);
+            serviceMock.Verify(_ => _.RestoreAsync(It.IsAny<Guid>()), Times.Once);
+        }
 
-        //[Fact]
-        //public void GetHistory_ReturnsOk()
-        //{
-        //    var serviceMock = new Mock<IHistoricalCrudService<TestEntity>>();
-        //    serviceMock.Setup(_ => _.GetHistory(It.IsAny<Guid>())).Returns(_events);
-        //    var controller = new HistoricalCrudController<TestEntity>(serviceMock.Object);
+        [Fact]
+        public async void GetHistory_ReturnsOk()
+        {
+            var serviceMock = new Mock<IHistoricalCrudService<TestEntity>>();
+            serviceMock.Setup(_ => _.GetHistoryAsync(It.IsAny<Guid>())).ReturnsAsync(_events);
+            var controller = new HistoricalCrudController<TestEntity>(null, serviceMock.Object);
 
-        //    var result = controller.GetHistory(_entity.Id);
+            var result = await controller.GetHistory(_entity.Id);
 
-        //    Assert.IsType<OkObjectResult>(result);
-        //    serviceMock.Verify(_ => _.GetHistory(It.IsAny<Guid>()), Times.Once);
-        //}
+            Assert.IsType<OkObjectResult>(result);
+            serviceMock.Verify(_ => _.GetHistoryAsync(It.IsAny<Guid>()), Times.Once);
+        }
 
-        //[Fact]
-        //public void GetHistory_ThrowsEntityNotFoundException()
-        //{
-        //    var serviceMock = new Mock<IHistoricalCrudService<TestEntity>>();
-        //    serviceMock.Setup(_ => _.GetHistory(It.IsAny<Guid>())).Throws<EntityNotFoundException>();
-        //    var controller = new HistoricalCrudController<TestEntity>(serviceMock.Object);
+        [Fact]
+        public async void GetHistory_ThrowsEntityNotFoundException()
+        {
+            var serviceMock = new Mock<IHistoricalCrudService<TestEntity>>();
+            serviceMock.Setup(_ => _.GetHistoryAsync(It.IsAny<Guid>())).ThrowsAsync(new EntityNotFoundException());
+            var controller = new HistoricalCrudController<TestEntity>(null, serviceMock.Object);
+            
+            var result = await controller.GetHistory(_entity.Id);
 
-        //    var result = controller.GetHistory(_entity.Id);
-
-        //    Assert.IsType<NotFoundResult>(result);
-        //    serviceMock.Verify(_ => _.GetHistory(It.IsAny<Guid>()), Times.Once);
-        //}
+            Assert.IsType<NotFoundResult>(result);
+            serviceMock.Verify(_ => _.GetHistoryAsync(It.IsAny<Guid>()), Times.Once);
+        }
 
     }
 }

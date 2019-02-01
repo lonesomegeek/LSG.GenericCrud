@@ -40,6 +40,7 @@ namespace LSG.GenericCrud.Services
         {
             _service = service;
             _repository = repository;
+            _service.AutoCommit = false;
             AutoCommit = false;
         }
 

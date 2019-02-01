@@ -29,6 +29,8 @@ namespace LSG.GenericCrud.Dto.Services
         /// </summary>
         private readonly IMapper _mapper;
 
+        private readonly ICrudRepository _repository;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CrudService{TDto, TEntity}"/> class.
         /// </summary>
@@ -38,6 +40,9 @@ namespace LSG.GenericCrud.Dto.Services
         {
             _service = service;
             _mapper = mapper;
+            _repository = repository;
+            AutoCommit = false;
+            _service.AutoCommit = false;
         }
 
         public bool AutoCommit { get; set; }
@@ -48,6 +53,7 @@ namespace LSG.GenericCrud.Dto.Services
         {
             var entity = _mapper.Map<TEntity>(dto);
             var createdEntity = await _service.CreateAsync(entity);
+            await _repository.SaveChangesAsync();
             return _mapper.Map<TDto>(createdEntity);
         }
 
@@ -56,6 +62,7 @@ namespace LSG.GenericCrud.Dto.Services
         public virtual async Task<TDto> DeleteAsync(Guid id)
         {
             var deletedEntity = await _service.DeleteAsync(id);
+            await _repository.SaveChangesAsync();
             return _mapper.Map<TDto>(deletedEntity);
         }
 
@@ -76,6 +83,7 @@ namespace LSG.GenericCrud.Dto.Services
         public virtual async Task<TDto> UpdateAsync(Guid id, TDto dto)
         {
             var updatedEntity = await _service.UpdateAsync(id, _mapper.Map<TEntity>(dto));
+            await _repository.SaveChangesAsync();
             return _mapper.Map<TDto>(updatedEntity);
         }
     }
