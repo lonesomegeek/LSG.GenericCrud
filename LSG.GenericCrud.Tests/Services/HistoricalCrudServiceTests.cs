@@ -55,9 +55,9 @@ namespace LSG.GenericCrud.Tests.Services
             var result = service.Create(_entity);
 
             Assert.Equal(_entity.Id, result.Id);
-            repository.Verify(_ => _.Create(It.IsAny<HistoricalEvent>()), Times.Once);
-            repository.Verify(_ => _.Create(It.IsAny<TestEntity>()), Times.Once);
-            repository.Verify(_ => _.SaveChanges(), Times.Once);
+            repository.Verify(_ => _.CreateAsync(It.IsAny<HistoricalEvent>()), Times.Once);
+            repository.Verify(_ => _.CreateAsync(It.IsAny<TestEntity>()), Times.Once);
+            repository.Verify(_ => _.SaveChangesAsync(), Times.Once);
         }
 
         [Fact]
