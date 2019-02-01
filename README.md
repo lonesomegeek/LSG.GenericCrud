@@ -68,7 +68,7 @@ Simpliest scenarios:
 - Using Visual Studio Code (or command line): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudioCode.md)
 - Using Visual Studio (2017 update 9+ - v15.9+): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudio.md)
 
-Before diving into more complex scenarios, you should take a rapid view at [this explaniation of the new architecture in v3.*](./docs/v3.0-new-architecture.md).
+Before diving into more complex scenarios, you should take a rapid view at [this explaniation of the new architecture in v3.*](./docs/ReleaseNotes-v3.0.md).
 
 > Want to have a look to *more samples*, take a look at these *samples*: [Link](LSG.GenericCrud.Samples/README.md)
 
