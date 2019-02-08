@@ -91,14 +91,17 @@ namespace LSG.GenericCrud.Services
         public virtual async Task<T> UpdateAsync(Guid id, T entity)
         {
             var originalEntity = await _service.GetByIdAsync(id);
+            var originalEntitySerialized = JsonConvert.SerializeObject(originalEntity);
+            var changeset = originalEntity.DetailedCompare(entity); // important to have it placed there because the update changes the originalEntity values...
+            var modifiedEntity = await _service.UpdateAsync(id, entity);
             var historicalEvent = new HistoricalEvent
             {
                 Action = HistoricalActions.Update.ToString(),
-                Changeset = originalEntity.DetailedCompare(entity),
+                Changeset = changeset,
+                OriginalObject = originalEntitySerialized,
                 EntityId = originalEntity.Id,
                 EntityName = entity.GetType().Name
             };
-            var modifiedEntity = await _service.UpdateAsync(id, entity);
 
             await _repository.CreateAsync(historicalEvent);
             await _repository.SaveChangesAsync();

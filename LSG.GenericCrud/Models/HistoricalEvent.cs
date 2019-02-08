@@ -40,5 +40,7 @@ namespace LSG.GenericCrud.Models
         /// The changeset.
         /// </value>
         public string Changeset { get; set; }
+
+        public string OriginalObject { get; set; }
     }
 }

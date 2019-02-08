@@ -107,13 +107,16 @@ namespace LSG.GenericCrud.Services
         public virtual async Task<T> UpdateAsync(Guid id, T entity)
         {
             var originalEntity = await GetByIdAsync(id);
-            foreach (var prop in entity.GetType().GetProperties())
+            foreach (var prop in entity.GetType().GetProperties(
+                System.Reflection.BindingFlags.Public |
+                System.Reflection.BindingFlags.Instance |
+                System.Reflection.BindingFlags.DeclaredOnly))
             {
                 if (prop.Name != "Id")
                 {
                     var originalProperty = originalEntity.GetType().GetProperty(prop.Name);
                     var value = prop.GetValue(entity, null);
-                    if (value != null) originalProperty.SetValue(originalEntity, value);
+                    /*if (value != null) */originalProperty.SetValue(originalEntity, value);
                 }
             }
             if (AutoCommit) await _repository.SaveChangesAsync();

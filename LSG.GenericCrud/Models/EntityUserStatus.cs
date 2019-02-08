@@ -10,6 +10,6 @@ namespace LSG.GenericCrud.Models
         public string UserId { get; set; }
         public string EntityName { get; set; }
         public Guid EntityId { get; set; }
-        public DateTime LastViewed { get; set; }
+        public DateTime? LastViewed { get; set; }
     }
 }
