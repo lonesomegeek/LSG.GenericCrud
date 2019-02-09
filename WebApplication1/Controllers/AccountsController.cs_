@@ -1,0 +1,63 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using LSG.GenericCrud.Controllers;
+using LSG.GenericCrud.Extensions.Controllers;
+using LSG.GenericCrud.Services;
+using Microsoft.AspNetCore.Mvc;
+using WebApplication1.Models;
+
+namespace WebApplication1.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class Accounts2Controller : 
+        ControllerBase,
+        ICrudController<Account>,
+        IHistoricalCrudController<Account>,
+        IReadeableCrudController<Account>
+    {
+        private readonly IHistoricalCrudController<Account> _historicalCrudCrudController;
+        private readonly IReadeableCrudController<Account> _readeableCrudController;
+
+        public Accounts2Controller(
+            IHistoricalCrudController<Account> historicalCrudCrudController,
+            IReadeableCrudController<Account> readeableCrudController)
+        {
+            _historicalCrudCrudController = historicalCrudCrudController;
+            _readeableCrudController = readeableCrudController;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Account>> Create([FromBody] Account entity) => await _historicalCrudCrudController.Create(entity);
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Account>> Delete(Guid id) => await _historicalCrudCrudController.Delete(id);
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Account>>> GetAll() => await _historicalCrudCrudController.GetAll();
+        [Route("{id}")]
+        [HttpGet]
+        public async Task<ActionResult<Account>> GetById(Guid id) => await _historicalCrudCrudController.GetById(id);
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] Account entity) => await _historicalCrudCrudController.Update(id, entity);
+        [HttpGet("{id}/history")]
+        public async Task<IActionResult> GetHistory(Guid id) => await _historicalCrudCrudController.GetHistory(id);
+        [HttpPost("{id}/restore")]
+        public async Task<IActionResult> Restore(Guid id) => await _historicalCrudCrudController.Restore(id);
+
+        [HttpGet("readstatus")]
+        public async Task<IActionResult> GetAllReadStatus() => await _readeableCrudController.GetAllReadStatus();
+        [HttpPost]
+        [Route("read")]
+        public async Task<IActionResult> MarkAllAsRead() => await _readeableCrudController.MarkAllAsRead();
+        [HttpPost]
+        [Route("unread")]
+        public async Task<IActionResult> MarkAllAsUnread() => await _readeableCrudController.MarkAllAsUnread();
+        [HttpPost]
+        [Route("{id}/read")]
+        public async Task<IActionResult> MarkOneAsRead(Guid id) => await _readeableCrudController.MarkOneAsRead(id);
+        [HttpPost]
+        [Route("{id}/unread")]
+        public async Task<IActionResult> MarkOneAsUnread(Guid id) => await _readeableCrudController.MarkOneAsUnread(id);
+    }
+}
