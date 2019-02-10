@@ -125,7 +125,7 @@ namespace WebApplication1.Controllers
                 var nextEventObject = JsonConvert.DeserializeObject<Account>(currentEvent.Changeset);
                 var changeset = new Changeset();
                 changeset.Date = nextEvent.CreatedDate.Value;
-                changeset.User = nextEvent.CreatedBy;
+                changeset.UserId = nextEvent.CreatedBy;
                 changeset.Changes = new List<Change>();
                 sourceObject
                     .GetType()
@@ -148,7 +148,7 @@ namespace WebApplication1.Controllers
             var lastObject = _repository.GetById<Account>(id);
 
             lastChangeset.Date = lastObject.CreatedDate.Value;
-            lastChangeset.User = lastObject.CreatedBy;
+            lastChangeset.UserId = lastObject.CreatedBy;
             lastChangeset.Changes = new List<Change>();
             lastObject
                 .GetType()
@@ -181,7 +181,7 @@ namespace WebApplication1.Controllers
     }
     internal class Changeset
     {
-        public string User { get; set; }
+        public string UserId { get; set; }
         public DateTime Date { get; set; }
         public List<Change> Changes { get; set; }
     }
