@@ -24,7 +24,7 @@ namespace WebApplication1.Controllers
         private readonly ICrudRepository _repository;
 
         public SampleController(
-            IHistoricalCrudController<Account> crudController, 
+            IHistoricalCrudController<Account> crudController,
             IReadeableCrudController<Account> readeableCrudController,
             ICrudRepository repository)
         {
@@ -73,38 +73,12 @@ namespace WebApplication1.Controllers
                 .GetAll<HistoricalEvent>()
                 .Where(_ => _.EntityId == id && _.CreatedDate >= fromTimestamp && _.CreatedDate <= toTimestamp)
                 .OrderBy(_ => _.CreatedDate);
-            // snapshot from creation date
-            var sourceEvent = events
-                .FirstOrDefault();
-            var sourceObject = 
-                sourceEvent.OriginalObject == null ?
-                JsonConvert.DeserializeObject<Account>(sourceEvent.Changeset) :
-                JsonConvert.DeserializeObject<Account>(sourceEvent.OriginalObject);
-            var actual = _repository.GetById<Account>(id);
-            var changeset = actual.DetailedCompare(sourceObject);
 
-            var snapshotChangeset = new SnapshotChangeset();
-            snapshotChangeset.EntityTypeName = sourceEvent.EntityName;
-            snapshotChangeset.EntityId = sourceEvent.EntityId;
-            snapshotChangeset.LastViewed = DateTime.Now;
-            snapshotChangeset.LastModifiedBy = events.Last().CreatedBy;
-            snapshotChangeset.LastModifiedDate = events.Last().CreatedDate.Value;
-            snapshotChangeset.Changes = new List<Change>();
+            SnapshotChangeset snapshotChangeset = ExtractSnapshotChanges(events, _repository.GetById<Account>(id));
 
-            actual
-                .GetType()
-                .GetProperties()
-                .Where(_ => _.DeclaringType == actual.GetType())
-                .ToList()
-                .ForEach(_ => snapshotChangeset.Changes.Add(new Change()
-                {
-                    FieldName = _.Name,
-                    FromValue = sourceObject.GetType().GetProperty(_.Name).GetValue(sourceObject),
-                    ToValue = actual.GetType().GetProperty(_.Name).GetValue(actual)
-                }));
-            
             return Ok(snapshotChangeset);
         }
+
 
         [HttpGet("{id}/deltadifferential")]
         public async Task<IActionResult> GetDeltaDifferential(Guid id, [FromQuery] DateTime fromTimestamp, [FromQuery] DateTime toTimestamp)
@@ -116,40 +90,42 @@ namespace WebApplication1.Controllers
                 .GetAll<HistoricalEvent>()
                 .Where(_ => _.EntityId == id && _.CreatedDate >= fromTimestamp && _.CreatedDate <= toTimestamp)
                 .OrderBy(_ => _.CreatedDate);
-                //.Skip(1);
+            //.Skip(1);
+
+            var differentialChangeset = ExtractDifferentialChangeset<Account>(id, events);
+
+            return Ok(differentialChangeset);
+        }
+
+        private DifferentialChangeset ExtractDifferentialChangeset<T>(Guid id, IOrderedEnumerable<HistoricalEvent> events) where T : class, IEntity, new()
+        {
             var sourceEvent = events.First();
-            var sourceObject =
-                sourceEvent.OriginalObject == null ?
-                JsonConvert.DeserializeObject<Account>(sourceEvent.Changeset) :
-                JsonConvert.DeserializeObject<Account>(sourceEvent.OriginalObject);
+            var sourceObject = sourceEvent.OriginalObject == null ? JsonConvert.DeserializeObject<T>(sourceEvent.Changeset) : JsonConvert.DeserializeObject<T>(sourceEvent.OriginalObject);
             var differentialChangeset = new DifferentialChangeset();
             differentialChangeset.EntityId = id;
             differentialChangeset.EntityTypeName = sourceEvent.EntityName;
+            differentialChangeset.EventName = sourceEvent.Action;
             differentialChangeset.LastViewed = events.Last().CreatedDate.Value;
-            differentialChangeset.Changesets = new List<Changeset>();
+            differentialChangeset.Changesets = ExtractDifferentialChanges(id, events, sourceEvent, sourceObject);
+            return differentialChangeset;
+        }
+
+        private List<Changeset> ExtractDifferentialChanges<T>(Guid id, IOrderedEnumerable<HistoricalEvent> events, HistoricalEvent sourceEvent, T sourceObject) where T : class, IEntity, new()
+        {
+
+            var differentialChangeset = new List<Changeset>();
 
             var currentEvent = sourceEvent;
             var currentObject = sourceObject;
             for (int i = 1; i < events.Count(); i++)
             {
                 var nextEvent = events.ToArray()[i];
-                var nextEventObject = JsonConvert.DeserializeObject<Account>(currentEvent.Changeset);
+                var nextEventObject = JsonConvert.DeserializeObject<T>(currentEvent.Changeset);
                 var changeset = new Changeset();
                 changeset.Date = currentEvent.CreatedDate.Value;
                 changeset.UserId = currentEvent.CreatedBy;
-                changeset.Changes = new List<Change>();
-                sourceObject
-                    .GetType()
-                    .GetProperties()
-                    .Where(_ => _.DeclaringType == sourceObject.GetType())
-                    .ToList()
-                    .ForEach(_ => changeset.Changes.Add(new Change()
-                    {
-                        FieldName = _.Name,
-                        FromValue = currentObject.GetType().GetProperty(_.Name).GetValue(currentObject),
-                        ToValue = nextEventObject.GetType().GetProperty(_.Name).GetValue(nextEventObject)
-                    }));
-                differentialChangeset.Changesets.Add(changeset);
+                changeset.Changes = ExtractChanges(currentObject, nextEventObject);
+                differentialChangeset.Add(changeset);
 
                 currentObject = nextEventObject;
                 currentEvent = nextEvent;
@@ -157,39 +133,67 @@ namespace WebApplication1.Controllers
             // add last event to current object
             var lastChangeset = new Changeset();
             var lastEvent = events.Last();
-            var lastObject = _repository.GetById<Account>(id);
+            var lastObject = _repository.GetById<T>(id);
 
             lastChangeset.Date = lastEvent.CreatedDate.Value;
             lastChangeset.UserId = lastEvent.CreatedBy;
-            lastChangeset.Changes = new List<Change>();
-            lastObject
-                .GetType()
-                    .GetProperties()
-                    .Where(_ => _.DeclaringType == sourceObject.GetType())
-                    .ToList()
-                    .ForEach(_ => lastChangeset.Changes.Add(new Change()
-                    {
-                        FieldName = _.Name,
-                        FromValue = currentObject.GetType().GetProperty(_.Name).GetValue(currentObject),
-                        ToValue = lastObject.GetType().GetProperty(_.Name).GetValue(lastObject)
-                    }));
-            differentialChangeset.Changesets.Add(lastChangeset);
+            lastChangeset.Changes = ExtractChanges(currentObject, lastObject);
+            differentialChangeset.Add(lastChangeset);
 
-            return Ok(differentialChangeset);
+            return differentialChangeset;
+        }
+
+        private static SnapshotChangeset ExtractSnapshotChanges<T>(IOrderedEnumerable<HistoricalEvent> events, T actual)
+        {
+            // base line compararer
+            var sourceEvent = events.FirstOrDefault();
+            var sourceObject = sourceEvent.OriginalObject == null ? JsonConvert.DeserializeObject<T>(sourceEvent.Changeset) : JsonConvert.DeserializeObject<T>(sourceEvent.OriginalObject);
+
+            var snapshotChangeset = new SnapshotChangeset();
+            snapshotChangeset.EntityTypeName = sourceEvent.EntityName;
+            snapshotChangeset.EntityId = sourceEvent.EntityId;
+            snapshotChangeset.LastViewed = DateTime.Now; // TODO: Get Last Viewed Info from read status (if available)
+            snapshotChangeset.LastModifiedBy = events.Last().CreatedBy;
+            snapshotChangeset.LastModifiedDate = events.Last().CreatedDate.Value;
+            snapshotChangeset.Changes = ExtractChanges(sourceObject, actual);
+            return snapshotChangeset;
+        }
+
+        private static List<Change> ExtractChanges<T>(T source, T destination)
+        {
+            var changes = new List<Change>();
+            destination
+                .GetType()
+                .GetProperties()
+                .Where(_ => _.DeclaringType == destination.GetType())
+                .ToList()
+                .ForEach(_ => changes.Add(new Change()
+                {
+                    FieldName = _.Name,
+                    FromValue = source.GetType().GetProperty(_.Name).GetValue(source),
+                    ToValue = destination.GetType().GetProperty(_.Name).GetValue(destination)
+                }));
+            return changes;
         }
     }
+    internal class SnapshotChangeset
+    {
 
+        public string EntityTypeName { get; internal set; }
+        public Guid EntityId { get; internal set; }
+        public DateTime LastViewed { get; internal set; }
+        public List<Change> Changes { get; internal set; }
+        public DateTime LastModifiedDate { get; internal set; }
+        public string LastModifiedBy { get; internal set; }
+    }
     internal class DifferentialChangeset
     {
-        public DifferentialChangeset()
-        {
-        }
-
         public string EntityTypeName { get; internal set; }
         public Guid EntityId { get; internal set; }
         public DateTime LastViewed { get; internal set; }
 
         public List<Changeset> Changesets { get; set; }
+        public string EventName { get; internal set; }
     }
     internal class Changeset
     {
@@ -204,17 +208,5 @@ namespace WebApplication1.Controllers
         public object ToValue { get; set; }
     }
 
-    internal class SnapshotChangeset
-    {
-        public SnapshotChangeset()
-        {
-        }
 
-        public string EntityTypeName { get; internal set; }
-        public Guid EntityId { get; internal set; }
-        public DateTime LastViewed { get; internal set; }
-        public List<Change> Changes { get; internal set; }
-        public DateTime LastModifiedDate { get; internal set; }
-        public string LastModifiedBy { get; internal set; }
-    }
 }
