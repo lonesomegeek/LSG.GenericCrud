@@ -65,16 +65,21 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> MarkOneAsUnread(Guid id) => await _readeableCrudController.MarkOneAsUnread(id);
 
         [HttpGet("{id}/deltasnapshot")]
-        public async Task<IActionResult> GetDeltaSnapshot(Guid id)
+        public async Task<IActionResult> GetDeltaSnapshot(Guid id, [FromQuery] DateTime fromTimestamp, [FromQuery] DateTime toTimestamp)
         {
+            if (toTimestamp == DateTime.MinValue) toTimestamp = DateTime.MaxValue;
+
             var events = _repository
                 .GetAll<HistoricalEvent>()
-                .Where(_ => _.EntityId == id)
+                .Where(_ => _.EntityId == id && _.CreatedDate >= fromTimestamp && _.CreatedDate <= toTimestamp)
                 .OrderBy(_ => _.CreatedDate);
             // snapshot from creation date
             var sourceEvent = events
                 .FirstOrDefault();
-            var sourceObject = JsonConvert.DeserializeObject<Account>(sourceEvent.Changeset);
+            var sourceObject = 
+                sourceEvent.OriginalObject == null ?
+                JsonConvert.DeserializeObject<Account>(sourceEvent.Changeset) :
+                JsonConvert.DeserializeObject<Account>(sourceEvent.OriginalObject);
             var actual = _repository.GetById<Account>(id);
             var changeset = actual.DetailedCompare(sourceObject);
 
@@ -102,15 +107,21 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet("{id}/deltadifferential")]
-        public async Task<IActionResult> GetDeltaDifferential(Guid id)
+        public async Task<IActionResult> GetDeltaDifferential(Guid id, [FromQuery] DateTime fromTimestamp, [FromQuery] DateTime toTimestamp)
         {
+            if (toTimestamp == DateTime.MinValue) toTimestamp = DateTime.MaxValue;
+
             // snapshot from creation date
             var events = _repository
                 .GetAll<HistoricalEvent>()
-                .Where(_ => _.EntityId == id)
+                .Where(_ => _.EntityId == id && _.CreatedDate >= fromTimestamp && _.CreatedDate <= toTimestamp)
                 .OrderBy(_ => _.CreatedDate);
+                //.Skip(1);
             var sourceEvent = events.First();
-            var sourceObject = JsonConvert.DeserializeObject<Account>(sourceEvent.Changeset);
+            var sourceObject =
+                sourceEvent.OriginalObject == null ?
+                JsonConvert.DeserializeObject<Account>(sourceEvent.Changeset) :
+                JsonConvert.DeserializeObject<Account>(sourceEvent.OriginalObject);
             var differentialChangeset = new DifferentialChangeset();
             differentialChangeset.EntityId = id;
             differentialChangeset.EntityTypeName = sourceEvent.EntityName;
@@ -124,8 +135,8 @@ namespace WebApplication1.Controllers
                 var nextEvent = events.ToArray()[i];
                 var nextEventObject = JsonConvert.DeserializeObject<Account>(currentEvent.Changeset);
                 var changeset = new Changeset();
-                changeset.Date = nextEvent.CreatedDate.Value;
-                changeset.UserId = nextEvent.CreatedBy;
+                changeset.Date = currentEvent.CreatedDate.Value;
+                changeset.UserId = currentEvent.CreatedBy;
                 changeset.Changes = new List<Change>();
                 sourceObject
                     .GetType()
@@ -145,10 +156,11 @@ namespace WebApplication1.Controllers
             }
             // add last event to current object
             var lastChangeset = new Changeset();
+            var lastEvent = events.Last();
             var lastObject = _repository.GetById<Account>(id);
 
-            lastChangeset.Date = lastObject.CreatedDate.Value;
-            lastChangeset.UserId = lastObject.CreatedBy;
+            lastChangeset.Date = lastEvent.CreatedDate.Value;
+            lastChangeset.UserId = lastEvent.CreatedBy;
             lastChangeset.Changes = new List<Change>();
             lastObject
                 .GetType()
