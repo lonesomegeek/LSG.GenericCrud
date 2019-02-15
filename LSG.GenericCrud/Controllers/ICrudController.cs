@@ -22,6 +22,13 @@ namespace LSG.GenericCrud.Controllers
         Task<ActionResult<T>> GetById(Guid id);
 
         /// <summary>
+        /// Head for a specific object
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>Returns 204 (No Content) if entity exists, 404 (NotFound) otherwise</returns>
+        Task<IActionResult> HeadById(Guid id);
+
+        /// <summary>
         /// Creates the specified entity.
         /// </summary>
         /// <param name="entity">The entity.</param>

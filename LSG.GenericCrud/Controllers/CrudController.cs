@@ -59,6 +59,25 @@ namespace LSG.GenericCrud.Controllers
         }
 
         /// <summary>
+        /// Head for a specific object
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>Returns 204 (No Content) if entity exists, 404 (NotFound) otherwise</returns>
+        [HttpHead("{id}")]
+        public async Task<IActionResult> HeadById(Guid id)
+        {
+            try
+            {
+                await _service.GetByIdAsync(id);
+                return NoContent();
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound();
+            }
+        }
+
+        /// <summary>
         /// Creates the specified entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
