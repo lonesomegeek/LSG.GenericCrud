@@ -35,27 +35,30 @@ namespace LSG.GenericCrud.Extensions.Services
             var entityName = typeof(T).FullName;
 
             var entity = await _repository.GetByIdAsync<T>(id);
+            var entities = from a in _repository.GetAll<T>().Where(_ => _.Id == id) select a;
 
-            var result =
-                from au1 in entityStatuses
-                where au1.EntityId == id && au1.EntityName == entityName
+            var result = 
+                from a in entities
+                join au1 in entityStatuses on new { EntityId = a.Id, EntityName = entityName } equals new { au1.EntityId, au1.EntityName } into au1_g
+                from au1 in au1_g.DefaultIfEmpty()
 
-                // left join users
-                join u in users on au1.UserId equals u.Id.ToString() into u_g
+                    // left join users
+                join u in users on au1?.UserId equals u.Id.ToString() into u_g
                 from u in u_g.DefaultIfEmpty()
 
                     // left join users & accounts on accountsusers
-                where au1 == null || au1.UserId == _userInfoRepository.GetUserInfo()
+                where au1 == null || au1?.UserId == _userInfoRepository.GetUserInfo()
                 select new ReadeableStatus<T>
                 {
-                    Data = entity,
+                    Data = a,
                     Metadata = new ReadeableStatusMetadata
                     {
-                        NewStuffAvailable = IsNewStuffAvailable(entity, au1),
-                        LastViewed = au1.LastViewed
+                        NewStuffAvailable = IsNewStuffAvailable(a, au1),
+                        LastViewed = au1?.LastViewed
                     }
                 };
-            return null;
+
+            return result.First();
         }
 
         public async Task<IEnumerable<ReadeableStatus<T>>> GetAllAsync()

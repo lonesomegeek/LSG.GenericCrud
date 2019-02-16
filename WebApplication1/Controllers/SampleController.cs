@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using LSG.GenericCrud.Controllers;
 using LSG.GenericCrud.Exceptions;
@@ -12,7 +11,8 @@ using LSG.GenericCrud.Repositories;
 using LSG.GenericCrud.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using WebApplication1.Exceptions;
+using WebApplication1.Helpers;
 using WebApplication1.Models;
 using IUserInfoRepository = LSG.GenericCrud.Extensions.DataFillers.IUserInfoRepository;
 
@@ -29,6 +29,7 @@ namespace WebApplication1.Controllers
         private readonly IReadeableCrudController<Account> _readeableCrudController;
         private readonly ICrudRepository _repository;
         private readonly IUserInfoRepository _userInfoRepository;
+        private readonly ICrudService<Account> _crudService;
 
         public SampleController(
             IHistoricalCrudController<Account> crudController,
@@ -41,6 +42,30 @@ namespace WebApplication1.Controllers
             _readeableCrudController = readeableCrudController;
             _repository = repository;
             _userInfoRepository = userInfoRepository;
+            _crudService = crudService;
+        }
+
+        [HttpPost("{id}/copy")]
+        public async Task<ActionResult<Account>> CopyOne(Guid id)
+        {
+            var actualEntity = _repository.GetById<Account>(id);
+            var copiedEntity = actualEntity.CopyObject();
+            var createdEntity = await _repository.CreateAsync(copiedEntity);
+            await _repository.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetById), new { id = createdEntity.Id }, createdEntity);
+        }
+
+        [HttpPost("{entityId}/copy/{eventId}")]
+        public async Task<ActionResult<Account>> CopyOneChangeset(Guid entityId, Guid eventId)
+        {
+            var historicalEvent = await _repository.GetByIdAsync<HistoricalEvent>(eventId);
+            var actualObject = JsonConvert.DeserializeObject<Account>(historicalEvent.OriginalObject);
+            var actualObjectAppliedChangeset = JsonConvert.DeserializeObject<Account>(historicalEvent.Changeset);
+            var actualEntity = actualObject.ApplyChangeset(actualObjectAppliedChangeset);
+            var copiedEntity = actualEntity.CopyObject();
+            var createdEntity = await _repository.CreateAsync(copiedEntity);
+            await _repository.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetById), new { id = createdEntity.Id }, createdEntity);
         }
 
         [HttpPost]
@@ -229,74 +254,6 @@ namespace WebApplication1.Controllers
         }
 
 
-    }
-
-    [Serializable]
-    internal class NoHistoryException : Exception
-    {
-        public NoHistoryException()
-        {
-        }
-
-        public NoHistoryException(string message) : base(message)
-        {
-        }
-
-        public NoHistoryException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected NoHistoryException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-    }
-
-    public enum DeltaRequestModes
-    {
-        Snapshot,
-        Differential
-    }
-
-    public class DeltaRequest
-    {
-        [JsonConverter(typeof(StringEnumConverter))]
-        public DeltaRequestModes Mode { get; set; }
-        public DateTime? From { get; set; }
-        public DateTime? To { get; set; }
-    }
-
-    internal class SnapshotChangeset
-    {
-
-        public string EntityTypeName { get; internal set; }
-        public Guid EntityId { get; internal set; }
-        public DateTime LastViewed { get; internal set; }
-        public List<Change> Changes { get; internal set; }
-        public DateTime LastModifiedDate { get; internal set; }
-        public string LastModifiedBy { get; internal set; }
-        public string LastModifiedEvent { get; internal set; }
-    }
-    internal class DifferentialChangeset
-    {
-        public string EntityTypeName { get; internal set; }
-        public Guid EntityId { get; internal set; }
-        public List<Changeset> Changesets { get; set; }
-    }
-    internal class Changeset
-    {
-        public Guid EventId { get; set; }
-        public string EventName { get; internal set; }
-        public DateTime EventDate { get; set; }
-        public string UserId { get; set; }
-        
-        public List<Change> Changes { get; set; }
-        
-    }
-    internal class Change
-    {
-        public string FieldName { get; set; }
-        public object FromValue { get; set; }
-        public object ToValue { get; set; }
     }
 
 
