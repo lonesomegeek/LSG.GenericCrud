@@ -29,7 +29,6 @@ namespace WebApplication1.Controllers
         private readonly IReadeableCrudController<Account> _readeableCrudController;
         private readonly ICrudRepository _repository;
         private readonly IUserInfoRepository _userInfoRepository;
-        private readonly ICrudService<Account> _crudService;
 
         public SampleController(
             IHistoricalCrudController<Account> crudController,
@@ -42,7 +41,6 @@ namespace WebApplication1.Controllers
             _readeableCrudController = readeableCrudController;
             _repository = repository;
             _userInfoRepository = userInfoRepository;
-            _crudService = crudService;
         }
 
         [HttpPost]
@@ -56,18 +54,8 @@ namespace WebApplication1.Controllers
         public async Task<ActionResult<Account>> GetById(Guid id) => await _crudController.GetById(id);
 
         [HttpHead("{id}")]
-        public async Task<IActionResult> Head(Guid id)
-        {
-            try
-            {
-                await _crudService.GetByIdAsync(id);
-                return NoContent();
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return NotFound();
-            }
-        }
+        public async Task<IActionResult> HeadById(Guid id) => await _crudController.HeadById(id);
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] Account entity) => await _crudController.Update(id, entity);
         [HttpPost("{id}/restore")]
@@ -77,6 +65,10 @@ namespace WebApplication1.Controllers
 
         [HttpGet("readstatus")]
         public async Task<IActionResult> GetAllReadStatus() => await _readeableCrudController.GetAllReadStatus();
+        [HttpGet("{id}/readstatus")]
+
+        public async Task<IActionResult> GetReadStatusById(Guid id) => await _readeableCrudController.GetReadStatusById(id);
+
         [HttpPost]
         [Route("read")]
         public async Task<IActionResult> MarkAllAsRead() => await _readeableCrudController.MarkAllAsRead();
@@ -113,7 +105,7 @@ namespace WebApplication1.Controllers
                 .GetAll<EntityUserStatus>()
                 .SingleOrDefault(_ => _.EntityId == id && _.EntityName == typeof(T).FullName && _.UserId == _userInfoRepository.GetUserInfo());
 
-            return lastView.LastViewed == null ? DateTime.MinValue : lastView.LastViewed.Value;
+            return lastView == null || lastView.LastViewed == null ? DateTime.MinValue : lastView.LastViewed.Value;
         }
 
         public async Task<IActionResult> GetDeltaSnapshot(Guid id, [FromQuery] DateTime fromTimestamp, [FromQuery] DateTime toTimestamp)
@@ -158,7 +150,6 @@ namespace WebApplication1.Controllers
             var differentialChangeset = new DifferentialChangeset();
             differentialChangeset.EntityId = id;
             differentialChangeset.EntityTypeName = sourceEvent.EntityName;
-            differentialChangeset.LastViewed = events.Last().CreatedDate.Value;
             differentialChangeset.Changesets = ExtractDifferentialChanges(id, events, sourceEvent, sourceObject);
             return differentialChangeset;
         }
@@ -175,8 +166,9 @@ namespace WebApplication1.Controllers
                 var nextEvent = events.ToArray()[i];
                 var nextEventObject = JsonConvert.DeserializeObject<T>(currentEvent.Changeset);
                 var changeset = new Changeset();
-                changeset.Date = currentEvent.CreatedDate.Value;
+                changeset.EventDate = currentEvent.CreatedDate.Value;
                 changeset.UserId = currentEvent.CreatedBy;
+                changeset.EventId = currentEvent.Id;
                 changeset.EventName = currentEvent.Action;
                 changeset.Changes = ExtractChanges(currentObject, nextEventObject);
                 differentialChangeset.Add(changeset);
@@ -188,8 +180,9 @@ namespace WebApplication1.Controllers
             var lastChangeset = new Changeset();
             var lastEvent = events.Last();
 
-            lastChangeset.Date = lastEvent.CreatedDate.Value;
+            lastChangeset.EventDate = lastEvent.CreatedDate.Value;
             lastChangeset.UserId = lastEvent.CreatedBy;
+            lastChangeset.EventId = lastEvent.Id;
             lastChangeset.Changes = lastEvent.Action != HistoricalActions.Delete.ToString() ? ExtractChanges(currentObject, _repository.GetById<T>(id)) : null;
             lastChangeset.EventName = lastEvent.Action;
 
@@ -287,16 +280,17 @@ namespace WebApplication1.Controllers
     {
         public string EntityTypeName { get; internal set; }
         public Guid EntityId { get; internal set; }
-        public DateTime LastViewed { get; internal set; }
-
         public List<Changeset> Changesets { get; set; }
     }
     internal class Changeset
     {
-        public string UserId { get; set; }
-        public DateTime Date { get; set; }
-        public List<Change> Changes { get; set; }
+        public Guid EventId { get; set; }
         public string EventName { get; internal set; }
+        public DateTime EventDate { get; set; }
+        public string UserId { get; set; }
+        
+        public List<Change> Changes { get; set; }
+        
     }
     internal class Change
     {

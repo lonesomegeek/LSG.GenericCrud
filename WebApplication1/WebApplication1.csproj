@@ -1,16 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Controllers\AccountsController.cs_" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Controllers\AccountsController.cs_" />
-  </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\" />

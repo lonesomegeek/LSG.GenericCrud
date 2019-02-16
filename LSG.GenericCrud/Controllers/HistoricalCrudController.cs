@@ -39,6 +39,8 @@ namespace LSG.GenericCrud.Controllers
 
         public async Task<ActionResult<T>> GetById(Guid id) => await _crudController.GetById(id);
 
+        public async Task<IActionResult> HeadById(Guid id) => await _crudController.HeadById(id);
+
         /// <summary>
         /// Gets the history.
         /// </summary>
@@ -127,5 +129,7 @@ namespace LSG.GenericCrud.Controllers
                 return NotFound();
             }
         }
+
+        
     }
 }

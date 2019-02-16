@@ -20,8 +20,12 @@ namespace LSG.GenericCrud.Extensions.Controllers
         /// Gets all.
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("readstatus")]
         public virtual async Task<IActionResult> GetAllReadStatus() => Ok(await _service.GetAllAsync());
+
+        [HttpGet("{id}/readstatus")]
+        public virtual async Task<IActionResult> GetReadStatusById(Guid id) => Ok(await _service.GetByIdAsync(id));
+
 
         [HttpPost]
         [Route("read")]
@@ -53,5 +57,7 @@ namespace LSG.GenericCrud.Extensions.Controllers
             await _service.MarkOneAsUnread(id);
             return NoContent();
         }
+
+
     }
 }

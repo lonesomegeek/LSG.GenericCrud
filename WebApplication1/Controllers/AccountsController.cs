@@ -38,5 +38,10 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> GetHistory(Guid id) => await _controller.GetHistory(id);
         [HttpPost("{id}/restore")]
         public async Task<IActionResult> Restore(Guid id) => await _controller.Restore(id);
+
+        public Task<IActionResult> HeadById(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -41,5 +41,10 @@ namespace WebApplication1.Controllers
         public Task<IActionResult> GetHistory(Guid id) => _historicalCrudCrudController.GetHistory(id);
         [HttpPost("{id}/restore")]
         public Task<IActionResult> Restore(Guid id) => _historicalCrudCrudController.Restore(id);
+
+        public Task<IActionResult> HeadById(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
