@@ -68,6 +68,18 @@ namespace WebApplication1.Controllers
             return CreatedAtAction(nameof(GetById), new { id = createdEntity.Id }, createdEntity);
         }
 
+        [HttpPut("{entityId}/restore/{eventId}")]
+        public async Task<ActionResult<Account>> RestoreOneChangeset(Guid entityId, Guid eventId)
+        {
+            var historicalEvent = await _repository.GetByIdAsync<HistoricalEvent>(eventId);
+            var actualObject = JsonConvert.DeserializeObject<Account>(historicalEvent.OriginalObject);
+            var actualObjectAppliedChangeset = JsonConvert.DeserializeObject<Account>(historicalEvent.Changeset);
+            var actualEntity = actualObject.ApplyChangeset(actualObjectAppliedChangeset);
+            var updatedEntity = await _crudService.UpdateAsync(entityId, actualEntity);
+            await _repository.SaveChangesAsync();
+            return Ok(updatedEntity);
+        }
+
         [HttpPost]
         public async Task<ActionResult<Account>> Create([FromBody] Account entity) => await _crudController.Create(entity);
         [HttpDelete("{id}")]
