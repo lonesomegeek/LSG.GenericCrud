@@ -6,27 +6,70 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LSG.GenericCrud.Controllers
 {
-    public interface ICrudController<T> where T : class, IEntity, new()
+    //public interface ICrudController<T> where T : class, IEntity, new()
+    //{
+    //    /// <summary>
+    //    /// Gets all.
+    //    /// </summary>
+    //    /// <returns></returns>
+    //    Task<ActionResult<IEnumerable<T>>> GetAll();
+
+    //    /// <summary>
+    //    /// Gets the by identifier.
+    //    /// </summary>
+    //    /// <param name="id">The identifier.</param>
+    //    /// <returns></returns>
+    //    Task<ActionResult<T>> GetById(Guid id);
+
+    //    /// <summary>
+    //    /// Creates the specified entity.
+    //    /// </summary>
+    //    /// <param name="entity">The entity.</param>
+    //    /// <returns></returns>
+    //    Task<ActionResult<T>> Create([FromBody] T entity);
+
+    //    /// <summary>
+    //    /// Updates the specified identifier.
+    //    /// </summary>
+    //    /// <param name="id">The identifier.</param>
+    //    /// <param name="entity">The entity.</param>
+    //    /// <returns></returns>
+    //    Task<IActionResult> Update(Guid id, [FromBody] T entity);
+
+    //    /// <summary>
+    //    /// Deletes the specified identifier.
+    //    /// </summary>
+    //    /// <param name="id">The identifier.</param>
+    //    /// <returns></returns>
+    //    Task<ActionResult<T>> Delete(Guid id);
+    //}
+
+    public interface ICrudController<T> : ICrudController<Guid, T> where T : class, IEntity<Guid>, new()
+    {
+
+    }
+
+    public interface ICrudController<T1, T2> where T2 : class, IEntity<T1>, new()
     {
         /// <summary>
         /// Gets all.
         /// </summary>
         /// <returns></returns>
-        Task<ActionResult<IEnumerable<T>>> GetAll();
+        Task<ActionResult<IEnumerable<T2>>> GetAll();
 
         /// <summary>
         /// Gets the by identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        Task<ActionResult<T>> GetById(Guid id);
+        Task<ActionResult<T2>> GetById(T1 id);
 
         /// <summary>
         /// Creates the specified entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        Task<ActionResult<T>> Create([FromBody] T entity);
+        Task<ActionResult<T2>> Create([FromBody] T2 entity);
 
         /// <summary>
         /// Updates the specified identifier.
@@ -34,13 +77,13 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="id">The identifier.</param>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        Task<IActionResult> Update(Guid id, [FromBody] T entity);
+        Task<IActionResult> Update(T1 id, [FromBody] T2 entity);
 
         /// <summary>
         /// Deletes the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        Task<ActionResult<T>> Delete(Guid id);
+        Task<ActionResult<T2>> Delete(T1 id);
     }
 }

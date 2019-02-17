@@ -31,6 +31,13 @@ namespace LSG.GenericCrud.Repositories
         T GetById<T>(Guid id) where T : class, IEntity, new();
 
         /// <summary>
+        /// Gets the by identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        T2 GetById<T1, T2>(T1 id) where T2 : class, IEntity<T1>, new();
+
+        /// <summary>
         /// Gets the by identifier asynchronous.
         /// </summary>
         /// <param name="id">The identifier.</param>

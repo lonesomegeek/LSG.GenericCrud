@@ -67,6 +67,16 @@ namespace LSG.GenericCrud.Repositories
         }
 
         /// <summary>
+        /// Gets the by identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        public virtual T2 GetById<T1, T2>(T1 id) where T2 : class, IEntity<T1>, new()
+        {
+            return _context.Set<T2>().Find(id);
+        }
+
+        /// <summary>
         /// Gets the by identifier asynchronous.
         /// </summary>
         /// <param name="id">The identifier.</param>
