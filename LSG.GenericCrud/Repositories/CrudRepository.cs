@@ -85,7 +85,16 @@ namespace LSG.GenericCrud.Repositories
         {
             return await _context.Set<T>().SingleOrDefaultAsync(_ => _.Id == id);
         }
-
+        
+        /// <summary>
+        /// Gets the by identifier asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        public virtual async Task<T2> GetByIdAsync<T1, T2>(T1 id) where T2 : class, IEntity<T1>, new()
+        {
+            return await _context.Set<T2>().FindAsync(id);
+        }
         /// <summary>
         /// Creates the specified entity.
         /// </summary>
@@ -132,6 +141,30 @@ namespace LSG.GenericCrud.Repositories
         }
 
         /// <summary>
+        /// Updates the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="entity">The entity.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public T2 Update<T1, T2>(T1 id, T2 entity) where T2 : class, IEntity<T1>, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Updates the asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="entity">The entity.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public Task UpdateAsync<T1, T2>(T1 id, T2 entity) where T2 : class, IEntity<T1>, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Deletes the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
@@ -139,6 +172,15 @@ namespace LSG.GenericCrud.Repositories
         public virtual T Delete<T>(Guid id) where T : class, IEntity, new()
         {
             return _context.Set<T>().Remove(GetById<T>(id)).Entity;
+        }
+        /// <summary>
+        /// Deletes the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        public virtual T2 Delete<T1, T2>(T1 id) where T2 : class, IEntity<T1>, new()
+        {
+            return _context.Set<T2>().Remove(GetById<T1, T2>(id)).Entity;
         }
 
         /// <summary>
@@ -150,6 +192,17 @@ namespace LSG.GenericCrud.Repositories
         {
             var entity = await GetByIdAsync<T>(id);
             return _context.Set<T>().Remove(entity).Entity;
+        }
+
+        /// <summary>
+        /// Deletes the asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        public virtual async Task<T2> DeleteAsync<T1, T2>(T1 id) where T2 : class, IEntity<T1>, new()
+        {
+            var entity = await GetByIdAsync<T1, T2>(id);
+            return _context.Set<T2>().Remove(entity).Entity;
         }
 
         /// <summary>

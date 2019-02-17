@@ -45,6 +45,13 @@ namespace LSG.GenericCrud.Repositories
         Task<T> GetByIdAsync<T>(Guid id) where T : class, IEntity, new();
 
         /// <summary>
+        /// Gets the by identifier asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        Task<T2> GetByIdAsync<T1, T2>(T1 id) where T2 : class, IEntity<T1>, new();
+
+        /// <summary>
         /// Creates the specified entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
@@ -66,12 +73,29 @@ namespace LSG.GenericCrud.Repositories
         T Update<T>(Guid id, T entity) where T : class, IEntity, new();
 
         /// <summary>
+        /// Updates the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="entity">The entity.</param>
+        /// <returns></returns>
+        T2 Update<T1, T2>(T1 id, T2 entity) where T2 : class, IEntity<T1>, new();
+
+        /// <summary>
         /// Updates the asynchronous.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
         Task UpdateAsync<T>(Guid id, T entity) where T : class, IEntity, new();
+
+        /// <summary>
+        /// Updates the asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="entity">The entity.</param>
+        /// <returns></returns>
+        Task UpdateAsync<T1, T2>(T1 id, T2 entity) where T2 : class, IEntity<T1>, new();
+
         /// <summary>
         /// Deletes the specified identifier.
         /// </summary>
@@ -80,11 +104,25 @@ namespace LSG.GenericCrud.Repositories
         T Delete<T>(Guid id) where T : class, IEntity, new();
 
         /// <summary>
+        /// Deletes the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        T2 Delete<T1, T2>(T1 id) where T2 : class, IEntity<T1>, new();
+
+        /// <summary>
         /// Deletes the asynchronous.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         Task<T> DeleteAsync<T>(Guid id) where T : class, IEntity, new();
+
+        /// <summary>
+        /// Deletes the asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        Task<T2> DeleteAsync<T1, T2>(T1 id) where T2 : class, IEntity<T1>, new();
 
         /// <summary>
         /// Saves the changes.
