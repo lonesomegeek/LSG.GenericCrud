@@ -12,7 +12,7 @@ namespace LSG.GenericCrud.Services
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="LSG.GenericCrud.Services.ICrudService{T}" />
-    public class CrudService<T> : ICrudService<T> where T : class, IEntity, new()
+    public class CrudService<T> : ICrudService<Guid, T> where T : class, IEntity, new()
     {
         /// <summary>
         /// The repository
