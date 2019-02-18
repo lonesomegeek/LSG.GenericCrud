@@ -21,13 +21,13 @@ namespace LSG.GenericCrud.Controllers
         /// <summary>
         /// The service
         /// </summary>
-        private readonly ICrudService<T> _service;
+        private readonly ICrudService<Guid, T> _service;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CrudAsyncController{T}"/> class.
         /// </summary>
         /// <param name="service">The service.</param>
-        public CrudController(ICrudService<T> service)
+        public CrudController(ICrudService<Guid, T> service)
         {
             _service = service;
         }

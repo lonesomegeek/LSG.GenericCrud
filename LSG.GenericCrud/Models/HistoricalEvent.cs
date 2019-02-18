@@ -18,7 +18,7 @@ namespace LSG.GenericCrud.Models
         /// <value>
         /// The entity identifier.
         /// </value>
-        public Guid EntityId { get; set; }
+        public string EntityId { get; set; }
         /// <summary>
         /// Gets or sets the name of the entity.
         /// </summary>
