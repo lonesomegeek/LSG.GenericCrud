@@ -54,7 +54,7 @@ namespace LSG.GenericCrud.Services
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        T2 Delete(Guid id);
+        T2 Delete(T1 id);
         /// <summary>
         /// Gets all asynchronous.
         /// </summary>

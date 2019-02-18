@@ -61,11 +61,8 @@ namespace LSG.GenericCrud.Repositories
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public virtual T GetById<T>(Guid id) where T : class, IEntity, new()
-        {
-            return _context.Set<T>().SingleOrDefault(_ => _.Id == id);
-        }
-
+        public virtual T GetById<T>(Guid id) where T : class, IEntity, new() => GetById<Guid, T>(id);
+       
         /// <summary>
         /// Gets the by identifier.
         /// </summary>
@@ -81,10 +78,7 @@ namespace LSG.GenericCrud.Repositories
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public virtual async Task<T> GetByIdAsync<T>(Guid id) where T : class, IEntity, new()
-        {
-            return await _context.Set<T>().SingleOrDefaultAsync(_ => _.Id == id);
-        }
+        public virtual async Task<T> GetByIdAsync<T>(Guid id) where T : class, IEntity, new() => await GetByIdAsync<Guid, T>(id);
         
         /// <summary>
         /// Gets the by identifier asynchronous.
@@ -129,18 +123,6 @@ namespace LSG.GenericCrud.Repositories
         }
 
         /// <summary>
-        /// Updates the asynchronous.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <param name="entity">The entity.</param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public Task UpdateAsync<T>(Guid id, T entity) where T : class, IEntity, new()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
         /// Updates the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
@@ -163,16 +145,25 @@ namespace LSG.GenericCrud.Repositories
         {
             throw new NotImplementedException();
         }
+        
+        /// <summary>
+        /// Updates the asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="entity">The entity.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public Task UpdateAsync<T>(Guid id, T entity) where T : class, IEntity, new()
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// Deletes the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public virtual T Delete<T>(Guid id) where T : class, IEntity, new()
-        {
-            return _context.Set<T>().Remove(GetById<T>(id)).Entity;
-        }
+        public virtual T Delete<T>(Guid id) where T : class, IEntity, new() => Delete<Guid, T>(id);
         /// <summary>
         /// Deletes the specified identifier.
         /// </summary>
@@ -188,11 +179,7 @@ namespace LSG.GenericCrud.Repositories
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public virtual async Task<T> DeleteAsync<T>(Guid id) where T : class, IEntity, new()
-        {
-            var entity = await GetByIdAsync<T>(id);
-            return _context.Set<T>().Remove(entity).Entity;
-        }
+        public virtual async Task<T> DeleteAsync<T>(Guid id) where T : class, IEntity, new() => await DeleteAsync<Guid, T>(id);
 
         /// <summary>
         /// Deletes the asynchronous.
