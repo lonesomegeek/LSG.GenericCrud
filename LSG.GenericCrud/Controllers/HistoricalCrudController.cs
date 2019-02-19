@@ -15,29 +15,64 @@ namespace LSG.GenericCrud.Controllers
     /// <seealso cref="LSG.GenericCrud.Controllers.CrudAsyncController{T}" />
     public class HistoricalCrudController<T> : 
         ControllerBase,
-        //ICrudController<T> TODO: Check in tests,
         IHistoricalCrudController<T> where T : class, IEntity, new()
     {
-        private readonly ICrudController<T> _crudController;
-
-        /// <summary>
-        /// The historical crud service
-        /// </summary>
-        private readonly IHistoricalCrudService<T> _historicalCrudService;
+        private readonly IHistoricalCrudController<Guid, T> _controller;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HistoricalCrudAsyncController{T}"/> class.
         /// </summary>
         /// <param name="historicalCrudService">The historical crud service.</param>
-        public HistoricalCrudController(ICrudController<T> crudController, IHistoricalCrudService<T> historicalCrudService)
+        public HistoricalCrudController(IHistoricalCrudController<Guid, T> controller)
+        {
+            _controller = controller;
+        }
+
+        [HttpGet]
+        public virtual async Task<ActionResult<IEnumerable<T>>> GetAll() => await _controller.GetAll();
+        [HttpGet("{id}")]
+        public virtual async Task<ActionResult<T>> GetById(Guid id) => await _controller.GetById(id);
+        [HttpPost]
+        public virtual async Task<ActionResult<T>> Create(T entity) => await _controller.Create(entity);
+        [HttpPut("{id}")]
+        public virtual async Task<IActionResult> Update(Guid id, T entity) => await _controller.Update(id, entity);
+        [HttpDelete("{id}")]
+        public virtual async Task<ActionResult<T>> Delete(Guid id) => await _controller.Delete(id);
+        [HttpGet("{id}/history")]
+        public virtual async Task<IActionResult> GetHistory(Guid id) => await _controller.GetHistory(id);
+        [HttpPost("{id}/restore")]
+        public virtual async Task<IActionResult> Restore(Guid id) => await _controller.Restore(id);
+    }
+
+    /// <summary>
+    /// Asynchronous Historical Crud Controller endpoints
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <seealso cref="LSG.GenericCrud.Controllers.CrudAsyncController{T}" />
+    public class HistoricalCrudController<T1, T2> :
+        ControllerBase,
+        IHistoricalCrudController<T1, T2> where T2 : class, IEntity<T1>, new()
+    {
+        private readonly ICrudController<T1, T2> _crudController;
+
+        /// <summary>
+        /// The historical crud service
+        /// </summary>
+        private readonly IHistoricalCrudService<T1, T2> _historicalCrudService;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HistoricalCrudAsyncController{T}"/> class.
+        /// </summary>
+        /// <param name="historicalCrudService">The historical crud service.</param>
+        public HistoricalCrudController(ICrudController<T1, T2> crudController, IHistoricalCrudService<T1, T2> historicalCrudService)
         {
             _crudController = crudController;
             _historicalCrudService = historicalCrudService;
         }
 
-        public async Task<ActionResult<IEnumerable<T>>> GetAll() => await _crudController.GetAll();
+        public virtual async Task<ActionResult<IEnumerable<T2>>> GetAll() => await _crudController.GetAll();
 
-        public async Task<ActionResult<T>> GetById(Guid id) => await _crudController.GetById(id);
+        public virtual async Task<ActionResult<T2>> GetById(T1 id) => await _crudController.GetById(id);
 
         /// <summary>
         /// Gets the history.
@@ -45,7 +80,7 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpGet("{id}/history")]
-        public virtual async Task<IActionResult> GetHistory(Guid id)
+        public virtual async Task<IActionResult> GetHistory(T1 id)
         {
             try
             {
@@ -63,7 +98,7 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpPost("{id}/restore")]
-        public virtual async Task<IActionResult> Restore(Guid id)
+        public virtual async Task<IActionResult> Restore(T1 id)
         {
             try
             {
@@ -81,7 +116,7 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
         [HttpPost]
-        public virtual async Task<ActionResult<T>> Create([FromBody] T entity)
+        public virtual async Task<ActionResult<T2>> Create([FromBody] T2 entity)
         {
             var createdEntity = await _historicalCrudService.CreateAsync(entity);
             return CreatedAtAction(nameof(GetById), new { id = createdEntity.Id }, createdEntity);
@@ -95,7 +130,7 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public virtual async Task<IActionResult> Update(Guid id, [FromBody] T entity)
+        public virtual async Task<IActionResult> Update(T1 id, [FromBody] T2 entity)
         {
             // TODO: Add an null id detection
             try
@@ -116,7 +151,7 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public virtual async Task<ActionResult<T>> Delete(Guid id)
+        public virtual async Task<ActionResult<T2>> Delete(T1 id)
         {
             try
             {

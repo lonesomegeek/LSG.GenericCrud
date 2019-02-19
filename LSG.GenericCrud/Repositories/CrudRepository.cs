@@ -25,10 +25,7 @@ namespace LSG.GenericCrud.Repositories
         /// <summary>
         /// Initializes a new instance of the <see cref="CrudRepository{T}"/> class.
         /// </summary>
-        public CrudRepository()
-        {
-            
-        }
+        public CrudRepository() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CrudRepository{T}"/> class.
@@ -42,60 +39,72 @@ namespace LSG.GenericCrud.Repositories
         /// Gets all.
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerable<T> GetAll<T>() where T : class, IEntity, new()
-        {
-            return _context.Set<T>();
-        }
+        public virtual IEnumerable<T> GetAll<T>() where T : class, IEntity, new() => GetAllAsync<T>().GetAwaiter().GetResult();
 
         /// <summary>
         /// Gets all asynchronous.
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<IEnumerable<T>> GetAllAsync<T>() where T : class, IEntity, new()
-        {
-            return await _context.Set<T>().ToListAsync();
-        }
+        public virtual async Task<IEnumerable<T>> GetAllAsync<T>() where T : class, IEntity, new() => await GetAllAsync<Guid, T>();
+
+        public virtual async Task<IEnumerable<T2>> GetAllAsync<T1, T2>() where T2 : class, IEntity<T1>, new() => await _context.Set<T2>().ToListAsync();
 
         /// <summary>
         /// Gets the by identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public virtual T GetById<T>(Guid id) where T : class, IEntity, new()
-        {
-            return _context.Set<T>().SingleOrDefault(_ => _.Id == id);
-        }
+        public virtual T GetById<T>(Guid id) where T : class, IEntity, new() => GetById<Guid, T>(id);
+
+        /// <summary>
+        /// Gets the by identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        public virtual T2 GetById<T1, T2>(T1 id) where T2 : class, IEntity<T1>, new() => GetByIdAsync<T1, T2>(id).GetAwaiter().GetResult();
 
         /// <summary>
         /// Gets the by identifier asynchronous.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public virtual async Task<T> GetByIdAsync<T>(Guid id) where T : class, IEntity, new()
-        {
-            return await _context.Set<T>().SingleOrDefaultAsync(_ => _.Id == id);
-        }
-
+        public virtual async Task<T> GetByIdAsync<T>(Guid id) where T : class, IEntity, new() => await GetByIdAsync<Guid, T>(id);
+        
+        /// <summary>
+        /// Gets the by identifier asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        public virtual async Task<T2> GetByIdAsync<T1, T2>(T1 id) where T2 : class, IEntity<T1>, new() => await _context.Set<T2>().FindAsync(id);
+        
         /// <summary>
         /// Creates the specified entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        public virtual T Create<T>(T entity) where T : class, IEntity, new()
-        {
-            return _context.Set<T>().Add(entity).Entity;
-        }
+        public virtual T Create<T>(T entity) where T : class, IEntity, new() => CreateAsync(entity).GetAwaiter().GetResult();
+        
 
         /// <summary>
         /// Creates the asynchronous.
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        public virtual async Task<T> CreateAsync<T>(T entity) where T : class, IEntity, new()
+        public virtual async Task<T> CreateAsync<T>(T entity) where T : class, IEntity, new() => await CreateAsync<Guid, T>(entity);
+        public virtual async Task<T2> CreateAsync<T1, T2>(T2 entity) where T2 : class, IEntity<T1>, new()
         {
-            var result = await _context.Set<T>().AddAsync(entity);
+            var result = await _context.Set<T2>().AddAsync(entity);
             return result.Entity;
         }
+            
+        /// <summary>
+        /// Updates the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="entity">The entity.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public virtual T Update<T>(Guid id, T entity) where T : class, IEntity, new() => Update<Guid, T>(id, entity);
 
         /// <summary>
         /// Updates the specified identifier.
@@ -104,10 +113,9 @@ namespace LSG.GenericCrud.Repositories
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public T Update<T>(Guid id, T entity) where T : class, IEntity, new()
-        {
-            throw new NotImplementedException();
-        }
+        public virtual T2 Update<T1, T2>(T1 id, T2 entity) where T2 : class, IEntity<T1>, new() => UpdateAsync(id, entity).GetAwaiter().GetResult();
+
+        public Task<T> UpdateAsync<T>(Guid id, T entity) where T : class, IEntity, new() => UpdateAsync<Guid, T>(id, entity);
 
         /// <summary>
         /// Updates the asynchronous.
@@ -116,30 +124,37 @@ namespace LSG.GenericCrud.Repositories
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task UpdateAsync<T>(Guid id, T entity) where T : class, IEntity, new()
-        {
-            throw new NotImplementedException();
-        }
+        public virtual Task<T2> UpdateAsync<T1, T2>(T1 id, T2 entity) where T2 : class, IEntity<T1>, new() => throw new NotImplementedException();
 
         /// <summary>
         /// Deletes the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public virtual T Delete<T>(Guid id) where T : class, IEntity, new()
-        {
-            return _context.Set<T>().Remove(GetById<T>(id)).Entity;
-        }
+        public virtual T Delete<T>(Guid id) where T : class, IEntity, new() => Delete<Guid, T>(id);
+        /// <summary>
+        /// Deletes the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        public virtual T2 Delete<T1, T2>(T1 id) where T2 : class, IEntity<T1>, new() => DeleteAsync<T1, T2>(id).GetAwaiter().GetResult();
 
         /// <summary>
         /// Deletes the asynchronous.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public virtual async Task<T> DeleteAsync<T>(Guid id) where T : class, IEntity, new()
+        public virtual async Task<T> DeleteAsync<T>(Guid id) where T : class, IEntity, new() => await DeleteAsync<Guid, T>(id);
+
+        /// <summary>
+        /// Deletes the asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        public virtual async Task<T2> DeleteAsync<T1, T2>(T1 id) where T2 : class, IEntity<T1>, new()
         {
-            var entity = await GetByIdAsync<T>(id);
-            return _context.Set<T>().Remove(entity).Entity;
+            var entity = await GetByIdAsync<T1, T2>(id);
+            return _context.Set<T2>().Remove(entity).Entity;
         }
 
         /// <summary>
