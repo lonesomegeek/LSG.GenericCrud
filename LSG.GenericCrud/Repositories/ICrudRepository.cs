@@ -86,7 +86,7 @@ namespace LSG.GenericCrud.Repositories
         /// <param name="id">The identifier.</param>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        Task UpdateAsync<T>(Guid id, T entity) where T : class, IEntity, new();
+        Task<T> UpdateAsync<T>(Guid id, T entity) where T : class, IEntity, new();
 
         /// <summary>
         /// Updates the asynchronous.
@@ -94,7 +94,7 @@ namespace LSG.GenericCrud.Repositories
         /// <param name="id">The identifier.</param>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        Task UpdateAsync<T1, T2>(T1 id, T2 entity) where T2 : class, IEntity<T1>, new();
+        Task<T2> UpdateAsync<T1, T2>(T1 id, T2 entity) where T2 : class, IEntity<T1>, new();
 
         /// <summary>
         /// Deletes the specified identifier.

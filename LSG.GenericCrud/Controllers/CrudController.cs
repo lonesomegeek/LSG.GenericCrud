@@ -18,98 +18,28 @@ namespace LSG.GenericCrud.Controllers
         ICrudController<T> 
         where T : class, IEntity, new()
     {
-        /// <summary>
-        /// The service
-        /// </summary>
-        private readonly ICrudService<Guid, T> _service;
+        
+        private readonly ICrudController<Guid, T> _controller;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CrudAsyncController{T}"/> class.
         /// </summary>
         /// <param name="service">The service.</param>
-        public CrudController(ICrudService<Guid, T> service)
+        public CrudController(ICrudController<Guid, T> controller)
         {
-            _service = service;
+            _controller = controller;
         }
 
-        /// <summary>
-        /// Gets all.
-        /// </summary>
-        /// <returns></returns>
         [HttpGet]
-        public virtual async Task<ActionResult<IEnumerable<T>>> GetAll() => Ok(await _service.GetAllAsync());
-
-        /// <summary>
-        /// Gets the by identifier if it exists.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        [Route("{id}")]
-        [HttpGet]
-        public virtual async Task<ActionResult<T>> GetById(Guid id)
-        {
-            try
-            {
-                return Ok(await _service.GetByIdAsync(id));
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return NotFound();
-            }
-        }
-
-        /// <summary>
-        /// Creates the specified entity.
-        /// </summary>
-        /// <param name="entity">The entity.</param>
-        /// <returns></returns>
+        public virtual async Task<ActionResult<IEnumerable<T>>> GetAll() => await _controller.GetAll();
+        [HttpGet("{id}")]
+        public virtual async Task<ActionResult<T>> GetById(Guid id) => await _controller.GetById(id);
         [HttpPost]
-        public virtual async Task<ActionResult<T>> Create([FromBody] T entity)
-        {
-            var createdEntity = await _service.CreateAsync(entity);
-            return CreatedAtAction(nameof(GetById), new { id = createdEntity.Id }, createdEntity);
-        }
-        
-
-        /// <summary>
-        /// Updates the specified identifier if it exists.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <param name="entity">The entity.</param>
-        /// <returns></returns>
+        public virtual async Task<ActionResult<T>> Create(T entity) => await _controller.Create(entity);
         [HttpPut("{id}")]
-        public virtual async Task<IActionResult> Update(Guid id, [FromBody] T entity)
-        {
-            // TODO: Add an null id detection
-            try
-            {
-                await _service.UpdateAsync(id, entity);
-
-                return NoContent();
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return NotFound();
-            }
-        }
-
-        /// <summary>
-        /// Deletes the specified identifier if it exists.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
+        public virtual async Task<IActionResult> Update(Guid id, T entity) => await _controller.Update(id, entity);
         [HttpDelete("{id}")]
-        public virtual async Task<ActionResult<T>> Delete(Guid id)
-        {
-            try
-            {
-                return Ok(await _service.DeleteAsync(id));
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return NotFound();
-            }
-        }
+        public virtual async Task<ActionResult<T>> Delete(Guid id) => await _controller.Delete(id);
     }
 
     /// <summary>
@@ -148,8 +78,7 @@ namespace LSG.GenericCrud.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        [Route("{id}")]
-        [HttpGet]
+        [HttpGet("{id}")]
         public virtual async Task<ActionResult<T2>> GetById(T1 id)
         {
             try
