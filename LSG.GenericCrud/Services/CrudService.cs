@@ -41,7 +41,7 @@ namespace LSG.GenericCrud.Services
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="LSG.GenericCrud.Services.ICrudService{T}" />
-    public class CrudService<T1, T2> : ICrudService<T1, T2> where T2 : class, IEntity<T1>, IEntity, new()
+    public class CrudService<T1, T2> : ICrudService<T1, T2> where T2 : class, IEntity<T1>, new()
     {
         /// <summary>
         /// The repository
@@ -76,7 +76,7 @@ namespace LSG.GenericCrud.Services
         /// Gets all asynchronous.
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<IEnumerable<T2>> GetAllAsync() => await _repository.GetAllAsync<T2>();
+        public virtual async Task<IEnumerable<T2>> GetAllAsync() => await _repository.GetAllAsync<T1, T2>();
 
         /// <summary>
         /// Gets the by identifier.
@@ -113,7 +113,7 @@ namespace LSG.GenericCrud.Services
         /// <returns></returns>
         public virtual async Task<T2> CreateAsync(T2 entity)
         {
-            var createdEntity = await _repository.CreateAsync(entity);
+            var createdEntity = await _repository.CreateAsync<T1, T2>(entity);
             if (AutoCommit) await _repository.SaveChangesAsync();
             return createdEntity;
         }

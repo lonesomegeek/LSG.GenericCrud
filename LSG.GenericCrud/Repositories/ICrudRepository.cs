@@ -24,6 +24,12 @@ namespace LSG.GenericCrud.Repositories
         Task<IEnumerable<T>> GetAllAsync<T>() where T : class, IEntity, new();
 
         /// <summary>
+        /// Gets all asynchronous.
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<T2>> GetAllAsync<T1, T2>() where T2 : class, IEntity<T1>, new();
+
+        /// <summary>
         /// Gets the by identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
@@ -63,6 +69,13 @@ namespace LSG.GenericCrud.Repositories
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
         Task<T> CreateAsync<T>(T entity) where T : class, IEntity, new();
+
+        /// <summary>
+        /// Creates the asynchronous.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns></returns>
+        Task<T2> CreateAsync<T1, T2>(T2 entity) where T2 : class, IEntity<T1>, new();
 
         /// <summary>
         /// Updates the specified identifier.

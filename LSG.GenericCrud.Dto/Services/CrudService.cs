@@ -19,8 +19,8 @@ namespace LSG.GenericCrud.Dto.Services
     /// <seealso cref="LSG.GenericCrud.Services.ICrudService{TDto}" />
     public class CrudService<TDto, TEntity> : 
         ICrudService<TDto>
-        where TDto : IEntity 
-        where TEntity : class, IEntity, new()
+        where TDto : IEntity<Guid> 
+        where TEntity : class, IEntity<Guid>, new()
     {
         private readonly ICrudService<TEntity> _service;
 

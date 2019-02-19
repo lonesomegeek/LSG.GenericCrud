@@ -45,8 +45,10 @@ namespace LSG.GenericCrud.Repositories
         /// Gets all asynchronous.
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<IEnumerable<T>> GetAllAsync<T>() where T : class, IEntity, new() => await _context.Set<T>().ToListAsync();
-        
+        public virtual async Task<IEnumerable<T>> GetAllAsync<T>() where T : class, IEntity, new() => await GetAllAsync<Guid, T>();
+
+        public virtual async Task<IEnumerable<T2>> GetAllAsync<T1, T2>() where T2 : class, IEntity<T1>, new() => await _context.Set<T2>().ToListAsync();
+
         /// <summary>
         /// Gets the by identifier.
         /// </summary>
@@ -88,12 +90,13 @@ namespace LSG.GenericCrud.Repositories
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        public virtual async Task<T> CreateAsync<T>(T entity) where T : class, IEntity, new()
+        public virtual async Task<T> CreateAsync<T>(T entity) where T : class, IEntity, new() => await CreateAsync<Guid, T>(entity);
+        public virtual async Task<T2> CreateAsync<T1, T2>(T2 entity) where T2 : class, IEntity<T1>, new()
         {
-            var result = await _context.Set<T>().AddAsync(entity);
+            var result = await _context.Set<T2>().AddAsync(entity);
             return result.Entity;
         }
-
+            
         /// <summary>
         /// Updates the specified identifier.
         /// </summary>
