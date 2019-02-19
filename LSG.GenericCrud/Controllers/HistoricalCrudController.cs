@@ -32,6 +32,8 @@ namespace LSG.GenericCrud.Controllers
         public virtual async Task<ActionResult<IEnumerable<T>>> GetAll() => await _controller.GetAll();
         [HttpGet("{id}")]
         public virtual async Task<ActionResult<T>> GetById(Guid id) => await _controller.GetById(id);
+        [HttpHead("{id}")]
+        public virtual async Task<IActionResult> HeadById(Guid id) => await _controller.HeadById(id);
         [HttpPost]
         public virtual async Task<ActionResult<T>> Create(T entity) => await _controller.Create(entity);
         [HttpPut("{id}")]
@@ -70,10 +72,12 @@ namespace LSG.GenericCrud.Controllers
             _historicalCrudService = historicalCrudService;
         }
 
+        [HttpGet]
         public virtual async Task<ActionResult<IEnumerable<T2>>> GetAll() => await _crudController.GetAll();
-
+        [HttpGet("{id}")]
         public virtual async Task<ActionResult<T2>> GetById(T1 id) => await _crudController.GetById(id);
-
+        [HttpHead("{id}")]
+        public virtual async Task<IActionResult> HeadById(T1 id) => await _crudController.HeadById(id);
         /// <summary>
         /// Gets the history.
         /// </summary>

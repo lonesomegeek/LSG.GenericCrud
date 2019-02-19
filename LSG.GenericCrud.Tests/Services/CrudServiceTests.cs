@@ -39,26 +39,26 @@ namespace LSG.GenericCrud.Tests.Services
         public void GetAll_ReturnElements()
         {
             var repositoryMock = new Mock<ICrudRepository>();
-            repositoryMock.Setup(_ => _.GetAllAsync<TestEntity>()).ReturnsAsync(_entities);
+            repositoryMock.Setup(_ => _.GetAllAsync<Guid, TestEntity>()).ReturnsAsync(_entities);
             var service = new CrudService<Guid, TestEntity>(repositoryMock.Object);
 
             var result = service.GetAll();
 
             Assert.Equal(result.Count(), _entities.Count);
-            repositoryMock.Verify(_ => _.GetAllAsync<TestEntity>(), Times.Once);
+            repositoryMock.Verify(_ => _.GetAllAsync<Guid, TestEntity>(), Times.Once);
         }
 
         [Fact]
         public async void GetAllAsync_ReturnElements()
         {
             var repositoryMock = new Mock<ICrudRepository>();
-            repositoryMock.Setup(_ => _.GetAllAsync<TestEntity>()).ReturnsAsync(_entities);
+            repositoryMock.Setup(_ => _.GetAllAsync<Guid, TestEntity>()).ReturnsAsync(_entities);
             var service = new CrudService<Guid, TestEntity>(repositoryMock.Object);
 
             var result = await service.GetAllAsync();
 
             Assert.Equal(result.Count(), _entities.Count);
-            repositoryMock.Verify(_ => _.GetAllAsync<TestEntity>(), Times.Once);
+            repositoryMock.Verify(_ => _.GetAllAsync<Guid, TestEntity>(), Times.Once);
         }
 
         [Fact]
@@ -111,13 +111,13 @@ namespace LSG.GenericCrud.Tests.Services
         public void Create_ReturnsCreatedElement()
         {
             var repositoryMock = new Mock<ICrudRepository>();
-            repositoryMock.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
+            repositoryMock.Setup(_ => _.CreateAsync<Guid, TestEntity>(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
             var service = new CrudService<Guid, TestEntity>(repositoryMock.Object);
 
             var result = service.Create(_entity);
 
             Assert.Equal(_entity.Id, result.Id);
-            repositoryMock.Verify(_ => _.CreateAsync(It.IsAny<TestEntity>()), Times.Once);
+            repositoryMock.Verify(_ => _.CreateAsync<Guid, TestEntity>(It.IsAny<TestEntity>()), Times.Once);
             repositoryMock.Verify(_ => _.SaveChangesAsync(), Times.Once);
         }
 
@@ -125,13 +125,13 @@ namespace LSG.GenericCrud.Tests.Services
         public async void CreateAsync_ReturnsCreatedElement()
         {
             var repositoryMock = new Mock<ICrudRepository>();
-            repositoryMock.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
+            repositoryMock.Setup(_ => _.CreateAsync<Guid, TestEntity>(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
             var service = new CrudService<Guid, TestEntity>(repositoryMock.Object);
 
             var result = await service.CreateAsync(_entity);
 
             Assert.Equal(_entity.Id, result.Id);
-            repositoryMock.Verify(_ => _.CreateAsync(It.IsAny<TestEntity>()), Times.Once);
+            repositoryMock.Verify(_ => _.CreateAsync<Guid, TestEntity>(It.IsAny<TestEntity>()), Times.Once);
             repositoryMock.Verify(_ => _.SaveChangesAsync(), Times.Once);
         }
 
