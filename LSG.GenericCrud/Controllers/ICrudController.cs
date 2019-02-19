@@ -23,6 +23,8 @@ namespace LSG.GenericCrud.Controllers
         /// <returns></returns>
         Task<ActionResult<T2>> GetById(T1 id);
 
+        Task<IActionResult> HeadById(T1 id);
+
         /// <summary>
         /// Creates the specified entity.
         /// </summary>
