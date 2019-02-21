@@ -4,6 +4,7 @@ using LSG.GenericCrud.Repositories;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LSG.GenericCrud.Services;
 
 namespace LSG.GenericCrud.Extensions.Services
 {

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using LSG.GenericCrud.Exceptions;
 using LSG.GenericCrud.Models;
@@ -136,13 +138,13 @@ namespace LSG.GenericCrud.Services
         public virtual async Task<T2> UpdateAsync(T1 id, T2 entity)
         {
             var originalEntity = await GetByIdAsync(id);
-            foreach (var prop in entity.GetType().GetProperties())
+            foreach (var prop in entity.GetType().GetProperties().Where(_=>_.DeclaringType == typeof(T2)))
             {
                 if (prop.Name != "Id")
                 {
                     var originalProperty = originalEntity.GetType().GetProperty(prop.Name);
                     var value = prop.GetValue(entity, null);
-                    if (value != null) originalProperty.SetValue(originalEntity, value);
+                    /*if (value != null) */originalProperty.SetValue(originalEntity, value);
                 }
             }
             if (AutoCommit) await _repository.SaveChangesAsync();

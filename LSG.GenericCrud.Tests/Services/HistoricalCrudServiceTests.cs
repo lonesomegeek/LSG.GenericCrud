@@ -30,7 +30,7 @@ namespace LSG.GenericCrud.Tests.Services
                 RuleFor(_ => _.Id, Guid.NewGuid).
                 RuleFor(_ => _.Action, HistoricalActions.Delete.ToString).
                 RuleFor(_ => _.EntityId, _entity.Id.ToString()).
-                RuleFor(_ => _.Changeset, "{}");
+                RuleFor(_ => _.Changeset, new Faker<HistoricalChangeset>());
             _events = new List<HistoricalEvent>() { eventFaker.Generate() };
         }
 

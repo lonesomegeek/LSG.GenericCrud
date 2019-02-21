@@ -98,12 +98,15 @@ namespace LSG.GenericCrud.Services
             var historicalEvent = new HistoricalEvent
             {
                 Action = HistoricalActions.Create.ToString(),
-                Changeset = new T2().DetailedCompare(entity),
+                Changeset = new HistoricalChangeset()
+                {
+                    ObjectDelta = new T2().DetailedCompare(entity)
+                },
                 EntityId = entity.Id.ToString(), // TODO: I do not like the string value compare here
-                EntityName = entity.GetType().Name
+                EntityName = entity.GetType().FullName
             };
 
-            await _repository.CreateAsync(historicalEvent);
+            await _repository.CreateAsync<Guid, HistoricalEvent>(historicalEvent);
             await _repository.SaveChangesAsync();
             // TODO: Do I need to call the other repo for both repositories, or do I need a UoW (bugfix created)
             return createdEntity;
@@ -129,13 +132,17 @@ namespace LSG.GenericCrud.Services
             var historicalEvent = new HistoricalEvent
             {
                 Action = HistoricalActions.Update.ToString(),
-                Changeset = originalEntity.DetailedCompare(entity),
+                Changeset = new HistoricalChangeset()
+                {
+                    ObjectData = JsonConvert.SerializeObject(originalEntity),
+                    ObjectDelta = originalEntity.DetailedCompare(entity)
+                },
                 EntityId = originalEntity.Id.ToString(), // TODO: I do not like the string value compare here
-                EntityName = entity.GetType().Name
+                EntityName = entity.GetType().FullName
             };
             var modifiedEntity = await _service.UpdateAsync(id, entity);
 
-            await _repository.CreateAsync(historicalEvent);
+            await _repository.CreateAsync<Guid, HistoricalEvent>(historicalEvent);
             await _repository.SaveChangesAsync();
 
             return modifiedEntity;
@@ -161,11 +168,14 @@ namespace LSG.GenericCrud.Services
             var historicalEvent = new HistoricalEvent
             {
                 Action = HistoricalActions.Delete.ToString(),
-                Changeset = new T2().DetailedCompare(entity),
+                Changeset = new HistoricalChangeset()
+                {
+                    ObjectData = new T2().DetailedCompare(entity)
+                },
                 EntityId = entity.Id.ToString(), // TODO: I do not like the string value compare here
-                EntityName = entity.GetType().Name
+                EntityName = entity.GetType().FullName
             };
-            await _repository.CreateAsync(historicalEvent);
+            await _repository.CreateAsync<Guid, HistoricalEvent>(historicalEvent);
             await _repository.SaveChangesAsync();
 
             return entity;
@@ -188,13 +198,13 @@ namespace LSG.GenericCrud.Services
         public virtual async Task<T2> RestoreAsync(T1 id)
         {
             var entity = _repository
-                .GetAllAsync<HistoricalEvent>()
+                .GetAllAsync<Guid, HistoricalEvent>()
                 .Result
                 .SingleOrDefault(_ =>
                     _.EntityId == id.ToString() && // TODO: I do not like the string value compare here
                     _.Action == HistoricalActions.Delete.ToString());
             if (entity == null) throw new EntityNotFoundException();
-            var json = entity.Changeset;
+            var json = entity.Changeset.ObjectDelta;
             var obj = JsonConvert.DeserializeObject<T2>(json);
             var createdObject = await CreateAsync(obj);
 
@@ -217,7 +227,7 @@ namespace LSG.GenericCrud.Services
         /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
         public virtual async Task<IEnumerable<IEntity>> GetHistoryAsync(T1 id)
         {
-            var events = await _repository.GetAllAsync<HistoricalEvent>();
+            var events = await _repository.GetAllAsync<Guid, HistoricalEvent>();
             var filteredEvents = events
                 .Where(_ => _.EntityId == id.ToString()) // TODO: I do not like the string value compare here
                 .ToList();
