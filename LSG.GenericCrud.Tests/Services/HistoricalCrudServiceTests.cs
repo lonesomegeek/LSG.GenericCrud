@@ -30,7 +30,8 @@ namespace LSG.GenericCrud.Tests.Services
                 RuleFor(_ => _.Id, Guid.NewGuid).
                 RuleFor(_ => _.Action, HistoricalActions.Delete.ToString).
                 RuleFor(_ => _.EntityId, _entity.Id.ToString()).
-                RuleFor(_ => _.Changeset, "{}");
+                RuleFor(_ => _.Changeset, new Faker<HistoricalChangeset>()
+                    .RuleFor(_ => _.ObjectData, "{}"));
             _events = new List<HistoricalEvent>() { eventFaker.Generate() };
         }
 
@@ -58,7 +59,7 @@ namespace LSG.GenericCrud.Tests.Services
             var result = service.Create(_entity);
 
             Assert.Equal(_entity.Id, result.Id);
-            repository.Verify(_ => _.CreateAsync(It.IsAny<HistoricalEvent>()), Times.Once);
+            repository.Verify(_ => _.CreateAsync<Guid, HistoricalEvent>(It.IsAny<HistoricalEvent>()), Times.Once);
             crudServiceMock.Verify(_ => _.CreateAsync(It.IsAny<TestEntity>()), Times.Once);
             repository.Verify(_ => _.SaveChangesAsync(), Times.Once);
         }
@@ -77,7 +78,7 @@ namespace LSG.GenericCrud.Tests.Services
             var result = service.Update(_entity.Id, _entity);
 
             Assert.Equal(_entity.Id, result.Id);
-            repository.Verify(_ => _.CreateAsync(It.IsAny<HistoricalEvent>()), Times.Once);
+            repository.Verify(_ => _.CreateAsync<Guid, HistoricalEvent>(It.IsAny<HistoricalEvent>()), Times.Once);
             repository.Verify(_ => _.SaveChangesAsync(), Times.Once);
             crudServiceMock.Verify(_ => _.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
             crudServiceMock.Verify(_ => _.UpdateAsync(It.IsAny<Guid>(), It.IsAny<TestEntity>()), Times.Once);
@@ -96,7 +97,7 @@ namespace LSG.GenericCrud.Tests.Services
             var result = service.Delete(_entity.Id);
 
             Assert.Equal(_entity.Id, result.Id);
-            repository.Verify(_ => _.CreateAsync(It.IsAny<HistoricalEvent>()), Times.Once);
+            repository.Verify(_ => _.CreateAsync<Guid, HistoricalEvent>(It.IsAny<HistoricalEvent>()), Times.Once);
             crudServiceMock.Verify(_ => _.DeleteAsync(It.IsAny<Guid>()), Times.Once);
             repository.Verify(_ => _.SaveChangesAsync(), Times.Once);
         }
@@ -105,7 +106,7 @@ namespace LSG.GenericCrud.Tests.Services
         public void Restore_ReturnsCreatedElement()
         {
             var repository = new Mock<CrudRepository>();
-            repository.Setup(_ => _.GetAllAsync<HistoricalEvent>()).ReturnsAsync(_events);
+            repository.Setup(_ => _.GetAllAsync<Guid, HistoricalEvent>()).ReturnsAsync(_events);
             repository.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
             var crudServiceMock = new Mock<ICrudService<TestEntity>>();
             crudServiceMock.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
@@ -134,7 +135,7 @@ namespace LSG.GenericCrud.Tests.Services
         public void GetHistory_ReturnsHistory()
         {
             var repository = new Mock<CrudRepository>();
-            repository.Setup(_ => _.GetAllAsync<HistoricalEvent>()).ReturnsAsync(_events);
+            repository.Setup(_ => _.GetAllAsync<Guid, HistoricalEvent>()).ReturnsAsync(_events);
             var crudServiceMock = new Mock<ICrudService<TestEntity>>();
             var crudService = crudServiceMock.Object;
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object);
