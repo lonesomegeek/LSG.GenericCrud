@@ -204,7 +204,7 @@ namespace LSG.GenericCrud.Services
                     _.EntityId == id.ToString() && // TODO: I do not like the string value compare here
                     _.Action == HistoricalActions.Delete.ToString());
             if (entity == null) throw new EntityNotFoundException();
-            var json = entity.Changeset.ObjectDelta;
+            var json = entity.Changeset.ObjectData;
             var obj = JsonConvert.DeserializeObject<T2>(json);
             var createdObject = await CreateAsync(obj);
 
