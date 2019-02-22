@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LSG.GenericCrud.Exceptions;
+using LSG.GenericCrud.Helpers;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,8 @@ namespace LSG.GenericCrud.Controllers
         public virtual async Task<IActionResult> HeadById(Guid id) => await _controller.HeadById(id);
         [HttpPost]
         public virtual async Task<ActionResult<T>> Create(T entity) => await _controller.Create(entity);
+        [HttpPost("{id}/copy")]
+        public virtual async Task<ActionResult<T>> Copy(Guid id) => await _controller.Copy(id);
         [HttpPut("{id}")]
         public virtual async Task<IActionResult> Update(Guid id, T entity) => await _controller.Update(id, entity);
         [HttpDelete("{id}")]
@@ -44,6 +47,9 @@ namespace LSG.GenericCrud.Controllers
         public virtual async Task<IActionResult> GetHistory(Guid id) => await _controller.GetHistory(id);
         [HttpPost("{id}/restore")]
         public virtual async Task<IActionResult> Restore(Guid id) => await _controller.Restore(id);
+        [HttpPost("{entityId}/copy/{changesetId}")]
+        public virtual async Task<ActionResult<T>> CopyFromChangeset(Guid entityId, Guid changesetId) => await _controller.CopyFromChangeset(entityId, changesetId);
+        
     }
 
     /// <summary>
@@ -114,6 +120,22 @@ namespace LSG.GenericCrud.Controllers
             }
         }
 
+        [HttpPost("{entityId}/copy/{changesetId}")]
+        public virtual async Task<ActionResult<T2>> CopyFromChangeset(T1 entityId, Guid changesetId)
+        {
+            try
+            {
+                var createdEntity = await _historicalCrudService.CopyFromChangeset(entityId, changesetId);
+                return CreatedAtAction(nameof(GetById), new { id = createdEntity.Id }, createdEntity);
+            }
+            catch (Exception ex)
+            {
+                if (ex is EntityNotFoundException) return NotFound($"Entity not found with id: {entityId}");
+                if (ex is ChangesetNotFoundException) return NotFound($"Changeset not found with id: {changesetId}");
+                throw;
+            }
+        }
+
         /// <summary>
         /// Creates the specified entity.
         /// </summary>
@@ -123,6 +145,13 @@ namespace LSG.GenericCrud.Controllers
         public virtual async Task<ActionResult<T2>> Create([FromBody] T2 entity)
         {
             var createdEntity = await _historicalCrudService.CreateAsync(entity);
+            return CreatedAtAction(nameof(GetById), new { id = createdEntity.Id }, createdEntity);
+        }
+
+        [HttpPost("{id}/copy")]
+        public virtual async Task<ActionResult<T2>> Copy(T1 id)
+        {
+            var createdEntity = await _historicalCrudService.CopyAsync(id);
             return CreatedAtAction(nameof(GetById), new { id = createdEntity.Id }, createdEntity);
         }
 

@@ -53,6 +53,11 @@ namespace LSG.GenericCrud.Dto.Services
             return _mapper.Map<TDto>(deletedEntity);
         }
 
+        public Task<TDto> CopyAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual IEnumerable<TDto> GetAll() => GetAllAsync().GetAwaiter().GetResult();
 
         public virtual async Task<IEnumerable<TDto>> GetAllAsync()
@@ -68,6 +73,10 @@ namespace LSG.GenericCrud.Dto.Services
         public virtual IEnumerable<IEntity> GetHistory(Guid id) => GetHistoryAsync(id).GetAwaiter().GetResult();
 
         public virtual async Task<IEnumerable<IEntity>> GetHistoryAsync(Guid id) => await _service.GetHistoryAsync(id);
+        public Task<TDto> CopyFromChangeset(Guid entityId, Guid changesetId)
+        {
+            throw new NotImplementedException();
+        }
 
         public virtual TDto Restore(Guid id) => RestoreAsync(id).GetAwaiter().GetResult();
 
@@ -130,6 +139,11 @@ namespace LSG.GenericCrud.Dto.Services
             return _mapper.Map<TDto>(deletedEntity);
         }
 
+        public Task<TDto> CopyAsync(TId id)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual IEnumerable<TDto> GetAll() => GetAllAsync().GetAwaiter().GetResult();
 
         public virtual async Task<IEnumerable<TDto>> GetAllAsync()
@@ -145,6 +159,10 @@ namespace LSG.GenericCrud.Dto.Services
         public virtual IEnumerable<IEntity> GetHistory(TId id) => GetHistoryAsync(id).GetAwaiter().GetResult();
 
         public virtual async Task<IEnumerable<IEntity>> GetHistoryAsync(TId id) => await _service.GetHistoryAsync(id);
+        public Task<TDto> CopyFromChangeset(TId entityId, Guid changesetId)
+        {
+            throw new NotImplementedException();
+        }
 
         public virtual TDto Restore(TId id) => RestoreAsync(id).GetAwaiter().GetResult();
 

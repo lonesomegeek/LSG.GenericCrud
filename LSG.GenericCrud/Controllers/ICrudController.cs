@@ -33,6 +33,13 @@ namespace LSG.GenericCrud.Controllers
         Task<ActionResult<T2>> Create([FromBody] T2 entity);
 
         /// <summary>
+        /// Creates the specified entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns></returns>
+        Task<ActionResult<T2>> Copy(T1 id);
+
+        /// <summary>
         /// Updates the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>

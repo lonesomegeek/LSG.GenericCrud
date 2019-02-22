@@ -22,5 +22,7 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         Task<IActionResult> Restore(T1 id);
+
+        Task<ActionResult<T2>> CopyFromChangeset(T1 entityId, Guid changesetId);
     }
 }

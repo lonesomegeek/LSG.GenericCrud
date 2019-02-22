@@ -38,6 +38,9 @@ namespace LSG.GenericCrud.Controllers
         public virtual async Task<IActionResult> HeadById(Guid id) => await _controller.HeadById(id);
         [HttpPost]
         public virtual async Task<ActionResult<T>> Create(T entity) => await _controller.Create(entity);
+        [HttpPost("{id}/copy")]
+        public virtual async Task<ActionResult<T>> Copy(Guid id) => await _controller.Copy(id);
+
         [HttpPut("{id}")]
         public virtual async Task<IActionResult> Update(Guid id, T entity) => await _controller.Update(id, entity);
         [HttpDelete("{id}")]
@@ -157,6 +160,21 @@ namespace LSG.GenericCrud.Controllers
             {
                 return NotFound();
             }
+        }
+
+        [HttpPost("{id}/copy")]
+        public virtual async Task<ActionResult<T2>> Copy(T1 id)
+        {
+            try
+            {
+                var createdEntity = await _service.CopyAsync(id);
+                return CreatedAtAction(nameof(GetById), new { id = createdEntity.Id }, createdEntity);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound();
+            }
+
         }
     }
 

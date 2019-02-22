@@ -85,5 +85,7 @@ namespace LSG.GenericCrud.Services
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         Task<T2> DeleteAsync(T1 id);
+
+        Task<T2> CopyAsync(T1 id);
     }
 }
