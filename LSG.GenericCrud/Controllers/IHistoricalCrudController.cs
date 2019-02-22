@@ -24,5 +24,16 @@ namespace LSG.GenericCrud.Controllers
         Task<IActionResult> Restore(T1 id);
 
         Task<ActionResult<T2>> CopyFromChangeset(T1 entityId, Guid changesetId);
+
+        Task<IActionResult> MarkAllAsRead();
+
+        Task<IActionResult> MarkAllAsUnread();
+
+        Task<IActionResult> MarkOneAsRead(T1 id);
+
+        Task<IActionResult> MarkOneAsUnread(T1 id);
+
+        Task<IActionResult> Delta(T1 id, [FromBody] DeltaRequest request);
+
     }
 }

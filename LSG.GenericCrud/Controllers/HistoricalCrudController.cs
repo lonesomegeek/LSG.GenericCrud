@@ -49,7 +49,16 @@ namespace LSG.GenericCrud.Controllers
         public virtual async Task<IActionResult> Restore(Guid id) => await _controller.Restore(id);
         [HttpPost("{entityId}/copy/{changesetId}")]
         public virtual async Task<ActionResult<T>> CopyFromChangeset(Guid entityId, Guid changesetId) => await _controller.CopyFromChangeset(entityId, changesetId);
-        
+        [HttpPost("read")]
+        public virtual async Task<IActionResult> MarkAllAsRead() => await _controller.MarkAllAsRead();
+        [HttpPost("unread")]
+        public virtual async Task<IActionResult> MarkAllAsUnread() => await _controller.MarkAllAsUnread();
+        [HttpPost("{id}/read")]
+        public virtual async Task<IActionResult> MarkOneAsRead(Guid id) => await _controller.MarkOneAsRead(id);
+        [HttpPost("{id}/unread")]
+        public virtual async Task<IActionResult> MarkOneAsUnread(Guid id) => await _controller.MarkOneAsUnread(id);
+        [HttpPost("{id}/delta")]
+        public virtual async Task<IActionResult> Delta(Guid id, DeltaRequest request) => await _controller.Delta(id, request);
     }
 
     /// <summary>
@@ -135,6 +144,17 @@ namespace LSG.GenericCrud.Controllers
                 throw;
             }
         }
+
+        [HttpPost("read")]
+        public virtual async Task<IActionResult> MarkAllAsRead() => throw new Exception();
+        [HttpPost("unread")]
+        public virtual async Task<IActionResult> MarkAllAsUnread() => throw new Exception();
+        [HttpPost("{id}/read")]
+        public virtual async Task<IActionResult> MarkOneAsRead(Guid id) => throw new Exception();
+        [HttpPost("{id}/unread")]
+        public virtual async Task<IActionResult> MarkOneAsUnread(Guid id) => throw new Exception();
+        [HttpPost("{id}/delta")]
+        public virtual async Task<IActionResult> Delta(Guid id, DeltaRequest request) => throw new Exception();
 
         /// <summary>
         /// Creates the specified entity.
