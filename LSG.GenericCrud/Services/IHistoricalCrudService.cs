@@ -44,5 +44,7 @@ namespace LSG.GenericCrud.Services
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         Task<IEnumerable<IEntity>> GetHistoryAsync(T1 id);
+
+        Task<T2> CopyFromChangeset(T1 entityId, Guid changesetId);
     }
 }

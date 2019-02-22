@@ -66,6 +66,11 @@ namespace LSG.GenericCrud.Dto.Services
             return _mapper.Map<TDto>(deletedEntity);
         }
 
+        public Task<TDto> CopyAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual IEnumerable<TDto> GetAll() => GetAllAsync().GetAwaiter().GetResult();
 
         public virtual async Task<IEnumerable<TDto>> GetAllAsync()
@@ -142,6 +147,11 @@ namespace LSG.GenericCrud.Dto.Services
             var deletedEntity = await _service.DeleteAsync(id);
             await _repository.SaveChangesAsync();
             return _mapper.Map<TDto>(deletedEntity);
+        }
+
+        public Task<TDto> CopyAsync(TId id)
+        {
+            throw new NotImplementedException();
         }
 
         public virtual IEnumerable<TDto> GetAll() => GetAllAsync().GetAwaiter().GetResult();

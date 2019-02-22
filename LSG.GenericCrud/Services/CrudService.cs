@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using LSG.GenericCrud.Exceptions;
+using LSG.GenericCrud.Helpers;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
 
@@ -35,6 +36,7 @@ namespace LSG.GenericCrud.Services
         public virtual async Task<T> CreateAsync(T entity) => await _service.CreateAsync(entity);
         public virtual async Task<T> UpdateAsync(Guid id, T entity) => await _service.UpdateAsync(id, entity);
         public virtual async Task<T> DeleteAsync(Guid id) => await _service.DeleteAsync(id);
+        public virtual async Task<T> CopyAsync(Guid id) => await _service.CopyAsync(id);
     }
 
 
@@ -169,6 +171,15 @@ namespace LSG.GenericCrud.Services
             await _repository.DeleteAsync<T1, T2>(id);
             if (AutoCommit) await _repository.SaveChangesAsync();
             return entity;
+        }
+
+        public virtual async Task<T2> CopyAsync(T1 id)
+        {
+            var actualEntity = await _repository.GetByIdAsync<T1, T2>(id);
+            var copiedEntity = actualEntity.CopyObject();
+            var createdEntity = await _repository.CreateAsync<T1, T2>(copiedEntity);
+            if (AutoCommit) await _repository.SaveChangesAsync();
+            return createdEntity;
         }
     }
 }

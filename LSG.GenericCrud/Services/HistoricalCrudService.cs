@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using LSG.GenericCrud.Exceptions;
+using LSG.GenericCrud.Helpers;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
 using Microsoft.AspNetCore.Hosting.Internal;
@@ -40,10 +41,13 @@ namespace LSG.GenericCrud.Services
         public virtual async Task<T> CreateAsync(T entity) => await _service.CreateAsync(entity);
         public virtual async Task<T> UpdateAsync(Guid id, T entity) => await _service.UpdateAsync(id, entity);
         public virtual async Task<T> DeleteAsync(Guid id) => await _service.DeleteAsync(id);
+        public virtual async Task<T> CopyAsync(Guid id) => await _service.CopyAsync(id);
+
         public virtual T Restore(Guid id) =>  _service.Restore(id);
         public virtual IEnumerable<IEntity> GetHistory(Guid id) => _service.GetHistory(id);
         public virtual async Task<T> RestoreAsync(Guid id) => await _service.RestoreAsync(id);
         public virtual async Task<IEnumerable<IEntity>> GetHistoryAsync(Guid id) => await _service.GetHistoryAsync(id);
+        public virtual async Task<T> CopyFromChangeset(Guid entityId, Guid changesetId) => await _service.CopyFromChangeset(entityId, changesetId);
     }
 
 
@@ -182,6 +186,32 @@ namespace LSG.GenericCrud.Services
         }
 
         /// <summary>
+        /// Creates the asynchronous.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns></returns>
+        public virtual async Task<T2> CopyAsync(T1 id)
+        {
+            var createdEntity = await _service.CopyAsync(id);
+
+            var historicalEvent = new HistoricalEvent
+            {
+                Action = HistoricalActions.Create.ToString(),
+                Changeset = new HistoricalChangeset()
+                {
+                    ObjectDelta = new T2().DetailedCompare(createdEntity)
+                },
+                EntityId = createdEntity.Id.ToString(), // TODO: I do not like the string value compare here
+                EntityName = createdEntity.GetType().FullName
+            };
+
+            await _repository.CreateAsync<Guid, HistoricalEvent>(historicalEvent);
+            await _repository.SaveChangesAsync();
+            // TODO: Do I need to call the other repo for both repositories, or do I need a UoW (bugfix created)
+            return createdEntity;
+        }
+
+        /// <summary>
         /// Restores the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
@@ -233,6 +263,21 @@ namespace LSG.GenericCrud.Services
                 .ToList();
             if (!filteredEvents.Any()) throw new EntityNotFoundException();
             return filteredEvents;
+        }
+
+        public virtual async Task<T2> CopyFromChangeset(T1 entityId, Guid changesetId)
+        {
+            var entity = await _repository.GetByIdAsync<T1, T2>(entityId);
+            if (entity == null) throw new EntityNotFoundException();
+            var changeset = await _repository.GetByIdAsync<Guid, HistoricalChangeset>(changesetId);
+            if (changeset == null) throw new ChangesetNotFoundException();
+
+            var actualObject = changeset.ObjectData == null ? new T2() : JsonConvert.DeserializeObject<T2>(changeset.ObjectData);
+            var actualDelta = JsonConvert.DeserializeObject<T2>(changeset.ObjectDelta);
+            var actualEntity = actualObject.ApplyChangeset(actualDelta);
+            var copiedEntity = actualEntity.CopyObject();
+            
+            return await CreateAsync(copiedEntity); ;
         }
 
         public virtual IEnumerable<T2> GetAll() => GetAllAsync().GetAwaiter().GetResult();
