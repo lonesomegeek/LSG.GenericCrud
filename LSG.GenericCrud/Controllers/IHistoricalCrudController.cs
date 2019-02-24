@@ -33,6 +33,10 @@ namespace LSG.GenericCrud.Controllers
 
         Task<IActionResult> MarkOneAsUnread(T1 id);
 
+        Task<IActionResult> GetReadStatus();
+
+        Task<IActionResult> GetReadStatusById(T1 id);
+
         Task<IActionResult> Delta(T1 id, [FromBody] DeltaRequest request);
 
     }

@@ -9,7 +9,9 @@ using LSG.GenericCrud.Helpers;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
 using Microsoft.AspNetCore.Hosting.Internal;
+using Moq;
 using Newtonsoft.Json;
+using Remotion.Linq.Clauses;
 
 namespace LSG.GenericCrud.Services
 {
@@ -48,6 +50,24 @@ namespace LSG.GenericCrud.Services
         public virtual async Task<T> RestoreAsync(Guid id) => await _service.RestoreAsync(id);
         public virtual async Task<IEnumerable<IEntity>> GetHistoryAsync(Guid id) => await _service.GetHistoryAsync(id);
         public virtual async Task<T> CopyFromChangeset(Guid entityId, Guid changesetId) => await _service.CopyFromChangeset(entityId, changesetId);
+        public virtual async Task MarkAllAsRead() => await _service.MarkAllAsRead();
+        public virtual async Task MarkAllAsUnread() => await _service.MarkAllAsUnread();
+        public virtual async Task MarkOneAsRead(Guid id) => await MarkOneAsRead(id);
+        public virtual async Task MarkOneAsUnread(Guid id) => await MarkOneAsUnread(id);
+        public Task<IEnumerable<ReadeableStatus<T>>> GetReadStatusAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ReadeableStatus<T>> GetReadStatusByIdAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual async Task<DeltaResponse<Guid, T>> Delta(Guid id, DeltaRequest request)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 
@@ -68,6 +88,9 @@ namespace LSG.GenericCrud.Services
         /// </summary>
         private readonly ICrudRepository _repository;
 
+        private readonly IUserInfoRepository _userInfoRepository;
+        private readonly IHistoricalCrudServiceOptions _options;
+
         public bool AutoCommit { get; set; }
 
         /// <summary>
@@ -75,11 +98,18 @@ namespace LSG.GenericCrud.Services
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="eventRepository">The event repository.</param>
-        public HistoricalCrudService(ICrudService<T1, T2> service, ICrudRepository repository)
+        public HistoricalCrudService(
+            ICrudService<T1, T2> service, 
+            ICrudRepository repository, 
+            IUserInfoRepository userInfoRepository/*, IHistoricalCrudServiceOptions options*/)
         {
             _service = service;
             _repository = repository;
             _service.AutoCommit = false;
+            _userInfoRepository = userInfoRepository;
+            var optionsMock = new Mock<IHistoricalCrudServiceOptions>();
+            optionsMock.Setup(_ => _.ShowMyNewStuff).Returns(true);
+            _options = optionsMock.Object;
             AutoCommit = false;
         }
 
@@ -280,6 +310,150 @@ namespace LSG.GenericCrud.Services
             return await CreateAsync(copiedEntity); ;
         }
 
+        public virtual async Task MarkAllAsRead()
+        {
+            // TODO: Check if the userinfo repository is available, if not, throw exception
+            var entities = await _repository.GetAllAsync<T1, T2>();
+            foreach (var entity in entities)
+            {
+                var historicalEvent = new HistoricalEvent
+                {
+                    Action = HistoricalActions.Read.ToString(),
+                    EntityId = entity.Id.ToString(), // TODO: I do not like the string value compare here
+                    EntityName = entity.GetType().FullName
+                };
+
+                await _repository.CreateAsync<Guid, HistoricalEvent>(historicalEvent);
+            }
+
+            await _repository.SaveChangesAsync();
+        }
+
+        public virtual async Task MarkAllAsUnread()
+        {
+            // TODO: Check if the userinfo repository is available, if not, throw exception
+
+            var events = await _repository.GetAllAsync<Guid, HistoricalEvent>();
+            events
+                .Where(_=>
+                    _.Action == HistoricalActions.Read.ToString() && 
+                    _.EntityName == typeof(T2).FullName && 
+                    _.CreatedBy == _userInfoRepository.GetUserInfo())
+                .ToList()
+                .ForEach(async _ => await _repository.DeleteAsync<HistoricalEvent>(_.Id));
+            await _repository.SaveChangesAsync();
+        }
+
+        public virtual async Task MarkOneAsRead(T1 id)
+        {
+            var entity = await _repository.GetByIdAsync<T1, T2>(id);
+            var historicalEvent = new HistoricalEvent
+            {
+                Action = HistoricalActions.Read.ToString(),
+                EntityId = entity.Id.ToString(), // TODO: I do not like the string value compare here
+                EntityName = entity.GetType().FullName
+            };
+
+            await _repository.CreateAsync<Guid, HistoricalEvent>(historicalEvent);
+            await _repository.SaveChangesAsync();
+        }
+
+        public virtual async Task MarkOneAsUnread(T1 id)
+        {
+            var events = await _repository.GetAllAsync<HistoricalEvent>();
+            events
+                .Where(_ => _.EntityName == typeof(T2).FullName &&
+                            _.EntityId == id.ToString() &&
+                            _.CreatedBy == _userInfoRepository.GetUserInfo())
+                .ToList()
+                .ForEach(async _ => await _repository.DeleteAsync<HistoricalEvent>(_.Id));
+            await _repository.SaveChangesAsync();
+        }
+
+        public virtual async Task<IEnumerable<ReadeableStatus<T2>>> GetReadStatusAsync()
+        {
+            var readEvents = await _repository.GetAllAsync<HistoricalEvent>();
+                
+            var entityName = typeof(T2).FullName;
+            //var result = 
+            //    from entity in _repository.GetAllAsync<T1,T2>().Result
+            //    join e in readEvents on new { EntityIf = entity.Id, EntityName = entityName } equals new { e.EntityId, e.EntityName } into eGroup
+            //    from e in eGroup.DefaultIfEmpty()
+            //    select;
+        //var result = _repository
+        //    .GetAllAsync<T1, T2>()
+        //    .Result
+        //    .AsQueryable()
+        //    .GroupJoin(
+        //        readEvents,
+        //        Entity => Entity.Id,
+        //        Event => Event.EntityId,
+        //        (entity, event) => new {entity, event});
+
+
+
+        throw new NotImplementedException();
+        }
+
+        public virtual async Task<ReadeableStatus<T2>> GetReadStatusByIdAsync(T1 id)
+        {
+            
+            var entityName = typeof(T2).FullName;
+            var readEvents = _repository
+                .GetAllAsync<HistoricalEvent>()
+                .Result
+                .Where(_ => _.EntityId == id.ToString() && 
+                            _.EntityName == entityName &&
+                            _.CreatedBy == _userInfoRepository.GetUserInfo())
+                .OrderBy(_ => _.CreatedDate);
+
+            var entity = await _repository.GetByIdAsync<T1, T2>(id);
+            
+            return new ReadeableStatus<T2>()
+            {
+                Data = entity,
+                Metadata = new ReadeableStatusMetadata()
+                {
+                    LastViewed = readEvents.LastOrDefault()?.CreatedDate,
+                    NewStuffAvailable = IsNewStuffAvailable(entity, readEvents.LastOrDefault())
+                }
+            }; ;
+
+        }
+
+
+        private bool IsNewStuffAvailable(T2 entity, HistoricalEvent historicalEvent)
+        {
+            if (!(entity is ICreatedInfo && entity is IModifiedInfo)) throw new NotSupportedException("Entity must implement ICreatedInfo and IModifiedInfo");
+            var modifiedInfo = entity as IModifiedInfo;
+            var createdInfo = entity as ICreatedInfo;
+
+            var createdByMe = modifiedInfo.ModifiedBy == null && createdInfo.CreatedBy == _userInfoRepository.GetUserInfo();
+            var modifiedByMe = modifiedInfo.ModifiedBy != null && modifiedInfo.ModifiedBy == _userInfoRepository.GetUserInfo();
+            var createdOrModifiedByMe = createdByMe || modifiedByMe;
+
+            var createdBySomeone = modifiedInfo.ModifiedBy == null && createdInfo.CreatedBy != _userInfoRepository.GetUserInfo();
+            var modifiedBySomeone = modifiedInfo.ModifiedBy != null && modifiedInfo.ModifiedBy != _userInfoRepository.GetUserInfo();
+            var createdOrModifiedBySomeone = createdBySomeone || modifiedBySomeone;
+
+            var viewedLately = modifiedInfo.ModifiedDate == null && historicalEvent?.CreatedDate > createdInfo.CreatedDate || modifiedInfo.ModifiedDate != null && historicalEvent?.CreatedDate > modifiedInfo.ModifiedDate;
+
+            if (!viewedLately)
+            {
+                if (_options.ShowMyNewStuff && createdOrModifiedByMe) return true;
+                else if (_options.ShowMyNewStuff && createdOrModifiedBySomeone) return true;
+                else if (!_options.ShowMyNewStuff && createdOrModifiedBySomeone) return true;
+                else return false;
+            }
+            else
+                return false;
+        }
+
+        public virtual async Task<DeltaResponse<T1, T2>> Delta(T1 id, DeltaRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual IEnumerable<T2> GetAll() => GetAllAsync().GetAwaiter().GetResult();
 
         public virtual T2 GetById(T1 id) => GetByIdAsync(id).GetAwaiter().GetResult();
@@ -287,5 +461,10 @@ namespace LSG.GenericCrud.Services
         public virtual async Task<IEnumerable<T2>> GetAllAsync() => await _service.GetAllAsync();
 
         public virtual async Task<T2> GetByIdAsync(T1 id) => await _service.GetByIdAsync(id);
+    }
+
+    public interface IHistoricalCrudServiceOptions
+    {
+        bool ShowMyNewStuff { get; set; }
     }
 }

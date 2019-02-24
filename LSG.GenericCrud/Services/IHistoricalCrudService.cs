@@ -11,14 +11,15 @@ namespace LSG.GenericCrud.Services
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="LSG.GenericCrud.Services.ICrudService{T}" />
-    public interface IHistoricalCrudService<T> : IHistoricalCrudService<Guid, T> { }
+    public interface IHistoricalCrudService<T> : IHistoricalCrudService<Guid, T> where T : class, IEntity<Guid>, new()
+    { }
 
     /// <summary>
     /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="LSG.GenericCrud.Services.ICrudService{T}" />
-    public interface IHistoricalCrudService<T1, T2> : ICrudService<T1, T2>
+    public interface IHistoricalCrudService<T1, T2> : ICrudService<T1, T2> where T2 : class, IEntity<T1>, new()
     {
         /// <summary>
         /// Restores the specified identifier.
@@ -47,6 +48,31 @@ namespace LSG.GenericCrud.Services
 
         Task<T2> CopyFromChangeset(T1 entityId, Guid changesetId);
 
+        Task MarkAllAsRead();
 
+        Task MarkAllAsUnread();
+
+        Task MarkOneAsRead(T1 id);
+
+        Task MarkOneAsUnread(T1 id);
+
+
+        Task<IEnumerable<ReadeableStatus<T2>>> GetReadStatusAsync();
+        Task<ReadeableStatus<T2>> GetReadStatusByIdAsync(T1 id);
+
+        Task<DeltaResponse<T1, T2>> Delta(T1 id, DeltaRequest request);
+
+    }
+
+    public class ReadeableStatus<T>
+    {
+        public T Data { get; set; }
+        public ReadeableStatusMetadata Metadata { get; set; }
+    }
+
+    public class ReadeableStatusMetadata
+    {
+        public bool NewStuffAvailable { get; internal set; }
+        public DateTime? LastViewed { get; internal set; }
     }
 }

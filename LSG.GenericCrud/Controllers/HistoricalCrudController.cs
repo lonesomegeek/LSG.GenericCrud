@@ -57,6 +57,10 @@ namespace LSG.GenericCrud.Controllers
         public virtual async Task<IActionResult> MarkOneAsRead(Guid id) => await _controller.MarkOneAsRead(id);
         [HttpPost("{id}/unread")]
         public virtual async Task<IActionResult> MarkOneAsUnread(Guid id) => await _controller.MarkOneAsUnread(id);
+        [HttpGet("read-status")]
+        public virtual async Task<IActionResult> GetReadStatus() => await _controller.GetReadStatus();
+        [HttpGet("{id}/read-status")]
+        public virtual async Task<IActionResult> GetReadStatusById(Guid id) => await _controller.GetReadStatusById(id);
         [HttpPost("{id}/delta")]
         public virtual async Task<IActionResult> Delta(Guid id, DeltaRequest request) => await _controller.Delta(id, request);
     }
@@ -146,15 +150,40 @@ namespace LSG.GenericCrud.Controllers
         }
 
         [HttpPost("read")]
-        public virtual async Task<IActionResult> MarkAllAsRead() => throw new Exception();
+        public virtual async Task<IActionResult> MarkAllAsRead()
+        {
+            await _historicalCrudService.MarkAllAsRead();
+            return NoContent();
+        }
         [HttpPost("unread")]
-        public virtual async Task<IActionResult> MarkAllAsUnread() => throw new Exception();
+        public virtual async Task<IActionResult> MarkAllAsUnread()
+        {
+            await _historicalCrudService.MarkAllAsUnread();
+            return NoContent();
+        }
         [HttpPost("{id}/read")]
-        public virtual async Task<IActionResult> MarkOneAsRead(Guid id) => throw new Exception();
+        public virtual async Task<IActionResult> MarkOneAsRead(T1 id)
+        {
+            await _historicalCrudService.MarkOneAsRead(id);
+            return NoContent();
+        }
         [HttpPost("{id}/unread")]
-        public virtual async Task<IActionResult> MarkOneAsUnread(Guid id) => throw new Exception();
+        public virtual async Task<IActionResult> MarkOneAsUnread(T1 id)
+        {
+            await _historicalCrudService.MarkOneAsUnread(id);
+            return NoContent();
+        }
+
+        [HttpGet("read-status")]
+        public virtual async Task<IActionResult> GetReadStatus() => Ok(await _historicalCrudService.GetReadStatusAsync());
+
+
+        [HttpGet("{id}/read-status")]
+        public virtual async Task<IActionResult> GetReadStatusById(T1 id) => Ok(await _historicalCrudService.GetReadStatusByIdAsync(id));
+        
+
         [HttpPost("{id}/delta")]
-        public virtual async Task<IActionResult> Delta(Guid id, DeltaRequest request) => throw new Exception();
+        public virtual async Task<IActionResult> Delta(T1 id, DeltaRequest request) => throw new Exception();
 
         /// <summary>
         /// Creates the specified entity.

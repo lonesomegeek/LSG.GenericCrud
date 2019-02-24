@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[HistoricalEvents] (
     [Id]          UNIQUEIDENTIFIER NOT NULL,
-    [EntityId]    UNIQUEIDENTIFIER NOT NULL,
+    [EntityId]    NVARCHAR(50) NOT NULL,
     [EntityName]  NVARCHAR (50)    NOT NULL,
     [Action]      NVARCHAR (50)    NOT NULL,
     [CreatedDate]  DATETIME2         NULL,
