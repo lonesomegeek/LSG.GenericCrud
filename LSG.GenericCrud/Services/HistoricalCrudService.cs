@@ -373,26 +373,30 @@ namespace LSG.GenericCrud.Services
         public virtual async Task<IEnumerable<ReadeableStatus<T2>>> GetReadStatusAsync()
         {
             var readEvents = await _repository.GetAllAsync<HistoricalEvent>();
-                
+
             var entityName = typeof(T2).FullName;
-            //var result = 
-            //    from entity in _repository.GetAllAsync<T1,T2>().Result
-            //    join e in readEvents on new { EntityIf = entity.Id, EntityName = entityName } equals new { e.EntityId, e.EntityName } into eGroup
-            //    from e in eGroup.DefaultIfEmpty()
-            //    select;
-        //var result = _repository
-        //    .GetAllAsync<T1, T2>()
-        //    .Result
-        //    .AsQueryable()
-        //    .GroupJoin(
-        //        readEvents,
-        //        Entity => Entity.Id,
-        //        Event => Event.EntityId,
-        //        (entity, event) => new {entity, event});
 
-
-
-        throw new NotImplementedException();
+            var entities = await _repository.GetAllAsync<T1, T2>();
+            return entities
+                .Select(entity =>
+                {
+                    var historicalEvent = readEvents
+                        .Where(e => e.EntityId == entity.Id.ToString() &&
+                                    e.EntityName == entityName &&
+                                    e.CreatedBy == _userInfoRepository.GetUserInfo())
+                        .OrderBy(_ => _.CreatedDate)
+                        .LastOrDefault();
+                        
+                    return new ReadeableStatus<T2>()
+                    {
+                        Data = entity,
+                        Metadata = new ReadeableStatusMetadata()
+                        {
+                            LastViewed = historicalEvent?.CreatedDate,
+                            NewStuffAvailable = IsNewStuffAvailable(entity, historicalEvent)
+                        }
+                    };
+                });
         }
 
         public virtual async Task<ReadeableStatus<T2>> GetReadStatusByIdAsync(T1 id)
