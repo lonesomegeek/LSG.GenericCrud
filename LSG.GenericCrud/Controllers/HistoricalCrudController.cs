@@ -47,6 +47,8 @@ namespace LSG.GenericCrud.Controllers
         public virtual async Task<IActionResult> GetHistory(Guid id) => await _controller.GetHistory(id);
         [HttpPost("{id}/restore")]
         public virtual async Task<IActionResult> Restore(Guid id) => await _controller.Restore(id);
+        [HttpPost("{entityId}/restore/{changesetId}")]
+        public virtual async Task<ActionResult<T>> RestoreFromChangeset(Guid entityId, Guid changesetId) => await _controller.RestoreFromChangeset(entityId, changesetId);
         [HttpPost("{entityId}/copy/{changesetId}")]
         public virtual async Task<ActionResult<T>> CopyFromChangeset(Guid entityId, Guid changesetId) => await _controller.CopyFromChangeset(entityId, changesetId);
         [HttpPost("read")]
@@ -139,6 +141,22 @@ namespace LSG.GenericCrud.Controllers
             try
             {
                 var createdEntity = await _historicalCrudService.CopyFromChangeset(entityId, changesetId);
+                return CreatedAtAction(nameof(GetById), new { id = createdEntity.Id }, createdEntity);
+            }
+            catch (Exception ex)
+            {
+                if (ex is EntityNotFoundException) return NotFound($"Entity not found with id: {entityId}");
+                if (ex is ChangesetNotFoundException) return NotFound($"Changeset not found with id: {changesetId}");
+                throw;
+            }
+        }
+
+        [HttpPost("{entityId}/restore/{changesetId}")]
+        public virtual async Task<ActionResult<T2>> RestoreFromChangeset(T1 entityId, Guid changesetId)
+        {
+            try
+            {
+                var createdEntity = await _historicalCrudService.CFromChangeset(entityId, changesetId);
                 return CreatedAtAction(nameof(GetById), new { id = createdEntity.Id }, createdEntity);
             }
             catch (Exception ex)

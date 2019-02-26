@@ -40,6 +40,12 @@ namespace LSG.GenericCrud.Services
         /// <returns></returns>
         Task<T2> RestoreAsync(T1 id);
         /// <summary>
+        /// Restores the asynchronous.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        Task<T2> RestoreFromChangeset(T1 entityId, Guid changesetId);
+        /// <summary>
         /// Gets the history asynchronous.
         /// </summary>
         /// <param name="id">The identifier.</param>

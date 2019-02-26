@@ -21,7 +21,7 @@ namespace LSG.GenericCrud.Services
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="LSG.GenericCrud.Services.CrudService{T}" />
     /// <seealso cref="LSG.GenericCrud.Services.IHistoricalCrudService{T}" />
-    public class HistoricalCrudService<T> : 
+    public class HistoricalCrudService<T> :
         IHistoricalCrudService<Guid, T> where T : class, IEntity, new()
     {
         private readonly IHistoricalCrudService<Guid, T> _service;
@@ -45,9 +45,12 @@ namespace LSG.GenericCrud.Services
         public virtual async Task<T> DeleteAsync(Guid id) => await _service.DeleteAsync(id);
         public virtual async Task<T> CopyAsync(Guid id) => await _service.CopyAsync(id);
 
-        public virtual T Restore(Guid id) =>  _service.Restore(id);
+        public virtual T Restore(Guid id) => _service.Restore(id);
+        
         public virtual IEnumerable<IEntity> GetHistory(Guid id) => _service.GetHistory(id);
         public virtual async Task<T> RestoreAsync(Guid id) => await _service.RestoreAsync(id);
+        public virtual async Task<T> RestoreFromChangeset(Guid entityId, Guid changesetId) => await _service.RestoreFromChangeset(entityId, changesetId);
+
         public virtual async Task<IEnumerable<IEntity>> GetHistoryAsync(Guid id) => await _service.GetHistoryAsync(id);
         public virtual async Task<T> CopyFromChangeset(Guid entityId, Guid changesetId) => await _service.CopyFromChangeset(entityId, changesetId);
         public virtual async Task MarkAllAsRead() => await _service.MarkAllAsRead();
@@ -99,8 +102,8 @@ namespace LSG.GenericCrud.Services
         /// <param name="repository">The repository.</param>
         /// <param name="eventRepository">The event repository.</param>
         public HistoricalCrudService(
-            ICrudService<T1, T2> service, 
-            ICrudRepository repository, 
+            ICrudService<T1, T2> service,
+            ICrudRepository repository,
             IUserInfoRepository userInfoRepository/*, IHistoricalCrudServiceOptions options*/)
         {
             _service = service;
@@ -271,6 +274,11 @@ namespace LSG.GenericCrud.Services
             return createdObject;
         }
 
+        public Task<T2> RestoreFromChangeset(T1 entityId, Guid changesetId)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Gets the history.
         /// </summary>
@@ -306,7 +314,7 @@ namespace LSG.GenericCrud.Services
             var actualDelta = JsonConvert.DeserializeObject<T2>(changeset.ObjectDelta);
             var actualEntity = actualObject.ApplyChangeset(actualDelta);
             var copiedEntity = actualEntity.CopyObject();
-            
+
             return await CreateAsync(copiedEntity); ;
         }
 
@@ -335,9 +343,9 @@ namespace LSG.GenericCrud.Services
 
             var events = await _repository.GetAllAsync<Guid, HistoricalEvent>();
             events
-                .Where(_=>
-                    _.Action == HistoricalActions.Read.ToString() && 
-                    _.EntityName == typeof(T2).FullName && 
+                .Where(_ =>
+                    _.Action == HistoricalActions.Read.ToString() &&
+                    _.EntityName == typeof(T2).FullName &&
                     _.CreatedBy == _userInfoRepository.GetUserInfo())
                 .ToList()
                 .ForEach(async _ => await _repository.DeleteAsync<HistoricalEvent>(_.Id));
@@ -386,7 +394,7 @@ namespace LSG.GenericCrud.Services
                                     e.CreatedBy == _userInfoRepository.GetUserInfo())
                         .OrderBy(_ => _.CreatedDate)
                         .LastOrDefault();
-                        
+
                     return new ReadeableStatus<T2>()
                     {
                         Data = entity,
@@ -401,18 +409,18 @@ namespace LSG.GenericCrud.Services
 
         public virtual async Task<ReadeableStatus<T2>> GetReadStatusByIdAsync(T1 id)
         {
-            
+
             var entityName = typeof(T2).FullName;
             var readEvents = _repository
                 .GetAllAsync<HistoricalEvent>()
                 .Result
-                .Where(_ => _.EntityId == id.ToString() && 
+                .Where(_ => _.EntityId == id.ToString() &&
                             _.EntityName == entityName &&
                             _.CreatedBy == _userInfoRepository.GetUserInfo())
                 .OrderBy(_ => _.CreatedDate);
 
             var entity = await _repository.GetByIdAsync<T1, T2>(id);
-            
+
             return new ReadeableStatus<T2>()
             {
                 Data = entity,
@@ -458,6 +466,7 @@ namespace LSG.GenericCrud.Services
             if (request.From == null) request.From = GetLastTimeViewed<T2>(id);
             if (request.To == null) request.To = DateTime.MaxValue;
             if (request.Mode == DeltaRequestModes.Snapshot) return await GetDeltaSnapshot(id, request.From.Value, request.To.Value);
+            else if (request.Mode == DeltaRequestModes.Differential) return await GetDeltaDifferential(id, request.From.Value, request.To.Value);
             throw new NotImplementedException();
         }
 
@@ -466,7 +475,7 @@ namespace LSG.GenericCrud.Services
             var events =
                 from e in _repository.GetAll<HistoricalEvent>()
                 join c in _repository.GetAllAsync<Guid, HistoricalChangeset>().Result on e.Id equals c.EventId
-                where e.EntityId == id.ToString() && c.CreatedDate >= fromTimestamp && c.CreatedDate <= toTimestamp      
+                where e.EntityId == id.ToString() && c.CreatedDate >= fromTimestamp && c.CreatedDate <= toTimestamp
                 select e;
 
             if (!events.Any()) throw new NoHistoryException();
@@ -475,14 +484,77 @@ namespace LSG.GenericCrud.Services
 
             return ExtractSnapshotChanges(events, entity);
         }
+        public async Task<object> GetDeltaDifferential(T1 id, DateTime fromTimestamp, DateTime toTimestamp)
+        {
+            // snapshot from creation date
+            var events = _repository
+                .GetAll<HistoricalEvent>()
+                .Where(_ =>  _.EntityId == id.ToString() && _.CreatedDate >= fromTimestamp && _.CreatedDate <= toTimestamp && _.Action != HistoricalActions.Read.ToString())
+                .OrderBy(_ => _.CreatedDate);
 
-        private static SnapshotChangeset ExtractSnapshotChanges<T>(IEnumerable<HistoricalEvent> events, T actual)
+            if (events.Count() == 0) throw new NoHistoryException();
+            //.Skip(1);
+
+            var differentialChangeset = await ExtractDifferentialChangeset(id, events);
+
+            return differentialChangeset;
+        }
+
+        private async Task<DifferentialChangeset> ExtractDifferentialChangeset(T1 id, IOrderedEnumerable<HistoricalEvent> events)
+        {
+            var changesets = await _repository.GetAllAsync<Guid, HistoricalChangeset>();
+            var changeset = changesets.FirstOrDefault();
+            var sourceEvent = events.First();
+            var sourceObject = sourceEvent.Changeset.ObjectData == null ? JsonConvert.DeserializeObject<T2>(sourceEvent.Changeset.ObjectDelta) : JsonConvert.DeserializeObject<T2>(sourceEvent.Changeset.ObjectData);
+            var differentialChangeset = new DifferentialChangeset();
+            differentialChangeset.EntityId = id.ToString();
+            differentialChangeset.EntityTypeName = sourceEvent.EntityName;
+            differentialChangeset.Changesets = ExtractDifferentialChanges(id, events, sourceEvent, sourceObject);
+            return differentialChangeset;
+        }
+        private List<Changeset> ExtractDifferentialChanges(T1 id, IOrderedEnumerable<HistoricalEvent> events, HistoricalEvent sourceEvent, T2 sourceObject)
+        {
+
+            var differentialChangeset = new List<Changeset>();
+
+            var currentEvent = sourceEvent;
+            var currentObject = sourceObject;
+            for (int i = 1; i < events.Count(); i++)
+            {
+                var nextEvent = events.ToArray()[i];
+                var nextEventObject = JsonConvert.DeserializeObject<T2>(currentEvent.Changeset.ObjectDelta);
+                var changeset = new Changeset();
+                changeset.EventDate = currentEvent.CreatedDate.Value;
+                changeset.UserId = currentEvent.CreatedBy;
+                changeset.EventId = currentEvent.Id;
+                changeset.EventName = currentEvent.Action;
+                changeset.Changes = ExtractChanges(currentObject, nextEventObject);
+                differentialChangeset.Add(changeset);
+
+                currentObject = nextEventObject;
+                currentEvent = nextEvent;
+            }
+            // add last event to current object
+            var lastChangeset = new Changeset();
+            var lastEvent = events.Last();
+
+            lastChangeset.EventDate = lastEvent.CreatedDate.Value;
+            lastChangeset.UserId = lastEvent.CreatedBy;
+            lastChangeset.EventId = lastEvent.Id;
+            lastChangeset.Changes = lastEvent.Action != HistoricalActions.Delete.ToString() ? ExtractChanges(currentObject, _repository.GetById<T1, T2>(id)) : null;
+            lastChangeset.EventName = lastEvent.Action;
+
+            differentialChangeset.Add(lastChangeset);
+
+            return differentialChangeset;
+        }
+        private static SnapshotChangeset ExtractSnapshotChanges(IEnumerable<HistoricalEvent> events, T2 actual)
         {
             // base line compararer
             var sourceEvent = events.FirstOrDefault();
-            var sourceObject = sourceEvent.Changeset == null ? 
-                JsonConvert.DeserializeObject<T>(sourceEvent.Changeset.ObjectDelta) : 
-                JsonConvert.DeserializeObject<T>(sourceEvent.Changeset.ObjectData);
+            var sourceObject = sourceEvent.Changeset == null ?
+                JsonConvert.DeserializeObject<T2>(sourceEvent.Changeset.ObjectDelta) :
+                JsonConvert.DeserializeObject<T2>(sourceEvent.Changeset.ObjectData);
 
             var snapshotChangeset = new SnapshotChangeset();
             snapshotChangeset.EntityTypeName = sourceEvent.EntityName;
@@ -503,7 +575,7 @@ namespace LSG.GenericCrud.Services
                 destination
                     .GetType()
                     .GetProperties()
-                    .Where(_ => _.DeclaringType == destination.GetType())
+                    .Where(_ => _.DeclaringType == destination.GetType() && !Attribute.IsDefined(_, typeof(IgnoreInChangesetAttribute)))
                     .ToList()
                     .ForEach(_ => changes.Add(new Change()
                     {
@@ -519,10 +591,10 @@ namespace LSG.GenericCrud.Services
         {
             var lastView = _repository
                 .GetAll<HistoricalEvent>()
-                .SingleOrDefault(_ => 
-                    _.EntityId == id.ToString() && 
-                    _.EntityName == typeof(T2).FullName && 
-                    _.Action == HistoricalActions.Read.ToString() && 
+                .SingleOrDefault(_ =>
+                    _.EntityId == id.ToString() &&
+                    _.EntityName == typeof(T2).FullName &&
+                    _.Action == HistoricalActions.Read.ToString() &&
                     _.CreatedBy == _userInfoRepository.GetUserInfo());
             return lastView?.CreatedDate ?? DateTime.MinValue;
         }
