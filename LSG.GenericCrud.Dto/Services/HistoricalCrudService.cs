@@ -72,6 +72,8 @@ namespace LSG.GenericCrud.Dto.Services
 
         public virtual IEnumerable<IEntity> GetHistory(Guid id) => GetHistoryAsync(id).GetAwaiter().GetResult();
 
+        public virtual async Task<TDto> RestoreFromChangeset(Guid entityId, Guid changesetId) => throw new NotImplementedException();
+
         public virtual async Task<IEnumerable<IEntity>> GetHistoryAsync(Guid id) => await _service.GetHistoryAsync(id);
         public Task<TDto> CopyFromChangeset(Guid entityId, Guid changesetId)
         {
@@ -192,6 +194,11 @@ namespace LSG.GenericCrud.Dto.Services
         public virtual TDto GetById(TId id) => GetByIdAsync(id).GetAwaiter().GetResult();
 
         public virtual IEnumerable<IEntity> GetHistory(TId id) => GetHistoryAsync(id).GetAwaiter().GetResult();
+
+        public Task<TDto> RestoreFromChangeset(TId entityId, Guid changesetId)
+        {
+            throw new NotImplementedException();
+        }
 
         public virtual async Task<IEnumerable<IEntity>> GetHistoryAsync(TId id) => await _service.GetHistoryAsync(id);
         public Task<TDto> CopyFromChangeset(TId entityId, Guid changesetId)

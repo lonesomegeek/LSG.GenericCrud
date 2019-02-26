@@ -154,17 +154,7 @@ namespace LSG.GenericCrud.Controllers
         [HttpPost("{entityId}/restore/{changesetId}")]
         public virtual async Task<ActionResult<T2>> RestoreFromChangeset(T1 entityId, Guid changesetId)
         {
-            try
-            {
-                var createdEntity = await _historicalCrudService.CFromChangeset(entityId, changesetId);
-                return CreatedAtAction(nameof(GetById), new { id = createdEntity.Id }, createdEntity);
-            }
-            catch (Exception ex)
-            {
-                if (ex is EntityNotFoundException) return NotFound($"Entity not found with id: {entityId}");
-                if (ex is ChangesetNotFoundException) return NotFound($"Changeset not found with id: {changesetId}");
-                throw;
-            }
+            throw new NotImplementedException();
         }
 
         [HttpPost("read")]
