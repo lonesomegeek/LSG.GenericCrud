@@ -58,9 +58,9 @@ namespace LSG.GenericCrud.Controllers
         [HttpPost("{id}/unread")]
         public virtual async Task<IActionResult> MarkOneAsUnread(Guid id) => await _controller.MarkOneAsUnread(id);
         [HttpGet("read-status")]
-        public virtual async Task<IActionResult> GetReadStatus() => await _controller.GetReadStatus();
+        public virtual async Task<ActionResult<IEnumerable<ReadeableStatus<T>>>> GetReadStatus() => await _controller.GetReadStatus();
         [HttpGet("{id}/read-status")]
-        public virtual async Task<IActionResult> GetReadStatusById(Guid id) => await _controller.GetReadStatusById(id);
+        public virtual async Task<ActionResult<ReadeableStatus<T>>> GetReadStatusById(Guid id) => await _controller.GetReadStatusById(id);
         [HttpPost("{id}/delta")]
         public virtual async Task<IActionResult> Delta(Guid id, DeltaRequest request) => await _controller.Delta(id, request);
     }
@@ -175,15 +175,15 @@ namespace LSG.GenericCrud.Controllers
         }
 
         [HttpGet("read-status")]
-        public virtual async Task<IActionResult> GetReadStatus() => Ok(await _historicalCrudService.GetReadStatusAsync());
+        public virtual async Task<ActionResult<IEnumerable<ReadeableStatus<T2>>>> GetReadStatus() => Ok(await _historicalCrudService.GetReadStatusAsync());
 
 
         [HttpGet("{id}/read-status")]
-        public virtual async Task<IActionResult> GetReadStatusById(T1 id) => Ok(await _historicalCrudService.GetReadStatusByIdAsync(id));
+        public virtual async Task<ActionResult<ReadeableStatus<T2>>> GetReadStatusById(T1 id) => Ok(await _historicalCrudService.GetReadStatusByIdAsync(id));
         
 
         [HttpPost("{id}/delta")]
-        public virtual async Task<IActionResult> Delta(T1 id, DeltaRequest request) => throw new Exception();
+        public virtual async Task<IActionResult> Delta(T1 id, DeltaRequest request) => Ok(await _historicalCrudService.Delta(id, request));
 
         /// <summary>
         /// Creates the specified entity.

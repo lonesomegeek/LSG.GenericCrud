@@ -124,7 +124,7 @@ namespace LSG.GenericCrud.Dto.Services
             throw new NotImplementedException();
         }
 
-        public Task<DeltaResponse<Guid, TDto>> Delta(Guid id, DeltaRequest request)
+        public Task<object> Delta(Guid id, DeltaRequest request)
         {
             throw new NotImplementedException();
         }
@@ -245,7 +245,7 @@ namespace LSG.GenericCrud.Dto.Services
             throw new NotImplementedException();
         }
 
-        public Task<DeltaResponse<TId, TDto>> Delta(TId id, DeltaRequest request)
+        public Task<object> Delta(TId id, DeltaRequest request)
         {
             throw new NotImplementedException();
         }

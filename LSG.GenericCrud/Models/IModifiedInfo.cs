@@ -7,6 +7,6 @@ namespace LSG.GenericCrud.Models
     public interface IModifiedInfo
     {
         string ModifiedBy { get; set; }
-        DateTime ModifiedDate { get; set; }
+        DateTime? ModifiedDate { get; set; }
     }
 }

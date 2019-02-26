@@ -7,6 +7,6 @@ namespace LSG.GenericCrud.Models
     public interface ICreatedInfo
     {
         string CreatedBy { get; set; }
-        DateTime CreatedDate { get; set; }
+        DateTime? CreatedDate { get; set; }
     }
 }

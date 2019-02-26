@@ -60,7 +60,7 @@ namespace LSG.GenericCrud.Services
         Task<IEnumerable<ReadeableStatus<T2>>> GetReadStatusAsync();
         Task<ReadeableStatus<T2>> GetReadStatusByIdAsync(T1 id);
 
-        Task<DeltaResponse<T1, T2>> Delta(T1 id, DeltaRequest request);
+        Task<object> Delta(T1 id, DeltaRequest request);
 
     }
 

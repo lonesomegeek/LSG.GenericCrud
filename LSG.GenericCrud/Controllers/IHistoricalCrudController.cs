@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using LSG.GenericCrud.Models;
+using LSG.GenericCrud.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LSG.GenericCrud.Controllers
@@ -33,9 +35,9 @@ namespace LSG.GenericCrud.Controllers
 
         Task<IActionResult> MarkOneAsUnread(T1 id);
 
-        Task<IActionResult> GetReadStatus();
+        Task<ActionResult<IEnumerable<ReadeableStatus<T2>>>> GetReadStatus();
 
-        Task<IActionResult> GetReadStatusById(T1 id);
+        Task<ActionResult<ReadeableStatus<T2>>> GetReadStatusById(T1 id);
 
         Task<IActionResult> Delta(T1 id, [FromBody] DeltaRequest request);
 
