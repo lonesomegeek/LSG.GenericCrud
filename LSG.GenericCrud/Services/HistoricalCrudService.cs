@@ -274,9 +274,19 @@ namespace LSG.GenericCrud.Services
             return createdObject;
         }
 
-        public Task<T2> RestoreFromChangeset(T1 entityId, Guid changesetId)
+        public virtual async Task<T2> RestoreFromChangeset(T1 entityId, Guid changesetId)
         {
-            throw new NotImplementedException();
+            var entity = await _repository.GetByIdAsync<T1, T2>(entityId);
+            if (entity == null) throw new EntityNotFoundException();
+            var changeset = await _repository.GetByIdAsync<Guid, HistoricalChangeset>(changesetId);
+            if (changeset == null) throw new ChangesetNotFoundException();
+
+            var actualObject = changeset.ObjectData == null ? new T2() : JsonConvert.DeserializeObject<T2>(changeset.ObjectData);
+            var actualDelta = JsonConvert.DeserializeObject<T2>(changeset.ObjectDelta);
+            var restoredEntity = actualObject.ApplyChangeset(actualDelta);
+            entity.ApplyChangeset(restoredEntity);
+            
+            return await UpdateAsync(entityId, entity);
         }
 
         /// <summary>
@@ -548,13 +558,19 @@ namespace LSG.GenericCrud.Services
 
             return differentialChangeset;
         }
-        private static SnapshotChangeset ExtractSnapshotChanges(IEnumerable<HistoricalEvent> events, T2 actual)
+        private SnapshotChangeset ExtractSnapshotChanges(IEnumerable<HistoricalEvent> events, T2 actual)
         {
             // base line compararer
+            
             var sourceEvent = events.FirstOrDefault();
+            //var sourceChangeset = _repository
+            //    .GetAllAsync<Guid, HistoricalChangeset>()
+            //    .Result
+            //    .SingleOrDefault(_ => _.EventId == sourceEvent.Id);
+
             var sourceObject = sourceEvent.Changeset == null ?
-                JsonConvert.DeserializeObject<T2>(sourceEvent.Changeset.ObjectDelta) :
-                JsonConvert.DeserializeObject<T2>(sourceEvent.Changeset.ObjectData);
+                JsonConvert.DeserializeObject<T2>(sourceEvent.Changeset.ObjectData) :
+                JsonConvert.DeserializeObject<T2>(sourceEvent.Changeset.ObjectDelta);
 
             var snapshotChangeset = new SnapshotChangeset();
             snapshotChangeset.EntityTypeName = sourceEvent.EntityName;

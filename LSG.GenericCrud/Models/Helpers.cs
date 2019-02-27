@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using LSG.GenericCrud.Helpers;
 using Newtonsoft.Json;
 
 namespace LSG.GenericCrud.Models
@@ -24,10 +25,14 @@ namespace LSG.GenericCrud.Models
             // TODO: Create an async version of this method
             Dictionary<String, object> dict = new Dictionary<string, object>();
 
-            foreach (var prop in originalEntity.GetType().GetProperties(
-                System.Reflection.BindingFlags.Public |
-                System.Reflection.BindingFlags.Instance |
-                System.Reflection.BindingFlags.DeclaredOnly))
+            var properties = originalEntity
+                .GetType()
+                .GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly)
+                .Where(_ =>
+                    _.DeclaringType == typeof(T) && 
+                    !Attribute.IsDefined(_, typeof(IgnoreInChangesetAttribute)));
+
+            foreach (var prop in properties)
             {
                 if (prop.Name != "Id")
                 {
