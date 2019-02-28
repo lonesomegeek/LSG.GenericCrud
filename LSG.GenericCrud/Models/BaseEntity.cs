@@ -5,7 +5,10 @@ namespace LSG.GenericCrud.Models
     /// <summary>
     /// The base entity.
     /// </summary>
-    public abstract class BaseEntity : IEntity
+    public abstract class BaseEntity : 
+        ICreatedInfo,
+        IModifiedInfo,
+        IEntity
     {
         /// <summary>
         /// Gets or sets the created date.
