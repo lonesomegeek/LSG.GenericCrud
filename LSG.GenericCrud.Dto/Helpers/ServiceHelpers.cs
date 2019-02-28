@@ -14,8 +14,8 @@ namespace LSG.GenericCrud.Dto.Helpers
         /// <param name="services">The services.</param>
         public static void AddCrudDto(this IServiceCollection services)
         {
-            services.AddScoped(typeof(CrudService<,>));
-            services.AddScoped(typeof(HistoricalCrudService<,>));
+            services.AddScoped(typeof(CrudService<,,>));
+            services.AddScoped(typeof(HistoricalCrudService<,,>));
         }
     }
 }
