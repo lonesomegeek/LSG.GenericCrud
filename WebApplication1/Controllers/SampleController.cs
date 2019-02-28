@@ -96,7 +96,7 @@
 //        [HttpPut("{id}")]
 //        public async Task<IActionResult> Update(Guid id, [FromBody] Account entity) => await _crudController.Update(id, entity);
 //        [HttpPost("{id}/restore")]
-//        public async Task<IActionResult> Restore(Guid id) => await _crudController.Restore(id);
+//        public async Task<IActionResult> RestoreFromDeletedEntity(Guid id) => await _crudController.RestoreFromDeletedEntity(id);
 //        [HttpGet("{id}/history")]
 //        public virtual async Task<IActionResult> GetHistory(Guid id) => await _crudController.GetHistory(id);
 

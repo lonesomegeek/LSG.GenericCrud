@@ -42,7 +42,7 @@ namespace WebApplication1.Controllers
         [HttpGet("{id}/history")]
         public async Task<IActionResult> GetHistory(Guid id) => await _controller.GetHistory(id);
         [HttpPost("{id}/restore")]
-        public async Task<IActionResult> Restore(Guid id) => await _controller.Restore(id);
+        public async Task<IActionResult> RestoreFromDeletedEntity(Guid id) => await _controller.RestoreFromDeletedEntity(id);
         [HttpPost("{entityId}/restore/{changesetId}")]
         public async Task<ActionResult<Account>> RestoreFromChangeset(Guid entityId, Guid changesetId) => await _controller.RestoreFromChangeset(entityId, changesetId);
         [HttpPost("{entityId}/copy/{changesetId}")]

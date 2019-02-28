@@ -46,7 +46,7 @@ namespace LSG.GenericCrud.Controllers
         [HttpGet("{id}/history")]
         public virtual async Task<IActionResult> GetHistory(Guid id) => await _controller.GetHistory(id);
         [HttpPost("{id}/restore")]
-        public virtual async Task<IActionResult> Restore(Guid id) => await _controller.Restore(id);
+        public virtual async Task<IActionResult> RestoreFromDeletedEntity(Guid id) => await _controller.RestoreFromDeletedEntity(id);
         [HttpPost("{entityId}/restore/{changesetId}")]
         public virtual async Task<ActionResult<T>> RestoreFromChangeset(Guid entityId, Guid changesetId) => await _controller.RestoreFromChangeset(entityId, changesetId);
         [HttpPost("{entityId}/copy/{changesetId}")]
@@ -123,7 +123,7 @@ namespace LSG.GenericCrud.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpPost("{id}/restore")]
-        public virtual async Task<IActionResult> Restore(T1 id)
+        public virtual async Task<IActionResult> RestoreFromDeletedEntity(T1 id)
         {
             try
             {

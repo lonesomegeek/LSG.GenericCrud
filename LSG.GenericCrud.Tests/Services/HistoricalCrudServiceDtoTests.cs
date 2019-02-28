@@ -142,7 +142,7 @@
 //            var entityService = new HistoricalCrudService<TestEntity>(crudService, repositoryMock.Object);
 //            var service = new HistoricalCrudService<TestDto, TestEntity>(entityService, repositoryMock.Object, _mapper);
 
-//            var result = service.Restore(_entity.Id);
+//            var result = service.RestoreFromDeletedEntity(_entity.Id);
 
 //            Assert.Equal(_entity.Id, result.Id);
 //            repositoryMock.Verify(_ => _.CreateAsync(It.IsAny<TestEntity>()), Times.Once);

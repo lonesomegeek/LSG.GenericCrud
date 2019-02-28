@@ -37,7 +37,7 @@ namespace LSG.GenericCrud.Tests.Controllers
             serviceMock.Setup(_ => _.RestoreAsync(It.IsAny<Guid>())).ReturnsAsync(_entity);
             var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
 
-            var result = await controller.Restore(_entity.Id);
+            var result = await controller.RestoreFromDeletedEntity(_entity.Id);
 
             Assert.IsType<OkObjectResult>(result);
             serviceMock.Verify(_ => _.RestoreAsync(It.IsAny<Guid>()), Times.Once);
@@ -50,7 +50,7 @@ namespace LSG.GenericCrud.Tests.Controllers
             serviceMock.Setup(_ => _.RestoreAsync(It.IsAny<Guid>())).ThrowsAsync(new EntityNotFoundException());
             var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
 
-            var result = await controller.Restore(_entity.Id);
+            var result = await controller.RestoreFromDeletedEntity(_entity.Id);
 
             Assert.IsType<NotFoundResult>(result);
             serviceMock.Verify(_ => _.RestoreAsync(It.IsAny<Guid>()), Times.Once);
