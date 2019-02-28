@@ -536,7 +536,7 @@ namespace LSG.GenericCrud.Services
                 var changeset = new Changeset();
                 changeset.EventDate = currentEvent.CreatedDate.Value;
                 changeset.UserId = currentEvent.CreatedBy;
-                changeset.EventId = currentEvent.Id;
+                changeset.ChangesetId = currentEvent.Changeset.Id;
                 changeset.EventName = currentEvent.Action;
                 changeset.Changes = ExtractChanges(currentObject, nextEventObject);
                 differentialChangeset.Add(changeset);
@@ -550,7 +550,7 @@ namespace LSG.GenericCrud.Services
 
             lastChangeset.EventDate = lastEvent.CreatedDate.Value;
             lastChangeset.UserId = lastEvent.CreatedBy;
-            lastChangeset.EventId = lastEvent.Id;
+            lastChangeset.ChangesetId = lastEvent.Changeset.Id;
             lastChangeset.Changes = lastEvent.Action != HistoricalActions.Delete.ToString() ? ExtractChanges(currentObject, _repository.GetById<T1, T2>(id)) : null;
             lastChangeset.EventName = lastEvent.Action;
 

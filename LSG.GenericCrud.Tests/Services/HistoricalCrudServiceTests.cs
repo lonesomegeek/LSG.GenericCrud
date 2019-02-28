@@ -40,7 +40,7 @@ namespace LSG.GenericCrud.Tests.Services
         {
             var crudServiceMock = new Mock<ICrudService<TestEntity>>();
             var crudService = crudServiceMock.Object;
-            var service = new HistoricalCrudService<Guid, TestEntity>(crudService, null);
+            var service = new HistoricalCrudService<Guid, TestEntity>(crudService, null, null);
 
             Assert.False(service.AutoCommit);
             Assert.False(crudService.AutoCommit);
@@ -54,7 +54,7 @@ namespace LSG.GenericCrud.Tests.Services
             var crudServiceMock = new Mock<ICrudService<TestEntity>>();
             crudServiceMock.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
             var crudService = crudServiceMock.Object;
-            var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object);
+            var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object, null);
 
             var result = service.Create(_entity);
 
@@ -73,7 +73,7 @@ namespace LSG.GenericCrud.Tests.Services
             crudServiceMock.Setup(_ => _.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(_entity);
             crudServiceMock.Setup(_ => _.UpdateAsync(It.IsAny<Guid>(), It.IsAny<TestEntity>())).ReturnsAsync(_entity);
             var crudService = crudServiceMock.Object;
-            var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object);
+            var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object, null);
 
             var result = service.Update(_entity.Id, _entity);
 
@@ -92,7 +92,7 @@ namespace LSG.GenericCrud.Tests.Services
             var crudServiceMock = new Mock<ICrudService<TestEntity>>();
              crudServiceMock.Setup(_ => _.DeleteAsync(It.IsAny<Guid>())).ReturnsAsync(_entity);
             var crudService = crudServiceMock.Object;
-            var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object);
+            var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object, null);
 
             var result = service.Delete(_entity.Id);
 
@@ -111,7 +111,7 @@ namespace LSG.GenericCrud.Tests.Services
             var crudServiceMock = new Mock<ICrudService<TestEntity>>();
             crudServiceMock.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
             var crudService = crudServiceMock.Object;
-            var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object);
+            var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object, null);
 
             var result = service.Restore(_entity.Id);
 
@@ -126,7 +126,7 @@ namespace LSG.GenericCrud.Tests.Services
             repository.Setup(_ => _.GetAllAsync<HistoricalEvent>()).ReturnsAsync(new List<HistoricalEvent>());
             var crudServiceMock = new Mock<ICrudService<TestEntity>>();
             var crudService = crudServiceMock.Object;
-            var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object);
+            var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object, null);
 
             Assert.Throws<EntityNotFoundException>(() => service.Restore(_entity.Id));
         }
@@ -138,7 +138,7 @@ namespace LSG.GenericCrud.Tests.Services
             repository.Setup(_ => _.GetAllAsync<Guid, HistoricalEvent>()).ReturnsAsync(_events);
             var crudServiceMock = new Mock<ICrudService<TestEntity>>();
             var crudService = crudServiceMock.Object;
-            var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object);
+            var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object, null);
 
             var result = service.GetHistory(_entity.Id);
 
@@ -152,7 +152,7 @@ namespace LSG.GenericCrud.Tests.Services
             repository.Setup(_ => _.GetAllAsync<HistoricalEvent>()).ReturnsAsync(new List<HistoricalEvent>());
             var crudServiceMock = new Mock<ICrudService<TestEntity>>();
             var crudService = crudServiceMock.Object;
-            var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object);
+            var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object, null);
 
             Assert.Throws<EntityNotFoundException>(() => service.GetHistory(_entity.Id));
         }
