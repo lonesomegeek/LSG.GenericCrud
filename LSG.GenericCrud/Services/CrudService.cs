@@ -140,7 +140,13 @@ namespace LSG.GenericCrud.Services
         public virtual async Task<T2> UpdateAsync(T1 id, T2 entity)
         {
             var originalEntity = await GetByIdAsync(id);
-            foreach (var prop in entity.GetType().GetProperties().Where(_=>_.DeclaringType == typeof(T2)))
+            var properties = entity
+                .GetType()
+                .GetProperties()
+                .Where(_ =>
+                    _.DeclaringType == typeof(T2) && !Attribute.IsDefined(_, typeof(IgnoreInChangesetAttribute)));
+
+            foreach (var prop in properties)
             {
                 if (prop.Name != "Id")
                 {

@@ -10,7 +10,7 @@ namespace LSG.GenericCrud.Helpers
         public static T CopyObject<T>(this T source)
         {
             var copy = Activator.CreateInstance<T>();
-            var properties = typeof(T).GetProperties().Where(_ => _.DeclaringType == typeof(T));
+            var properties = typeof(T).GetProperties().Where(_ => _.DeclaringType == typeof(T) && !Attribute.IsDefined(_, typeof(IgnoreInChangesetAttribute)));
             foreach (var property in properties)
             {
                 copy?
@@ -27,7 +27,7 @@ namespace LSG.GenericCrud.Helpers
             var properties = typeof(T)
                 .GetProperties()
                 .Where(_ =>
-                    _.DeclaringType == typeof(T));
+                    _.DeclaringType == typeof(T) && !Attribute.IsDefined(_, typeof(IgnoreInChangesetAttribute)));
             foreach (var property in properties)
             {
                 source
@@ -37,5 +37,7 @@ namespace LSG.GenericCrud.Helpers
             }
             return source;
         }
+
+
     }
 }

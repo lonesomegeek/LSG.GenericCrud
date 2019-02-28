@@ -47,9 +47,24 @@ namespace LSG.GenericCrud.Controllers
         public virtual async Task<IActionResult> GetHistory(Guid id) => await _controller.GetHistory(id);
         [HttpPost("{id}/restore")]
         public virtual async Task<IActionResult> Restore(Guid id) => await _controller.Restore(id);
+        [HttpPost("{entityId}/restore/{changesetId}")]
+        public virtual async Task<ActionResult<T>> RestoreFromChangeset(Guid entityId, Guid changesetId) => await _controller.RestoreFromChangeset(entityId, changesetId);
         [HttpPost("{entityId}/copy/{changesetId}")]
         public virtual async Task<ActionResult<T>> CopyFromChangeset(Guid entityId, Guid changesetId) => await _controller.CopyFromChangeset(entityId, changesetId);
-        
+        [HttpPost("read")]
+        public virtual async Task<IActionResult> MarkAllAsRead() => await _controller.MarkAllAsRead();
+        [HttpPost("unread")]
+        public virtual async Task<IActionResult> MarkAllAsUnread() => await _controller.MarkAllAsUnread();
+        [HttpPost("{id}/read")]
+        public virtual async Task<IActionResult> MarkOneAsRead(Guid id) => await _controller.MarkOneAsRead(id);
+        [HttpPost("{id}/unread")]
+        public virtual async Task<IActionResult> MarkOneAsUnread(Guid id) => await _controller.MarkOneAsUnread(id);
+        [HttpGet("read-status")]
+        public virtual async Task<ActionResult<IEnumerable<ReadeableStatus<T>>>> GetReadStatus() => await _controller.GetReadStatus();
+        [HttpGet("{id}/read-status")]
+        public virtual async Task<ActionResult<ReadeableStatus<T>>> GetReadStatusById(Guid id) => await _controller.GetReadStatusById(id);
+        [HttpPost("{id}/delta")]
+        public virtual async Task<IActionResult> Delta(Guid id, DeltaRequest request) => await _controller.Delta(id, request);
     }
 
     /// <summary>
@@ -135,6 +150,58 @@ namespace LSG.GenericCrud.Controllers
                 throw;
             }
         }
+
+        [HttpPost("{entityId}/restore/{changesetId}")]
+        public virtual async Task<ActionResult<T2>> RestoreFromChangeset(T1 entityId, Guid changesetId)
+        {
+            try
+            {
+                await _historicalCrudService.RestoreFromChangeset(entityId, changesetId);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                if (ex is EntityNotFoundException) return NotFound($"Entity not found with id: {entityId}");
+                if (ex is ChangesetNotFoundException) return NotFound($"Changeset not found with id: {changesetId}");
+                throw;
+            }
+        }
+
+        [HttpPost("read")]
+        public virtual async Task<IActionResult> MarkAllAsRead()
+        {
+            await _historicalCrudService.MarkAllAsRead();
+            return NoContent();
+        }
+        [HttpPost("unread")]
+        public virtual async Task<IActionResult> MarkAllAsUnread()
+        {
+            await _historicalCrudService.MarkAllAsUnread();
+            return NoContent();
+        }
+        [HttpPost("{id}/read")]
+        public virtual async Task<IActionResult> MarkOneAsRead(T1 id)
+        {
+            await _historicalCrudService.MarkOneAsRead(id);
+            return NoContent();
+        }
+        [HttpPost("{id}/unread")]
+        public virtual async Task<IActionResult> MarkOneAsUnread(T1 id)
+        {
+            await _historicalCrudService.MarkOneAsUnread(id);
+            return NoContent();
+        }
+
+        [HttpGet("read-status")]
+        public virtual async Task<ActionResult<IEnumerable<ReadeableStatus<T2>>>> GetReadStatus() => Ok(await _historicalCrudService.GetReadStatusAsync());
+
+
+        [HttpGet("{id}/read-status")]
+        public virtual async Task<ActionResult<ReadeableStatus<T2>>> GetReadStatusById(T1 id) => Ok(await _historicalCrudService.GetReadStatusByIdAsync(id));
+        
+
+        [HttpPost("{id}/delta")]
+        public virtual async Task<IActionResult> Delta(T1 id, DeltaRequest request) => Ok(await _historicalCrudService.Delta(id, request));
 
         /// <summary>
         /// Creates the specified entity.

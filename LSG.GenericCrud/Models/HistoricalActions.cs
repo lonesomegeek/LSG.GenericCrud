@@ -21,6 +21,7 @@ namespace LSG.GenericCrud.Models
         /// <summary>
         /// The delete
         /// </summary>
-        Delete
+        Delete,
+        Read
     }
 }

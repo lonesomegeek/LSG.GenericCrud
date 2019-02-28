@@ -19,7 +19,7 @@ namespace LSG.GenericCrud.Dto.Services
     public class HistoricalCrudService<TDto, TEntity> :
         ICrudService<TDto>,
         IHistoricalCrudService<TDto>
-        where TDto : IEntity
+        where TDto : class, IEntity, new()
         where TEntity : class, IEntity, new()
     {
         private readonly IHistoricalCrudService<TEntity> _service;
@@ -72,6 +72,8 @@ namespace LSG.GenericCrud.Dto.Services
 
         public virtual IEnumerable<IEntity> GetHistory(Guid id) => GetHistoryAsync(id).GetAwaiter().GetResult();
 
+        public virtual async Task<TDto> RestoreFromChangeset(Guid entityId, Guid changesetId) => throw new NotImplementedException();
+
         public virtual async Task<IEnumerable<IEntity>> GetHistoryAsync(Guid id) => await _service.GetHistoryAsync(id);
         public Task<TDto> CopyFromChangeset(Guid entityId, Guid changesetId)
         {
@@ -93,6 +95,41 @@ namespace LSG.GenericCrud.Dto.Services
             var updatedEntity = await _service.UpdateAsync(id, _mapper.Map<TEntity>(dto));
             return _mapper.Map<TDto>(updatedEntity);
         }
+
+        public Task MarkAllAsRead()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task MarkAllAsUnread()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task MarkOneAsRead(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task MarkOneAsUnread(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<ReadeableStatus<TDto>>> GetReadStatusAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ReadeableStatus<TDto>> GetReadStatusByIdAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<object> Delta(Guid id, DeltaRequest request)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     /// <summary>
@@ -105,7 +142,7 @@ namespace LSG.GenericCrud.Dto.Services
     public class HistoricalCrudService<TId, TDto, TEntity> :
         ICrudService<TId, TDto>,
         IHistoricalCrudService<TId, TDto>
-        where TDto : IEntity<TId>
+        where TDto : class, IEntity<TId>, new()
         where TEntity : class, IEntity<TId>, new()
     {
         private readonly IHistoricalCrudService<TId, TEntity> _service;
@@ -158,6 +195,11 @@ namespace LSG.GenericCrud.Dto.Services
 
         public virtual IEnumerable<IEntity> GetHistory(TId id) => GetHistoryAsync(id).GetAwaiter().GetResult();
 
+        public Task<TDto> RestoreFromChangeset(TId entityId, Guid changesetId)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual async Task<IEnumerable<IEntity>> GetHistoryAsync(TId id) => await _service.GetHistoryAsync(id);
         public Task<TDto> CopyFromChangeset(TId entityId, Guid changesetId)
         {
@@ -178,6 +220,41 @@ namespace LSG.GenericCrud.Dto.Services
         {
             var updatedEntity = await _service.UpdateAsync(id, _mapper.Map<TEntity>(dto));
             return _mapper.Map<TDto>(updatedEntity);
+        }
+
+        public Task MarkAllAsRead()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task MarkAllAsUnread()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task MarkOneAsRead(TId id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task MarkOneAsUnread(TId id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<ReadeableStatus<TDto>>> GetReadStatusAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ReadeableStatus<TDto>> GetReadStatusByIdAsync(TId id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<object> Delta(TId id, DeltaRequest request)
+        {
+            throw new NotImplementedException();
         }
     }
 }
