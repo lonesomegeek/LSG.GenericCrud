@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
 using LSG.GenericCrud.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LSG.GenericCrud.Dto.Services
 {
@@ -193,7 +193,7 @@ namespace LSG.GenericCrud.Dto.Services
         public virtual IEnumerable<IEntity> GetHistory(TId id) => GetHistoryAsync(id).GetAwaiter().GetResult();
 
         public virtual async Task<TDto> RestoreFromChangeset(TId entityId, Guid changesetId) => _mapper.Map<TDto>(await _service.RestoreFromChangeset(entityId, changesetId));
-        
+
         public virtual async Task<IEnumerable<IEntity>> GetHistoryAsync(TId id) => await _service.GetHistoryAsync(id);
         public virtual async Task<TDto> CopyFromChangeset(TId entityId, Guid changesetId) => _mapper.Map<TDto>(await _service.CopyFromChangeset(entityId, changesetId));
         public virtual TDto Restore(TId id) => RestoreAsync(id).GetAwaiter().GetResult();
@@ -241,6 +241,19 @@ namespace LSG.GenericCrud.Dto.Services
         }
 
         // TODO: Adapt for dto object, should not present entity values
-        public virtual async Task<object> Delta(TId id, DeltaRequest request) => await _service.Delta(id, request);
+        public virtual async Task<object> Delta(TId id, DeltaRequest request)
+        {
+            if (request.From == null) request.From = GetLastTimeViewed<TEntity>(id);
+            if (request.To == null) request.To = DateTime.MaxValue;
+            if (request.Mode == DeltaRequestModes.Snapshot) return await GetDeltaSnapshot(id, request.From.Value, request.To.Value);
+            else if (request.Mode == DeltaRequestModes.Differential) return await GetDeltaDifferential(id, request.From.Value, request.To.Value);
+            throw new NotImplementedException();
+            // TODO: Convert TEntity to TDto
+        }
+
+        public DateTime? GetLastTimeViewed<T2>(TId id) => _service.GetLastTimeViewed<T2>(id);
+
+        public async Task<DifferentialChangeset> GetDeltaDifferential(TId id, DateTime fromTimestamp, DateTime toTimestamp) => await _service.GetDeltaDifferential(id, fromTimestamp, toTimestamp);
+        public async Task<SnapshotChangeset> GetDeltaSnapshot(TId id, DateTime fromTimestamp, DateTime toTimestamp) => await _service.GetDeltaSnapshot(id, fromTimestamp, toTimestamp);
     }
 }

@@ -4,7 +4,7 @@ using LSG.GenericCrud.Controllers;
 
 namespace LSG.GenericCrud.Models
 {
-    internal class SnapshotChangeset
+    public class SnapshotChangeset
     {
 
         public string EntityTypeName { get; internal set; }

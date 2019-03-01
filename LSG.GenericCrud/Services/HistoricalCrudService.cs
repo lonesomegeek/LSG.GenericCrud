@@ -467,7 +467,7 @@ namespace LSG.GenericCrud.Services
             throw new NotImplementedException();
         }
 
-        private async Task<object> GetDeltaSnapshot(T1 id, DateTime fromTimestamp, DateTime toTimestamp)
+        private async Task<SnapshotChangeset> GetDeltaSnapshot(T1 id, DateTime fromTimestamp, DateTime toTimestamp)
         {
             var events =
                 from e in _repository.GetAll<HistoricalEvent>()
@@ -481,7 +481,7 @@ namespace LSG.GenericCrud.Services
 
             return ExtractSnapshotChanges(events, entity);
         }
-        public async Task<object> GetDeltaDifferential(T1 id, DateTime fromTimestamp, DateTime toTimestamp)
+        public async Task<DifferentialChangeset> GetDeltaDifferential(T1 id, DateTime fromTimestamp, DateTime toTimestamp)
         {
             // snapshot from creation date
             var events = _repository
@@ -590,7 +590,7 @@ namespace LSG.GenericCrud.Services
             return changes;
         }
 
-        private DateTime? GetLastTimeViewed<T2>(T1 id)
+        public DateTime? GetLastTimeViewed<T2>(T1 id)
         {
             var lastView = _repository
                 .GetAll<HistoricalEvent>()
