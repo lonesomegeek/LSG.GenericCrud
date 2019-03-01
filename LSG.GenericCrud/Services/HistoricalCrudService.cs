@@ -44,33 +44,19 @@ namespace LSG.GenericCrud.Services
         public virtual async Task<T> UpdateAsync(Guid id, T entity) => await _service.UpdateAsync(id, entity);
         public virtual async Task<T> DeleteAsync(Guid id) => await _service.DeleteAsync(id);
         public virtual async Task<T> CopyAsync(Guid id) => await _service.CopyAsync(id);
-
-        public virtual T Restore(Guid id) => _service.Restore(id);
-        
+        public virtual T Restore(Guid id) => _service.Restore(id);        
         public virtual IEnumerable<IEntity> GetHistory(Guid id) => _service.GetHistory(id);
         public virtual async Task<T> RestoreAsync(Guid id) => await _service.RestoreAsync(id);
         public virtual async Task<T> RestoreFromChangeset(Guid entityId, Guid changesetId) => await _service.RestoreFromChangeset(entityId, changesetId);
-
         public virtual async Task<IEnumerable<IEntity>> GetHistoryAsync(Guid id) => await _service.GetHistoryAsync(id);
         public virtual async Task<T> CopyFromChangeset(Guid entityId, Guid changesetId) => await _service.CopyFromChangeset(entityId, changesetId);
         public virtual async Task MarkAllAsRead() => await _service.MarkAllAsRead();
         public virtual async Task MarkAllAsUnread() => await _service.MarkAllAsUnread();
         public virtual async Task MarkOneAsRead(Guid id) => await MarkOneAsRead(id);
         public virtual async Task MarkOneAsUnread(Guid id) => await MarkOneAsUnread(id);
-        public Task<IEnumerable<ReadeableStatus<T>>> GetReadStatusAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ReadeableStatus<T>> GetReadStatusByIdAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual async Task<object> Delta(Guid id, DeltaRequest request)
-        {
-            throw new NotImplementedException();
-        }
+        public virtual async Task<IEnumerable<ReadeableStatus<T>>> GetReadStatusAsync() => await _service.GetReadStatusAsync();
+        public virtual async Task<ReadeableStatus<T>> GetReadStatusByIdAsync(Guid id) => await _service.GetReadStatusByIdAsync(id);
+        public virtual async Task<object> Delta(Guid id, DeltaRequest request) => await _service.Delta(id, request);
     }
 
 
@@ -623,14 +609,5 @@ namespace LSG.GenericCrud.Services
         public virtual async Task<IEnumerable<T2>> GetAllAsync() => await _service.GetAllAsync();
 
         public virtual async Task<T2> GetByIdAsync(T1 id) => await _service.GetByIdAsync(id);
-    }
-
-    public class NoHistoryException : Exception
-    {
-    }
-
-    public interface IHistoricalCrudServiceOptions
-    {
-        bool ShowMyNewStuff { get; set; }
     }
 }

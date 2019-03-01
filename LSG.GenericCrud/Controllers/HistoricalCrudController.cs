@@ -16,7 +16,12 @@ namespace LSG.GenericCrud.Controllers
     /// <seealso cref="LSG.GenericCrud.Controllers.CrudAsyncController{T}" />
     public class HistoricalCrudController<T> : 
         ControllerBase,
-        IHistoricalCrudController<T> where T : class, IEntity, new()
+        IHistoricalCrudController<T>,
+        IHistoricalCrudCopyController<T>,
+        IHistoricalCrudDeltaController<T>,
+        IHistoricalCrudReadStatusController<T>,
+        IHistoricalCrudRestoreController<T>
+        where T : class, IEntity, new()
     {
         private readonly IHistoricalCrudController<Guid, T> _controller;
 
@@ -38,7 +43,7 @@ namespace LSG.GenericCrud.Controllers
         [HttpPost]
         public virtual async Task<ActionResult<T>> Create(T entity) => await _controller.Create(entity);
         [HttpPost("{id}/copy")]
-        public virtual async Task<ActionResult<T>> Copy(Guid id) => await _controller.Copy(id);
+        public virtual async Task<ActionResult<T>> Copy(Guid id) => await ((IHistoricalCrudCopyController<T>)_controller).Copy(id);
         [HttpPut("{id}")]
         public virtual async Task<IActionResult> Update(Guid id, T entity) => await _controller.Update(id, entity);
         [HttpDelete("{id}")]
@@ -46,25 +51,25 @@ namespace LSG.GenericCrud.Controllers
         [HttpGet("{id}/history")]
         public virtual async Task<IActionResult> GetHistory(Guid id) => await _controller.GetHistory(id);
         [HttpPost("{id}/restore")]
-        public virtual async Task<IActionResult> RestoreFromDeletedEntity(Guid id) => await _controller.RestoreFromDeletedEntity(id);
+        public virtual async Task<IActionResult> RestoreFromDeletedEntity(Guid id) => await ((IHistoricalCrudRestoreController<T>)_controller).RestoreFromDeletedEntity(id);
         [HttpPost("{entityId}/restore/{changesetId}")]
-        public virtual async Task<ActionResult<T>> RestoreFromChangeset(Guid entityId, Guid changesetId) => await _controller.RestoreFromChangeset(entityId, changesetId);
+        public virtual async Task<ActionResult<T>> RestoreFromChangeset(Guid entityId, Guid changesetId) => await ((IHistoricalCrudRestoreController<T>)_controller).RestoreFromChangeset(entityId, changesetId);
         [HttpPost("{entityId}/copy/{changesetId}")]
-        public virtual async Task<ActionResult<T>> CopyFromChangeset(Guid entityId, Guid changesetId) => await _controller.CopyFromChangeset(entityId, changesetId);
+        public virtual async Task<ActionResult<T>> CopyFromChangeset(Guid entityId, Guid changesetId) => await ((IHistoricalCrudCopyController<T>)_controller).CopyFromChangeset(entityId, changesetId);
         [HttpPost("read")]
-        public virtual async Task<IActionResult> MarkAllAsRead() => await _controller.MarkAllAsRead();
+        public virtual async Task<IActionResult> MarkAllAsRead() => await ((IHistoricalCrudReadStatusController<T>)_controller).MarkAllAsRead();
         [HttpPost("unread")]
-        public virtual async Task<IActionResult> MarkAllAsUnread() => await _controller.MarkAllAsUnread();
+        public virtual async Task<IActionResult> MarkAllAsUnread() => await ((IHistoricalCrudReadStatusController<T>)_controller).MarkAllAsUnread();
         [HttpPost("{id}/read")]
-        public virtual async Task<IActionResult> MarkOneAsRead(Guid id) => await _controller.MarkOneAsRead(id);
+        public virtual async Task<IActionResult> MarkOneAsRead(Guid id) => await ((IHistoricalCrudReadStatusController<T>)_controller).MarkOneAsRead(id);
         [HttpPost("{id}/unread")]
-        public virtual async Task<IActionResult> MarkOneAsUnread(Guid id) => await _controller.MarkOneAsUnread(id);
+        public virtual async Task<IActionResult> MarkOneAsUnread(Guid id) => await ((IHistoricalCrudReadStatusController<T>)_controller).MarkOneAsUnread(id);
         [HttpGet("read-status")]
-        public virtual async Task<ActionResult<IEnumerable<ReadeableStatus<T>>>> GetReadStatus() => await _controller.GetReadStatus();
+        public virtual async Task<ActionResult<IEnumerable<ReadeableStatus<T>>>> GetReadStatus() => await ((IHistoricalCrudReadStatusController<T>)_controller).GetReadStatus();
         [HttpGet("{id}/read-status")]
-        public virtual async Task<ActionResult<ReadeableStatus<T>>> GetReadStatusById(Guid id) => await _controller.GetReadStatusById(id);
+        public virtual async Task<ActionResult<ReadeableStatus<T>>> GetReadStatusById(Guid id) => await ((IHistoricalCrudReadStatusController<T>)_controller).GetReadStatusById(id);
         [HttpPost("{id}/delta")]
-        public virtual async Task<IActionResult> Delta(Guid id, DeltaRequest request) => await _controller.Delta(id, request);
+        public virtual async Task<IActionResult> Delta(Guid id, DeltaRequest request) => await ((IHistoricalCrudDeltaController<T>)_controller).Delta(id, request);
     }
 
     /// <summary>
@@ -74,7 +79,11 @@ namespace LSG.GenericCrud.Controllers
     /// <seealso cref="LSG.GenericCrud.Controllers.CrudAsyncController{T}" />
     public class HistoricalCrudController<T1, T2> :
         ControllerBase,
-        IHistoricalCrudController<T1, T2> where T2 : class, IEntity<T1>, new()
+        IHistoricalCrudController<T1, T2>,
+        IHistoricalCrudCopyController<T1, T2>,
+        IHistoricalCrudDeltaController<T1, T2>,
+        IHistoricalCrudReadStatusController<T1, T2>,
+        IHistoricalCrudRestoreController<T1, T2> where T2 : class, IEntity<T1>, new()
     {
         private readonly ICrudController<T1, T2> _crudController;
 
