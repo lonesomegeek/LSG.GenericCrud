@@ -15,7 +15,8 @@ namespace LSG.GenericCrud.Controllers
     /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
     public class CrudController<T> : 
         ControllerBase, 
-        ICrudController<T> 
+        ICrudController<T>,
+        ICrudCopyController<T>
         where T : class, IEntity, new()
     {
         
@@ -39,8 +40,7 @@ namespace LSG.GenericCrud.Controllers
         [HttpPost]
         public virtual async Task<ActionResult<T>> Create(T entity) => await _controller.Create(entity);
         [HttpPost("{id}/copy")]
-        public virtual async Task<ActionResult<T>> Copy(Guid id) => await _controller.Copy(id);
-
+        public virtual async Task<ActionResult<T>> Copy(Guid id) => await ((ICrudCopyController<T>)_controller).Copy(id);
         [HttpPut("{id}")]
         public virtual async Task<IActionResult> Update(Guid id, T entity) => await _controller.Update(id, entity);
         [HttpDelete("{id}")]
@@ -54,7 +54,8 @@ namespace LSG.GenericCrud.Controllers
     /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
     public class CrudController<T1, T2> :
         ControllerBase,
-        ICrudController<T1, T2>
+        ICrudController<T1, T2>,
+        ICrudCopyController<T1, T2>
         where T2 : class, IEntity<T1>, new()
     {
         /// <summary>
@@ -90,7 +91,7 @@ namespace LSG.GenericCrud.Controllers
             {
                 return Ok(await _service.GetByIdAsync(id));
             }
-            catch (EntityNotFoundException ex)
+            catch (EntityNotFoundException)
             {
                 return NotFound();
             }
@@ -104,7 +105,7 @@ namespace LSG.GenericCrud.Controllers
                 await _service.GetByIdAsync(id);
                 return NoContent();
             }
-            catch (EntityNotFoundException ex)
+            catch (EntityNotFoundException)
             {
                 return NotFound();
             }
@@ -138,7 +139,7 @@ namespace LSG.GenericCrud.Controllers
 
                 return NoContent();
             }
-            catch (EntityNotFoundException ex)
+            catch (EntityNotFoundException)
             {
                 return NotFound();
             }
@@ -156,7 +157,7 @@ namespace LSG.GenericCrud.Controllers
             {
                 return Ok(await _service.DeleteAsync(id));
             }
-            catch (EntityNotFoundException ex)
+            catch (EntityNotFoundException)
             {
                 return NotFound();
             }
@@ -170,7 +171,7 @@ namespace LSG.GenericCrud.Controllers
                 var createdEntity = await _service.CopyAsync(id);
                 return CreatedAtAction(nameof(GetById), new { id = createdEntity.Id }, createdEntity);
             }
-            catch (EntityNotFoundException ex)
+            catch (EntityNotFoundException)
             {
                 return NotFound();
             }
