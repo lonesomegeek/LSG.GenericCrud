@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 using NUlid;
 
 namespace WebApplication1.Models
@@ -13,6 +15,13 @@ namespace WebApplication1.Models
     {
         public TestContext(DbContextOptions options, IServiceProvider serviceProvider) : base(options, serviceProvider)
         {
+            
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+            optionsBuilder.UseLoggerFactory(new LoggerFactory(new[] { new ConsoleLoggerProvider((_, __) => true, true) }));
         }
 
         public DbSet<Account> Accounts { get; set; }
@@ -24,6 +33,8 @@ namespace WebApplication1.Models
 
         public DbSet<MyIntEntity> IntEntities { get; set; }
         public DbSet<MyUlidEntity> UlidEntities { get; set; }
+
+        
     }
 
     public class MyIntEntity : IEntity<int>

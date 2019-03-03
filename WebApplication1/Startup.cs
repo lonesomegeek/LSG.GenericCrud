@@ -51,20 +51,19 @@ namespace WebApplication1
             services.AddScoped(typeof(IReadeableCrudService<>), typeof(ReadeableCrudService<>));
             services.AddScoped(typeof(IHistoricalCrudService<>), typeof(HistoricalCrudService<>));
 
-            //services.AddTransient<IEntityDataFiller, ByDataFiller>();
-            //services.AddTransient<IEntityDataFiller, DateDataFiller>();
             services.AddTransient<IEntityDataFiller, CreatedFiller>();
             services.AddTransient<IEntityDataFiller, ModifiedFiller>();
             services.AddTransient<IUserInfoRepository, MyUserInfoRepository>();
-            //services.AddScoped<IReadeableCrudOptions, ReadeableCrudOptions>();
-
+            
             services.AddScoped(typeof(ICrudService<,>), typeof(CrudService<,>));
             services.AddScoped(typeof(IHistoricalCrudService<,>), typeof(HistoricalCrudService<,>));
             services.AddScoped(typeof(ICrudController<,>), typeof(CrudController<,>));
             services.AddScoped(typeof(IHistoricalCrudController<,>), typeof(HistoricalCrudController<,>));
+
             services.AddScoped<IHistoricalCrudService<Guid, AccountDto>, HistoricalCrudService<Guid, AccountDto, Account>>();
+            services.AddScoped<ICrudService<Guid, AccountDto>, CrudService<Guid, AccountDto, Account>>();
             services.AddScoped(typeof(ICrudService<Guid, AccountDto>), typeof(CrudService<Guid, AccountDto, Account>));
-            //services.AddScoped(typeof(ICrudService<int, MyIntEntity>), typeof(CrudService<int, MyIntEntity>));
+
             services.AddSingleton(CreateAutoMapperConfiguration());
             services.AddCrud();
         }
