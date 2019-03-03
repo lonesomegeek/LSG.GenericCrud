@@ -67,18 +67,5 @@ namespace LSG.GenericCrud.Services
         Task<ReadeableStatus<T2>> GetReadStatusByIdAsync(T1 id);
 
         Task<object> Delta(T1 id, DeltaRequest request);
-
-    }
-
-    public class ReadeableStatus<T>
-    {
-        public T Data { get; set; }
-        public ReadeableStatusMetadata Metadata { get; set; }
-    }
-
-    public class ReadeableStatusMetadata
-    {
-        public bool NewStuffAvailable { get; internal set; }
-        public DateTime? LastViewed { get; internal set; }
     }
 }

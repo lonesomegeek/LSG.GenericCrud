@@ -246,14 +246,20 @@ namespace LSG.GenericCrud.Services
         /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
         public virtual async Task<T2> RestoreAsync(T1 id)
         {
-            var entity = _repository
+            var historicalEvent = _repository
                 .GetAllAsync<Guid, HistoricalEvent>()
                 .Result
                 .SingleOrDefault(_ =>
                     _.EntityId == id.ToString() && // TODO: I do not like the string value compare here
                     _.Action == HistoricalActions.Delete.ToString());
-            if (entity == null) throw new EntityNotFoundException();
-            var json = entity.Changeset.ObjectData;
+            if (historicalEvent == null) throw new EventNotFoundException();
+            var changeset = _repository
+                .GetAllAsync<Guid, HistoricalChangeset>()
+                .Result
+                .SingleOrDefault(_ => _.EventId == historicalEvent.Id);
+            if (changeset == null) throw new ChangesetNotFoundException();
+            
+            var json = changeset.ObjectData;
             var obj = JsonConvert.DeserializeObject<T2>(json);
             var createdObject = await CreateAsync(obj);
 
@@ -467,7 +473,7 @@ namespace LSG.GenericCrud.Services
             throw new NotImplementedException();
         }
 
-        private async Task<object> GetDeltaSnapshot(T1 id, DateTime fromTimestamp, DateTime toTimestamp)
+        public async Task<SnapshotChangeset> GetDeltaSnapshot(T1 id, DateTime fromTimestamp, DateTime toTimestamp)
         {
             var events =
                 from e in _repository.GetAll<HistoricalEvent>()
@@ -481,7 +487,7 @@ namespace LSG.GenericCrud.Services
 
             return ExtractSnapshotChanges(events, entity);
         }
-        public async Task<object> GetDeltaDifferential(T1 id, DateTime fromTimestamp, DateTime toTimestamp)
+        public async Task<DifferentialChangeset> GetDeltaDifferential(T1 id, DateTime fromTimestamp, DateTime toTimestamp)
         {
             // snapshot from creation date
             var events = _repository
@@ -590,7 +596,7 @@ namespace LSG.GenericCrud.Services
             return changes;
         }
 
-        private DateTime? GetLastTimeViewed<T2>(T1 id)
+        public DateTime? GetLastTimeViewed<T2>(T1 id)
         {
             var lastView = _repository
                 .GetAll<HistoricalEvent>()
