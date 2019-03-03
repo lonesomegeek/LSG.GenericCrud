@@ -6,6 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LSG.GenericCrud.Exceptions;
+using LSG.GenericCrud.Helpers;
+using Newtonsoft.Json;
 
 namespace LSG.GenericCrud.Dto.Services
 {
@@ -148,11 +151,17 @@ namespace LSG.GenericCrud.Dto.Services
         private readonly IHistoricalCrudService<TId, TEntity> _service;
         private readonly ICrudRepository _repository;
         private readonly IMapper _mapper;
+        private readonly IUserInfoRepository _userInfoRepository;
 
-        public HistoricalCrudService(IHistoricalCrudService<TId, TEntity> service, ICrudRepository repository, IMapper mapper)
+        public HistoricalCrudService(
+            IHistoricalCrudService<TId, TEntity> service,
+            ICrudRepository repository,
+            IUserInfoRepository userInfoRepository,
+            IMapper mapper)
         {
             _service = service;
             _repository = repository;
+            _userInfoRepository = userInfoRepository;
             _mapper = mapper;
             AutoCommit = false;
         }
@@ -251,9 +260,144 @@ namespace LSG.GenericCrud.Dto.Services
             // TODO: Convert TEntity to TDto
         }
 
-        public DateTime? GetLastTimeViewed<T2>(TId id) => _service.GetLastTimeViewed<T2>(id);
+        public DateTime? GetLastTimeViewed<TEntity>(TId id)
+        {
+            var lastView = _repository
+                .GetAll<HistoricalEvent>()
+                .SingleOrDefault(_ =>
+                    _.EntityId == id.ToString() &&
+                    _.EntityName == typeof(TEntity).FullName &&
+                    _.Action == HistoricalActions.Read.ToString() &&
+                    _.CreatedBy == _userInfoRepository.GetUserInfo());
+            return lastView?.CreatedDate ?? DateTime.MinValue;
+        }
+        public async Task<SnapshotChangeset> GetDeltaSnapshot(TId id, DateTime fromTimestamp, DateTime toTimestamp)
+        {
+            var events =
+                from e in _repository.GetAll<HistoricalEvent>()
+                join c in _repository.GetAllAsync<Guid, HistoricalChangeset>().Result on e.Id equals c.EventId
+                where e.EntityId == id.ToString() && c.CreatedDate >= fromTimestamp && c.CreatedDate <= toTimestamp
+                select e;
 
-        public async Task<DifferentialChangeset> GetDeltaDifferential(TId id, DateTime fromTimestamp, DateTime toTimestamp) => await _service.GetDeltaDifferential(id, fromTimestamp, toTimestamp);
-        public async Task<SnapshotChangeset> GetDeltaSnapshot(TId id, DateTime fromTimestamp, DateTime toTimestamp) => await _service.GetDeltaSnapshot(id, fromTimestamp, toTimestamp);
+            if (!events.Any()) throw new NoHistoryException();
+
+            var entity = await _repository.GetByIdAsync<TId, TEntity>(id);
+
+            return ExtractSnapshotChanges(events, entity);
+        }
+        public async Task<DifferentialChangeset> GetDeltaDifferential(TId id, DateTime fromTimestamp, DateTime toTimestamp)
+        {
+            // snapshot from creation date
+            var events = _repository
+                .GetAll<HistoricalEvent>()
+                .Where(_ => _.EntityId == id.ToString() && _.CreatedDate >= fromTimestamp && _.CreatedDate <= toTimestamp && _.Action != HistoricalActions.Read.ToString())
+                .OrderBy(_ => _.CreatedDate);
+
+            if (events.Count() == 0) throw new NoHistoryException();
+            //.Skip(1);
+
+            var differentialChangeset = await ExtractDifferentialChangeset(id, events);
+
+            return differentialChangeset;
+        }
+        private SnapshotChangeset ExtractSnapshotChanges(IEnumerable<HistoricalEvent> events, TEntity actual)
+        {
+            var actualDto = _mapper.Map<TDto>(actual);
+            var sourceEvent = events.FirstOrDefault();
+
+            var sourceObject = sourceEvent.Changeset == null ?
+                JsonConvert.DeserializeObject<TEntity>(sourceEvent.Changeset.ObjectData) :
+                JsonConvert.DeserializeObject<TEntity>(sourceEvent.Changeset.ObjectDelta);
+            var sourceDto = _mapper.Map<TDto>(sourceObject);
+
+            var snapshotChangeset = new SnapshotChangeset();
+            snapshotChangeset.EntityTypeName = sourceEvent.EntityName;
+            snapshotChangeset.EntityId = sourceEvent.EntityId;
+            snapshotChangeset.LastViewed = DateTime.Now; // TODO: Get Last Viewed Info from read status (if available)
+            snapshotChangeset.LastModifiedBy = events.Last().CreatedBy;
+            snapshotChangeset.LastModifiedEvent = events.Last().Action;
+            snapshotChangeset.LastModifiedDate = events.Last().CreatedDate.Value;
+            snapshotChangeset.Changes = ExtractChanges(sourceDto, actualDto);
+
+            return snapshotChangeset;
+        }
+
+        private async Task<DifferentialChangeset> ExtractDifferentialChangeset(TId id, IOrderedEnumerable<HistoricalEvent> events)
+        {
+            var changesets = await _repository.GetAllAsync<Guid, HistoricalChangeset>();
+            var changeset = changesets.FirstOrDefault();
+            var sourceEvent = events.First();
+            var sourceObject = sourceEvent.Changeset.ObjectData == null ? JsonConvert.DeserializeObject<TEntity>(sourceEvent.Changeset.ObjectDelta) : JsonConvert.DeserializeObject<TEntity>(sourceEvent.Changeset.ObjectData);
+
+            var differentialChangeset = new DifferentialChangeset();
+            differentialChangeset.EntityId = id.ToString();
+            differentialChangeset.EntityTypeName = sourceEvent.EntityName;
+            differentialChangeset.Changesets = ExtractDifferentialChanges(id, events, sourceEvent, sourceObject);
+            return differentialChangeset;
+        }
+
+        private List<Changeset> ExtractDifferentialChanges(TId id, IOrderedEnumerable<HistoricalEvent> events, HistoricalEvent sourceEvent, TEntity sourceObject)
+        {
+
+            var differentialChangeset = new List<Changeset>();
+
+            var currentEvent = sourceEvent;
+            var currentObject = sourceObject;
+            var currentDto = _mapper.Map<TDto>(currentObject);
+            for (int i = 1; i < events.Count(); i++)
+            {
+                var nextEvent = events.ToArray()[i];
+                var nextEventObject = JsonConvert.DeserializeObject<TEntity>(currentEvent.Changeset.ObjectDelta);
+                var nextEventDto = _mapper.Map<TDto>(nextEventObject);
+                var changeset = new Changeset();
+                changeset.EventDate = currentEvent.CreatedDate.Value;
+                changeset.UserId = currentEvent.CreatedBy;
+                changeset.ChangesetId = currentEvent.Changeset.Id;
+                changeset.EventName = currentEvent.Action;
+                changeset.Changes = ExtractChanges(currentDto, nextEventDto);
+                differentialChangeset.Add(changeset);
+
+                currentObject = nextEventObject;
+                currentDto = _mapper.Map<TDto>(currentObject);
+                currentEvent = nextEvent;
+            }
+            // add last event to current object
+            var lastChangeset = new Changeset();
+            var lastEvent = events.Last();
+
+            lastChangeset.EventDate = lastEvent.CreatedDate.Value;
+            lastChangeset.UserId = lastEvent.CreatedBy;
+            lastChangeset.ChangesetId = lastEvent.Changeset.Id;
+            lastChangeset.Changes = lastEvent.Action != HistoricalActions.Delete.ToString() ? ExtractChanges(
+                _mapper.Map<TDto>(currentObject),
+                _mapper.Map<TDto>(_repository.GetById<TId, TEntity>(id))) : null;
+            lastChangeset.EventName = lastEvent.Action;
+
+            differentialChangeset.Add(lastChangeset);
+
+            return differentialChangeset;
+        }
+
+        // TODO: Place that in interface for overrideable definition
+        public List<Change> ExtractChanges<T>(T source, T destination)
+        {
+            if (destination == null) throw new ArgumentNullException(nameof(destination));
+            var changes = new List<Change>();
+
+            destination
+                .GetType()
+                .GetProperties()
+                .Where(_ => _.DeclaringType == destination.GetType() && !Attribute.IsDefined(_, typeof(IgnoreInChangesetAttribute)))
+                .ToList()
+                .ForEach(_ => changes.Add(new Change()
+                {
+                    FieldName = _.Name,
+                    FromValue = source.GetType().GetProperty(_.Name)?.GetValue(source),
+                    ToValue = destination.GetType().GetProperty(_.Name)?.GetValue(destination)
+                }));
+
+            return changes;
+        }
+
     }
 }

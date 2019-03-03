@@ -7,12 +7,12 @@ namespace LSG.GenericCrud.Models
     public class SnapshotChangeset
     {
 
-        public string EntityTypeName { get; internal set; }
-        public string EntityId { get; internal set; }
-        public DateTime LastViewed { get; internal set; }
-        public List<Change> Changes { get; internal set; }
-        public DateTime LastModifiedDate { get; internal set; }
-        public string LastModifiedBy { get; internal set; }
-        public string LastModifiedEvent { get; internal set; }
+        public string EntityTypeName { get; set; }
+        public string EntityId { get; set; }
+        public DateTime LastViewed { get; set; }
+        public List<Change> Changes { get; set; }
+        public DateTime LastModifiedDate { get; set; }
+        public string LastModifiedBy { get; set; }
+        public string LastModifiedEvent { get; set; }
     }
 }

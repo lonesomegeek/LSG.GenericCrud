@@ -67,9 +67,5 @@ namespace LSG.GenericCrud.Services
         Task<ReadeableStatus<T2>> GetReadStatusByIdAsync(T1 id);
 
         Task<object> Delta(T1 id, DeltaRequest request);
-
-        DateTime? GetLastTimeViewed<T2>(T1 id);
-        Task<DifferentialChangeset> GetDeltaDifferential(T1 id, DateTime fromTimestamp, DateTime toTimestamp);
-        Task<SnapshotChangeset> GetDeltaSnapshot(T1 id, DateTime fromTimestamp, DateTime toTimestamp);
     }
 }

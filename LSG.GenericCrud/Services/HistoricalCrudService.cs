@@ -467,7 +467,7 @@ namespace LSG.GenericCrud.Services
             throw new NotImplementedException();
         }
 
-        private async Task<SnapshotChangeset> GetDeltaSnapshot(T1 id, DateTime fromTimestamp, DateTime toTimestamp)
+        public async Task<SnapshotChangeset> GetDeltaSnapshot(T1 id, DateTime fromTimestamp, DateTime toTimestamp)
         {
             var events =
                 from e in _repository.GetAll<HistoricalEvent>()
