@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LSG.GenericCrud.Helpers;
 
 namespace LSG.GenericCrud.Dto.Services
 {
@@ -304,29 +305,48 @@ namespace LSG.GenericCrud.Dto.Services
             var snapshotChangeset = new SnapshotChangeset();
             snapshotChangeset.EntityTypeName = sourceEvent.EntityName;
             snapshotChangeset.EntityId = sourceEvent.EntityId;
-            snapshotChangeset.LastViewed = DateTime.Now; // TODO: Get Last Viewed Info from read status (if available)
+            snapshotChangeset.LastViewed = DateTime.MinValue; // TODO: Get Last Viewed Info from read status (if available)
             snapshotChangeset.LastModifiedBy = events.Last().CreatedBy;
             snapshotChangeset.LastModifiedEvent = events.Last().Action;
             snapshotChangeset.LastModifiedDate = events.Last().CreatedDate.Value;
+            // TODO: Bug here if entity is deleted or not found
             snapshotChangeset.Changes = _historicalCrudReadService.ExtractChanges(sourceDto, actualDto);
-
             return snapshotChangeset;
         }
 
         private async Task<DifferentialChangeset> ExtractDifferentialChangeset(TId id, IOrderedEnumerable<HistoricalEvent> events)
         {
-            var changesets = await _repository.GetAllAsync<Guid, HistoricalChangeset>();
-            var changeset = changesets.FirstOrDefault();
-            var sourceEvent = events.First();
-            var sourceObject = sourceEvent.Changeset.ObjectData == null ? JsonConvert.DeserializeObject<TEntity>(sourceEvent.Changeset.ObjectDelta) : JsonConvert.DeserializeObject<TEntity>(sourceEvent.Changeset.ObjectData);
+            var changesets = await _repository.GetAllAsync<Guid, HistoricalChangeset>(); // TODO: keep it there, include changesets in context
 
             var differentialChangeset = new DifferentialChangeset();
             differentialChangeset.EntityId = id.ToString();
-            differentialChangeset.EntityTypeName = sourceEvent.EntityName;
-            differentialChangeset.Changesets = ExtractDifferentialChanges(id, events, sourceEvent, sourceObject);
+            differentialChangeset.EntityTypeName = events.First().EntityName;
+            differentialChangeset.Changesets = events.AggregateCombine(ExtractOneDifferentialChangeset<TEntity>);
             return differentialChangeset;
         }
+        private Changeset ExtractOneDifferentialChangeset<TEntity>(HistoricalEvent currentEvent, HistoricalEvent nextEvent) where TEntity : class, IEntity<TId>, new()
+        {
+            var currentObject = JsonConvert.DeserializeObject<TEntity>(currentEvent.Changeset.ObjectDelta);
+            var currentDto = _mapper.Map<TDto>(currentObject);
 
+            var nextObject =
+                nextEvent.Action == HistoricalActions.Delete.ToString()
+                    ? JsonConvert.DeserializeObject<TEntity>(nextEvent.Changeset?.ObjectData)
+                    : JsonConvert.DeserializeObject<TEntity>(nextEvent.Changeset?.ObjectDelta);
+            var nextDto = _mapper.Map<TDto>(currentObject);
+
+            var changeset = new Changeset();
+            changeset.EventDate = nextEvent.CreatedDate.Value;
+            changeset.UserId = nextEvent.CreatedBy;
+            changeset.ChangesetId = nextEvent.Changeset.Id;
+            changeset.EventName = nextEvent.Action;
+            changeset.Changes =
+                currentEvent.Action != HistoricalActions.Delete.ToString() ?
+                    _historicalCrudReadService.ExtractChanges(currentDto, nextDto) :
+                    null;
+
+            return changeset;
+        }
         private List<Changeset> ExtractDifferentialChanges(TId id, IOrderedEnumerable<HistoricalEvent> events, HistoricalEvent sourceEvent, TEntity sourceObject)
         {
 

@@ -537,7 +537,7 @@ namespace LSG.GenericCrud.Services
             return changeset;
         }
 
-        private SnapshotChangeset ExtractSnapshotChanges(IEnumerable<HistoricalEvent> events, T2 actual)
+        public SnapshotChangeset ExtractSnapshotChanges(IEnumerable<HistoricalEvent> events, T2 actual)
         {
             var sourceEvent = events.FirstOrDefault();
 
