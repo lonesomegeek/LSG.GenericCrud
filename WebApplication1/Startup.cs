@@ -59,7 +59,7 @@ namespace WebApplication1
             services.AddScoped(typeof(IHistoricalCrudService<,>), typeof(HistoricalCrudService<,>));
             services.AddScoped(typeof(ICrudController<,>), typeof(CrudController<,>));
             services.AddScoped(typeof(IHistoricalCrudController<,>), typeof(HistoricalCrudController<,>));
-
+            services.AddScoped(typeof(IHistoricalCrudReadService<,>), typeof(HistoricalCrudReadService<,>));
             services.AddScoped<IHistoricalCrudService<Guid, AccountDto>, HistoricalCrudService<Guid, AccountDto, Account>>();
             services.AddScoped<ICrudService<Guid, AccountDto>, CrudService<Guid, AccountDto, Account>>();
             services.AddScoped(typeof(ICrudService<Guid, AccountDto>), typeof(CrudService<Guid, AccountDto, Account>));
