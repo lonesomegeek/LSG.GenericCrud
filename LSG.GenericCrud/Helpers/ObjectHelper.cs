@@ -1,12 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Text;
+using LSG.GenericCrud.Models;
 
 namespace LSG.GenericCrud.Helpers
 {
     public static class ObjectHelper
     {
+
+        public static List<T> AggregateCombine<T, T2>(this IEnumerable<T2> items, Func<T2,T2, T> combine) where T2 : class, IEntity, new()
+        {
+            // TODO: Add validation for array length
+            var result = new List<T>();
+            var itemArray = items.ToArray();
+            var current = itemArray[0];
+
+            for (int i = 0; i < itemArray.Count(); i++)
+            {
+                var next = itemArray[i];
+                result.Add(combine(current, next));
+                current = next;
+            }
+
+            return result;
+        }
         public static T CopyObject<T>(this T source)
         {
             var copy = Activator.CreateInstance<T>();
