@@ -114,13 +114,13 @@ namespace LSG.GenericCrud.Tests.Controllers
         public async void Copy_ReturnsOk()
         {
             var serviceMock = new Mock<ICrudService<TestEntity>>();
-            serviceMock.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
+            serviceMock.Setup(_ => _.CopyAsync(It.IsAny<Guid>())).ReturnsAsync(_entity);
             var controller = new CrudController<Guid, TestEntity>(serviceMock.Object);
 
             var actionResult = await controller.Copy(_entity.Id);
 
             Assert.IsType<CreatedAtActionResult>(actionResult.Result);
-            serviceMock.Verify(_ => _.CreateAsync(It.IsAny<TestEntity>()), Times.Once);
+            serviceMock.Verify(_ => _.CopyAsync(It.IsAny<Guid>()), Times.Once);
 
         }
 
