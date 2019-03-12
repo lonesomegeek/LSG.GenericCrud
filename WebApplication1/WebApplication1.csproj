@@ -25,4 +25,21 @@
     <ProjectReference Include="..\LSG.GenericCrud\LSG.GenericCrud.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.Mvc.Core">
+      <HintPath>..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.mvc.core\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Controllers\HistoricalEventsController.cs">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>HistoricalEventsController.cs</LastGenOutput>
+    </Compile>
+  </ItemGroup>
+
 </Project>

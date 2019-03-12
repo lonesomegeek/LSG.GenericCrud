@@ -45,7 +45,7 @@ namespace WebApplication1
             services.AddDbContext<TestContext>(opt => opt.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MySampleDb;Trusted_Connection=True;"));
             services.AddTransient<IDbContext, TestContext>();
             // inject needed service and repository layers
-            services.AddScoped(typeof(ICrudController<>), typeof(CrudController<>));
+
             services.AddScoped(typeof(IHistoricalCrudController<>), typeof(HistoricalCrudController<>));
             services.AddScoped(typeof(IReadeableCrudController<>), typeof(ReadeableCrudController<>));
             services.AddScoped(typeof(IReadeableCrudService<>), typeof(ReadeableCrudService<>));
@@ -60,9 +60,9 @@ namespace WebApplication1
             services.AddScoped(typeof(ICrudController<,>), typeof(CrudController<,>));
             services.AddScoped(typeof(IHistoricalCrudController<,>), typeof(HistoricalCrudController<,>));
             services.AddScoped(typeof(IHistoricalCrudReadService<,>), typeof(HistoricalCrudReadService<,>));
-            services.AddScoped<IHistoricalCrudService<Guid, AccountDto>, HistoricalCrudService<Guid, AccountDto, Account>>();
-            services.AddScoped<ICrudService<Guid, AccountDto>, CrudService<Guid, AccountDto, Account>>();
-            services.AddScoped(typeof(ICrudService<Guid, AccountDto>), typeof(CrudService<Guid, AccountDto, Account>));
+            //services.AddScoped<IHistoricalCrudService<Guid, AccountDto>, HistoricalCrudService<Guid, AccountDto, Account>>();
+            //services.AddScoped<ICrudService<Guid, AccountDto>, CrudService<Guid, AccountDto, Account>>();
+            //services.AddScoped(typeof(ICrudService<Guid, AccountDto>), typeof(CrudService<Guid, AccountDto, Account>));
 
             services.AddSingleton(CreateAutoMapperConfiguration());
             services.AddCrud();
@@ -75,12 +75,12 @@ namespace WebApplication1
         {
             var automapperConfiguration = new MapperConfiguration(_ =>
             {
-                _.CreateMap<Account, AccountDto>()
-                    .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.Name))
-                    .ForMember(dest => dest.Pouette, opts => opts.MapFrom(src => src.Description));
-                _.CreateMap<AccountDto, Account>()
-                    .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.Name))
-                    .ForMember(dest => dest.Description, opts => opts.MapFrom(src => src.Pouette));
+            //    _.CreateMap<Account, AccountDto>()
+            //        .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.Name))
+            //        .ForMember(dest => dest.Pouette, opts => opts.MapFrom(src => src.Description));
+            //    _.CreateMap<AccountDto, Account>()
+            //        .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.Name))
+            //        .ForMember(dest => dest.Description, opts => opts.MapFrom(src => src.Pouette));
             });
             return automapperConfiguration.CreateMapper();
         }

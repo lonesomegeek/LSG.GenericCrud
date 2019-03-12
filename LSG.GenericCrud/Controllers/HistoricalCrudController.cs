@@ -14,6 +14,8 @@ namespace LSG.GenericCrud.Controllers
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="LSG.GenericCrud.Controllers.CrudAsyncController{T}" />
+    [Route("api/[controller]")]
+    [ApiController]
     public class HistoricalCrudController<T> : 
         ControllerBase,
         IHistoricalCrudController<T>,
@@ -77,6 +79,8 @@ namespace LSG.GenericCrud.Controllers
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="LSG.GenericCrud.Controllers.CrudAsyncController{T}" />
+    [Route("api/[controller]")]
+    [ApiController]
     public class HistoricalCrudController<T1, T2> :
         ControllerBase,
         IHistoricalCrudController<T1, T2>,

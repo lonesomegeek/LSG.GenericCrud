@@ -18,6 +18,10 @@ namespace LSG.GenericCrud.Helpers
         public static void AddCrud(this IServiceCollection services)
         {
             services.AddScoped(typeof(ICrudController<>), typeof(CrudController<>));
+            services.AddScoped(typeof(ICrudCopyController<>), typeof(CrudController<>));
+            services.AddScoped(typeof(ICrudController<,>), typeof(CrudController<,>));
+            services.AddScoped(typeof(ICrudCopyController<,>), typeof(CrudController<,>));
+
             services.AddScoped(typeof(IHistoricalCrudController<>), typeof(HistoricalCrudController<>));
             services.AddScoped(typeof(ICrudService<>), typeof(CrudService<>));
             services.AddScoped(typeof(ICrudRepository), typeof(CrudRepository));

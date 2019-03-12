@@ -13,6 +13,8 @@ namespace LSG.GenericCrud.Controllers
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
+    [Route("api/[controller]")]
+    [ApiController]
     public class CrudController<T> : 
         ControllerBase, 
         ICrudController<T>,
@@ -52,6 +54,8 @@ namespace LSG.GenericCrud.Controllers
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
+    [Route("api/[controller]")]
+    [ApiController]
     public class CrudController<T1, T2> :
         ControllerBase,
         ICrudController<T1, T2>,
