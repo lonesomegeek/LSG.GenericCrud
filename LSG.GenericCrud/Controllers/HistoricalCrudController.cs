@@ -160,7 +160,7 @@ namespace LSG.GenericCrud.Controllers
             {
                 if (ex is EntityNotFoundException) return NotFound($"Entity not found with id: {entityId}");
                 if (ex is ChangesetNotFoundException) return NotFound($"Changeset not found with id: {changesetId}");
-                throw;
+                return BadRequest("Unable to process request for unknown reason.");
             }
         }
 
@@ -176,7 +176,7 @@ namespace LSG.GenericCrud.Controllers
             {
                 if (ex is EntityNotFoundException) return NotFound($"Entity not found with id: {entityId}");
                 if (ex is ChangesetNotFoundException) return NotFound($"Changeset not found with id: {changesetId}");
-                throw;
+                return BadRequest("Unable to process request for unknown reason.");
             }
         }
 
@@ -195,14 +195,28 @@ namespace LSG.GenericCrud.Controllers
         [HttpPost("{id}/read")]
         public virtual async Task<IActionResult> MarkOneAsRead(T1 id)
         {
-            await _historicalCrudService.MarkOneAsRead(id);
-            return NoContent();
+            try
+            {
+                await _historicalCrudService.MarkOneAsRead(id);
+                return NoContent();
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
         }
         [HttpPost("{id}/unread")]
         public virtual async Task<IActionResult> MarkOneAsUnread(T1 id)
         {
-            await _historicalCrudService.MarkOneAsUnread(id);
-            return NoContent();
+            try
+            {
+                await _historicalCrudService.MarkOneAsUnread(id);
+                return NoContent();
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpGet("read-status")]
@@ -210,11 +224,31 @@ namespace LSG.GenericCrud.Controllers
 
 
         [HttpGet("{id}/read-status")]
-        public virtual async Task<ActionResult<ReadeableStatus<T2>>> GetReadStatusById(T1 id) => Ok(await _historicalCrudService.GetReadStatusByIdAsync(id));
-        
+        public virtual async Task<ActionResult<ReadeableStatus<T2>>> GetReadStatusById(T1 id)
+        {
+            try
+            {
+                return Ok(await _historicalCrudService.GetReadStatusByIdAsync(id));
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
 
         [HttpPost("{id}/delta")]
-        public virtual async Task<IActionResult> Delta(T1 id, DeltaRequest request) => Ok(await _historicalCrudService.Delta(id, request));
+        public virtual async Task<IActionResult> Delta(T1 id, DeltaRequest request)
+        {
+            try
+            {
+                return Ok(await _historicalCrudService.Delta(id, request));
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
+        } 
 
         /// <summary>
         /// Creates the specified entity.
@@ -231,8 +265,15 @@ namespace LSG.GenericCrud.Controllers
         [HttpPost("{id}/copy")]
         public virtual async Task<ActionResult<T2>> Copy(T1 id)
         {
-            var createdEntity = await _historicalCrudService.CopyAsync(id);
-            return CreatedAtAction(nameof(GetById), new { id = createdEntity.Id }, createdEntity);
+            try
+            {
+                var createdEntity = await _historicalCrudService.CopyAsync(id);
+                return CreatedAtAction(nameof(GetById), new { id = createdEntity.Id }, createdEntity);
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
 
