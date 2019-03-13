@@ -17,6 +17,7 @@ namespace LSG.GenericCrud.Tests.Services
         private readonly IList<TestEntity> _entities;
         private readonly TestEntity _entity;
         private readonly List<HistoricalEvent> _events;
+        private readonly List<HistoricalChangeset> _changesets;
 
         public HistoricalCrudServiceTests()
         {
@@ -33,6 +34,11 @@ namespace LSG.GenericCrud.Tests.Services
                 RuleFor(_ => _.Changeset, new Faker<HistoricalChangeset>()
                     .RuleFor(_ => _.ObjectData, "{}"));
             _events = new List<HistoricalEvent>() { eventFaker.Generate() };
+            var changesetFaker = new Faker<HistoricalChangeset>()
+                .RuleFor(_ => _.Id, Guid.NewGuid)
+                .RuleFor(_ => _.EventId, _events[0].Id)
+                .RuleFor(_ => _.ObjectData, "{}");
+            _changesets = new List<HistoricalChangeset> { changesetFaker.Generate() };
         }
 
         [Fact]
@@ -157,6 +163,24 @@ namespace LSG.GenericCrud.Tests.Services
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object, null, null);
 
             Assert.Throws<EntityNotFoundException>(() => service.GetHistory(_entity.Id));
+        }
+
+        [Fact]
+        public void Restore_ReturnsOk()
+        {
+            var repository = new Mock<ICrudRepository>();
+            repository.Setup(_ => _.GetAllAsync<Guid, HistoricalEvent>()).ReturnsAsync(_events);
+            repository.Setup(_ => _.GetAllAsync<Guid, HistoricalChangeset>()).ReturnsAsync(_changesets);
+            repository.Setup(_ => _.CreateAsync<TestEntity>(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
+            var crudService = new Mock<ICrudService<TestEntity>>();
+            crudService.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
+            var service = new HistoricalCrudService<Guid, TestEntity>(crudService.Object, repository.Object, null, null);
+
+            var result = service.Restore(_entity.Id);
+
+            crudService.Verify(_ => _.CreateAsync(It.IsAny<TestEntity>()), Times.Once);
+            repository.Verify(_ => _.CreateAsync<Guid, HistoricalEvent>(It.IsAny<HistoricalEvent>()), Times.Once);
+            repository.Verify(_ => _.SaveChangesAsync(), Times.Once);
         }
 
     }

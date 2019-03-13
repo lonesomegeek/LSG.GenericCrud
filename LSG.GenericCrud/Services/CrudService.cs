@@ -182,9 +182,12 @@ namespace LSG.GenericCrud.Services
         public virtual async Task<T2> CopyAsync(T1 id)
         {
             var actualEntity = await _repository.GetByIdAsync<T1, T2>(id);
+            if (actualEntity == null) throw new EntityNotFoundException();
+
             var copiedEntity = actualEntity.CopyObject();
             var createdEntity = await _repository.CreateAsync<T1, T2>(copiedEntity);
             if (AutoCommit) await _repository.SaveChangesAsync();
+
             return createdEntity;
         }
     }
