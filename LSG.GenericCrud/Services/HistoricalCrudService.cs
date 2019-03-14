@@ -271,8 +271,8 @@ namespace LSG.GenericCrud.Services
         public virtual async Task<T2> RestoreFromChangeset(T1 entityId, Guid changesetId)
         {
             var entity = await _repository.GetByIdAsync<T1, T2>(entityId);
-            entity = entity.CopyObject(); // TODO: Validate if it can be cutified, object need to be datached from its context
             if (entity == null) throw new EntityNotFoundException();
+            entity = entity.CopyObject(); // TODO: Validate if it can be cutified, object need to be datached from its context
             var changeset = await _repository.GetByIdAsync<Guid, HistoricalChangeset>(changesetId);
             if (changeset == null) throw new ChangesetNotFoundException();
 

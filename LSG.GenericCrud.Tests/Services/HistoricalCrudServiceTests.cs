@@ -18,6 +18,7 @@ namespace LSG.GenericCrud.Tests.Services
         private readonly TestEntity _entity;
         private readonly List<HistoricalEvent> _events;
         private readonly List<HistoricalChangeset> _changesets;
+        private readonly HistoricalChangeset _changeset;
 
         public HistoricalCrudServiceTests()
         {
@@ -32,13 +33,16 @@ namespace LSG.GenericCrud.Tests.Services
                 RuleFor(_ => _.Action, HistoricalActions.Delete.ToString).
                 RuleFor(_ => _.EntityId, _entity.Id.ToString()).
                 RuleFor(_ => _.Changeset, new Faker<HistoricalChangeset>()
-                    .RuleFor(_ => _.ObjectData, "{}"));
+                    .RuleFor(_ => _.ObjectData, "{}")
+                    .RuleFor(_ => _.ObjectDelta, "{}"));
             _events = new List<HistoricalEvent>() { eventFaker.Generate() };
             var changesetFaker = new Faker<HistoricalChangeset>()
                 .RuleFor(_ => _.Id, Guid.NewGuid)
                 .RuleFor(_ => _.EventId, _events[0].Id)
-                .RuleFor(_ => _.ObjectData, "{}");
+                .RuleFor(_ => _.ObjectData, "{}")
+                .RuleFor(_ => _.ObjectDelta, "{}");
             _changesets = new List<HistoricalChangeset> { changesetFaker.Generate() };
+            _changeset = changesetFaker.Generate();
         }
 
         [Fact]
@@ -183,5 +187,67 @@ namespace LSG.GenericCrud.Tests.Services
             repository.Verify(_ => _.SaveChangesAsync(), Times.Once);
         }
 
+        [Fact]
+        public void Restore_ThrowsEventNotFoundException()
+        {
+            var repository = new Mock<ICrudRepository>();
+            repository.Setup(_ => _.GetAllAsync<Guid, HistoricalChangeset>()).ReturnsAsync(_changesets);
+            var crudService = new Mock<ICrudService<TestEntity>>();
+            crudService.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
+            var service = new HistoricalCrudService<Guid, TestEntity>(crudService.Object, repository.Object, null, null);
+
+            Assert.Throws<EventNotFoundException>(() => service.Restore(_entity.Id));
+        }
+
+        [Fact]
+        public void Restore_ThrowsChangesetNotFoundException()
+        {
+            var repository = new Mock<ICrudRepository>();
+            repository.Setup(_ => _.GetAllAsync<Guid, HistoricalEvent>()).ReturnsAsync(_events);
+            //repository.Setup(_ => _.GetAllAsync<Guid, HistoricalChangeset>()).ReturnsAsync(_changesets);
+            var crudService = new Mock<ICrudService<TestEntity>>();
+            crudService.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
+            var service = new HistoricalCrudService<Guid, TestEntity>(crudService.Object, repository.Object, null, null);
+
+            Assert.Throws<ChangesetNotFoundException>(() => service.Restore(_entity.Id));
+        }
+
+        [Fact]
+        public async void RestoreFromChangeset_ThrowsEntityNotFoundException()
+        {
+            var repository = new Mock<ICrudRepository>();
+            var crudService = new Mock<ICrudService<TestEntity>>();
+            var service = new HistoricalCrudService<Guid, TestEntity>(crudService.Object, repository.Object, null, null);
+
+            await Assert.ThrowsAsync<EntityNotFoundException>(() => service.RestoreFromChangeset(_entity.Id, _changeset.Id));
+        }
+
+        [Fact]
+        public async void RestoreFromChangeset_ThrowsChangesetNotFoundException()
+        {
+            var repository = new Mock<ICrudRepository>();
+            repository.Setup(_ => _.GetByIdAsync<Guid, TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
+            var crudService = new Mock<ICrudService<TestEntity>>();
+            var service = new HistoricalCrudService<Guid, TestEntity>(crudService.Object, repository.Object, null, null);
+
+            await Assert.ThrowsAsync<ChangesetNotFoundException>(() => service.RestoreFromChangeset(_entity.Id, _changeset.Id));
+        }
+        [Fact]
+        public async void RestoreFromChangeset_ReturnsOk()
+        {
+            var repository = new Mock<ICrudRepository>();
+            repository.Setup(_ => _.GetByIdAsync<Guid, TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
+            repository.Setup(_ => _.GetByIdAsync<Guid, HistoricalChangeset>(It.IsAny<Guid>())).ReturnsAsync(_changeset);
+            var crudService = new Mock<ICrudService<TestEntity>>();
+            crudService.Setup(_ => _.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(_entity);
+            crudService.Setup(_ => _.UpdateAsync(It.IsAny<Guid>(), It.IsAny<TestEntity>())).ReturnsAsync(_entity);
+            var service = new HistoricalCrudService<Guid, TestEntity>(crudService.Object, repository.Object, null, null);
+
+            await service.RestoreFromChangeset(_entity.Id, _changeset.Id);
+
+            crudService.Verify(_ => _.UpdateAsync(It.IsAny<Guid>(), It.IsAny<TestEntity>()), Times.Once);
+            repository.Verify(_ => _.CreateAsync<Guid, HistoricalEvent>(It.IsAny<HistoricalEvent>()), Times.Once);
+            repository.Verify(_ => _.SaveChangesAsync(), Times.Once);
+        }
     }
 }
