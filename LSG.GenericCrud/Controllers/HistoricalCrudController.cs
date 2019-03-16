@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using LSG.GenericCrud.Exceptions;
 using LSG.GenericCrud.Helpers;
@@ -16,6 +17,7 @@ namespace LSG.GenericCrud.Controllers
     /// <seealso cref="LSG.GenericCrud.Controllers.CrudAsyncController{T}" />
     [Route("api/[controller]")]
     [ApiController]
+    [ExcludeFromCodeCoverage]
     public class HistoricalCrudController<T> : 
         ControllerBase,
         IHistoricalCrudController<T>,

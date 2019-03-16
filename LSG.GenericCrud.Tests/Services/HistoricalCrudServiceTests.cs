@@ -249,5 +249,83 @@ namespace LSG.GenericCrud.Tests.Services
             repository.Verify(_ => _.CreateAsync<Guid, HistoricalEvent>(It.IsAny<HistoricalEvent>()), Times.Once);
             repository.Verify(_ => _.SaveChangesAsync(), Times.Once);
         }
+
+        [Fact]
+        public async void CopyFromChangeset_ThrowsEntityNotFoundException()
+        {
+            var repository = new Mock<ICrudRepository>();
+            var crudService = new Mock<ICrudService<TestEntity>>();
+            var service = new HistoricalCrudService<Guid, TestEntity>(crudService.Object, repository.Object, null, null);
+
+            await Assert.ThrowsAsync<EntityNotFoundException>(() => service.CopyFromChangeset(_entity.Id, _changeset.Id));
+        }
+
+        [Fact]
+        public async void CopyFromChangeset_ThrowsChangesetNotFoundException()
+        {
+            var repository = new Mock<ICrudRepository>();
+            repository.Setup(_ => _.GetByIdAsync<Guid, TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
+            var crudService = new Mock<ICrudService<TestEntity>>();
+            var service = new HistoricalCrudService<Guid, TestEntity>(crudService.Object, repository.Object, null, null);
+
+            await Assert.ThrowsAsync<ChangesetNotFoundException>(() => service.CopyFromChangeset(_entity.Id, _changeset.Id));
+        }
+        [Fact]
+        public async void CopyFromChangeset_ReturnsOk()
+        {
+            var repository = new Mock<ICrudRepository>();
+            repository.Setup(_ => _.GetByIdAsync<Guid, TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
+            repository.Setup(_ => _.GetByIdAsync<Guid, HistoricalChangeset>(It.IsAny<Guid>())).ReturnsAsync(_changeset);
+            var crudService = new Mock<ICrudService<TestEntity>>();
+            crudService.Setup(_ => _.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(_entity);
+            crudService.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
+            var service = new HistoricalCrudService<Guid, TestEntity>(crudService.Object, repository.Object, null, null);
+
+            await service.CopyFromChangeset(_entity.Id, _changeset.Id);
+
+            crudService.Verify(_ => _.CreateAsync(It.IsAny<TestEntity>()), Times.Once);
+            repository.Verify(_ => _.CreateAsync<Guid, HistoricalEvent>(It.IsAny<HistoricalEvent>()), Times.Once);
+            repository.Verify(_ => _.SaveChangesAsync(), Times.Once);
+        }
+
+        [Fact]
+        public async void Copy_ReturnsCreatedElement()
+        {
+            var repository = new Mock<CrudRepository>();
+            repository.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
+            var crudServiceMock = new Mock<ICrudService<TestEntity>>();
+            crudServiceMock.Setup(_ => _.CopyAsync(It.IsAny<Guid>())).ReturnsAsync(new TestEntity());
+            var crudService = crudServiceMock.Object;
+            var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object, null, null);
+
+            var result = await service.CopyAsync(_entity.Id);
+
+            Assert.NotEqual(_entity.Id, result.Id);
+            repository.Verify(_ => _.CreateAsync<Guid, HistoricalEvent>(It.IsAny<HistoricalEvent>()), Times.Once);
+            crudServiceMock.Verify(_ => _.CopyAsync(It.IsAny<Guid>()), Times.Once);
+            repository.Verify(_ => _.SaveChangesAsync(), Times.Once);
+        }
+
+        [Fact]
+        public async void Delta_DeltaRequestNotProvided_Throws_ArgumentNullException()
+        {
+            var service = new HistoricalCrudService<Guid, TestEntity>(null, null, null, null);
+
+            await Assert.ThrowsAsync<ArgumentNullException>(() => service.Delta(_entity.Id, null));
+        }
+
+        [Fact]
+        public async void GetDeltaSnapshot_NoHistory_Throws_NoHistoryException()
+        {
+            var repository = new Mock<ICrudRepository>();
+            repository.Setup(_ => _.GetAll<HistoricalEvent>()).Returns(_events);
+            var crudService = new Mock<ICrudService<Guid, TestEntity>>();
+            var service = new HistoricalCrudService<Guid, TestEntity>(crudService.Object, repository.Object, null, null);
+
+           await Assert.ThrowsAsync<NoHistoryException>(() => service.GetDeltaSnapshot(_entity.Id, DateTime.MinValue, DateTime.MaxValue));
+
+
+        }
+
     }
 }

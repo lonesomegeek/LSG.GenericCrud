@@ -6,8 +6,10 @@ using Moq;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
 namespace LSG.GenericCrud.Services
 {
@@ -17,6 +19,7 @@ namespace LSG.GenericCrud.Services
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="LSG.GenericCrud.Services.CrudService{T}" />
     /// <seealso cref="LSG.GenericCrud.Services.IHistoricalCrudService{T}" />
+    [ExcludeFromCodeCoverage]
     public class HistoricalCrudService<T> :
         IHistoricalCrudService<Guid, T> where T : class, IEntity, new()
     {
@@ -468,13 +471,14 @@ namespace LSG.GenericCrud.Services
 
         public virtual async Task<object> Delta(T1 id, DeltaRequest request)
         {
+            if (request == null) throw new ArgumentNullException(nameof(request));
+
             if (request.From == null) request.From = _historicalCrudReadService.GetLastTimeViewed<T2>(id);
             if (request.To == null) request.To = DateTime.MaxValue;
 
             if (request.Mode == DeltaRequestModes.Snapshot) return await GetDeltaSnapshot(id, request.From.Value, request.To.Value);
-            if (request.Mode == DeltaRequestModes.Differential) return await GetDeltaDifferential(id, request.From.Value, request.To.Value);
+            return await GetDeltaDifferential(id, request.From.Value, request.To.Value);
 
-            throw new NotImplementedException();
         }
 
         public async Task<SnapshotChangeset> GetDeltaSnapshot(T1 id, DateTime fromTimestamp, DateTime toTimestamp)
