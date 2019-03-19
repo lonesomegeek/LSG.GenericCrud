@@ -31,6 +31,7 @@ namespace LSG.GenericCrud.Tests.Services
             var eventFaker = new Faker<HistoricalEvent>().
                 RuleFor(_ => _.Id, Guid.NewGuid).
                 RuleFor(_ => _.Action, HistoricalActions.Delete.ToString).
+                RuleFor(_ => _.CreatedDate, DateTime.Now).
                 RuleFor(_ => _.EntityId, _entity.Id.ToString()).
                 RuleFor(_ => _.Changeset, new Faker<HistoricalChangeset>()
                     .RuleFor(_ => _.ObjectData, "{}")
@@ -39,6 +40,7 @@ namespace LSG.GenericCrud.Tests.Services
             var changesetFaker = new Faker<HistoricalChangeset>()
                 .RuleFor(_ => _.Id, Guid.NewGuid)
                 .RuleFor(_ => _.EventId, _events[0].Id)
+                .RuleFor(_ => _.CreatedDate, DateTime.MinValue)
                 .RuleFor(_ => _.ObjectData, "{}")
                 .RuleFor(_ => _.ObjectDelta, "{}");
             _changesets = new List<HistoricalChangeset> { changesetFaker.Generate() };
@@ -309,9 +311,44 @@ namespace LSG.GenericCrud.Tests.Services
         [Fact]
         public async void Delta_DeltaRequestNotProvided_Throws_ArgumentNullException()
         {
-            var service = new HistoricalCrudService<Guid, TestEntity>(null, null, null, null);
+            var crudService = new Mock<ICrudService<TestEntity>>().Object;
+            var service = new HistoricalCrudService<Guid, TestEntity>(crudService, null, null, null);
 
             await Assert.ThrowsAsync<ArgumentNullException>(() => service.Delta(_entity.Id, null));
+        }
+
+        [Fact]
+        public async void Delta_DeltaRequestProvided_CallsGetLastTimeViewed()
+        {
+            var lastTimeView = DateTime.MinValue;
+            var readeableService = new Mock<IHistoricalCrudReadService<Guid, TestEntity>>();
+            readeableService.Setup(_ => _.GetLastTimeViewed<TestEntity>(It.IsAny<Guid>())).Returns(lastTimeView);
+            var service = new HistoricalCrudService<Guid, TestEntity>(
+                new Mock<ICrudService<Guid, TestEntity>>().Object, 
+                null, 
+                null, 
+                readeableService.Object);
+
+            await Assert.ThrowsAsync<NullReferenceException>(() => service.Delta(_entity.Id, new DeltaRequest()));
+
+            readeableService.Verify(_ => _.GetLastTimeViewed<TestEntity>(_entity.Id), Times.Once);
+        }
+
+        [Fact]
+        public async void Delta_DeltaRequestProvided_DoNotCallsGetLastTimeViewed()
+        {
+            var lastTimeView = DateTime.MinValue;
+            var readeableService = new Mock<IHistoricalCrudReadService<Guid, TestEntity>>();
+            readeableService.Setup(_ => _.GetLastTimeViewed<TestEntity>(It.IsAny<Guid>())).Returns(lastTimeView);
+            var service = new HistoricalCrudService<Guid, TestEntity>(
+                new Mock<ICrudService<Guid, TestEntity>>().Object,
+                null,
+                null,
+                readeableService.Object);
+
+            await Assert.ThrowsAsync<NullReferenceException>(() => service.Delta(_entity.Id, new DeltaRequest() { From= DateTime.Now }));
+
+            readeableService.Verify(_ => _.GetLastTimeViewed<TestEntity>(_entity.Id), Times.Never);
         }
 
         [Fact]
@@ -323,8 +360,19 @@ namespace LSG.GenericCrud.Tests.Services
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService.Object, repository.Object, null, null);
 
            await Assert.ThrowsAsync<NoHistoryException>(() => service.GetDeltaSnapshot(_entity.Id, DateTime.MinValue, DateTime.MaxValue));
+        }
+        
+        [Fact]
+        public async void GetDeltaSnapshot_Ok()
+        {
+            var repository = new Mock<ICrudRepository>();
+            repository.Setup(_ => _.GetAllAsync<Guid, HistoricalEvent>()).ReturnsAsync(_events);
+            repository.Setup(_ => _.GetAllAsync<Guid, HistoricalChangeset>()).ReturnsAsync(_changesets);
+            repository.Setup(_ => _.GetByIdAsync<Guid, TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
+            var crudService = new Mock<ICrudService<Guid, TestEntity>>();
+            var service = new HistoricalCrudService<Guid, TestEntity>(crudService.Object, repository.Object, null, null);
 
-
+            await Assert.ThrowsAsync<NoHistoryException>(() => service.GetDeltaSnapshot(_entity.Id, DateTime.MinValue, DateTime.MaxValue));
         }
 
     }

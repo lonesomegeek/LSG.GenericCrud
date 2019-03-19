@@ -483,9 +483,12 @@ namespace LSG.GenericCrud.Services
 
         public async Task<SnapshotChangeset> GetDeltaSnapshot(T1 id, DateTime fromTimestamp, DateTime toTimestamp)
         {
+            var historicalEvents = await _repository.GetAllAsync<Guid, HistoricalEvent>();
+            var historicalChangesets = await _repository.GetAllAsync<Guid, HistoricalChangeset>();
+
             var events =
-                from e in _repository.GetAll<HistoricalEvent>()
-                join c in _repository.GetAllAsync<Guid, HistoricalChangeset>().Result on e.Id equals c.EventId
+                from e in historicalEvents
+                join c in historicalChangesets on e.Id equals c.EventId
                 where e.EntityId == id.ToString() && c.CreatedDate >= fromTimestamp && c.CreatedDate <= toTimestamp
                 select e;
 
