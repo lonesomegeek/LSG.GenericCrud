@@ -512,7 +512,7 @@ namespace LSG.GenericCrud.Services
             return await ExtractDifferentialChangeset(id, events);
         }
 
-        private async Task<DifferentialChangeset> ExtractDifferentialChangeset(T1 id, IOrderedEnumerable<HistoricalEvent> events)
+        public async Task<DifferentialChangeset> ExtractDifferentialChangeset(T1 id, IOrderedEnumerable<HistoricalEvent> events)
         {
             var changesets = await _repository.GetAllAsync<Guid, HistoricalChangeset>(); // TODO: keep it there, include changesets in context
 
@@ -523,7 +523,7 @@ namespace LSG.GenericCrud.Services
             return differentialChangeset;
         }
 
-        private Changeset ExtractOneDifferentialChangeset<T2>(HistoricalEvent currentEvent, HistoricalEvent nextEvent) where T2 : class, IEntity<T1>, new()
+        public Changeset ExtractOneDifferentialChangeset<T2>(HistoricalEvent currentEvent, HistoricalEvent nextEvent) where T2 : class, IEntity<T1>, new()
         {
             var currentObject = JsonConvert.DeserializeObject<T2>(currentEvent.Changeset.ObjectDelta);
             var nextObject =
@@ -555,7 +555,7 @@ namespace LSG.GenericCrud.Services
             var snapshotChangeset = new SnapshotChangeset();
             snapshotChangeset.EntityTypeName = sourceEvent.EntityName;
             snapshotChangeset.EntityId = sourceEvent.EntityId;
-            snapshotChangeset.LastViewed = DateTime.MinValue; // TODO: Get Last Viewed Info from read status (if available)
+            snapshotChangeset.LastViewed = _historicalCrudReadService.GetLastTimeViewed<T2>(actual.Id).Value;// DateTime.MinValue; // TODO: Get Last Viewed Info from read status (if available)
             snapshotChangeset.LastModifiedBy = events.Last().CreatedBy;
             snapshotChangeset.LastModifiedEvent = events.Last().Action;
             snapshotChangeset.LastModifiedDate = events.Last().CreatedDate.Value;

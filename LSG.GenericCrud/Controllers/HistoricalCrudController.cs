@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using LSG.GenericCrud.Exceptions;
 using LSG.GenericCrud.Helpers;
@@ -18,7 +19,7 @@ namespace LSG.GenericCrud.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [ExcludeFromCodeCoverage]
-    public class HistoricalCrudController<T> : 
+    public class HistoricalCrudController<T> :
         ControllerBase,
         IHistoricalCrudController<T>,
         IHistoricalCrudCopyController<T>,
@@ -250,7 +251,11 @@ namespace LSG.GenericCrud.Controllers
             {
                 return NotFound();
             }
-        } 
+            catch (NoHistoryException)
+            {
+                return NoContent();
+            }
+        }
 
         /// <summary>
         /// Creates the specified entity.
