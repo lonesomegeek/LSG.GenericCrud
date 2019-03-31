@@ -555,7 +555,7 @@ namespace LSG.GenericCrud.Services
             var snapshotChangeset = new SnapshotChangeset();
             snapshotChangeset.EntityTypeName = sourceEvent.EntityName;
             snapshotChangeset.EntityId = sourceEvent.EntityId;
-            snapshotChangeset.LastViewed = _historicalCrudReadService.GetLastTimeViewed<T2>(actual.Id).Value;// DateTime.MinValue; // TODO: Get Last Viewed Info from read status (if available)
+            snapshotChangeset.LastViewed = _historicalCrudReadService.GetLastTimeViewed<T2>(actual.Id).Value;
             snapshotChangeset.LastModifiedBy = events.Last().CreatedBy;
             snapshotChangeset.LastModifiedEvent = events.Last().Action;
             snapshotChangeset.LastModifiedDate = events.Last().CreatedDate.Value;
