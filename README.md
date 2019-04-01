@@ -12,9 +12,9 @@ Simpliest scenarios:
 - Using Visual Studio Code (or command line): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudioCode.md)
 - Using Visual Studio (2017 update 9+ - v15.9+): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudio.md)
 
-Before diving into more complex scenarios (and if you want to understand the underlying architecture), you should take a rapid view at [this explaniation of the new architecture in v3.*](./docs/ReleaseNotes-v3.0.md).
+Want to have a look to *more samples*, take a look at [these samples](LSG.GenericCrud.Samples/README.md)
 
-> Want to have a look to *more samples*, take a look at [these samples](LSG.GenericCrud.Samples/README.md)
+> Before diving into more complex scenarios (and if you want to understand the underlying architecture), you should take a rapid view at [this explanation of the new architecture in v3.*](./docs/ReleaseNotes-v3.0.md).
 
 # Introduction
 This library is used to provide simplified RESTful [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) apis with a multilayer architecture:
@@ -24,7 +24,7 @@ This library is used to provide simplified RESTful [CRUD](https://en.wikipedia.o
 
 This library allies injection (IoC), minimum codebase for maximum efficiency.
 
-Obviously, when you are working with databases and entities, you need to write some code to be able to manage these entities. And, when working with multiple kind of entities, you need to rewrite code that is similar for each entities. This library is getting rid of the duplicated code and keeps everything **DRY**. Here is the lib is able to do!
+Obviously, when you are working with databases and entities, you need to write some code to be able to manage these entities. And, when working with multiple kind of entities, you need to rewrite code that is similar for each entities. This library is getting rid of the duplicated code and keeps everything **DRY**. Here is what the library is able to do!
 
 | 	 | Verb    |	Route	                                 | Results   | Description |
 |----|----------|--------------------------------------------|-----------|-------------|
@@ -67,15 +67,13 @@ You also need one of these options below:
 
 I've designed this library to be pretty extensible. Here is some features supported and links to further documentation:
 
-- [LSG.GenericCrud](https://www.nuget.org/packages/LSG.GenericCrud/)
+- [LSG.GenericCrud](https://www.nuget.org/packages/LSG.GenericCrud/) 
     - Entity history tracking: [More details](./docs/FeatureHistoricalCrud.md)
     - Copy of an existing object into another one: [More details](./FeatureCopyRestore.md)
     - Readeable CRUD, to let you know personaly (as a user) if something has changed since last view: [More details](./docs/FeatureReadeableCrud.md)
     - Data fillers: [More details](./docs/FeatureDataFillers.md)
 - [LSG.GenericCrud.Dto](https://www.nuget.org/packages/LSG.GenericCrud.Dto/)
     - DTO to Entity (and Entity to DTO) mapping for Crud\<T> or HistoricalCrud\<T> controllers: [More details](./docs/FeatureDTO.md)
-- [LSG.GenericCrud.Extensions](https://www.nuget.org/packages/LSG.GenericCrud.Extensions/)
-    - More middlewares...
 
 > Note that all libraries supports customized layer for each layer: *more details to come*
 
