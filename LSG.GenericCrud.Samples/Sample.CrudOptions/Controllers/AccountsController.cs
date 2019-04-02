@@ -13,9 +13,6 @@ namespace Sample.CrudOptions.Controllers
     [Route("api/[controller]")]
     public class AccountsController : CrudController<Account>, ICrudAuthorizationOptions
     {
-        public AccountsController(ICrudService<Account> service) : base(service)
-        {
-        }
 
         public CrudAuthorizationOptions Options => new CrudAuthorizationOptionsBuilder()
             .IsCreateAvailable(true)
@@ -25,5 +22,9 @@ namespace Sample.CrudOptions.Controllers
             .IsCreateProtected(true) // will search for accounts.create scope
             .IsReadProtected(false)
             .Build();
+
+        public AccountsController(ICrudController<Guid, Account> controller) : base(controller)
+        {
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Services;
 using Sample.GlobalFilters.Controllers;
@@ -10,12 +11,16 @@ namespace Sample.GlobalFilters.Services
     {
         private readonly CrudRepositoryIgnoreFilter _repository;
 
-        public CrudServiceIgnoreFilter(CrudRepositoryIgnoreFilter repository) : base(repository) => _repository = repository;
+        // TODO: Rework that thing
+        //public CrudServiceIgnoreFilter(CrudRepositoryIgnoreFilter repository) : base(repository) => _repository = repository;
 
         public IEnumerable<T> GetAllIgnoreFilters()
         {
             return _repository.GetAllIgnoreFilter<T>();
         }
 
+        public CrudServiceIgnoreFilter(ICrudService<Guid, T> service) : base(service)
+        {
+        }
     }
 }

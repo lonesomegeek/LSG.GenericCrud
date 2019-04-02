@@ -10,9 +10,9 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.2.2" />
-    <PackageReference Include="LSG.GenericCrud" Version="3.0.0-alpha2" />
-    <PackageReference Include="LSG.GenericCrud.Dto" Version="3.0.0-alpha2" />
-    <PackageReference Include="LSG.GenericCrud.Extensions" Version="3.0.0-alpha2" />
+    <PackageReference Include="LSG.GenericCrud" Version="4.0.0-alpha1" />
+    <PackageReference Include="LSG.GenericCrud.Dto" Version="4.0.0-alpha1" />
+    <PackageReference Include="LSG.GenericCrud.Extensions" Version="4.0.0-alpha1" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.5.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.2.0" />

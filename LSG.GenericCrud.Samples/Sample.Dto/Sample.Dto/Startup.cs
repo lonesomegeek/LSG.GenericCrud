@@ -39,7 +39,7 @@ namespace Sample.Dto
             services.AddCrud();
             services.AddCrudDto();
 
-            services.AddScoped(typeof(ICrudService<AccountDto>), typeof(CrudService<AccountDto, Account>));
+            services.AddScoped(typeof(ICrudService<AccountDto>), typeof(CrudService<Guid, AccountDto, Account>));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

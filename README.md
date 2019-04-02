@@ -68,12 +68,13 @@ You also need one of these options below:
 I've designed this library to be pretty extensible. Here is some features supported and links to further documentation:
 
 - [LSG.GenericCrud](https://www.nuget.org/packages/LSG.GenericCrud/) 
-    - Entity history tracking: [More details](./docs/FeatureHistoricalCrud.md)
-    - Copy of an existing object into another one: [More details](./FeatureCopyRestore.md)
-    - Readeable CRUD, to let you know personaly (as a user) if something has changed since last view: [More details](./docs/FeatureReadeableCrud.md)
-    - Data fillers: [More details](./docs/FeatureDataFillers.md)
+    - Untyped entity key: [More details](./docs/FeatureUntypedEntityKey.md) TODO
+    - Entity history tracking: [More details](./docs/FeatureHistoricalCrud.md) TODO
+    - Copy of an existing object into another one: [More details](./FeatureCopyRestore.md) TODO
+    - Readeable CRUD, to let you know personaly (as a user) if something has changed since last view: [More details](./docs/FeatureReadeableCrud.md) TODO
+    - Data fillers: [More details](./docs/FeatureDataFillers.md) TODO
 - [LSG.GenericCrud.Dto](https://www.nuget.org/packages/LSG.GenericCrud.Dto/)
-    - DTO to Entity (and Entity to DTO) mapping for Crud\<T> or HistoricalCrud\<T> controllers: [More details](./docs/FeatureDTO.md)
+    - DTO to Entity (and Entity to DTO) mapping for Crud\<T> or HistoricalCrud\<T> controllers: [More details](./docs/FeatureDTO.md) TODO
 
 > Note that all libraries supports customized layer for each layer: *more details to come*
 
