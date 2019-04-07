@@ -2,7 +2,7 @@
 I've added the data filler feature to be able to easily add any kind of data automatically to entities. In the document [Feature: Historical Crud](./FeatureHistoricalCrud.md), I've talked about *the who?* and *the when?* that were not covered natively by historical crud, these kind of informations can be automatically filled by the data fillers.
 
 ## What is happening behind the scenes
-With the big help of injection, each time a modification interaction is required with an entity (POST/PUT verbs) the DAL will check for each entity that is processed. The DAL will check if there exists datafiller(s) that need to be executed on the specified entity type. You can take a look to the library source code [here](https://github.com/lonesomegeek/LSG.GenericCrud/blob/master/LSG.GenericCrud/Repositories/BaseDbContext.cs)
+With the big help of injection, each time an interaction is required with an entity (POST/PUT verbs) the DAL (Data Access Layer) will check for each entity that is in need of being processed. The DAL will check if there exists datafiller(s) that need to be executed on the specified entity type. You can take a look to the library source code [here](https://github.com/lonesomegeek/LSG.GenericCrud/blob/master/LSG.GenericCrud/Repositories/BaseDbContext.cs)
 
 ## How to enable "data fillers"
 Two steps are required to enable data fillers:

@@ -65,24 +65,29 @@ services.AddScoped(typeof(IHistoricalCrudService<>), typeof(HistoricalCrudServic
 ## It is a CrudController\<T> plus...
 This is programatically-talking a CrudController\<T> with history tracking but with more routes. As a reminder, here is the default routes provided with a CrudController\<T>:
 
-| VERB   | URL               | Description           |
-|--------|-------------------|-----------------------|
-| GET    | /api/accounts     | Retreive all accounts |
-| GET    | /api/accounts/:id | Retreive one account  |
-| POST   | /api/accounts     | Create one account    |
-| PUT    | /api/accounts/:id | Update one account    |
-| DELETE | /api/accounts/:id | Delete one account    |
+| 	 | Verb    |	Route	                                 | Results   | Description |
+|----|----------|--------------------------------------------|-----------|-------------|
+| C  |	GET     | /[entity]	                                 | 200	     | Retreive all objects |
+| C  |	GET     | /[entity]/:id	                             | 200,404	 | Retreive one object |
+| C  |	HEAD    | /[entity]/:id	                             | 204,404	 | Get an indication of the existance of an object |
+| C  |	POST    | /[entity]	                                 | 201,400	 | Create an object |
+| C  |	PUT     | /[entity]/:id	                             | 204	     | Update an object |
+| C  |	DELETE  | /[entity]/:id	                             | 200,404	 | Delete an object |
+| C  |	POST    | /[entity]/:id/copy	                     | 201,404	 | Copy active version of an object in a new object |
 
-You will get two more routes with an HistoricalCrudController\<T>:
+You will get more routes with an HistoricalCrudController\<T>:
 
-| VERB   | URL                       | Description                                 |
-|--------|---------------------------|---------------------------------------------|
-| GET    | /api/accounts/:id/history | Retreive the complete history of an account |
-| POST   | /api/accounts/:id/restore | Restore a deleted account (with new id)     |
-
-The first route (/history), will give you the complete history of an entity (from the creation to now), in JSON. You can use this JSON to display a timeline of your entity for exemple.
-
-The second route, will restore a previously deleted entity with a new Id. When you call the DELETE route of an entity, the HistoricalCrud\<T> DAL will keep a copy as the changeset to remember in which state was the entity prior deletion. This will enables the restore route to recreate a new entity with all its original data. Nice eh!?
+| HC |	GET	    | /[entity]/:id/history	                     | 200,404	 | Get transaction history of an object |
+| HC |	POST    | /[entity]/:id/restore	                     | 201,404	 | Restore a deleted object in a new object |
+| HC |	POST    | /[entity]/:entityId/restore/:changesetId	 | 201,404	 | Restore a version of an object in the same object |
+| HC |	POST    | /[entity]/:entityId/copy/:changesetId	     | 201,404	 | Copy a version of an object in to a new object |
+| HC |	GET	    | /[entity]/read-status	                     | 200	     | Retreive all object with their read status |
+| HC |	GET	    | /[entity]/:id/read-status	                 | 200	     | Retreive one object with its read status |
+| HC |	POST    | /[entity]/read	                         | 201	     | Mark all objects as "read" |
+| HC |	POST    | /[entity]/:id/read                     	 | 201,404	 | Mark one object as "read" |
+| HC |	POST    | /[entity]/unread	                         | 201	     | Mark all object as "unread" |
+| HC |	POST    | /[entity]/:id/unread	                     | 201,404	 | Mark one object as "unread" |
+| HC |	POST    | /[entity]/:id/delta	                     | 201,404	 | Extract change delta of one object |
 
 ## Samples
 
