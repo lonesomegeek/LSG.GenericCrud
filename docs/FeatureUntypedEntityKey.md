@@ -24,4 +24,4 @@ As you can see, for sake of simplicity and for retrocompatibility, you are able 
 
 Here is a link to the untyped entity key type code sample: [Link TODO](https://github.com/lonesomegeek/LSG.GenericCrud.Samples/tree/master/Sample.Dto)
 
-> Note: I've made a sample with a complex type that hacks into a string. Check my samples for ULID type [here TOTO](./doc.md)
+> Note: I've made a sample with a complex type that hacks into a string. Check my samples for ULID type [here TODO](./doc.md)

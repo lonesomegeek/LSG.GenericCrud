@@ -99,7 +99,7 @@ namespace LSG.GenericCrud.Services
             _userInfoRepository = userInfoRepository;
             _historicalCrudReadService = historicalCrudReadService;
 
-            // TODO: Remove mocking structure here
+            // TODO: Remove mocking structure here, for v4.0, setup will be hardcoded, a new feature will cover a configurable option for this
             var optionsMock = new Mock<IHistoricalCrudServiceOptions>();
             optionsMock.Setup(_ => _.ShowMyNewStuff).Returns(true);
             _options = optionsMock.Object;
@@ -130,13 +130,13 @@ namespace LSG.GenericCrud.Services
                 {
                     ObjectDelta = new T2().DetailedCompare(entity)
                 },
-                EntityId = entity.Id.ToString(), // TODO: I do not like the string value compare here
+                EntityId = entity.Id.ToString(),
                 EntityName = entity.GetType().FullName
             };
 
             await _repository.CreateAsync<Guid, HistoricalEvent>(historicalEvent);
             await _repository.SaveChangesAsync();
-            // TODO: Do I need to call the other repo for both repositories, or do I need a UoW (bugfix created)
+
             return createdEntity;
         }
 
@@ -165,7 +165,7 @@ namespace LSG.GenericCrud.Services
                     ObjectData = JsonConvert.SerializeObject(originalEntity),
                     ObjectDelta = originalEntity.DetailedCompare(entity)
                 },
-                EntityId = originalEntity.Id.ToString(), // TODO: I do not like the string value compare here
+                EntityId = originalEntity.Id.ToString(),
                 EntityName = entity.GetType().FullName
             };
             var modifiedEntity = await _service.UpdateAsync(id, entity);
@@ -200,7 +200,7 @@ namespace LSG.GenericCrud.Services
                 {
                     ObjectData = new T2().DetailedCompare(entity)
                 },
-                EntityId = entity.Id.ToString(), // TODO: I do not like the string value compare here
+                EntityId = entity.Id.ToString(),
                 EntityName = entity.GetType().FullName
             };
             await _repository.CreateAsync<Guid, HistoricalEvent>(historicalEvent);
@@ -225,13 +225,13 @@ namespace LSG.GenericCrud.Services
                 {
                     ObjectDelta = new T2().DetailedCompare(createdEntity)
                 },
-                EntityId = createdEntity.Id.ToString(), // TODO: I do not like the string value compare here
+                EntityId = createdEntity.Id.ToString(),
                 EntityName = createdEntity.GetType().FullName
             };
 
             await _repository.CreateAsync<Guid, HistoricalEvent>(historicalEvent);
             await _repository.SaveChangesAsync();
-            // TODO: Do I need to call the other repo for both repositories, or do I need a UoW (bugfix created)
+
             return createdEntity;
         }
 
@@ -255,7 +255,7 @@ namespace LSG.GenericCrud.Services
                 .GetAllAsync<Guid, HistoricalEvent>()
                 .Result
                 .SingleOrDefault(_ =>
-                    _.EntityId == id.ToString() && // TODO: I do not like the string value compare here
+                    _.EntityId == id.ToString() &&
                     _.Action == HistoricalActions.Delete.ToString());
             if (historicalEvent == null) throw new EventNotFoundException();
             var changeset = _repository
@@ -279,7 +279,6 @@ namespace LSG.GenericCrud.Services
             var changeset = await _repository.GetByIdAsync<Guid, HistoricalChangeset>(changesetId);
             if (changeset == null) throw new ChangesetNotFoundException();
 
-            //var actualObject = changeset.ObjectData == null ? new T2() : JsonConvert.DeserializeObject<T2>(changeset.ObjectData);
             var actualDelta = JsonConvert.DeserializeObject<T2>(changeset.ObjectDelta);
             var restoredEntity = entity.ApplyChangeset(actualDelta);
             entity.ApplyChangeset(restoredEntity);
@@ -305,7 +304,7 @@ namespace LSG.GenericCrud.Services
         {
             var events = await _repository.GetAllAsync<Guid, HistoricalEvent>();
             var filteredEvents = events
-                .Where(_ => _.EntityId == id.ToString()) // TODO: I do not like the string value compare here
+                .Where(_ => _.EntityId == id.ToString())
                 .ToList();
             if (!filteredEvents.Any()) throw new EntityNotFoundException();
             return filteredEvents;
@@ -335,7 +334,7 @@ namespace LSG.GenericCrud.Services
                 var historicalEvent = new HistoricalEvent
                 {
                     Action = HistoricalActions.Read.ToString(),
-                    EntityId = entity.Id.ToString(), // TODO: I do not like the string value compare here
+                    EntityId = entity.Id.ToString(),
                     EntityName = entity.GetType().FullName
                 };
 
@@ -366,7 +365,7 @@ namespace LSG.GenericCrud.Services
             var historicalEvent = new HistoricalEvent
             {
                 Action = HistoricalActions.Read.ToString(),
-                EntityId = entity.Id.ToString(), // TODO: I do not like the string value compare here
+                EntityId = entity.Id.ToString(),
                 EntityName = entity.GetType().FullName
             };
 

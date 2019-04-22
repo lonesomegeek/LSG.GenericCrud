@@ -68,7 +68,7 @@ You also need one of these options below:
 I've designed this library to be pretty extensible. Here is some features supported and links to further documentation:
 
 - [LSG.GenericCrud](https://www.nuget.org/packages/LSG.GenericCrud/) 
-    - Untyped entity key: [More details](./docs/FeatureUntypedEntityKey.md) TODO
+    - Untyped entity key: [More details](./docs/FeatureUntypedEntityKey.md)
     - Entity history tracking: [More details](./docs/FeatureHistoricalCrud.md)
         - Copy of an existing object into another one
         - Readeable CRUD, to let you know personaly (as a user) if something has changed since last view
@@ -84,12 +84,12 @@ Future ideas that can/will eventually be supported (feel free to help if you wan
 - *and more*...
 
 # Breaking changes
-- [From v3.0 to v4.0](docs/BreakingChangesFrom-v3.0-to-v4.0.md) TODO
+- [From v3.0 to v4.0](docs/BreakingChangesFrom-v3.0-to-v4.0.md)
 - [From v2.1 to v3.0](docs/BreakingChangesFrom-v2.1-to-v3.0.md)
 - [From v2.0 to v2.1](docs/BreakingChangesFrom-v2.0-to-v2.1.md)
 - [From v1.* to v2.*](docs/BreakingChangesFrom-v1-to-v2.md)
 - [Previous notes](docs/OldReleaseNotes.md)
 
 # Release notes
-- [v4.0 Release Notes](docs/ReleaseNotes-v4.0.md) TODO
+- [v4.0 Release Notes](docs/ReleaseNotes-v4.0.md)
 - [v3.0 Release Notes](docs/ReleaseNotes-v3.0.md)
