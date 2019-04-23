@@ -1,26 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using LSG.GenericCrud.Models;
+using LSG.GenericCrud.Repositories;
 using LSG.GenericCrud.Services;
 using Sample.GlobalFilters.Controllers;
 using Sample.GlobalFilters.Repositories;
 
 namespace Sample.GlobalFilters.Services
 {
-    public class CrudServiceIgnoreFilter<T> : CrudService<T> where T : class, IEntity, new()
+    public class CrudServiceIgnoreFilter<T1, T2> : CrudService<T1, T2> where T2 : class, IEntity<T1>, new()
     {
-        private readonly CrudRepositoryIgnoreFilter _repository;
+        private readonly ICrudRepository _repository;
 
-        // TODO: Rework that thing
-        //public CrudServiceIgnoreFilter(CrudRepositoryIgnoreFilter repository) : base(repository) => _repository = repository;
+        //public CrudServiceIgnoreFilter(ICrudRepository repository)
+        //{
+        //    _repository = repository;
+        //}
 
-        public IEnumerable<T> GetAllIgnoreFilters()
+        public IEnumerable<T2> GetAllIgnoreFilters()
         {
-            return _repository.GetAllIgnoreFilter<T>();
-        }
-
-        public CrudServiceIgnoreFilter(ICrudService<Guid, T> service) : base(service)
-        {
+            return _repository.GetAllIgnoreFilter<T1, T2>();
         }
     }
 }

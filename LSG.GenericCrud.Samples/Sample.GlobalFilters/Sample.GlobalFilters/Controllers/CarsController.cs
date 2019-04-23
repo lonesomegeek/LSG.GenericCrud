@@ -26,9 +26,9 @@ namespace Sample.GlobalFilters.Controllers
         {
             var context = _serviceProvider.GetService<IDbContext>();
             var repository = new CrudRepositoryIgnoreFilter(context);
-            //var service = new CrudServiceIgnoreFilter<Car>(repository);
+            var service = new CrudServiceIgnoreFilter<Guid, Car>(repository);
 
-            //return Ok(service.GetAllIgnoreFilters());
+            return Ok(service.GetAllIgnoreFilters());
             throw new NotImplementedException();
         }
 
