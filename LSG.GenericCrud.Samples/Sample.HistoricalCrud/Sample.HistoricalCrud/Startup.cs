@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using Sample.HistoricalCrud.Models;
 using LSG.GenericCrud.Services;
 using LSG.GenericCrud.Controllers;
+using Sample.HistoricalCrud.Repositories;
 
 namespace Sample.HistoricalCrud
 {
@@ -26,7 +27,10 @@ namespace Sample.HistoricalCrud
             // to load an InMemory EntityFramework context
             services.AddDbContext<SampleContext>(opt => opt.UseInMemoryDatabase());
             services.AddTransient<IDbContext, SampleContext>();
-            // to dynamically inject any type of Crud repository of type T in any controllers
+            
+            // My ByDataFiller is using an external repository that will provide information about the actual user
+            services.AddTransient<IUserInfoRepository, UserInfoRepository>();
+
             // LSG.GenericCrud generics injection
             services.AddCrud();
         }

@@ -25,12 +25,14 @@ namespace Sample.GlobalFilters.Controllers
         [HttpGet]
         public IActionResult GetAllIgnoreFilters()
         {
-            var context = _serviceProvider.GetService<IDbContext>();
-            var repository = new CrudRepositoryIgnoreFilter(context);
-            //var service = new CrudServiceIgnoreFilter<Item>(repository);
+            var repository = new CrudRepositoryIgnoreFilter(
+                _serviceProvider.GetService<IDbContext>(),
+                _serviceProvider.GetService<CrudRepository>());
+            var service = new CrudServiceIgnoreFilter<Guid, Item>(
+                _serviceProvider.GetService<ICrudService<Guid, Item>>(),
+                repository);
 
-            //return Ok(service.GetAllIgnoreFilters());
-            throw new NotImplementedException();
+            return Ok(service.GetAllIgnoreFilters());
         }
     }
 }
