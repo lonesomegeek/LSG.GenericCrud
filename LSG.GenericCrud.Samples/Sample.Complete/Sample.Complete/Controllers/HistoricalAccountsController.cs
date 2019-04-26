@@ -17,11 +17,18 @@ namespace Sample.Complete.Controllers
         IHistoricalCrudController<Account>
     {
         private readonly IHistoricalCrudController<Account> _controller;
+        private readonly IHistoricalCrudRestoreController<Account> _restoreController;
 
-        public HistoricalAccountsController(IHistoricalCrudController<Account> controller)
+        public HistoricalAccountsController(
+            IHistoricalCrudController<Account> controller,
+            IHistoricalCrudRestoreController<Account> restoreController)
         {
             _controller = controller;
+            _restoreController = restoreController;
         }
+
+        [HttpHead("{id}")]
+        public async Task<IActionResult> HeadById(Guid id) => await _controller.HeadById(id);
 
         [HttpPost]
         public async Task<ActionResult<Account>> Create([FromBody] Account entity) => await _controller.Create(entity);
@@ -37,6 +44,6 @@ namespace Sample.Complete.Controllers
         [HttpGet("{id}/history")]
         public async Task<IActionResult> GetHistory(Guid id) => await _controller.GetHistory(id);
         [HttpPost("{id}/restore")]
-        public async Task<IActionResult> Restore(Guid id) => await _controller.Restore(id);
+        public async Task<IActionResult> Restore(Guid id) => await _restoreController.RestoreFromDeletedEntity(id);
     }
 }

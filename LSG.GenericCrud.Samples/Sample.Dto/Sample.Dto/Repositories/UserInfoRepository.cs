@@ -1,8 +1,10 @@
-﻿using LSG.GenericCrud.Extensions.DataFillers;
-using LSG.GenericCrud.Repositories;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Sample.Complete.Repositories
+namespace Sample.Dto.Repositories
 {
     public class UserInfoRepository : LSG.GenericCrud.Services.IUserInfoRepository
     {

@@ -15,7 +15,7 @@ namespace Sample.GlobalFilters.Controllers
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public CarsController(ICrudService<Car> service, IServiceProvider serviceProvider) : base(service)
+        public CarsController(ICrudController<Guid, Car> controller, IServiceProvider serviceProvider) : base(controller)
         {
             _serviceProvider = serviceProvider;
         }
@@ -24,11 +24,15 @@ namespace Sample.GlobalFilters.Controllers
         [HttpGet]
         public IActionResult GetAllIgnoreFilters()
         {
-            var context = _serviceProvider.GetService<IDbContext>();
-            var repository = new CrudRepositoryIgnoreFilter(context);
-            var service = new CrudServiceIgnoreFilter<Car>(repository);
+            var repository = new CrudRepositoryIgnoreFilter(
+                _serviceProvider.GetService<IDbContext>(), 
+                _serviceProvider.GetService<CrudRepository>());
+            var service = new CrudServiceIgnoreFilter<Guid, Car>(
+                _serviceProvider.GetService<ICrudService<Guid, Car>>(),
+                repository);
 
             return Ok(service.GetAllIgnoreFilters());
         }
+
     }
 }

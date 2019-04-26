@@ -1,4 +1,5 @@
-﻿using LSG.GenericCrud.Controllers;
+﻿using System;
+using LSG.GenericCrud.Controllers;
 using LSG.GenericCrud.Models;
 using Microsoft.AspNetCore.Mvc;
 using LSG.GenericCrud.Services;
@@ -9,7 +10,7 @@ namespace Sample.Complete.Controllers
 
     public class HistoricalEventsController : CrudController<HistoricalEvent>
     {
-        public HistoricalEventsController(ICrudService<HistoricalEvent> service) : base(service)
+        public HistoricalEventsController(ICrudController<Guid, HistoricalEvent> controller) : base(controller)
         {
         }
     }

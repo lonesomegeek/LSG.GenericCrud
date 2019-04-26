@@ -12,6 +12,7 @@ using LSG.GenericCrud.Services;
 using LSG.GenericCrud.Dto.Services;
 using LSG.GenericCrud.Helpers;
 using LSG.GenericCrud.Controllers;
+using Sample.Dto.Repositories;
 
 namespace Sample.Dto
 {
@@ -35,11 +36,18 @@ namespace Sample.Dto
             // to load an InMemory EntityFramework context
             services.AddDbContext<SampleContext>(opt => opt.UseInMemoryDatabase());
             services.AddTransient<IDbContext, SampleContext>();
+
+            // My ByDataFiller is using an external repository that will provide information about the actual user
+            services.AddTransient<IUserInfoRepository, UserInfoRepository>();
+
             // to dynamically inject any type of Crud repository of type T in any controllers
+            services.AddScoped(typeof(ICrudService<Guid, AccountDto>), typeof(CrudService<Guid, AccountDto, Account>));
+            services.AddScoped(typeof(IHistoricalCrudService<Guid, AccountDto>), typeof(HistoricalCrudService<Guid, AccountDto, Account>));
+            services.AddScoped(typeof(ICrudService<AccountDto>), typeof(CrudService<Guid, AccountDto, Account>));
+
             services.AddCrud();
             services.AddCrudDto();
 
-            services.AddScoped(typeof(ICrudService<AccountDto>), typeof(CrudService<AccountDto, Account>));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

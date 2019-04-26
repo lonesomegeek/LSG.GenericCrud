@@ -2,7 +2,7 @@
 using LSG.GenericCrud.Repositories;
 using Microsoft.AspNetCore.Http;
 
-namespace Sample.Complete.Repositories
+namespace Sample.HistoricalCrud.Repositories
 {
     public class UserInfoRepository : LSG.GenericCrud.Services.IUserInfoRepository
     {

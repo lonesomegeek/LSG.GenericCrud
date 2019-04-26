@@ -12,9 +12,8 @@ namespace Sample.Complete.Controllers
     {
         private readonly ICrudService<Contact> _contactService;
 
-        public AccountsController(ICrudService<Account> accountService, ICrudService<Contact> contactService) : base(accountService)
+        public AccountsController(ICrudController<Guid, Account> controller) : base(controller)
         {
-            _contactService = contactService;
         }
 
         [Route("{accountId}/contacts")]
@@ -22,5 +21,6 @@ namespace Sample.Complete.Controllers
         {
             return Ok(_contactService.GetAll().Where(_ => _.AccountId == accountId));
         }
+
     }
 }
