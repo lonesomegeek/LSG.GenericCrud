@@ -1,7 +1,7 @@
 # LSG.GenericCrud
 [![NuGet](https://img.shields.io/nuget/dt/LSG.GenericCrud.svg)](https://www.nuget.org/packages/LSG.GenericCrud)
 [![NuGet](https://img.shields.io/nuget/v/LSG.GenericCrud.svg)](https://www.nuget.org/packages/LSG.GenericCrud)
-[![GitHub issues](https://img.shields.io/github/issues/lonesomegeek/LSG.GenericCrud.svg)](https://github.com/lonesomegeek/LSG.GenericCrud/issues)
+[![Board Status](https://dev.azure.com/lonesomegeek/ddef9b23-a7fc-461f-ade2-bcb9e4e6e579/e5c916ea-37ad-4bba-9ab4-ad6a5070fe19/_apis/work/boardbadge/3c551e06-0bb9-4488-8681-5d1b7cbbaea2)](https://dev.azure.com/lonesomegeek/ddef9b23-a7fc-461f-ade2-bcb9e4e6e579/_boards/board/t/e5c916ea-37ad-4bba-9ab4-ad6a5070fe19/Microsoft.RequirementCategory)
 [![GitHub license](https://img.shields.io/github/license/lonesomegeek/LSG.GenericCrud.svg)](https://github.com/lonesomegeek/LSG.GenericCrud/blob/master/LICENSE)
 
 # TL;DR - Getting started / Tutorials

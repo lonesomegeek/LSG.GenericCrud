@@ -6,10 +6,8 @@
     <Authors>lonesomegeek</Authors>
     <Company />
     <PackageTags>generic crud webapi aspnetcore</PackageTags>
-    <AssemblyVersion>3.0.0.0</AssemblyVersion>
-    <FileVersion>3.0.0.0</FileVersion>
     <Description>This library provides a set of tools to enable CRUD rapidly on any aspnetcore Web APIs.</Description>
-    <Version>4.0.0-alpha1</Version>
+    <Version>4.0.0-alpha2</Version>
     <CodeAnalysisRuleSet>LSG.GenericCrud.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
