@@ -22,6 +22,6 @@ As you can see, for sake of simplicity and for retrocompatibility, you are able 
 
 ## Samples
 
-Here is a link to the untyped entity key type code sample: [Link TODO](https://github.com/lonesomegeek/LSG.GenericCrud.Samples/tree/master/Sample.Dto)
+Here is a link to the untyped entity key type code sample: [Link](https://github.com/lonesomegeek/LSG.GenericCrud/blob/master/LSG.GenericCrud.Samples/Sample.Complete/Sample.Complete/Controllers/AccountsController.cs)
 
-> Note: I've made a sample with a complex type that hacks into a string. Check my samples for ULID type [here TODO](./doc.md)
+> Note: I've made a sample with a complex type that hacks into a string. Check my samples for ULID type [Link](https://github.com/lonesomegeek/LSG.GenericCrud/blob/master/LSG.GenericCrud.Samples/Sample.Complete/Sample.Complete/Controllers/UlidController.cs), thanks to this .NET implementation provided by [RobThree](https://github.com/RobThree/NUlid)

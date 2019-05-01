@@ -8,12 +8,13 @@ using LSG.GenericCrud.Services;
 namespace Sample.Complete.Controllers
 {
     [Route("api/[controller]")]
-    public class AccountsController : CrudController<Account>
+    public class AccountsController : CrudController<Guid, Account>
     {
-        private readonly ICrudService<Contact> _contactService;
+        private readonly ICrudService<Guid, Contact> _contactService;
 
-        public AccountsController(ICrudController<Guid, Account> controller) : base(controller)
+        public AccountsController(ICrudService<Guid, Account> service, ICrudService<Guid, Contact> contactService) : base(service)
         {
+            _contactService = contactService;
         }
 
         [Route("{accountId}/contacts")]

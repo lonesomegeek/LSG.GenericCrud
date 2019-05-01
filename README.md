@@ -83,13 +83,13 @@ Future ideas that can/will eventually be supported (feel free to help if you wan
 - Complete web app with api samples
 - *and more*...
 
+# Release notes
+- [v4.0 Release Notes](docs/ReleaseNotes-v4.0.md)
+- [v3.0 Release Notes](docs/ReleaseNotes-v3.0.md)
+
 # Breaking changes
 - [From v3.0 to v4.0](docs/BreakingChangesFrom-v3.0-to-v4.0.md)
 - [From v2.1 to v3.0](docs/BreakingChangesFrom-v2.1-to-v3.0.md)
 - [From v2.0 to v2.1](docs/BreakingChangesFrom-v2.0-to-v2.1.md)
 - [From v1.* to v2.*](docs/BreakingChangesFrom-v1-to-v2.md)
 - [Previous notes](docs/OldReleaseNotes.md)
-
-# Release notes
-- [v4.0 Release Notes](docs/ReleaseNotes-v4.0.md)
-- [v3.0 Release Notes](docs/ReleaseNotes-v3.0.md)
