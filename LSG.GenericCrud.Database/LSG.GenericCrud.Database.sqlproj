@@ -3,18 +3,18 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <Name>WebApplication1.Database</Name>
+    <Name>LSG.GenericCrud.Database</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
-    <ProjectGuid>{aedc78ff-c100-436c-b896-30d36a0df1f3}</ProjectGuid>
+    <ProjectGuid>{556742ea-0d22-44e7-9fe2-759312c6492f}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
-    <RootNamespace>WebApplication1.Database</RootNamespace>
-    <AssemblyName>WebApplication1.Database</AssemblyName>
-    <ModelCollation>1033,CI</ModelCollation>
-    <DefaultFileStructure>BySchemaType</DefaultFileStructure>
+    <RootNamespace>LSG.GenericCrud.Database</RootNamespace>
+    <AssemblyName>LSG.GenericCrud.Database</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetLanguage>CS</TargetLanguage>
@@ -22,8 +22,6 @@
     <SqlServerVerification>False</SqlServerVerification>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
-    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
-    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -58,17 +56,13 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
-    <Folder Include="Tables\" />
+    <Folder Include="Tables" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tables\Potatoes.sql" />
-    <None Include="Tables\Carrots.sql" />
-    <Build Include="Tables\Accounts.sql" />
-    <None Include="Tables\Users.sql" />
-    <None Include="Tables\Cars.sql" />
-    <None Include="Tables\HistoricalEvents.sql" />
-    <None Include="Tables\IntEntities.sql" />
-    <None Include="Tables\UlidEntities.sql" />
-    <None Include="Tables\HistoricalChangesets.sql" />
+    <Build Include="Tables\HistoricalEvents.sql" />
+    <Build Include="Tables\HistoricalChangesets.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="LSG.GenericCrud.Database.publish.xml" />
   </ItemGroup>
 </Project>

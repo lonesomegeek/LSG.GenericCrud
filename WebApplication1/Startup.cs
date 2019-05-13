@@ -42,7 +42,7 @@ namespace WebApplication1
 
             // to load an InMemory EntityFramework context
             //services.AddDbContext<TestContext>(opt => opt.UseInMemoryDatabase());
-            services.AddDbContext<TestContext>(opt => opt.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MySampleDb;Trusted_Connection=True;"));
+            services.AddDbContext<TestContext>(opt => opt.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MySampleDb2;Trusted_Connection=True;"));
             services.AddTransient<IDbContext, TestContext>();
             // inject needed service and repository layers
 
@@ -53,7 +53,7 @@ namespace WebApplication1
 
             services.AddTransient<IEntityDataFiller, CreatedFiller>();
             services.AddTransient<IEntityDataFiller, ModifiedFiller>();
-            services.AddTransient<IUserInfoRepository, MyUserInfoRepository>();
+            //services.AddTransient<IUserInfoRepository, MyUserInfoRepository>();
             
             services.AddScoped(typeof(ICrudService<,>), typeof(CrudService<,>));
             services.AddScoped(typeof(IHistoricalCrudService<,>), typeof(HistoricalCrudService<,>));
