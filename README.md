@@ -1,3 +1,4 @@
+[![Board Status](https://dev.azure.com/lonesomegeek/9499f7db-38ae-4240-8e3f-d8e4475ecc2e/ba6b6c53-194d-484c-bec0-e94840125a6a/_apis/work/boardbadge/c11a5320-8e2e-4fa2-a503-17ce92a44528)](https://dev.azure.com/lonesomegeek/9499f7db-38ae-4240-8e3f-d8e4475ecc2e/_boards/board/t/ba6b6c53-194d-484c-bec0-e94840125a6a/Microsoft.RequirementCategory)
 # LSG.GenericCrud
 [![NuGet](https://img.shields.io/nuget/dt/LSG.GenericCrud.svg)](https://www.nuget.org/packages/LSG.GenericCrud)
 [![NuGet](https://img.shields.io/nuget/v/LSG.GenericCrud.svg)](https://www.nuget.org/packages/LSG.GenericCrud)
