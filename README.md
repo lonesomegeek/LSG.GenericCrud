@@ -48,6 +48,7 @@ Obviously, when you are working with databases and entities, you need to write s
 | HC |	POST    | /[entity]/:id/delta	                     | 201,404	 | Extract change delta of one object |
 
 Legend
+
 | Code | Description |
 |------|-------------|
 | C    | Feature available in CrudController |
