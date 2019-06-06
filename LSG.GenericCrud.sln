@@ -33,15 +33,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.HistoricalCrud", "LS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.CrudOptions", "LSG.GenericCrud.Samples\Sample.CrudOptions\Sample.CrudOptions.csproj", "{2F556150-12D4-4E35-B039-EAF49A7575E6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{3B3C1C0A-5AFF-4817-93E2-F6981625D77B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.App.Api", "LSG.GenericCrud.Samples\Sample.App\Sample.App.Api\Sample.App.Api.csproj", "{C94028D7-FDD6-4DE5-9CF7-DD89FCC6F7BE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample.App", "Sample.App", "{A65302E9-CDC6-49C1-8F80-9B4C82349A84}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Sample.App.Db", "LSG.GenericCrud.Samples\Sample.App\Sample.App.Db\Sample.App.Db.sqlproj", "{978F183E-95E1-4955-8B4B-3E9C750DB138}"
-EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "WebApplication1.Database", "WebApplication1.Database\WebApplication1.Database.sqlproj", "{AEDC78FF-C100-436C-B896-30D36A0DF1F3}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "LSG.GenericCrud.Database", "LSG.GenericCrud.Database\LSG.GenericCrud.Database.sqlproj", "{556742EA-0D22-44E7-9FE2-759312C6492F}"
 EndProject
@@ -95,10 +91,6 @@ Global
 		{2F556150-12D4-4E35-B039-EAF49A7575E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F556150-12D4-4E35-B039-EAF49A7575E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F556150-12D4-4E35-B039-EAF49A7575E6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3B3C1C0A-5AFF-4817-93E2-F6981625D77B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3B3C1C0A-5AFF-4817-93E2-F6981625D77B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3B3C1C0A-5AFF-4817-93E2-F6981625D77B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3B3C1C0A-5AFF-4817-93E2-F6981625D77B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C94028D7-FDD6-4DE5-9CF7-DD89FCC6F7BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C94028D7-FDD6-4DE5-9CF7-DD89FCC6F7BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C94028D7-FDD6-4DE5-9CF7-DD89FCC6F7BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -109,12 +101,6 @@ Global
 		{978F183E-95E1-4955-8B4B-3E9C750DB138}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{978F183E-95E1-4955-8B4B-3E9C750DB138}.Release|Any CPU.Build.0 = Release|Any CPU
 		{978F183E-95E1-4955-8B4B-3E9C750DB138}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{AEDC78FF-C100-436C-B896-30D36A0DF1F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AEDC78FF-C100-436C-B896-30D36A0DF1F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AEDC78FF-C100-436C-B896-30D36A0DF1F3}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{AEDC78FF-C100-436C-B896-30D36A0DF1F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AEDC78FF-C100-436C-B896-30D36A0DF1F3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AEDC78FF-C100-436C-B896-30D36A0DF1F3}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{556742EA-0D22-44E7-9FE2-759312C6492F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{556742EA-0D22-44E7-9FE2-759312C6492F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{556742EA-0D22-44E7-9FE2-759312C6492F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
