@@ -2,14 +2,12 @@
 using LSG.GenericCrud.Helpers;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
-using Moq;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
 namespace LSG.GenericCrud.Services
 {
@@ -98,12 +96,7 @@ namespace LSG.GenericCrud.Services
             _service.AutoCommit = false;
             _userInfoRepository = userInfoRepository;
             _historicalCrudReadService = historicalCrudReadService;
-
-            // TODO: Remove mocking structure here, for v4.0, setup will be hardcoded, a new feature will cover a configurable option for this
-            var optionsMock = new Mock<IHistoricalCrudServiceOptions>();
-            optionsMock.Setup(_ => _.ShowMyNewStuff).Returns(true);
-            _options = optionsMock.Object;
-
+            _options = new HistoricalCrudServiceOptions() { ShowMyNewStuff = true };
             AutoCommit = false;
         }
 
