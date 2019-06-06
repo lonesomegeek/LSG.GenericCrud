@@ -8,11 +8,11 @@ using LSG.GenericCrud.Services;
 namespace Sample.Complete.Controllers
 {
     [Route("api/[controller]")]
-    public class AccountsController : CrudController<Account>
+    public class AccountsController : CrudController<Guid, Account>
     {
-        private readonly ICrudService<Contact> _contactService;
+        private readonly ICrudService<Guid, Contact> _contactService;
 
-        public AccountsController(ICrudService<Account> accountService, ICrudService<Contact> contactService) : base(accountService)
+        public AccountsController(ICrudService<Guid, Account> service, ICrudService<Guid, Contact> contactService) : base(service)
         {
             _contactService = contactService;
         }
@@ -22,5 +22,6 @@ namespace Sample.Complete.Controllers
         {
             return Ok(_contactService.GetAll().Where(_ => _.AccountId == accountId));
         }
+
     }
 }

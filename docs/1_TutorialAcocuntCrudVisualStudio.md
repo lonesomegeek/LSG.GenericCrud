@@ -85,7 +85,7 @@ Note: For sake of clarity, the documentation does not include references (using)
     [ApiController]
     public class AccountsController : CrudController<Account>
     {
-        public AccountsController(ICrudService<Account> service) : base(service)
+        public AccountsController(ICrudController<Guid, Account> controller) : base(controller)
         {
         }
     }

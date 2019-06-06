@@ -17,5 +17,7 @@ namespace Sample.Complete.Models
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Contact> Contacts { get; set; }
+
+        public DbSet<MyUlid> Ulids { get; set; }
     }
 }

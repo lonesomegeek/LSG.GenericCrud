@@ -15,18 +15,22 @@ namespace Sample.GlobalFilters.Controllers
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public ItemsController(ICrudService<Item> service, IServiceProvider serviceProvider) : base(service)
+        public ItemsController(ICrudController<Guid, Item> controller, IServiceProvider serviceProvider) : base(controller)
         {
             _serviceProvider = serviceProvider;
         }
+
 
         [Route("all")]
         [HttpGet]
         public IActionResult GetAllIgnoreFilters()
         {
-            var context = _serviceProvider.GetService<IDbContext>();
-            var repository = new CrudRepositoryIgnoreFilter(context);
-            var service = new CrudServiceIgnoreFilter<Item>(repository);
+            var repository = new CrudRepositoryIgnoreFilter(
+                _serviceProvider.GetService<IDbContext>(),
+                _serviceProvider.GetService<CrudRepository>());
+            var service = new CrudServiceIgnoreFilter<Guid, Item>(
+                _serviceProvider.GetService<ICrudService<Guid, Item>>(),
+                repository);
 
             return Ok(service.GetAllIgnoreFilters());
         }

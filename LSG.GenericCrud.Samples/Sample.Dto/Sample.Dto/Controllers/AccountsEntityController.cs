@@ -21,6 +21,10 @@ namespace Sample.Dto.Controllers
         {
             _controller = controller;
         }
+
+        [HttpHead("{id}")]
+        public async Task<IActionResult> HeadById(Guid id) => await _controller.HeadById(id);
+
         [HttpPost]
         public async Task<ActionResult<Account>> Create([FromBody] Account entity) => await _controller.Create(entity);
         [HttpDelete("{id}")]

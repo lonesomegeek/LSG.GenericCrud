@@ -9,7 +9,7 @@
 - If you created a controller that inherits from CrudController
     - Nothing to do, supported for now in 3.*
 - If you created a controller that inherits from HistoricalCrudController
-    - You will have to composition model instead of direct inheritance (see samples [here](TODO), PUT LINK)
+    - You will have to composition model instead of direct inheritance
     - Reason: Switching from inheritance to composition pattern
 
 # Reflexion around v3.* version

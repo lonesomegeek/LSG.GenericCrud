@@ -16,6 +16,8 @@ using Sample.Complete.Repositories;
 using LSG.GenericCrud.Services;
 using LSG.GenericCrud.Helpers;
 using LSG.GenericCrud.Controllers;
+using System;
+using LSG.GenericCrud.Dto.Services;
 
 namespace Sample.Complete
 {
@@ -54,8 +56,14 @@ namespace Sample.Complete
             services.AddTransient<IUserInfoRepository, UserInfoRepository>();
 
             // LSG.GenericCrud generics injection
+            services.AddScoped(typeof(ICrudService<Guid, AccountDto>), typeof(CrudService<Guid, AccountDto, Account>));
+            services.AddScoped(typeof(IHistoricalCrudService<Guid, AccountDto>), typeof(HistoricalCrudService<Guid, AccountDto, Account>));
+            services.AddScoped<IHistoricalCrudController<Guid, AccountDto>, HistoricalCrudController<Guid, AccountDto>>();
+            services.AddScoped<IHistoricalCrudRestoreController<Guid, AccountDto>, HistoricalCrudController<Guid, AccountDto>>();
             services.AddCrud();
             services.AddCrudDto();
+
+
         }
 
         /// <summary>

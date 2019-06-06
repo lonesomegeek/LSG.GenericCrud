@@ -89,7 +89,7 @@ Note: For sake of clarity, the documentation does not include references (using)
     [Route("api/[controller]")]
     public class AccountsController : CrudController<Account>
     {
-        public AccountsController(ICrudService<Account> service) : base(service)
+        public AccountsController(ICrudController<Guid, Account> controller) : base(controller)
         {
         }
     }

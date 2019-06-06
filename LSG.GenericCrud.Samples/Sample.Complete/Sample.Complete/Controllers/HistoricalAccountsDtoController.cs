@@ -18,10 +18,19 @@ namespace Sample.Complete.Controllers
         IHistoricalCrudController<AccountDto>
     {
         private readonly IHistoricalCrudController<AccountDto> _controller;
+        private readonly IHistoricalCrudRestoreController<AccountDto> _restoreController;
 
-        public HistoricalAccountsDtoController(IHistoricalCrudController<AccountDto> controller)
+        public HistoricalAccountsDtoController(
+            IHistoricalCrudController<AccountDto> controller,
+            IHistoricalCrudRestoreController<AccountDto> restoreController)
         {
             _controller = controller;
+            _restoreController = restoreController;
+        }
+
+        public Task<IActionResult> HeadById(Guid id)
+        {
+            throw new NotImplementedException();
         }
 
         [HttpPost]
@@ -38,6 +47,6 @@ namespace Sample.Complete.Controllers
         [HttpGet("{id}/history")]
         public async Task<IActionResult> GetHistory(Guid id) => await _controller.GetHistory(id);
         [HttpPost("{id}/restore")]
-        public async Task<IActionResult> Restore(Guid id) => await _controller.Restore(id);
+        public async Task<IActionResult> Restore(Guid id) => await _restoreController.RestoreFromDeletedEntity(id);
     }
 }
