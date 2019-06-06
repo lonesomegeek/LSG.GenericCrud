@@ -53,6 +53,7 @@ Legend
 |------|-------------|
 | C    | Feature available in CrudController |
 | HC   | Feature available in HistoricalCrudController |
+
 --Enjoy!
 
 # Prerequisites
