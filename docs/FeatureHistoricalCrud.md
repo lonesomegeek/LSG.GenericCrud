@@ -78,6 +78,7 @@ This is programatically-talking a CrudController\<T> with history tracking but w
 | C  |	POST    | /[entity]/:id/copy	                     | 201,404	 | Copy active version of an object in a new object |
 
 You will get more routes with an HistoricalCrudController\<T>:
+
 | 	 | Verb    |	Route	                                 | Results   | Description |
 |----|----------|--------------------------------------------|-----------|-------------|
 | HC |	GET	    | /[entity]/:id/history	                     | 200,404	 | Get transaction history of an object |
