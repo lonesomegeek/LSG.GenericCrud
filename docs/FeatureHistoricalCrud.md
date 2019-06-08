@@ -95,4 +95,4 @@ You will get more routes with an HistoricalCrudController\<T>:
 
 ## Samples
 
-Here is a link to an historical crud source code sample: [Link](https://github.com/lonesomegeek/LSG.GenericCrud.Samples/blob/master/Sample.HistoricalCrud/README.md)
+Here is a link to an historical crud source code sample: [Link](https://github.com/lonesomegeek/LSG.GenericCrud/blob/master/LSG.GenericCrud.Samples/Sample.HistoricalCrud/README.md)
