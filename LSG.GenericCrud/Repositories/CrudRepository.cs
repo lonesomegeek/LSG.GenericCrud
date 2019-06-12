@@ -39,15 +39,15 @@ namespace LSG.GenericCrud.Repositories
         /// Gets all.
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerable<T> GetAll<T>() where T : class, IEntity, new() => GetAllAsync<T>().GetAwaiter().GetResult();
+        public virtual IQueryable<T> GetAll<T>() where T : class, IEntity, new() => GetAllAsync<T>().GetAwaiter().GetResult();
 
         /// <summary>
         /// Gets all asynchronous.
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<IEnumerable<T>> GetAllAsync<T>() where T : class, IEntity, new() => await GetAllAsync<Guid, T>();
+        public virtual async Task<IQueryable<T>> GetAllAsync<T>() where T : class, IEntity, new() => await GetAllAsync<Guid, T>();
 
-        public virtual async Task<IEnumerable<T2>> GetAllAsync<T1, T2>() where T2 : class, IEntity<T1>, new() => await _context.Set<T2>().ToListAsync();
+        public virtual async Task<IQueryable<T2>> GetAllAsync<T1, T2>() where T2 : class, IEntity<T1>, new() => await Task.Run(() => _context.Set<T2>());
 
         /// <summary>
         /// Gets the by identifier.
