@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29006.145
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LSG.GenericCrud", "LSG.GenericCrud\LSG.GenericCrud.csproj", "{722007F7-B2C5-40E3-B6A8-57AD5A9745F8}"
 EndProject
@@ -48,6 +48,8 @@ EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Sample.App.Db", "LSG.GenericCrud.Samples\Sample.App\Sample.App.Db\Sample.App.Db.sqlproj", "{978F183E-95E1-4955-8B4B-3E9C750DB138}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "WebApplication1.Database", "WebApplication1.Database\WebApplication1.Database.sqlproj", "{AEDC78FF-C100-436C-B896-30D36A0DF1F3}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "LSG.GenericCrud.Database", "LSG.GenericCrud.Database\LSG.GenericCrud.Database.sqlproj", "{556742EA-0D22-44E7-9FE2-759312C6492F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -119,6 +121,12 @@ Global
 		{AEDC78FF-C100-436C-B896-30D36A0DF1F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEDC78FF-C100-436C-B896-30D36A0DF1F3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AEDC78FF-C100-436C-B896-30D36A0DF1F3}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{556742EA-0D22-44E7-9FE2-759312C6492F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{556742EA-0D22-44E7-9FE2-759312C6492F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{556742EA-0D22-44E7-9FE2-759312C6492F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{556742EA-0D22-44E7-9FE2-759312C6492F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{556742EA-0D22-44E7-9FE2-759312C6492F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{556742EA-0D22-44E7-9FE2-759312C6492F}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
