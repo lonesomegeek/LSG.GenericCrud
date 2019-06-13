@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Bogus;
 using LSG.GenericCrud.Exceptions;
@@ -14,10 +15,10 @@ namespace LSG.GenericCrud.Tests.Services
 {
     public class HistoricalCrudServiceTests
     {
-        private readonly IList<TestEntity> _entities;
+        private readonly IQueryable<TestEntity> _entities;
         private readonly TestEntity _entity;
-        private readonly List<HistoricalEvent> _events;
-        private readonly List<HistoricalChangeset> _changesets;
+        private readonly IQueryable<HistoricalEvent> _events;
+        private readonly IQueryable<HistoricalChangeset> _changesets;
         private readonly HistoricalChangeset _changeset;
 
         public HistoricalCrudServiceTests()
@@ -26,7 +27,7 @@ namespace LSG.GenericCrud.Tests.Services
             var entityFaker = new Faker<TestEntity>().
                 RuleFor(_ => _.Id, Guid.NewGuid()).
                 RuleFor(_ => _.Value, _ => _.Lorem.Word());
-            _entities = entityFaker.Generate(5);
+            _entities = entityFaker.Generate(5).AsQueryable();
             _entity = entityFaker.Generate();
             var eventFaker = new Faker<HistoricalEvent>().
                 RuleFor(_ => _.Id, Guid.NewGuid).
@@ -36,14 +37,14 @@ namespace LSG.GenericCrud.Tests.Services
                 RuleFor(_ => _.Changeset, new Faker<HistoricalChangeset>()
                     .RuleFor(_ => _.ObjectData, "{}")
                     .RuleFor(_ => _.ObjectDelta, "{}"));
-            _events = new List<HistoricalEvent>() { eventFaker.Generate() };
+            _events = new List<HistoricalEvent>() { eventFaker.Generate() }.AsQueryable();
             var changesetFaker = new Faker<HistoricalChangeset>()
                 .RuleFor(_ => _.Id, Guid.NewGuid)
-                .RuleFor(_ => _.EventId, _events[0].Id)
+                .RuleFor(_ => _.EventId, _events.ToArray()[0].Id)
                 .RuleFor(_ => _.CreatedDate, DateTime.MinValue)
                 .RuleFor(_ => _.ObjectData, "{}")
                 .RuleFor(_ => _.ObjectDelta, "{}");
-            _changesets = new List<HistoricalChangeset> { changesetFaker.Generate() };
+            _changesets = new List<HistoricalChangeset> { changesetFaker.Generate() }.AsQueryable();
             _changeset = changesetFaker.Generate();
         }
 
@@ -137,7 +138,7 @@ namespace LSG.GenericCrud.Tests.Services
         public void Restore_ThrowsEntityNotFoundException()
         {
             var repository = new Mock<CrudRepository>();
-            repository.Setup(_ => _.GetAllAsync<HistoricalEvent>()).ReturnsAsync(new List<HistoricalEvent>());
+            repository.Setup(_ => _.GetAllAsync<HistoricalEvent>()).ReturnsAsync(new List<HistoricalEvent>().AsQueryable());
             var crudServiceMock = new Mock<ICrudService<TestEntity>>();
             var crudService = crudServiceMock.Object;
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object, null, null);
@@ -163,7 +164,7 @@ namespace LSG.GenericCrud.Tests.Services
         public void GetHistory_ThrowsEntityNotFoundException()
         {
             var repository = new Mock<CrudRepository>();
-            repository.Setup(_ => _.GetAllAsync<HistoricalEvent>()).ReturnsAsync(new List<HistoricalEvent>());
+            repository.Setup(_ => _.GetAllAsync<HistoricalEvent>()).ReturnsAsync(new List<HistoricalEvent>().AsQueryable());
             var crudServiceMock = new Mock<ICrudService<TestEntity>>();
             var crudService = crudServiceMock.Object;
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object, null, null);

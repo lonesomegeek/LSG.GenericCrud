@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using LSG.GenericCrud.Models;
 
@@ -15,19 +16,26 @@ namespace LSG.GenericCrud.Repositories
         /// Gets all.
         /// </summary>
         /// <returns></returns>
-        IEnumerable<T> GetAll<T>() where T : class, IEntity, new();
+        IQueryable<T> GetAll<T>() where T : class, IEntity, new();
 
         /// <summary>
-        /// Gets all asynchronous.
+        /// Gets all.
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<T>> GetAllAsync<T>() where T : class, IEntity, new();
+        IQueryable<T2> GetAll<T1, T2>() where T2 : class, IEntity<T1>, new();
+
 
         /// <summary>
-        /// Gets all asynchronous.
+        /// Gets all.
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<T2>> GetAllAsync<T1, T2>() where T2 : class, IEntity<T1>, new();
+        Task<IQueryable<T>> GetAllAsync<T>() where T : class, IEntity, new();
+
+        /// <summary>
+        /// Gets all.
+        /// </summary>
+        /// <returns></returns>
+        Task<IQueryable<T2>> GetAllAsync<T1, T2>() where T2 : class, IEntity<T1>, new();
 
         /// <summary>
         /// Gets the by identifier.

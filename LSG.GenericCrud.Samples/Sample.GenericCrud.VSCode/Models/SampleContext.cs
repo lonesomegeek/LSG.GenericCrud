@@ -6,7 +6,7 @@ namespace Sample.Models
 {
     public class SampleContext : BaseDbContext, IDbContext
     {
-        public SampleContext(DbContextOptions options, IServiceProvider serviceProvider) : base(options, serviceProvider) {}
+        public SampleContext(DbContextOptions options, IServiceProvider serviceProvider) : base(options, serviceProvider) { }
 
         public DbSet<Account> Accounts { get; set; }
     }
