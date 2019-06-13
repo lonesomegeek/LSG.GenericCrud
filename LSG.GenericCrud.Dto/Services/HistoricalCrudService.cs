@@ -283,6 +283,7 @@ namespace LSG.GenericCrud.Dto.Services
             var events = _repository
                 .GetAll<HistoricalEvent>()
                 .Where(_ => _.EntityId == id.ToString() && _.CreatedDate >= fromTimestamp && _.CreatedDate <= toTimestamp && _.Action != HistoricalActions.Read.ToString())
+                .ToList()
                 .OrderBy(_ => _.CreatedDate);
 
             if (events.Count() == 0) throw new NoHistoryException();

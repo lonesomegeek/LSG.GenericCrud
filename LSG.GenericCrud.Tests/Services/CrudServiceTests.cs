@@ -14,7 +14,7 @@ namespace LSG.GenericCrud.Tests.Services
 {
     public class CrudServiceTests
     {
-        private readonly IList<TestEntity> _entities;
+        private readonly IQueryable<TestEntity> _entities;
         private readonly TestEntity _entity;
 
         public CrudServiceTests()
@@ -23,7 +23,7 @@ namespace LSG.GenericCrud.Tests.Services
             var entityFaker = new Faker<TestEntity>().
                 RuleFor(_ => _.Id, Guid.NewGuid()).
                 RuleFor(_ => _.Value, _ => _.Lorem.Word());
-            _entities = entityFaker.Generate(5);
+            _entities = entityFaker.Generate(5).AsQueryable();
             _entity = entityFaker.Generate();
         }
 
@@ -44,7 +44,7 @@ namespace LSG.GenericCrud.Tests.Services
 
             var result = service.GetAll();
 
-            Assert.Equal(result.Count(), _entities.Count);
+            Assert.Equal(result.Count(), _entities.Count());
             repositoryMock.Verify(_ => _.GetAllAsync<Guid, TestEntity>(), Times.Once);
         }
 
@@ -57,7 +57,7 @@ namespace LSG.GenericCrud.Tests.Services
 
             var result = await service.GetAllAsync();
 
-            Assert.Equal(result.Count(), _entities.Count);
+            Assert.Equal(result.Count(), _entities.Count());
             repositoryMock.Verify(_ => _.GetAllAsync<Guid, TestEntity>(), Times.Once);
         }
 

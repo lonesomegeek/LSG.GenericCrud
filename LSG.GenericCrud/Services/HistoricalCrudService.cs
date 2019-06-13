@@ -388,10 +388,8 @@ namespace LSG.GenericCrud.Services
         public virtual async Task<IEnumerable<ReadeableStatus<T2>>> GetReadStatusAsync()
         {
             var readEvents = await _repository.GetAllAsync<HistoricalEvent>();
-
             var entityName = typeof(T2).FullName;
-
-            var entities = await _repository.GetAllAsync<T1, T2>();
+            var entities = Task.Run(() => _repository.GetAllAsync<T1, T2>()).Result.ToList();
             return entities
                 .Select(entity =>
                 {
@@ -503,6 +501,7 @@ namespace LSG.GenericCrud.Services
             var events = _repository
                 .GetAll<HistoricalEvent>()
                 .Where(_ => _.EntityId == id.ToString() && _.CreatedDate >= fromTimestamp && _.CreatedDate <= toTimestamp && _.Action != HistoricalActions.Read.ToString())
+                .ToList()
                 .OrderBy(_ => _.CreatedDate);
 
             if (events == null || !events.Any()) throw new NoHistoryException();
