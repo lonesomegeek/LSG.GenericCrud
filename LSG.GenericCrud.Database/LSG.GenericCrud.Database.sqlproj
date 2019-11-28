@@ -62,7 +62,7 @@
   <ItemGroup>
     <Build Include="Tables\HistoricalEvents.sql" />
     <Build Include="Tables\HistoricalChangesets.sql" />
-    <Build Include="Scripts\Migration-v2.2-to-v4.0.sql" />
+    <None Include="Scripts\Migration-v2.2-to-v4.0.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LSG.GenericCrud.Database.publish.xml" />
