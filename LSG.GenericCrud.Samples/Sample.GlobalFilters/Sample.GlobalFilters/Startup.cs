@@ -14,6 +14,7 @@ using Sample.GlobalFilters.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sample.GlobalFilters.Services;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Sample.GlobalFilters
 {
@@ -53,6 +54,7 @@ namespace Sample.GlobalFilters
 
             // hardware delete layers
             services.AddScoped(typeof(IHardwareDeleteService<,>), typeof(HardwareDeleteService<,>));
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             // adding lsg.generic crud stack
             services.AddCrud();

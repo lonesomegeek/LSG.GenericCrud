@@ -21,9 +21,9 @@ namespace Sample.GlobalFilters.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public ItemsController(
-            ICrudService<Guid, Item> service, 
+            ICrudService<Guid, Item> service,
             IHardwareDeleteService<Guid, Item> hardwareDeleteService,
-            IServiceProvider serviceProvider, 
+            IServiceProvider serviceProvider,
             IHttpContextAccessor httpContextAccessor) : base(service)
         {
             _serviceProvider = serviceProvider;
@@ -46,7 +46,7 @@ namespace Sample.GlobalFilters.Controllers
             return Ok(service.GetAllIgnoreFilters());
         }
 
-        
+
 
         [HttpDelete("{id}")]
         public override async Task<ActionResult<Item>> Delete(Guid id)
@@ -59,6 +59,12 @@ namespace Sample.GlobalFilters.Controllers
             {
                 return await base.Delete(id);
             }
+        }
+
+        [HttpDelete("{id}/hard")]
+        public async Task<ActionResult<Item>> DeleteHard(Guid id)
+        {
+            return await _hardwareDeleteService.DeleteHardAsync(id);
         }
     }
 }

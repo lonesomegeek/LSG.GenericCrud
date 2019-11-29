@@ -7,11 +7,11 @@ namespace Sample.GlobalFilters.Repositories
     {
         private readonly IHttpContextAccessor _httpContext;
 
-        public UserInfoRepository(IHttpContextAccessor httpContext)
+        public UserInfoRepository(/*IHttpContextAccessor httpContext*/)
         {
-            _httpContext = httpContext;
+            //_httpContext = httpContext;
         }
 
-        public Guid TenantId => Guid.Parse(_httpContext.HttpContext.Session.GetString("TenantId"));
+        public Guid TenantId => Guid.NewGuid();//=> Guid.Parse(_httpContext.HttpContext.Session.GetString("TenantId"));
     }
 }
