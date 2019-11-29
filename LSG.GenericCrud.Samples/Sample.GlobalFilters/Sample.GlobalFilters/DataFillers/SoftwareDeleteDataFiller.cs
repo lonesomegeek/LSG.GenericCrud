@@ -15,9 +15,15 @@ namespace Sample.GlobalFilters.DataFillers
         public object Fill(EntityEntry entry)
         {
             var entity = ((ISoftwareDelete)entry.Entity);
-            entity.IsDeleted = true;
-            entry.State = EntityState.Modified; // be sure to not let the deleted flag, in other case, the entry will be deleted from database on save
-            return entity;
+            if (entity is IHardwareDelete && (((IHardwareDelete)entity).IsHardwareDelete))
+            {
+                return entity;    
+            } else
+            {
+                entity.IsDeleted = true;
+                entry.State = EntityState.Modified; // be sure to not let the deleted flag, in other case, the entry will be deleted from database on save
+                return entity;
+            }            
         }
 
         public Task<object> FillAsync(EntityEntry entry)

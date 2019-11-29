@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
 using LSG.GenericCrud.Controllers;
 using LSG.GenericCrud.Repositories;
 using LSG.GenericCrud.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
 using Sample.GlobalFilters.Models;
 using Sample.GlobalFilters.Repositories;
 using Sample.GlobalFilters.Services;
@@ -33,6 +36,5 @@ namespace Sample.GlobalFilters.Controllers
 
             return Ok(service.GetAllIgnoreFilters());
         }
-
     }
 }

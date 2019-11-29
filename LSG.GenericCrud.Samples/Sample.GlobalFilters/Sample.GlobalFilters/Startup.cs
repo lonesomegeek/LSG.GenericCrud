@@ -13,6 +13,7 @@ using Sample.GlobalFilters.Models;
 using Sample.GlobalFilters.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Sample.GlobalFilters.Services;
 
 namespace Sample.GlobalFilters
 {
@@ -49,6 +50,9 @@ namespace Sample.GlobalFilters
             // adding data fillers
             services.AddSingleton<IEntityDataFiller, SoftwareDeleteDataFiller>();
             services.AddSingleton<IEntityDataFiller, SingleTenantDataFiller>();
+
+            // hardware delete layers
+            services.AddScoped(typeof(IHardwareDeleteService<,>), typeof(HardwareDeleteService<,>));
 
             // adding lsg.generic crud stack
             services.AddCrud();

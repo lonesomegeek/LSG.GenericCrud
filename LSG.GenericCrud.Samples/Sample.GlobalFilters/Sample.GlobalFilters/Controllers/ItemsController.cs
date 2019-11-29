@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
 using LSG.GenericCrud.Controllers;
 using LSG.GenericCrud.Repositories;
 using LSG.GenericCrud.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
 using Sample.GlobalFilters.Models;
 using Sample.GlobalFilters.Repositories;
 using Sample.GlobalFilters.Services;
@@ -11,13 +14,21 @@ using Sample.GlobalFilters.Services;
 namespace Sample.GlobalFilters.Controllers
 {
     [Route("api/[controller]")]
-    public class ItemsController : CrudController<Item>
+    public class ItemsController : CrudController<Guid, Item>
     {
         private readonly IServiceProvider _serviceProvider;
+        private readonly IHardwareDeleteService<Guid, Item> _hardwareDeleteService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ItemsController(ICrudController<Guid, Item> controller, IServiceProvider serviceProvider) : base(controller)
+        public ItemsController(
+            ICrudService<Guid, Item> service, 
+            IHardwareDeleteService<Guid, Item> hardwareDeleteService,
+            IServiceProvider serviceProvider, 
+            IHttpContextAccessor httpContextAccessor) : base(service)
         {
             _serviceProvider = serviceProvider;
+            _hardwareDeleteService = hardwareDeleteService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
 
@@ -33,6 +44,21 @@ namespace Sample.GlobalFilters.Controllers
                 repository);
 
             return Ok(service.GetAllIgnoreFilters());
+        }
+
+        
+
+        [HttpDelete("{id}")]
+        public override async Task<ActionResult<Item>> Delete(Guid id)
+        {
+            if (_httpContextAccessor.HttpContext.Request.Headers.TryGetValue("X-HardDelete", out StringValues value) && value == "true")
+            {
+                return await _hardwareDeleteService.DeleteHardAsync(id);
+            }
+            else
+            {
+                return await base.Delete(id);
+            }
         }
     }
 }
