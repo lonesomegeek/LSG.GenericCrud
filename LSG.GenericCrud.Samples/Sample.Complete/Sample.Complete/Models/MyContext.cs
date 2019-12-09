@@ -13,11 +13,12 @@ namespace Sample.Complete.Models
         {
         }
 
+        public DbSet<HistoricalChangeset> HistoricalChangesets { get; set; }
         public DbSet<HistoricalEvent> HistoricalEvents { get; set; }
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Contact> Contacts { get; set; }
-
+        public DbSet<Item> Items { get; set; }
         public DbSet<MyUlid> Ulids { get; set; }
     }
 }

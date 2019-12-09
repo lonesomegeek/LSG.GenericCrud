@@ -39,6 +39,9 @@
     <Compile Update="Controllers\HistoricalEventsController.cs">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>HistoricalEventsController.cs</LastGenOutput>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>HistoricalEventsController.cs</DependentUpon>
     </Compile>
   </ItemGroup>
 

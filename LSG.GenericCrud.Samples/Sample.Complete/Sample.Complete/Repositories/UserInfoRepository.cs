@@ -15,7 +15,7 @@ namespace Sample.Complete.Repositories
 
         public string GetUserInfo()
         {
-            return "John Dude";
+            return "3893d165-3fd1-4071-8c22-0c02fb8fb05a";
         }
     }
 }
