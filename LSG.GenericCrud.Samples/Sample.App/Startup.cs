@@ -22,6 +22,10 @@ namespace Sample.App
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddDbContext<MyContext>(opt => opt.UseSqlServer("server=(localdb)\\mssqllocaldb;Initial Catalog=MySampleDb"));
+            services.AddTransient<IDbContext, MyContext>();
+
+
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
