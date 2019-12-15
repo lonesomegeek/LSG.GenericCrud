@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LSG.GenericCrud.Controllers;
+using LSG.GenericCrud.Models;
+using LSG.GenericCrud.Repositories;
+using LSG.GenericCrud.Services;
+using Microsoft.AspNetCore.Mvc;
+using Sample.App.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +15,21 @@ namespace Sample.App.Controllers
     [ApiController]
     public class ItemsController :
             ControllerBase,
-            IHistoricalCrudController<Guid, Item>
+            IHistoricalCrudController<Guid, Item>,
+            IHistoricalCrudReadStatusController<Guid, Item>
     {
         private readonly IHistoricalCrudController<Guid, Item> _controller;
+        private readonly ICrudRepository _repository;
+        private readonly IUserInfoRepository _userInfoReposiory;
 
-        public ItemsController(IHistoricalCrudController<Guid, Item> controller)
+        public ItemsController(
+            IHistoricalCrudController<Guid, Item> controller,
+            ICrudRepository repository,
+            IUserInfoRepository userInfoReposiory)
         {
             _controller = controller;
+            _repository = repository;
+            _userInfoReposiory = userInfoReposiory;
         }
 
         [HttpHead("{id}")]
@@ -37,5 +50,59 @@ namespace Sample.App.Controllers
         public async Task<IActionResult> GetHistory(Guid id) => await _controller.GetHistory(id);
         [HttpPost("{id}/restore")]
         public async Task<IActionResult> Restore(Guid id) => throw new NotImplementedException();
+
+        [HttpGet("most-recently-used")]
+        public async Task<ActionResult<IEnumerable<Item>>> GetMostRecentlyUsed()
+        {
+            var entityName = typeof(Item).FullName;
+            var events = _repository
+                .GetAllAsync<HistoricalEvent>().Result
+                .Where(_ => _.EntityName == entityName && _.CreatedBy == _userInfoReposiory.GetUserInfo())                
+                .OrderByDescending(_ => _.CreatedDate)
+                .GroupBy(_ => _.EntityId)
+                .Select(_ => new
+                {
+                    EntityId = _.Key,
+                    Events = _
+                })
+                .Take(10);
+            
+            
+            //return entities
+            //    .Select(entity =>
+            //    {
+            //        var historicalEvent = readEvents
+            //            .Where(e => e.EntityId == entity.Id.ToString() &&
+            //                        e.EntityName == entityName &&
+            //                        e.CreatedBy == _userInfoRepository.GetUserInfo())
+            //            .OrderBy(_ => _.CreatedDate)
+            //            .LastOrDefault();
+
+            //        return new ReadeableStatus<T2>()
+            //        {
+            //            Data = entity,
+            //            Metadata = new ReadeableStatusMetadata()
+            //            {
+            //                LastViewed = historicalEvent?.CreatedDate,
+            //                NewStuffAvailable = IsNewStuffAvailable(entity, historicalEvent)
+            //            }
+            //        };
+            //    });
+
+            return Ok(events);
+        }
+
+        [HttpPost]
+        public Task<IActionResult> MarkAllAsRead() => throw new NotImplementedException();
+        [HttpPost]
+        public Task<IActionResult> MarkAllAsUnread() => throw new NotImplementedException();
+        [HttpPost("{id}")]
+        public Task<IActionResult> MarkOneAsRead(Guid id) => throw new NotImplementedException();
+        [HttpPost("{id}")]
+        public Task<IActionResult> MarkOneAsUnread(Guid id) => throw new NotImplementedException();
+        [HttpGet("read-status")]
+        public Task<ActionResult<IEnumerable<ReadeableStatus<Item>>>> GetReadStatus() => throw new NotImplementedException();
+        [HttpGet("read-status/{id}")]
+        public Task<ActionResult<ReadeableStatus<Item>>> GetReadStatusById(Guid id) => throw new NotImplementedException();
     }
 }

@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
   selector: 'app-items',
   templateUrl: './items.component.html'
 })
-export class FetchDataComponent {
+export class ItemDataComponent {
   public items: Item[];
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
