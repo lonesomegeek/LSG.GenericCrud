@@ -15,6 +15,6 @@ export class ItemDataComponent {
   }
 }
 
-interface Item {
+export interface Item {
   name: string;
 }

@@ -15,9 +15,7 @@ namespace Sample.App.Controllers
     [ApiController]
     public class ItemsController :
             ControllerBase,
-            IHistoricalCrudController<Guid, Item>,
-            IHistoricalCrudReadStatusController<Guid, Item>
-    {
+            IHistoricalCrudController<Guid, Item> {
         private readonly IHistoricalCrudController<Guid, Item> _controller;
         private readonly ICrudRepository _repository;
         private readonly IUserInfoRepository _userInfoReposiory;
@@ -57,13 +55,16 @@ namespace Sample.App.Controllers
             var entityName = typeof(Item).FullName;
             var events = _repository
                 .GetAllAsync<HistoricalEvent>().Result
-                .Where(_ => _.EntityName == entityName && _.CreatedBy == _userInfoReposiory.GetUserInfo())                
+                .Where(_ => 
+                    _.EntityName == entityName && 
+                    _.Action == HistoricalActions.Read.ToString() &&
+                    _.CreatedBy == _userInfoReposiory.GetUserInfo())                
                 .OrderByDescending(_ => _.CreatedDate)
                 .GroupBy(_ => _.EntityId)
                 .Select(_ => new
                 {
                     EntityId = _.Key,
-                    Events = _
+                    Events = _.OrderByDescending(e => e.CreatedDate)
                 })
                 .Take(10);
             
@@ -91,18 +92,19 @@ namespace Sample.App.Controllers
 
             return Ok(events);
         }
-
-        [HttpPost]
-        public Task<IActionResult> MarkAllAsRead() => throw new NotImplementedException();
-        [HttpPost]
-        public Task<IActionResult> MarkAllAsUnread() => throw new NotImplementedException();
-        [HttpPost("{id}")]
-        public Task<IActionResult> MarkOneAsRead(Guid id) => throw new NotImplementedException();
-        [HttpPost("{id}")]
-        public Task<IActionResult> MarkOneAsUnread(Guid id) => throw new NotImplementedException();
+        [HttpPost("read")]
+        public virtual async Task<IActionResult> MarkAllAsRead() => await ((IHistoricalCrudReadStatusController<Guid, Item>)_controller).MarkAllAsRead();
+        [HttpPost("unread")]
+        public virtual async Task<IActionResult> MarkAllAsUnread() => await ((IHistoricalCrudReadStatusController<Guid, Item>)_controller).MarkAllAsUnread();
+        [HttpPost("{id}/read")]
+        public virtual async Task<IActionResult> MarkOneAsRead(Guid id) => await ((IHistoricalCrudReadStatusController<Guid, Item>)_controller).MarkOneAsRead(id);
+        [HttpPost("{id}/unread")]
+        public virtual async Task<IActionResult> MarkOneAsUnread(Guid id) => await ((IHistoricalCrudReadStatusController<Guid, Item>)_controller).MarkOneAsUnread(id);
         [HttpGet("read-status")]
-        public Task<ActionResult<IEnumerable<ReadeableStatus<Item>>>> GetReadStatus() => throw new NotImplementedException();
-        [HttpGet("read-status/{id}")]
-        public Task<ActionResult<ReadeableStatus<Item>>> GetReadStatusById(Guid id) => throw new NotImplementedException();
+        public virtual async Task<ActionResult<IEnumerable<ReadeableStatus<Item>>>> GetReadStatus() => await ((IHistoricalCrudReadStatusController<Guid, Item>)_controller).GetReadStatus();
+        [HttpGet("{id}/read-status")]
+        public virtual async Task<ActionResult<ReadeableStatus<Item>>> GetReadStatusById(Guid id) => await ((IHistoricalCrudReadStatusController<Guid, Item>)_controller).GetReadStatusById(id);
+        [HttpPost("{id}/delta")]
+        public virtual async Task<IActionResult> Delta(Guid id, DeltaRequest request) => await ((IHistoricalCrudDeltaController<Guid, Item>)_controller).Delta(id, request);
     }
 }

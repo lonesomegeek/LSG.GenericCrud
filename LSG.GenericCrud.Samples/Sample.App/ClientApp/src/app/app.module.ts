@@ -10,6 +10,8 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ItemDataComponent } from './items/items.component';
+import { MostRecentlyUsedComponent } from './most-recently-used/most-recently-used.component';
+import { ItemEditDataComponent } from './items/items-edit.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { ItemDataComponent } from './items/items.component';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    ItemDataComponent
+    ItemDataComponent,
+    ItemEditDataComponent,
+    MostRecentlyUsedComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -29,6 +33,7 @@ import { ItemDataComponent } from './items/items.component';
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'items', component: ItemDataComponent },
+      { path: 'items/:id', component: ItemEditDataComponent },
     ])
   ],
   providers: [],
