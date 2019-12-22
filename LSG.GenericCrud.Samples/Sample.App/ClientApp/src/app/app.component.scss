@@ -1,3 +1,6 @@
+@import "~ag-grid-community/dist/styles/ag-grid.css";
+@import "~ag-grid-community/dist/styles/ag-theme-balham.css";
+
 @media (max-width: 767px) {
   /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */
   .body-content {

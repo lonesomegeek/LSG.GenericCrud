@@ -12,6 +12,9 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ItemDataComponent } from './items/items.component';
 import { MostRecentlyUsedComponent } from './most-recently-used/most-recently-used.component';
 import { ItemEditDataComponent } from './items/items-edit.component';
+import { AccountDataComponent } from './accounts/accounts.component';
+import { AccountEditDataComponent } from './accounts/accounts-edit.component';
+import { AgGridModule } from "ag-grid-angular";
 
 @NgModule({
   declarations: [
@@ -22,18 +25,23 @@ import { ItemEditDataComponent } from './items/items-edit.component';
     FetchDataComponent,
     ItemDataComponent,
     ItemEditDataComponent,
+    AccountDataComponent,
+    AccountEditDataComponent,
     MostRecentlyUsedComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    AgGridModule.withComponents([]),
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'items', component: ItemDataComponent },
       { path: 'items/:id', component: ItemEditDataComponent },
+      { path: 'accounts', component: AccountDataComponent },
+      { path: 'accounts/:id', component: AccountEditDataComponent },
     ])
   ],
   providers: [],

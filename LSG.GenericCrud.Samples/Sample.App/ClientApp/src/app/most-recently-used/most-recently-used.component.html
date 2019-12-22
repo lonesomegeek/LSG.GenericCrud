@@ -4,8 +4,8 @@
 
 <ul>
     <li *ngFor="let object of objects">
-        <a [routerLink]='["/items/" + object.entityId]'>{{object.entityName}}</a>
-        <small>{{object.events[0].createdDate}}</small>
+        <a [routerLink]='[object.routeUrl]'>{{object.entityDisplayName}}</a>
+        <small>{{object.events[0].entityName}}</small><small>{{object.events[0].createdDate}}</small>
     </li>
 </ul>
 <!-- <table class='table table-striped' *ngIf="objects">

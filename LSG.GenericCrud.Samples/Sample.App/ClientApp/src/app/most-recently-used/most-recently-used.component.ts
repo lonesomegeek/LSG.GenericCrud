@@ -9,17 +9,29 @@ import { Item } from '../items/items.component';
 export class MostRecentlyUsedComponent {
   public objects: EntityEvent[];
 
+  getRouteFromEntityFullname(entityName: string): string {
+    switch (entityName) {
+      case "Sample.App.Models.Item":
+        return "items";
+      case "Sample.App.Models.Account":
+        return "accounts";
+      default:
+        return "";
+    }
+  }
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    http.get<EntityEvent[]>(baseUrl + 'api/items/most-recently-used').subscribe(result => {
+    http.get<EntityEvent[]>(baseUrl + '/most-recently-used').subscribe(result => {
       this.objects = result;
       this.objects.map(_ => {
-        http.get<Item[]>(baseUrl + 'api/items/' + _.entityId).subscribe(result2 => {
+        let route = this.getRouteFromEntityFullname(_.events[0].entityName);
+        http.get<Item>(baseUrl + 'api/' + route + '/' + _.entityId).subscribe(result2 => {
           let item: Item = result2;
-          _.entityName = item.name;
+          _.routeUrl = route + '/' + _.entityId;
+          _.entityDisplayName = item.name;
         });
       });
-      
-      
+
+
     }, error => console.error(error));
   }
 }
@@ -27,8 +39,9 @@ export class MostRecentlyUsedComponent {
 
 interface EntityEvent {
   entityId: string,
-  entityName: string,
-  events: HistoricalEvent[]
+  entityDisplayName: string,
+  routeUrl: string;
+  events: HistoricalEvent[];
 }
 
 interface HistoricalEvent {

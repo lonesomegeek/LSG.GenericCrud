@@ -15,6 +15,7 @@ namespace Sample.App.Models
         }
 
         public DbSet<Item> Items { get; set; }
+        public DbSet<Account> Accounts { get; set; }
 
         public DbSet<HistoricalChangeset> HistoricalChangesets { get; set; }
         public DbSet<HistoricalEvent> HistoricalEvents { get; set; }
