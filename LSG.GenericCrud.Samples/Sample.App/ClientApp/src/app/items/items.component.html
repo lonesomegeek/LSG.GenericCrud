@@ -2,9 +2,9 @@
 
 <p>This component demonstrates fetching data from the server.</p>
 
-<p *ngIf="!items"><em>Loading...</em></p>
+<!-- <p *ngIf="!items"><em>Loading...</em></p> -->
 
-<table class='table table-striped' *ngIf="items">
+<!-- <table class='table table-striped' *ngIf="items">
   <thead>
     <tr>
       <th>Name</th>
@@ -16,4 +16,12 @@
         <td><a [routerLink]='[item.id]'>{{item.name}}</a></td> 
     </tr>
   </tbody>
-</table>
+</table> -->
+
+<ag-grid-angular
+    style="width: 500px; height: 500px;"
+    class="ag-theme-balham"
+    [rowData]="elements | async"
+    [columnDefs]="columnDefs"
+    >
+</ag-grid-angular>

@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -6,23 +6,20 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './items.component.html'
 })
 
-export class ItemDataComponent {
-  public items: Item[];
+export class ItemDataComponent implements OnInit {
+  public elements: any;
+  
   columnDefs = [
-    {headerName: 'Make', field: 'make' },
-    {headerName: 'Model', field: 'model' },
-    {headerName: 'Price', field: 'price'}
-];
+    { headerName: 'Name', field: 'name', sortable: true }
+  ];
 
-rowData = [
-    { make: 'Toyota', model: 'Celica', price: 35000 },
-    { make: 'Ford', model: 'Mondeo', price: 32000 },
-    { make: 'Porsche', model: 'Boxter', price: 72000 }
-];
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    http.get<Item[]>(baseUrl + 'api/items').subscribe(result => {
-      this.items = result;
-    }, error => console.error(error));
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {}
+
+  ngOnInit() {
+    this.elements = this
+      .http
+      .get<Item[]>(this.baseUrl + 'api/items');
+      
   }
 }
 
