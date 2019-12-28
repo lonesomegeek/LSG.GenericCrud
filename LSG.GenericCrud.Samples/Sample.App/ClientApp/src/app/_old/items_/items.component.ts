@@ -1,9 +1,9 @@
-import { CrudDataComponent } from "../_generics/crud.component";
+import { CrudDataComponent } from "../_generics_/crud.component";
 import { Component } from "@angular/core";
 
 @Component({
   selector: "crud-item-component",
-  templateUrl: "../_generics/crud.component.html"
+  templateUrl: "../_generics_/crud.component.html"
 })
 export class CrudItemComponent extends CrudDataComponent<Item> {
   columnDefs: any[] = [

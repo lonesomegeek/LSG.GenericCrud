@@ -1,0 +1,21 @@
+<h1>Items</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<p *ngIf="!row"><em>Loading...</em></p>
+
+<table class='table table-striped' *ngIf="row">
+  <thead>
+    <tr>
+      <th>Name</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{ row.name }}</td> 
+    </tr>
+  </tbody>
+</table>
+
+<h1>History</h1>

@@ -9,13 +9,15 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
-import { CrudItemComponent } from './items/items.component';
-import { MostRecentlyUsedComponent } from './most-recently-used/most-recently-used.component';
-import { ItemEditDataComponent } from './items/items-edit.component';
-import { AccountDataComponent } from './accounts/accounts.component';
-import { AccountEditDataComponent } from './accounts/accounts-edit.component';
+import { CrudItemComponent } from './_old/items_/items.component';
+import { MostRecentlyUsedComponent } from './_old/most-recently-used_/most-recently-used.component';
+import { ItemEditDataComponent } from './_old/items_/items-edit.component';
+import { AccountDataComponent } from './_old/accounts_/accounts.component';
+import { AccountEditDataComponent } from './_old/accounts_/accounts-edit.component';
 import { AgGridModule } from "ag-grid-angular";
-import { CrudBaseComponent } from './_generics/crud.component';
+import { CrudBaseComponent } from './_old/_generics_/crud.component';
+import { ItemComponent } from './items/item/item.component';
+import { ItemDetailComponent } from './items/item-detail/item-detail.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { CrudBaseComponent } from './_generics/crud.component';
     AccountEditDataComponent,
     MostRecentlyUsedComponent,
     CrudBaseComponent,
-    CrudItemComponent
+    CrudItemComponent,
+    ItemComponent,
+    ItemDetailComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -40,8 +44,8 @@ import { CrudBaseComponent } from './_generics/crud.component';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'items', component: CrudItemComponent },
-      { path: 'items/:id', component: ItemEditDataComponent },
+      { path: 'items', component: ItemComponent },
+      { path: 'items/:id', component: ItemDetailComponent },
       { path: 'accounts', component: AccountDataComponent },
       { path: 'accounts/:id', component: AccountEditDataComponent },
     ])

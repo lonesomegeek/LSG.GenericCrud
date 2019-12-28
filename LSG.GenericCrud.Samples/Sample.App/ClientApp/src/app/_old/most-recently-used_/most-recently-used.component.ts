@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Item } from '../items/items.component';
+import { Item } from '../items_/items.component';
 
 @Component({
   selector: 'app-most-recently-used',

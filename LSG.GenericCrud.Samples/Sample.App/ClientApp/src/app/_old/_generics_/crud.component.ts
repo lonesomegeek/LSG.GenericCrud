@@ -18,7 +18,6 @@ export abstract class CrudDataComponent<T> implements OnInit {
         .http
         .get<T[]>(this.baseUrl + this.baseRoute);
     }
-
     
   }
   
