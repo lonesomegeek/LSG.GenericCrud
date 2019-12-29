@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Item } from 'src/app/models/item';
 import { Observable } from 'rxjs';
+import { ItemService } from '../item.service';
 
 @Component({
   selector: 'app-item',
@@ -15,14 +16,14 @@ export class ItemComponent implements OnInit {
     { headerName: 'Name', field: 'name', sortable: true }];  
   baseRoute: string = "api/items";
   constructor(
-    private http: HttpClient,
-    @Inject('BASE_URL') private baseUrl: string,
+    private service : ItemService
   ) { }
   
   ngOnInit() {
-    this.rows = this
-    .http
-    .get<Item[]>(this.baseUrl + this.baseRoute);
+    // this.rows = this
+    // .http
+    // .get<Item[]>(this.baseUrl + this.baseRoute);
+    this.rows = this.service.getAll();
   }
 
 }

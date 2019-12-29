@@ -18,6 +18,7 @@ import { AgGridModule } from "ag-grid-angular";
 import { CrudBaseComponent } from './_old/_generics_/crud.component';
 import { ItemComponent } from './items/item/item.component';
 import { ItemDetailComponent } from './items/item-detail/item-detail.component';
+import { ItemFormComponent } from './items/item-form/item-form.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { ItemDetailComponent } from './items/item-detail/item-detail.component';
     CrudBaseComponent,
     CrudItemComponent,
     ItemComponent,
-    ItemDetailComponent
+    ItemDetailComponent,
+    ItemFormComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
