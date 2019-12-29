@@ -3,6 +3,10 @@
 <p>This component demonstrates fetching data from the server.</p>
 
 <p *ngIf="!row"><em>Loading...</em></p>
+<button *ngIf="!isEditing" (click)="editActivate()">Edit</button>
+
+<button *ngIf="isEditing"(click)="save()">Save</button>
+<button *ngIf="isEditing" (click)="editDeactivate()">Cancel</button>
 
 <table class='table table-striped' *ngIf="row">
   <thead>
@@ -13,12 +17,11 @@
   </thead>
   <tbody>
     <tr>
-      <td *ngIf="!editing">{{ row.name }}</td> 
-      <td *ngIf="editing"><input required [(ngModel)]="row.name" name="name"></td> 
+      <td *ngIf="!isEditing">{{ row.name }}</td> 
+      <td *ngIf="isEditing"><input required [(ngModel)]="row.name" name="name"></td> 
     </tr>
   </tbody>
 </table>
-
 <h1>History</h1>
 <p *ngIf="!history"><em>Loading...</em></p>
 <ag-grid-angular

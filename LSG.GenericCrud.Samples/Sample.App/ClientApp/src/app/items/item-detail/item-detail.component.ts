@@ -12,26 +12,40 @@ import { Observable } from 'rxjs';
 })
 export class ItemDetailComponent implements OnInit {
   row: Item;
-  selectedId : string;
-  editing : boolean = true;
-  history : Observable<History[]>;
+  selectedId: string;
+  isEditing: boolean = false;
+  history: Observable<History[]>;
   historyColumnDefs: any[] = [
     { headerName: 'Action', field: 'action', sortable: true },
     { headerName: 'By', field: 'createdBy', sortable: true },
-    { headerName: 'At', field: 'createdDate', sortable: true }];  
+    { headerName: 'At', field: 'createdDate', sortable: true }];
 
   constructor(
-    private service : ItemService,
-    route : ActivatedRoute
+    private service: ItemService,
+    route: ActivatedRoute
   ) {
     this.selectedId = route.snapshot.params["id"];
   }
 
   ngOnInit() {
     this.service.getOne(this.selectedId).subscribe(e => { this.row = e; });
-    this.service.makeRead(this.selectedId).subscribe(result => { console.log(result); });
+    this.service.makeRead(this.selectedId);
     this.history = this.service.getOneHistory(this.selectedId);
   }
 
+  editActivate() {
+    this.isEditing = true;
+  }
+
+  editDeactivate() {
+    this.isEditing = false;
+  }
+
+  save() {
+    console.log("saving");
+    this.service.putOne(this.selectedId, this.row).subscribe(result => {
+      this.editDeactivate();
+    });
+  }
 }
 
