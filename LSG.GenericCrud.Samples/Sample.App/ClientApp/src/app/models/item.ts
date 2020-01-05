@@ -1,3 +1,6 @@
 export interface Item {
-    name: string;
-  }
+  id: string;
+  name: string;
+}
+
+export class Item implements Item {}

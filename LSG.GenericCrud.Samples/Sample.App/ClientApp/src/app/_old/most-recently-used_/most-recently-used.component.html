@@ -5,7 +5,7 @@
 <ul>
     <li *ngFor="let object of objects">
         <a [routerLink]='[object.routeUrl]'>{{object.entityDisplayName}}</a>
-        <small>{{object.events[0].entityName}}</small><small>{{object.events[0].createdDate}}</small>
+        <small>{{object.lastEvent.entityName}}</small><small>{{object.lastEvent.createdDate}}</small>
     </li>
 </ul>
 <!-- <table class='table table-striped' *ngIf="objects">

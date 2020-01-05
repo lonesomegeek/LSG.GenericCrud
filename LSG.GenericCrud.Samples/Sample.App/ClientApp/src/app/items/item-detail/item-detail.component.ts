@@ -1,6 +1,5 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Item } from 'src/app/models/item';
 import { ItemService } from '../item.service';
 import { Observable } from 'rxjs';
@@ -13,6 +12,7 @@ import { Observable } from 'rxjs';
 export class ItemDetailComponent implements OnInit {
   row: Item;
   selectedId: string;
+  mode : string = "read";
   isEditing: boolean = false;
   history: Observable<History[]>;
   historyColumnDefs: any[] = [
@@ -22,30 +22,50 @@ export class ItemDetailComponent implements OnInit {
 
   constructor(
     private service: ItemService,
+    private router: Router,
     route: ActivatedRoute
   ) {
     this.selectedId = route.snapshot.params["id"];
+    if (this.selectedId == "create") this.mode = "create";
   }
 
   ngOnInit() {
-    this.service.getOne(this.selectedId).subscribe(e => { this.row = e; });
-    this.service.makeRead(this.selectedId);
-    this.history = this.service.getOneHistory(this.selectedId);
+    if (this.mode != "create") {
+      this.service.getOne(this.selectedId).subscribe(e => { this.row = e; });
+      this.service.makeRead(this.selectedId).subscribe();
+      this.history = this.service.getOneHistory(this.selectedId);
+    } else {
+      this.row = new Item();
+    }
   }
 
   editActivate() {
-    this.isEditing = true;
+    this.mode = "edit";
   }
 
   editDeactivate() {
-    this.isEditing = false;
+    this.mode = "read";
+  }
+
+  create() {
+    this.service.postOne(this.row).subscribe(result => {      
+      this.router.navigate(['/items/' + (result as Item).id]);      
+    })
+  }
+
+  delete() {
+    this.service.deleteOne(this.selectedId).subscribe(result => {
+      this.router.navigate(['/items']);
+      
+    });
   }
 
   save() {
-    console.log("saving");
     this.service.putOne(this.selectedId, this.row).subscribe(result => {
       this.editDeactivate();
     });
   }
+
+
 }
 

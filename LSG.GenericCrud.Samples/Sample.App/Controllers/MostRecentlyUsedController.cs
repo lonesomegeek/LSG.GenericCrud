@@ -34,11 +34,12 @@ namespace Sample.App.Controllers
                 .OrderByDescending(_ => _.CreatedDate)
                 .GroupBy(_ => _.EntityId)
                 .Select(_ => new
-                {
-                    EntityId = _.Key,
-                    Events = _.OrderByDescending(e => e.CreatedDate)
-                })
-                .Take(10);
+                {                    
+                    EntityId = _.Key,                    
+                    LastEvent = _.OrderByDescending(e => e.CreatedDate).FirstOrDefault()
+
+                });
+                //.Take(10);
 
             return Ok(events);
         }

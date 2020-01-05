@@ -46,6 +46,7 @@ import { ItemDetailComponent } from './items/item-detail/item-detail.component';
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'items', component: ItemComponent },
       { path: 'items/:id', component: ItemDetailComponent },
+      { path: 'items/create', component: ItemDetailComponent },
       { path: 'accounts', component: AccountDataComponent },
       { path: 'accounts/:id', component: AccountEditDataComponent },
     ])

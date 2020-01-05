@@ -21,9 +21,10 @@ export class MostRecentlyUsedComponent {
   }
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     http.get<EntityEvent[]>(baseUrl + '/most-recently-used').subscribe(result => {
-      this.objects = result;
+      this.objects = result.sort((e1, e2) => +new Date(e2.lastEvent.createdDate) - +new Date(e1.lastEvent.createdDate));
+      //this.objects = result;
       this.objects.map(_ => {
-        let route = this.getRouteFromEntityFullname(_.events[0].entityName);
+        let route = this.getRouteFromEntityFullname(_.lastEvent.entityName);
         http.get<Item>(baseUrl + 'api/' + route + '/' + _.entityId).subscribe(result2 => {
           let item: Item = result2;
           _.routeUrl = route + '/' + _.entityId;
@@ -41,6 +42,7 @@ interface EntityEvent {
   entityId: string,
   entityDisplayName: string,
   routeUrl: string;
+  lastEvent: HistoricalEvent;
   events: HistoricalEvent[];
 }
 

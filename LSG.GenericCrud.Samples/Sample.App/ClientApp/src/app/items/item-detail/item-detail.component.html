@@ -1,33 +1,34 @@
+Mode: {{mode}}
 <h1>Items</h1>
 
 <p>This component demonstrates fetching data from the server.</p>
 
 <p *ngIf="!row"><em>Loading...</em></p>
-<button *ngIf="!isEditing" (click)="editActivate()">Edit</button>
+<button *ngIf="mode=='read'" (click)="editActivate()">Edit</button>
 
-<button *ngIf="isEditing"(click)="save()">Save</button>
-<button *ngIf="isEditing" (click)="editDeactivate()">Cancel</button>
-
+<button *ngIf="mode=='edit'" (click)="save()">Save</button>
+<button *ngIf="mode=='create'" (click)="create()">Create</button>
+<button *ngIf="mode=='edit'" (click)="editDeactivate()">Cancel</button>
+<button *ngIf="mode=='edit'" (click)="delete()">Delete</button>
 <table class='table table-striped' *ngIf="row">
   <thead>
     <tr>
-      <th>Name</th>
-      
+      <th>Name</th>      
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td *ngIf="!isEditing">{{ row.name }}</td> 
-      <td *ngIf="isEditing"><input required [(ngModel)]="row.name" name="name"></td> 
+      <td *ngIf="mode=='read'">{{ row.name }}</td> 
+      <td *ngIf="mode!='read'"><input required [(ngModel)]="row.name" name="name"></td> 
     </tr>
   </tbody>
 </table>
-<h1>History</h1>
-<p *ngIf="!history"><em>Loading...</em></p>
-<ag-grid-angular
-    style="width: 500px; height: 500px;"
-    class="ag-theme-balham"
-    [rowData]="history | async"
-    [columnDefs]="historyColumnDefs"
-    >
-</ag-grid-angular>
+<div *ngIf="mode=='read'">
+  <h1>History</h1>
+  <p *ngIf="!history"><em>Loading...</em></p>
+  <ag-grid-angular style="width: 500px; height: 500px;"
+                   class="ag-theme-balham"
+                   [rowData]="history | async"
+                   [columnDefs]="historyColumnDefs">
+  </ag-grid-angular>
+</div>
