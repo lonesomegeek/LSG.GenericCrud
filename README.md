@@ -84,6 +84,7 @@ Future ideas that can/will eventually be supported (feel free to help if you wan
 - *and more*...
 
 # Release notes
+- [v4.1 Release Notes](docs/ReleaseNotes-v4.1.md)
 - [v4.0 Release Notes](docs/ReleaseNotes-v4.0.md)
 - [v3.0 Release Notes](docs/ReleaseNotes-v3.0.md)
 
