@@ -53,6 +53,7 @@ public class AccountsController : HistoricalCrudController<Account>
 Adjust your existing context class to include this property:
 ```csharp
 public DbSet<HistoricalEvent> HistoricalEvents { get; set; }
+public DbSet<HistoricalChangeset> HistoricalChangesets { get; set; }	
 ```
 This inclusion will enables the HistoricalCrud\<T> DAL to do the tracking of all the events. In future release, I may put settings to let you choose where to drop the entity events (up to you).
 
