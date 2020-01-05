@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.28902.138
+VisualStudioVersion = 16.0.29006.145
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LSG.GenericCrud", "LSG.GenericCrud\LSG.GenericCrud.csproj", "{722007F7-B2C5-40E3-B6A8-57AD5A9745F8}"
 EndProject
@@ -15,6 +15,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LSG.GenericCrud.Dto", "LSG.GenericCrud.Dto\LSG.GenericCrud.Dto.csproj", "{4A41E77C-4ECC-49CA-8C23-8413D94B1FB0}"
 	ProjectSection(ProjectDependencies) = postProject
 		{722007F7-B2C5-40E3-B6A8-57AD5A9745F8} = {722007F7-B2C5-40E3-B6A8-57AD5A9745F8}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SonarQube", "SonarQube", "{06CEFFB6-CF22-4423-AB70-915B9696FFC6}"
+	ProjectSection(SolutionItems) = preProject
+		SonarQube\e6538e5f2a5021bb39fb1d3efc72bd17ca4beb7aCSharp.ruleset = SonarQube\e6538e5f2a5021bb39fb1d3efc72bd17ca4beb7aCSharp.ruleset
+		SonarQube\SolutionBinding.sqconfig = SonarQube\SolutionBinding.sqconfig
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{D5FFE0A3-B474-498D-A249-10C592991289}"

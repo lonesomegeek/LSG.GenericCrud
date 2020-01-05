@@ -69,17 +69,22 @@ namespace Sample.GlobalFilters.Repositories
             throw new NotImplementedException();
         }
 
-        IEnumerable<T> ICrudRepository.GetAll<T>()
+        IQueryable<T> ICrudRepository.GetAll<T>()
         {
             throw new NotImplementedException();
         }
 
-        Task<IEnumerable<T>> ICrudRepository.GetAllAsync<T>()
+        IQueryable<T2> ICrudRepository.GetAll<T1, T2>()
         {
             throw new NotImplementedException();
         }
 
-        Task<IEnumerable<T2>> ICrudRepository.GetAllAsync<T1, T2>()
+        Task<IQueryable<T>> ICrudRepository.GetAllAsync<T>()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IQueryable<T2>> ICrudRepository.GetAllAsync<T1, T2>()
         {
             throw new NotImplementedException();
         }

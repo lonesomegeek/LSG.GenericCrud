@@ -1,4 +1,3 @@
-[![Board Status](https://dev.azure.com/lonesomegeek/9499f7db-38ae-4240-8e3f-d8e4475ecc2e/ba6b6c53-194d-484c-bec0-e94840125a6a/_apis/work/boardbadge/c11a5320-8e2e-4fa2-a503-17ce92a44528)](https://dev.azure.com/lonesomegeek/9499f7db-38ae-4240-8e3f-d8e4475ecc2e/_boards/board/t/ba6b6c53-194d-484c-bec0-e94840125a6a/Microsoft.RequirementCategory)
 # LSG.GenericCrud
 [![NuGet](https://img.shields.io/nuget/dt/LSG.GenericCrud.svg)](https://www.nuget.org/packages/LSG.GenericCrud)
 [![NuGet](https://img.shields.io/nuget/v/LSG.GenericCrud.svg)](https://www.nuget.org/packages/LSG.GenericCrud)
@@ -49,12 +48,10 @@ Obviously, when you are working with databases and entities, you need to write s
 | HC |	POST    | /[entity]/:id/delta	                     | 201,404	 | Extract change delta of one object |
 
 Legend
-
 | Code | Description |
 |------|-------------|
 | C    | Feature available in CrudController |
 | HC   | Feature available in HistoricalCrudController |
-
 --Enjoy!
 
 # Prerequisites
@@ -87,6 +84,7 @@ Future ideas that can/will eventually be supported (feel free to help if you wan
 - *and more*...
 
 # Release notes
+- [v4.1 Release Notes](docs/ReleaseNotes-v4.1.md)
 - [v4.0 Release Notes](docs/ReleaseNotes-v4.0.md)
 - [v3.0 Release Notes](docs/ReleaseNotes-v3.0.md)
 

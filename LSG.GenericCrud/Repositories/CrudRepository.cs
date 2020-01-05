@@ -39,15 +39,25 @@ namespace LSG.GenericCrud.Repositories
         /// Gets all.
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerable<T> GetAll<T>() where T : class, IEntity, new() => GetAllAsync<T>().GetAwaiter().GetResult();
+        public virtual IQueryable<T> GetAll<T>() where T : class, IEntity, new() => GetAll<Guid, T>();
 
         /// <summary>
-        /// Gets all asynchronous.
+        /// Gets all.
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<IEnumerable<T>> GetAllAsync<T>() where T : class, IEntity, new() => await GetAllAsync<Guid, T>();
+        public virtual IQueryable<T2> GetAll<T1, T2>() where T2 : class, IEntity<T1>, new() => _context.Set<T2>();
 
-        public virtual async Task<IEnumerable<T2>> GetAllAsync<T1, T2>() where T2 : class, IEntity<T1>, new() => await _context.Set<T2>().ToListAsync();
+        /// <summary>
+        /// Gets all.
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task<IQueryable<T>> GetAllAsync<T>() where T : class, IEntity, new() => await Task.FromResult(GetAll<Guid, T>());
+
+        /// <summary>
+        /// Gets all.
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task<IQueryable<T2>> GetAllAsync<T1, T2>() where T2 : class, IEntity<T1>, new() => await Task.FromResult(GetAll<T1, T2>());
 
         /// <summary>
         /// Gets the by identifier.

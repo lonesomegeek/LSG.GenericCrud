@@ -7,7 +7,7 @@
     <Company />
     <PackageTags>generic crud webapi aspnetcore</PackageTags>
     <Description>This library provides a set of tools to enable CRUD rapidly on any aspnetcore Web APIs.</Description>
-    <Version>4.0.0</Version>
+    <Version>4.1.0</Version>
     <CodeAnalysisRuleSet>LSG.GenericCrud.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
@@ -15,9 +15,25 @@
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.0" />
+    <PackageReference Include="Moq" Version="4.7.99" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Templates\CrudController.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CrudController.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Templates\CrudController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CrudController.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

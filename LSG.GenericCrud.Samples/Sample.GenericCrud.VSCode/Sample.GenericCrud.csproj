@@ -6,7 +6,9 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="LSG.GenericCrud" Version="2.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
+    <ProjectReference Include="..\..\LSG.GenericCrud\LSG.GenericCrud.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="microsoft.entityframeworkcore.inmemory" Version="2.2.4" />
   </ItemGroup>
 </Project>

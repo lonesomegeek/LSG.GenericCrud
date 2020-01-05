@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Sample.GlobalFilters.DataFillers;
 using Sample.GlobalFilters.Models;
 using Sample.GlobalFilters.Repositories;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Sample.GlobalFilters
 {

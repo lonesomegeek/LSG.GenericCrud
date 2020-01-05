@@ -2,12 +2,14 @@
 using LSG.GenericCrud.Helpers;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
+using Moq;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
 namespace LSG.GenericCrud.Services
 {
@@ -96,7 +98,12 @@ namespace LSG.GenericCrud.Services
             _service.AutoCommit = false;
             _userInfoRepository = userInfoRepository;
             _historicalCrudReadService = historicalCrudReadService;
-            _options = new HistoricalCrudServiceOptions() { ShowMyNewStuff = true };
+
+            // TODO: Remove mocking structure here, for v4.0, setup will be hardcoded, a new feature will cover a configurable option for this
+            var optionsMock = new Mock<IHistoricalCrudServiceOptions>();
+            optionsMock.Setup(_ => _.ShowMyNewStuff).Returns(true);
+            _options = optionsMock.Object;
+
             AutoCommit = false;
         }
 
@@ -381,10 +388,8 @@ namespace LSG.GenericCrud.Services
         public virtual async Task<IEnumerable<ReadeableStatus<T2>>> GetReadStatusAsync()
         {
             var readEvents = await _repository.GetAllAsync<HistoricalEvent>();
-
             var entityName = typeof(T2).FullName;
-
-            var entities = await _repository.GetAllAsync<T1, T2>();
+            var entities = Task.Run(() => _repository.GetAllAsync<T1, T2>()).Result.ToList();
             return entities
                 .Select(entity =>
                 {
@@ -496,6 +501,7 @@ namespace LSG.GenericCrud.Services
             var events = _repository
                 .GetAll<HistoricalEvent>()
                 .Where(_ => _.EntityId == id.ToString() && _.CreatedDate >= fromTimestamp && _.CreatedDate <= toTimestamp && _.Action != HistoricalActions.Read.ToString())
+                .ToList()
                 .OrderBy(_ => _.CreatedDate);
 
             if (events == null || !events.Any()) throw new NoHistoryException();

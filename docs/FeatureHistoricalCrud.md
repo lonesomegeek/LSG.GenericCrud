@@ -53,8 +53,7 @@ public class AccountsController : HistoricalCrudController<Account>
 Adjust your existing context class to include this property:
 ```csharp
 public DbSet<HistoricalEvent> HistoricalEvents { get; set; }
-public DbSet<HistoricalChangeset> HistoricalChangesets { get; set; }
-
+public DbSet<HistoricalChangeset> HistoricalChangesets { get; set; }	
 ```
 This inclusion will enables the HistoricalCrud\<T> DAL to do the tracking of all the events. In future release, I may put settings to let you choose where to drop the entity events (up to you).
 
@@ -79,8 +78,6 @@ This is programatically-talking a CrudController\<T> with history tracking but w
 
 You will get more routes with an HistoricalCrudController\<T>:
 
-| 	 | Verb    |	Route	                                 | Results   | Description |
-|----|----------|--------------------------------------------|-----------|-------------|
 | HC |	GET	    | /[entity]/:id/history	                     | 200,404	 | Get transaction history of an object |
 | HC |	POST    | /[entity]/:id/restore	                     | 201,404	 | Restore a deleted object in a new object |
 | HC |	POST    | /[entity]/:entityId/restore/:changesetId	 | 201,404	 | Restore a version of an object in the same object |
@@ -95,4 +92,4 @@ You will get more routes with an HistoricalCrudController\<T>:
 
 ## Samples
 
-Here is a link to an historical crud source code sample: [Link](https://github.com/lonesomegeek/LSG.GenericCrud/blob/master/LSG.GenericCrud.Samples/Sample.HistoricalCrud)
+Here is a link to an historical crud source code sample: [Link](https://github.com/lonesomegeek/LSG.GenericCrud.Samples/blob/master/Sample.HistoricalCrud/README.md)
