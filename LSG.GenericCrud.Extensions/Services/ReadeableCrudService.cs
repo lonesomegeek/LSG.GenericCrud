@@ -23,13 +23,13 @@ namespace LSG.GenericCrud.Extensions.Services
 
         public async Task<object> GetAllAsync()
         {
-            var entityStatuses = await _repository.GetAllAsync<EntityUserStatus>();
-            var users = await _repository.GetAllAsync<User>();
+            var entityStatuses = await _repository.GetAllAsync<Guid, EntityUserStatus>();
+            var users = await _repository.GetAllAsync<Guid, User>();
 
             var entityName = typeof(T).FullName;
 
             var result =
-                from a in _repository.GetAll<T>().AsQueryable()
+                from a in _repository.GetAll<Guid, T>().AsQueryable()
                 // left join account users
                 join au1 in entityStatuses on new { EntityId = a.Id, EntityName = entityName } equals new { au1.EntityId, au1.EntityName } into au1_g
                 from au1 in au1_g.DefaultIfEmpty()
@@ -53,31 +53,31 @@ namespace LSG.GenericCrud.Extensions.Services
 
         public async Task<int> MarkAllAsRead()
         {
-            var items = _repository.GetAll<T>();
+            var items = _repository.GetAll<Guid, T>();
             foreach (var item in items)
             {
-                await _repository.CreateAsync(new EntityUserStatus() { Id = Guid.NewGuid(), EntityName = typeof(T).FullName, EntityId = item.Id, UserId = _userInfoRepository.GetUserInfo(), LastViewed = DateTime.Now });
+                await _repository.CreateAsync<Guid, EntityUserStatus>(new EntityUserStatus() { Id = Guid.NewGuid(), EntityName = typeof(T).FullName, EntityId = item.Id, UserId = _userInfoRepository.GetUserInfo(), LastViewed = DateTime.Now });
             }
             return await _repository.SaveChangesAsync();
         }
 
         public async Task<int> MarkAllAsUnread()
         {
-            var objects = _repository.GetAll<EntityUserStatus>().Where(_ => _.EntityName == typeof(T).FullName && _.UserId == _userInfoRepository.GetUserInfo()).ToList();
-            objects.ForEach(async _ => await _repository.DeleteAsync<EntityUserStatus>(_.Id));
+            var objects = _repository.GetAll<Guid, EntityUserStatus>().Where(_ => _.EntityName == typeof(T).FullName && _.UserId == _userInfoRepository.GetUserInfo()).ToList();
+            objects.ForEach(async _ => await _repository.DeleteAsync<Guid, EntityUserStatus>(_.Id));
             return await _repository.SaveChangesAsync();
         }
 
         public async Task<int> MarkOneAsRead(Guid id)
         {
-            await _repository.CreateAsync(new EntityUserStatus() { Id = Guid.NewGuid(), EntityName = typeof(T).FullName, EntityId = id, UserId = _userInfoRepository.GetUserInfo(), LastViewed = DateTime.Now });
+            await _repository.CreateAsync<Guid, EntityUserStatus>(new EntityUserStatus() { Id = Guid.NewGuid(), EntityName = typeof(T).FullName, EntityId = id, UserId = _userInfoRepository.GetUserInfo(), LastViewed = DateTime.Now });
             return await _repository.SaveChangesAsync();
         }
 
         public async Task<int> MarkOneAsUnread(Guid id)
         {
-            var objects = _repository.GetAll<EntityUserStatus>().Where(_ => _.EntityName == typeof(T).FullName && _.UserId == _userInfoRepository.GetUserInfo() && _.EntityId == id).ToList();
-            objects.ForEach(async _ => await _repository.DeleteAsync<EntityUserStatus>(_.Id));
+            var objects = _repository.GetAll<Guid, EntityUserStatus>().Where(_ => _.EntityName == typeof(T).FullName && _.UserId == _userInfoRepository.GetUserInfo() && _.EntityId == id).ToList();
+            objects.ForEach(async _ => await _repository.DeleteAsync<Guid, EntityUserStatus>(_.Id));
             return await _repository.SaveChangesAsync();
         }
     }

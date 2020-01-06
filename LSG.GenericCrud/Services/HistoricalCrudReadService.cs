@@ -43,7 +43,7 @@ namespace LSG.GenericCrud.Services
         public DateTime? GetLastTimeViewed<T2>(T1 id)
         {
             var lastView = _repository
-                .GetAll<HistoricalEvent>()
+                .GetAll<Guid, HistoricalEvent>()
                 .SingleOrDefault(_ =>
                     _.EntityId == id.ToString() &&
                     _.EntityName == typeof(T2).FullName &&
@@ -51,11 +51,5 @@ namespace LSG.GenericCrud.Services
                     _.CreatedBy == _userInfoRepository.GetUserInfo());
             return lastView?.CreatedDate ?? DateTime.MinValue;
         }
-    }
-
-    public interface IHistoricalCrudReadService<T1, T2> where T2 : class, IEntity<T1>, new()
-    {
-        List<Change> ExtractChanges<T>(T source, T destination);
-        DateTime? GetLastTimeViewed<T2>(T1 id);
     }
 }

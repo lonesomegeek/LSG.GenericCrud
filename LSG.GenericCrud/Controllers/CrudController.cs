@@ -16,48 +16,6 @@ namespace LSG.GenericCrud.Controllers
     /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
     [Route("api/[controller]")]
     [ApiController]
-    [ExcludeFromCodeCoverage]
-    public class CrudController<T> : 
-        ControllerBase, 
-        ICrudController<T>,
-        ICrudCopyController<T>
-        where T : class, IEntity, new()
-    {
-        
-        private readonly ICrudController<Guid, T> _controller;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CrudAsyncController{T}"/> class.
-        /// </summary>
-        /// <param name="service">The service.</param>
-        public CrudController(ICrudController<Guid, T> controller)
-        {
-            _controller = controller;
-        }
-
-        [HttpGet]
-        public virtual async Task<ActionResult<IEnumerable<T>>> GetAll() => await _controller.GetAll();
-        [HttpGet("{id}")]
-        public virtual async Task<ActionResult<T>> GetById(Guid id) => await _controller.GetById(id);
-        [HttpHead("{id}")]
-        public virtual async Task<IActionResult> HeadById(Guid id) => await _controller.HeadById(id);
-        [HttpPost]
-        public virtual async Task<ActionResult<T>> Create(T entity) => await _controller.Create(entity);
-        [HttpPost("{id}/copy")]
-        public virtual async Task<ActionResult<T>> Copy(Guid id) => await ((ICrudCopyController<T>)_controller).Copy(id);
-        [HttpPut("{id}")]
-        public virtual async Task<IActionResult> Update(Guid id, T entity) => await _controller.Update(id, entity);
-        [HttpDelete("{id}")]
-        public virtual async Task<ActionResult<T>> Delete(Guid id) => await _controller.Delete(id);
-    }
-
-    /// <summary>
-    /// Asynchronous Crud Controller endpoints
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
-    [Route("api/[controller]")]
-    [ApiController]
     public class CrudController<T1, T2> :
         ControllerBase,
         ICrudController<T1, T2>,

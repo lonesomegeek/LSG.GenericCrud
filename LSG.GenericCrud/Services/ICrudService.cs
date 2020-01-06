@@ -10,12 +10,6 @@ namespace LSG.GenericCrud.Services
     /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface ICrudService<T> : ICrudService<Guid, T> { }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
     public interface ICrudService<T1, T2>
     {
         /// <summary>

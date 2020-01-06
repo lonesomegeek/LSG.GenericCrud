@@ -266,7 +266,7 @@ namespace LSG.GenericCrud.Dto.Services
         public async Task<SnapshotChangeset> GetDeltaSnapshot(TId id, DateTime fromTimestamp, DateTime toTimestamp)
         {
             var events =
-                from e in _repository.GetAll<HistoricalEvent>()
+                from e in _repository.GetAll<Guid, HistoricalEvent>()
                 join c in _repository.GetAllAsync<Guid, HistoricalChangeset>().Result on e.Id equals c.EventId
                 where e.EntityId == id.ToString() && c.CreatedDate >= fromTimestamp && c.CreatedDate <= toTimestamp
                 select e;
@@ -281,7 +281,7 @@ namespace LSG.GenericCrud.Dto.Services
         {
             // snapshot from creation date
             var events = _repository
-                .GetAll<HistoricalEvent>()
+                .GetAll<Guid, HistoricalEvent>()
                 .Where(_ => _.EntityId == id.ToString() && _.CreatedDate >= fromTimestamp && _.CreatedDate <= toTimestamp && _.Action != HistoricalActions.Read.ToString())
                 .ToList()
                 .OrderBy(_ => _.CreatedDate);

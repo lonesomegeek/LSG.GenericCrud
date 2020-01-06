@@ -19,52 +19,6 @@ namespace LSG.GenericCrud.Services
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="LSG.GenericCrud.Services.CrudService{T}" />
     /// <seealso cref="LSG.GenericCrud.Services.IHistoricalCrudService{T}" />
-    [ExcludeFromCodeCoverage]
-    public class HistoricalCrudService<T> :
-        IHistoricalCrudService<Guid, T> where T : class, IEntity, new()
-    {
-        private readonly IHistoricalCrudService<Guid, T> _service;
-
-        public HistoricalCrudService(IHistoricalCrudService<Guid, T> service)
-        {
-            _service = service;
-            AutoCommit = false;
-        }
-
-        public bool AutoCommit { get; set; }
-        public virtual IEnumerable<T> GetAll() => _service.GetAll();
-        public virtual T GetById(Guid id) => _service.GetById(id);
-        public virtual T Create(T entity) => _service.Create(entity);
-        public virtual T Update(Guid id, T entity) => _service.Update(id, entity);
-        public virtual T Delete(Guid id) => _service.Delete(id);
-        public virtual async Task<IEnumerable<T>> GetAllAsync() => await _service.GetAllAsync();
-        public virtual async Task<T> GetByIdAsync(Guid id) => await _service.GetByIdAsync(id);
-        public virtual async Task<T> CreateAsync(T entity) => await _service.CreateAsync(entity);
-        public virtual async Task<T> UpdateAsync(Guid id, T entity) => await _service.UpdateAsync(id, entity);
-        public virtual async Task<T> DeleteAsync(Guid id) => await _service.DeleteAsync(id);
-        public virtual async Task<T> CopyAsync(Guid id) => await _service.CopyAsync(id);
-        public virtual T Restore(Guid id) => _service.Restore(id);
-        public virtual IEnumerable<IEntity> GetHistory(Guid id) => _service.GetHistory(id);
-        public virtual async Task<T> RestoreAsync(Guid id) => await _service.RestoreAsync(id);
-        public virtual async Task<T> RestoreFromChangeset(Guid entityId, Guid changesetId) => await _service.RestoreFromChangeset(entityId, changesetId);
-        public virtual async Task<IEnumerable<IEntity>> GetHistoryAsync(Guid id) => await _service.GetHistoryAsync(id);
-        public virtual async Task<T> CopyFromChangeset(Guid entityId, Guid changesetId) => await _service.CopyFromChangeset(entityId, changesetId);
-        public virtual async Task MarkAllAsRead() => await _service.MarkAllAsRead();
-        public virtual async Task MarkAllAsUnread() => await _service.MarkAllAsUnread();
-        public virtual async Task MarkOneAsRead(Guid id) => await MarkOneAsRead(id);
-        public virtual async Task MarkOneAsUnread(Guid id) => await MarkOneAsUnread(id);
-        public virtual async Task<IEnumerable<ReadeableStatus<T>>> GetReadStatusAsync() => await _service.GetReadStatusAsync();
-        public virtual async Task<ReadeableStatus<T>> GetReadStatusByIdAsync(Guid id) => await _service.GetReadStatusByIdAsync(id);
-        public virtual async Task<object> Delta(Guid id, DeltaRequest request) => await _service.Delta(id, request);
-    }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <seealso cref="LSG.GenericCrud.Services.CrudService{T}" />
-    /// <seealso cref="LSG.GenericCrud.Services.IHistoricalCrudService{T}" />
     public class HistoricalCrudService<T1, T2> :
         ICrudService<T1, T2>,
         IHistoricalCrudService<T1, T2> where T2 : class, IEntity<T1>, new()
@@ -355,7 +309,7 @@ namespace LSG.GenericCrud.Services
                     _.EntityName == typeof(T2).FullName &&
                     _.CreatedBy == _userInfoRepository.GetUserInfo())
                 .ToList()
-                .ForEach(async _ => await _repository.DeleteAsync<HistoricalEvent>(_.Id));
+                .ForEach(async _ => await _repository.DeleteAsync<Guid, HistoricalEvent>(_.Id));
             await _repository.SaveChangesAsync();
         }
 
@@ -375,19 +329,19 @@ namespace LSG.GenericCrud.Services
 
         public virtual async Task MarkOneAsUnread(T1 id)
         {
-            var events = await _repository.GetAllAsync<HistoricalEvent>();
+            var events = await _repository.GetAllAsync<Guid, HistoricalEvent>();
             events
                 .Where(_ => _.EntityName == typeof(T2).FullName &&
                             _.EntityId == id.ToString() &&
                             _.CreatedBy == _userInfoRepository.GetUserInfo())
                 .ToList()
-                .ForEach(async _ => await _repository.DeleteAsync<HistoricalEvent>(_.Id));
+                .ForEach(async _ => await _repository.DeleteAsync<Guid, HistoricalEvent>(_.Id));
             await _repository.SaveChangesAsync();
         }
 
         public virtual async Task<IEnumerable<ReadeableStatus<T2>>> GetReadStatusAsync()
         {
-            var readEvents = await _repository.GetAllAsync<HistoricalEvent>();
+            var readEvents = await _repository.GetAllAsync<Guid, HistoricalEvent>();
             var entityName = typeof(T2).FullName;
             var entities = Task.Run(() => _repository.GetAllAsync<T1, T2>()).Result.ToList();
             return entities
@@ -417,7 +371,7 @@ namespace LSG.GenericCrud.Services
 
             var entityName = typeof(T2).FullName;
             var readEvents = _repository
-                .GetAllAsync<HistoricalEvent>()
+                .GetAllAsync<Guid, HistoricalEvent>()
                 .Result
                 .Where(_ => _.EntityId == id.ToString() &&
                             _.EntityName == entityName &&
@@ -499,7 +453,7 @@ namespace LSG.GenericCrud.Services
         {
             // snapshot from creation date
             var events = _repository
-                .GetAll<HistoricalEvent>()
+                .GetAll<Guid, HistoricalEvent>()
                 .Where(_ => _.EntityId == id.ToString() && _.CreatedDate >= fromTimestamp && _.CreatedDate <= toTimestamp && _.Action != HistoricalActions.Read.ToString())
                 .ToList()
                 .OrderBy(_ => _.CreatedDate);

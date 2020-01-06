@@ -11,14 +11,6 @@ namespace LSG.GenericCrud.Services
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="LSG.GenericCrud.Services.ICrudService{T}" />
-    public interface IHistoricalCrudService<T> : IHistoricalCrudService<Guid, T> where T : class, IEntity<Guid>, new()
-    { }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <seealso cref="LSG.GenericCrud.Services.ICrudService{T}" />
     public interface IHistoricalCrudService<T1, T2> : ICrudService<T1, T2> where T2 : class, IEntity<T1>, new()
     {
         /// <summary>

@@ -16,37 +16,6 @@ namespace LSG.GenericCrud.Services
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="LSG.GenericCrud.Services.ICrudService{T}" />
-    [ExcludeFromCodeCoverage]
-    public class CrudService<T> : ICrudService<Guid, T> where T : class, IEntity, new()
-    {
-        private readonly ICrudService<Guid, T> _service;
-
-        public CrudService(ICrudService<Guid, T> service)
-        {
-            _service = service;
-            AutoCommit = true;
-        }
-
-        public bool AutoCommit { get; set; }
-        public virtual IEnumerable<T> GetAll() => _service.GetAll();
-        public virtual T GetById(Guid id) => _service.GetById(id);
-        public virtual T Create(T entity) => _service.Create(entity);
-        public virtual T Update(Guid id, T entity) => _service.Update(id, entity);
-        public virtual T Delete(Guid id) => _service.Delete(id);
-        public virtual async Task<IEnumerable<T>> GetAllAsync() => await _service.GetAllAsync();
-        public virtual async Task<T> GetByIdAsync(Guid id) => await _service.GetByIdAsync(id);
-        public virtual async Task<T> CreateAsync(T entity) => await _service.CreateAsync(entity);
-        public virtual async Task<T> UpdateAsync(Guid id, T entity) => await _service.UpdateAsync(id, entity);
-        public virtual async Task<T> DeleteAsync(Guid id) => await _service.DeleteAsync(id);
-        public virtual async Task<T> CopyAsync(Guid id) => await _service.CopyAsync(id);
-    }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <seealso cref="LSG.GenericCrud.Services.ICrudService{T}" />
     public class CrudService<T1, T2> : ICrudService<T1, T2> where T2 : class, IEntity<T1>, new()
     {
         /// <summary>
