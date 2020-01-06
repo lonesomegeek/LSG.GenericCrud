@@ -42,24 +42,10 @@ namespace LSG.GenericCrud.Services
         public bool AutoCommit { get; set; }
 
         /// <summary>
-        /// Gets all.
-        /// </summary>
-        /// <returns></returns>
-        public virtual IEnumerable<T2> GetAll() => GetAllAsync().GetAwaiter().GetResult();
-
-        /// <summary>
         /// Gets all asynchronous.
         /// </summary>
         /// <returns></returns>
         public virtual async Task<IEnumerable<T2>> GetAllAsync() => await _repository.GetAllAsync<T1, T2>();
-
-        /// <summary>
-        /// Gets the by identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
-        public virtual T2 GetById(T1 id) => GetByIdAsync(id).GetAwaiter().GetResult();
 
         /// <summary>
         /// Gets the by identifier asynchronous.
@@ -75,13 +61,6 @@ namespace LSG.GenericCrud.Services
         }
 
         /// <summary>
-        /// Creates the specified entity.
-        /// </summary>
-        /// <param name="entity">The entity.</param>
-        /// <returns></returns>
-        public virtual T2 Create(T2 entity) => CreateAsync(entity).GetAwaiter().GetResult();
-
-        /// <summary>
         /// Creates the asynchronous.
         /// </summary>
         /// <param name="entity">The entity.</param>
@@ -92,15 +71,6 @@ namespace LSG.GenericCrud.Services
             if (AutoCommit) await _repository.SaveChangesAsync();
             return createdEntity;
         }
-
-        /// <summary>
-        /// Updates the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <param name="entity">The entity.</param>
-        /// <returns></returns>
-        public virtual T2 Update(T1 id, T2 entity) => UpdateAsync(id, entity).GetAwaiter().GetResult();
-
 
         /// <summary>
         /// Updates the asynchronous.
@@ -129,13 +99,6 @@ namespace LSG.GenericCrud.Services
             if (AutoCommit) await _repository.SaveChangesAsync();
             return originalEntity;
         }
-
-        /// <summary>
-        /// Deletes the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        public virtual T2 Delete(T1 id) => DeleteAsync(id).GetAwaiter().GetResult();
 
         /// <summary>
         /// Deletes the asynchronous.

@@ -20,36 +20,6 @@ namespace LSG.GenericCrud.Services
         /// </value>
         bool AutoCommit { get; set; }
         /// <summary>
-        /// Gets all.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<T2> GetAll();
-        /// <summary>
-        /// Gets the by identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        T2 GetById(T1 id);
-        /// <summary>
-        /// Creates the specified entity.
-        /// </summary>
-        /// <param name="entity">The entity.</param>
-        /// <returns></returns>
-        T2 Create(T2 entity);
-        /// <summary>
-        /// Updates the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <param name="entity">The entity.</param>
-        /// <returns></returns>
-        T2 Update(T1 id, T2 entity);
-        /// <summary>
-        /// Deletes the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        T2 Delete(T1 id);
-        /// <summary>
         /// Gets all asynchronous.
         /// </summary>
         /// <returns></returns>
