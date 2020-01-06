@@ -51,7 +51,7 @@ namespace LSG.GenericCrud.Tests.Services
         [Fact]
         public void Constructor_SetAutoCommitToFalse()
         {
-            var crudServiceMock = new Mock<ICrudService<TestEntity>>();
+            var crudServiceMock = new Mock<ICrudService<Guid, TestEntity>>();
             var crudService = crudServiceMock.Object;
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService, null, null, null);
 
@@ -63,8 +63,8 @@ namespace LSG.GenericCrud.Tests.Services
         public void Create_ReturnsCreatedElement()
         {
             var repository = new Mock<CrudRepository>();
-            repository.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
-            var crudServiceMock = new Mock<ICrudService<TestEntity>>();
+            repository.Setup(_ => _.CreateAsync<Guid, TestEntity>(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
+            var crudServiceMock = new Mock<ICrudService<Guid, TestEntity>>();
             crudServiceMock.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
             var crudService = crudServiceMock.Object;
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object, null, null);
@@ -81,8 +81,8 @@ namespace LSG.GenericCrud.Tests.Services
         public void Update_ReturnsUpdatedElement()
         {
             var repository = new Mock<CrudRepository>();
-            repository.Setup(_ => _.GetByIdAsync<TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
-            var crudServiceMock = new Mock<ICrudService<TestEntity>>();
+            repository.Setup(_ => _.GetByIdAsync<Guid, TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
+            var crudServiceMock = new Mock<ICrudService<Guid, TestEntity>>();
             crudServiceMock.Setup(_ => _.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(_entity);
             crudServiceMock.Setup(_ => _.UpdateAsync(It.IsAny<Guid>(), It.IsAny<TestEntity>())).ReturnsAsync(_entity);
             var crudService = crudServiceMock.Object;
@@ -102,7 +102,7 @@ namespace LSG.GenericCrud.Tests.Services
         {
             var repository = new Mock<CrudRepository>();
             repository.Setup(_ => _.GetByIdAsync<Guid, TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
-            var crudServiceMock = new Mock<ICrudService<TestEntity>>();
+            var crudServiceMock = new Mock<ICrudService<Guid, TestEntity>>();
              crudServiceMock.Setup(_ => _.DeleteAsync(It.IsAny<Guid>())).ReturnsAsync(_entity);
             var crudService = crudServiceMock.Object;
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object, null, null);
@@ -121,8 +121,8 @@ namespace LSG.GenericCrud.Tests.Services
         {
             var repository = new Mock<CrudRepository>();
             repository.Setup(_ => _.GetAllAsync<Guid, HistoricalEvent>()).ReturnsAsync(_events);
-            repository.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
-            var crudServiceMock = new Mock<ICrudService<TestEntity>>();
+            repository.Setup(_ => _.CreateAsync<Guid, TestEntity>(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
+            var crudServiceMock = new Mock<ICrudService<Guid, TestEntity>>();
             crudServiceMock.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
             var crudService = crudServiceMock.Object;
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object, null, null);
@@ -138,8 +138,8 @@ namespace LSG.GenericCrud.Tests.Services
         public void Restore_ThrowsEntityNotFoundException()
         {
             var repository = new Mock<CrudRepository>();
-            repository.Setup(_ => _.GetAllAsync<HistoricalEvent>()).ReturnsAsync(new List<HistoricalEvent>().AsQueryable());
-            var crudServiceMock = new Mock<ICrudService<TestEntity>>();
+            repository.Setup(_ => _.GetAllAsync<Guid, HistoricalEvent>()).ReturnsAsync(new List<HistoricalEvent>().AsQueryable());
+            var crudServiceMock = new Mock<ICrudService<Guid, TestEntity>>();
             var crudService = crudServiceMock.Object;
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object, null, null);
 
@@ -151,7 +151,7 @@ namespace LSG.GenericCrud.Tests.Services
         {
             var repository = new Mock<CrudRepository>();
             repository.Setup(_ => _.GetAllAsync<Guid, HistoricalEvent>()).ReturnsAsync(_events);
-            var crudServiceMock = new Mock<ICrudService<TestEntity>>();
+            var crudServiceMock = new Mock<ICrudService<Guid, TestEntity>>();
             var crudService = crudServiceMock.Object;
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object, null, null);
 
@@ -164,8 +164,8 @@ namespace LSG.GenericCrud.Tests.Services
         public void GetHistory_ThrowsEntityNotFoundException()
         {
             var repository = new Mock<CrudRepository>();
-            repository.Setup(_ => _.GetAllAsync<HistoricalEvent>()).ReturnsAsync(new List<HistoricalEvent>().AsQueryable());
-            var crudServiceMock = new Mock<ICrudService<TestEntity>>();
+            repository.Setup(_ => _.GetAllAsync<Guid, HistoricalEvent>()).ReturnsAsync(new List<HistoricalEvent>().AsQueryable());
+            var crudServiceMock = new Mock<ICrudService<Guid, TestEntity>>();
             var crudService = crudServiceMock.Object;
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object, null, null);
 
@@ -178,8 +178,8 @@ namespace LSG.GenericCrud.Tests.Services
             var repository = new Mock<ICrudRepository>();
             repository.Setup(_ => _.GetAllAsync<Guid, HistoricalEvent>()).ReturnsAsync(_events);
             repository.Setup(_ => _.GetAllAsync<Guid, HistoricalChangeset>()).ReturnsAsync(_changesets);
-            repository.Setup(_ => _.CreateAsync<TestEntity>(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
-            var crudService = new Mock<ICrudService<TestEntity>>();
+            repository.Setup(_ => _.CreateAsync<Guid, TestEntity>(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
+            var crudService = new Mock<ICrudService<Guid, TestEntity>>();
             crudService.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService.Object, repository.Object, null, null);
 
@@ -195,7 +195,7 @@ namespace LSG.GenericCrud.Tests.Services
         {
             var repository = new Mock<ICrudRepository>();
             repository.Setup(_ => _.GetAllAsync<Guid, HistoricalChangeset>()).ReturnsAsync(_changesets);
-            var crudService = new Mock<ICrudService<TestEntity>>();
+            var crudService = new Mock<ICrudService<Guid, TestEntity>>();
             crudService.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService.Object, repository.Object, null, null);
 
@@ -208,7 +208,7 @@ namespace LSG.GenericCrud.Tests.Services
             var repository = new Mock<ICrudRepository>();
             repository.Setup(_ => _.GetAllAsync<Guid, HistoricalEvent>()).ReturnsAsync(_events);
             //repository.Setup(_ => _.GetAllAsync<Guid, HistoricalChangeset>()).ReturnsAsync(_changesets);
-            var crudService = new Mock<ICrudService<TestEntity>>();
+            var crudService = new Mock<ICrudService<Guid, TestEntity>>();
             crudService.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService.Object, repository.Object, null, null);
 
@@ -219,7 +219,7 @@ namespace LSG.GenericCrud.Tests.Services
         public async void RestoreFromChangeset_ThrowsEntityNotFoundException()
         {
             var repository = new Mock<ICrudRepository>();
-            var crudService = new Mock<ICrudService<TestEntity>>();
+            var crudService = new Mock<ICrudService<Guid, TestEntity>>();
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService.Object, repository.Object, null, null);
 
             await Assert.ThrowsAsync<EntityNotFoundException>(() => service.RestoreFromChangeset(_entity.Id, _changeset.Id));
@@ -230,7 +230,7 @@ namespace LSG.GenericCrud.Tests.Services
         {
             var repository = new Mock<ICrudRepository>();
             repository.Setup(_ => _.GetByIdAsync<Guid, TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
-            var crudService = new Mock<ICrudService<TestEntity>>();
+            var crudService = new Mock<ICrudService<Guid, TestEntity>>();
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService.Object, repository.Object, null, null);
 
             await Assert.ThrowsAsync<ChangesetNotFoundException>(() => service.RestoreFromChangeset(_entity.Id, _changeset.Id));
@@ -241,7 +241,7 @@ namespace LSG.GenericCrud.Tests.Services
             var repository = new Mock<ICrudRepository>();
             repository.Setup(_ => _.GetByIdAsync<Guid, TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
             repository.Setup(_ => _.GetByIdAsync<Guid, HistoricalChangeset>(It.IsAny<Guid>())).ReturnsAsync(_changeset);
-            var crudService = new Mock<ICrudService<TestEntity>>();
+            var crudService = new Mock<ICrudService<Guid, TestEntity>>();
             crudService.Setup(_ => _.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(_entity);
             crudService.Setup(_ => _.UpdateAsync(It.IsAny<Guid>(), It.IsAny<TestEntity>())).ReturnsAsync(_entity);
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService.Object, repository.Object, null, null);
@@ -257,7 +257,7 @@ namespace LSG.GenericCrud.Tests.Services
         public async void CopyFromChangeset_ThrowsEntityNotFoundException()
         {
             var repository = new Mock<ICrudRepository>();
-            var crudService = new Mock<ICrudService<TestEntity>>();
+            var crudService = new Mock<ICrudService<Guid, TestEntity>>();
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService.Object, repository.Object, null, null);
 
             await Assert.ThrowsAsync<EntityNotFoundException>(() => service.CopyFromChangeset(_entity.Id, _changeset.Id));
@@ -268,7 +268,7 @@ namespace LSG.GenericCrud.Tests.Services
         {
             var repository = new Mock<ICrudRepository>();
             repository.Setup(_ => _.GetByIdAsync<Guid, TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
-            var crudService = new Mock<ICrudService<TestEntity>>();
+            var crudService = new Mock<ICrudService<Guid, TestEntity>>();
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService.Object, repository.Object, null, null);
 
             await Assert.ThrowsAsync<ChangesetNotFoundException>(() => service.CopyFromChangeset(_entity.Id, _changeset.Id));
@@ -279,7 +279,7 @@ namespace LSG.GenericCrud.Tests.Services
             var repository = new Mock<ICrudRepository>();
             repository.Setup(_ => _.GetByIdAsync<Guid, TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
             repository.Setup(_ => _.GetByIdAsync<Guid, HistoricalChangeset>(It.IsAny<Guid>())).ReturnsAsync(_changeset);
-            var crudService = new Mock<ICrudService<TestEntity>>();
+            var crudService = new Mock<ICrudService<Guid, TestEntity>>();
             crudService.Setup(_ => _.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(_entity);
             crudService.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService.Object, repository.Object, null, null);
@@ -295,8 +295,8 @@ namespace LSG.GenericCrud.Tests.Services
         public async void Copy_ReturnsCreatedElement()
         {
             var repository = new Mock<CrudRepository>();
-            repository.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
-            var crudServiceMock = new Mock<ICrudService<TestEntity>>();
+            repository.Setup(_ => _.CreateAsync<Guid, TestEntity>(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
+            var crudServiceMock = new Mock<ICrudService<Guid, TestEntity>>();
             crudServiceMock.Setup(_ => _.CopyAsync(It.IsAny<Guid>())).ReturnsAsync(new TestEntity());
             var crudService = crudServiceMock.Object;
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService, repository.Object, null, null);
@@ -312,7 +312,7 @@ namespace LSG.GenericCrud.Tests.Services
         [Fact]
         public async void Delta_DeltaRequestNotProvided_Throws_ArgumentNullException()
         {
-            var crudService = new Mock<ICrudService<TestEntity>>().Object;
+            var crudService = new Mock<ICrudService<Guid, TestEntity>>().Object;
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService, null, null, null);
 
             await Assert.ThrowsAsync<ArgumentNullException>(() => service.Delta(_entity.Id, null));
@@ -356,7 +356,7 @@ namespace LSG.GenericCrud.Tests.Services
         public async void GetDeltaSnapshot_NoHistory_Throws_NoHistoryException()
         {
             var repository = new Mock<ICrudRepository>();
-            repository.Setup(_ => _.GetAll<HistoricalEvent>()).Returns(_events);
+            repository.Setup(_ => _.GetAll<Guid, HistoricalEvent>()).Returns(_events);
             var crudService = new Mock<ICrudService<Guid, TestEntity>>();
             var service = new HistoricalCrudService<Guid, TestEntity>(crudService.Object, repository.Object, null, null);
 

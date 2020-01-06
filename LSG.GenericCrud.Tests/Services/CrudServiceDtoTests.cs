@@ -63,26 +63,26 @@
 //        public void GetById_ReturnElement()
 //        {
 //            var repositoryMock = new Mock<CrudRepository>();
-//            repositoryMock.Setup(_ => _.GetByIdAsync<TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
+//            repositoryMock.Setup(_ => _.GetByIdAsync<Guid, TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
 //            var entityService = new CrudService<TestEntity>(repositoryMock.Object);
 //            var service = new CrudService<TestDto, TestEntity>(entityService, repositoryMock.Object, _mapper);
 
 //            var result = service.GetById(_entity.Id);
 
 //            Assert.Equal(_entity.Id, result.Id);
-//            repositoryMock.Verify(_ => _.GetByIdAsync<TestEntity>(It.IsAny<Guid>()), Times.Once);
+//            repositoryMock.Verify(_ => _.GetByIdAsync<Guid, TestEntity>(It.IsAny<Guid>()), Times.Once);
 //        }
 
 //        [Fact]
 //        public void GetById_ThrowsEntityNotFoundException()
 //        {
 //            var repositoryMock = new Mock<CrudRepository>();
-//            repositoryMock.Setup(_ => _.GetByIdAsync<TestEntity>(It.IsAny<Guid>())).ReturnsAsync(default(TestEntity));
+//            repositoryMock.Setup(_ => _.GetByIdAsync<Guid, TestEntity>(It.IsAny<Guid>())).ReturnsAsync(default(TestEntity));
 //            var entityService = new CrudService<TestEntity>(repositoryMock.Object);
 //            var service = new CrudService<TestDto, TestEntity>(entityService, repositoryMock.Object, _mapper);
 
 //            Assert.Throws<EntityNotFoundException>(() => service.GetById(_entity.Id));
-//            repositoryMock.Verify(_ => _.GetByIdAsync<TestEntity>(It.IsAny<Guid>()), Times.Once);
+//            repositoryMock.Verify(_ => _.GetByIdAsync<Guid, TestEntity>(It.IsAny<Guid>()), Times.Once);
 //        }
 
 
@@ -105,14 +105,14 @@
 //        public void Update_ReturnsUpdatedElement()
 //        {
 //            var repositoryMock = new Mock<ICrudRepository>();
-//            repositoryMock.Setup(_ => _.GetByIdAsync<TestEntity>(_entity.Id)).ReturnsAsync(_entity);
+//            repositoryMock.Setup(_ => _.GetByIdAsync<Guid, TestEntity>(_entity.Id)).ReturnsAsync(_entity);
 //            var entityService = new CrudService<TestEntity>(repositoryMock.Object);
 //            var service = new CrudService<TestDto, TestEntity>(entityService, repositoryMock.Object, _mapper);
 
 //            var result = service.Update(_entity.Id, _dto);
 
 //            Assert.Equal(_entity.Id, result.Id);
-//            repositoryMock.Verify(_ => _.GetByIdAsync<TestEntity>(It.IsAny<Guid>()), Times.Once());
+//            repositoryMock.Verify(_ => _.GetByIdAsync<Guid, TestEntity>(It.IsAny<Guid>()), Times.Once());
 //            repositoryMock.Verify(_ => _.SaveChangesAsync(), Times.Once);
 //        }
 
@@ -120,7 +120,7 @@
 //        public void Update_ThrowsEntityNotFoundException()
 //        {
 //            var repositoryMock = new Mock<ICrudRepository>();
-//            repositoryMock.Setup(_ => _.GetByIdAsync<TestEntity>(It.IsAny<Guid>())).Throws<EntityNotFoundException>();
+//            repositoryMock.Setup(_ => _.GetByIdAsync<Guid, TestEntity>(It.IsAny<Guid>())).Throws<EntityNotFoundException>();
 //            var entityService = new CrudService<TestEntity>(repositoryMock.Object);
 //            var service = new CrudService<TestDto, TestEntity>(entityService, repositoryMock.Object, _mapper);
 
@@ -131,14 +131,14 @@
 //        public void Delete_ReturnsDeletedElement()
 //        {
 //            var repositoryMock = new Mock<ICrudRepository>();
-//            repositoryMock.Setup(_ => _.GetByIdAsync<TestEntity>(_entity.Id)).ReturnsAsync(_entity);
+//            repositoryMock.Setup(_ => _.GetByIdAsync<Guid, TestEntity>(_entity.Id)).ReturnsAsync(_entity);
 //            var entityService = new CrudService<TestEntity>(repositoryMock.Object);
 //            var service = new CrudService<TestDto, TestEntity>(entityService, repositoryMock.Object, _mapper);
 
 //            var result = service.Delete(_entity.Id);
 
 //            Assert.Equal(_entity.Id, result.Id);
-//            repositoryMock.Verify(_ => _.GetByIdAsync<TestEntity>(It.IsAny<Guid>()), Times.Once());
+//            repositoryMock.Verify(_ => _.GetByIdAsync<Guid, TestEntity>(It.IsAny<Guid>()), Times.Once());
 //            repositoryMock.Verify(_ => _.DeleteAsync<TestEntity>(It.IsAny<Guid>()), Times.Once);
 //            repositoryMock.Verify(_ => _.SaveChangesAsync(), Times.Once);
 //        }
@@ -147,7 +147,7 @@
 //        public void Delete_ThrowsEntityNotFoundException()
 //        {
 //            var repositoryMock = new Mock<ICrudRepository>();
-//            repositoryMock.Setup(_ => _.GetById<TestEntity>(It.IsAny<Guid>())).Throws<EntityNotFoundException>();
+//            repositoryMock.Setup(_ => _.GetById<Guid, TestEntity>(It.IsAny<Guid>())).Throws<EntityNotFoundException>();
 //            var entityService = new CrudService<TestEntity>(repositoryMock.Object);
 //            var service = new CrudService<TestDto, TestEntity>(entityService, repositoryMock.Object, _mapper);
 

@@ -71,7 +71,7 @@
 //        public void GetById_ReturnElements()
 //        {
 //            var repositoryMock = new Mock<CrudRepository>();
-//            repositoryMock.Setup(_ => _.GetByIdAsync<TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
+//            repositoryMock.Setup(_ => _.GetByIdAsync<Guid, TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
 //            var crudService = new CrudService<TestEntity>(repositoryMock.Object);
 //            var entityService = new HistoricalCrudService<TestEntity>(crudService, repositoryMock.Object);
 //            var service = new HistoricalCrudService<TestDto, TestEntity>(entityService, repositoryMock.Object, _mapper);
@@ -103,7 +103,7 @@
 //        public void Update_ReturnsUpdatedElement()
 //        {
 //            var repositoryMock = new Mock<CrudRepository>();
-//            repositoryMock.Setup(_ => _.GetByIdAsync<TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
+//            repositoryMock.Setup(_ => _.GetByIdAsync<Guid, TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
 //            var crudService = new CrudService<TestEntity>(repositoryMock.Object);
 //            var entityService = new HistoricalCrudService<TestEntity>(crudService, repositoryMock.Object);
 //            var service = new HistoricalCrudService<TestDto, TestEntity>(entityService, repositoryMock.Object, _mapper);
@@ -119,7 +119,7 @@
 //        public void Delete_ReturnsDeletedElement()
 //        {
 //            var repositoryMock = new Mock<CrudRepository>();
-//            repositoryMock.Setup(_ => _.GetByIdAsync<TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
+//            repositoryMock.Setup(_ => _.GetByIdAsync<Guid, TestEntity>(It.IsAny<Guid>())).ReturnsAsync(_entity);
 //            var crudService = new CrudService<TestEntity>(repositoryMock.Object);
 //            var entityService = new HistoricalCrudService<TestEntity>(crudService, repositoryMock.Object);
 //            var service = new HistoricalCrudService<TestDto, TestEntity>(entityService, repositoryMock.Object, _mapper);
@@ -136,7 +136,7 @@
 //        public void Restore_ReturnsCreatedElement()
 //        {
 //            var repositoryMock = new Mock<CrudRepository>();
-//            repositoryMock.Setup(_ => _.GetAllAsync<HistoricalEvent>()).ReturnsAsync(_events);
+//            repositoryMock.Setup(_ => _.GetAllAsync<Guid, HistoricalEvent>()).ReturnsAsync(_events);
 //            repositoryMock.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
 //            var crudService = new CrudService<TestEntity>(repositoryMock.Object);
 //            var entityService = new HistoricalCrudService<TestEntity>(crudService, repositoryMock.Object);
