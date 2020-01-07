@@ -6,9 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LSG.GenericCrud.Controllers
-{
-    public interface IHistoricalCrudReadStatusController<T> : IHistoricalCrudReadStatusController<Guid, T> where T : class, IEntity, new() { }
-    public interface IHistoricalCrudReadStatusController<T1, T2> : ICrudController<T1, T2> where T2 : class, IEntity<T1>, new()
+{   public interface IHistoricalCrudReadStatusController<T1, T2> : ICrudController<T1, T2> where T2 : class, IEntity<T1>, new()
     {
         Task<IActionResult> MarkAllAsRead();
         Task<IActionResult> MarkAllAsUnread();

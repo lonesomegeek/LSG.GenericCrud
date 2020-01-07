@@ -34,7 +34,6 @@ namespace LSG.GenericCrud.Repositories
         {
             _serviceProvider = serviceProvider;
             _dataFillers = _serviceProvider?.GetServices<IEntityDataFiller>();
-
         }
 
         /// <summary>

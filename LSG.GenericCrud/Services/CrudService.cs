@@ -16,37 +16,6 @@ namespace LSG.GenericCrud.Services
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="LSG.GenericCrud.Services.ICrudService{T}" />
-    [ExcludeFromCodeCoverage]
-    public class CrudService<T> : ICrudService<Guid, T> where T : class, IEntity, new()
-    {
-        private readonly ICrudService<Guid, T> _service;
-
-        public CrudService(ICrudService<Guid, T> service)
-        {
-            _service = service;
-            AutoCommit = true;
-        }
-
-        public bool AutoCommit { get; set; }
-        public virtual IEnumerable<T> GetAll() => _service.GetAll();
-        public virtual T GetById(Guid id) => _service.GetById(id);
-        public virtual T Create(T entity) => _service.Create(entity);
-        public virtual T Update(Guid id, T entity) => _service.Update(id, entity);
-        public virtual T Delete(Guid id) => _service.Delete(id);
-        public virtual async Task<IEnumerable<T>> GetAllAsync() => await _service.GetAllAsync();
-        public virtual async Task<T> GetByIdAsync(Guid id) => await _service.GetByIdAsync(id);
-        public virtual async Task<T> CreateAsync(T entity) => await _service.CreateAsync(entity);
-        public virtual async Task<T> UpdateAsync(Guid id, T entity) => await _service.UpdateAsync(id, entity);
-        public virtual async Task<T> DeleteAsync(Guid id) => await _service.DeleteAsync(id);
-        public virtual async Task<T> CopyAsync(Guid id) => await _service.CopyAsync(id);
-    }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <seealso cref="LSG.GenericCrud.Services.ICrudService{T}" />
     public class CrudService<T1, T2> : ICrudService<T1, T2> where T2 : class, IEntity<T1>, new()
     {
         /// <summary>
@@ -73,24 +42,10 @@ namespace LSG.GenericCrud.Services
         public bool AutoCommit { get; set; }
 
         /// <summary>
-        /// Gets all.
-        /// </summary>
-        /// <returns></returns>
-        public virtual IEnumerable<T2> GetAll() => GetAllAsync().GetAwaiter().GetResult();
-
-        /// <summary>
         /// Gets all asynchronous.
         /// </summary>
         /// <returns></returns>
         public virtual async Task<IEnumerable<T2>> GetAllAsync() => await _repository.GetAllAsync<T1, T2>();
-
-        /// <summary>
-        /// Gets the by identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
-        public virtual T2 GetById(T1 id) => GetByIdAsync(id).GetAwaiter().GetResult();
 
         /// <summary>
         /// Gets the by identifier asynchronous.
@@ -106,13 +61,6 @@ namespace LSG.GenericCrud.Services
         }
 
         /// <summary>
-        /// Creates the specified entity.
-        /// </summary>
-        /// <param name="entity">The entity.</param>
-        /// <returns></returns>
-        public virtual T2 Create(T2 entity) => CreateAsync(entity).GetAwaiter().GetResult();
-
-        /// <summary>
         /// Creates the asynchronous.
         /// </summary>
         /// <param name="entity">The entity.</param>
@@ -123,15 +71,6 @@ namespace LSG.GenericCrud.Services
             if (AutoCommit) await _repository.SaveChangesAsync();
             return createdEntity;
         }
-
-        /// <summary>
-        /// Updates the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <param name="entity">The entity.</param>
-        /// <returns></returns>
-        public virtual T2 Update(T1 id, T2 entity) => UpdateAsync(id, entity).GetAwaiter().GetResult();
-
 
         /// <summary>
         /// Updates the asynchronous.
@@ -160,13 +99,6 @@ namespace LSG.GenericCrud.Services
             if (AutoCommit) await _repository.SaveChangesAsync();
             return originalEntity;
         }
-
-        /// <summary>
-        /// Deletes the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        public virtual T2 Delete(T1 id) => DeleteAsync(id).GetAwaiter().GetResult();
 
         /// <summary>
         /// Deletes the asynchronous.
