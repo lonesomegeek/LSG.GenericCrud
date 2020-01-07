@@ -19,6 +19,7 @@ namespace LSG.GenericCrud.Services
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="LSG.GenericCrud.Services.CrudService{T}" />
     /// <seealso cref="LSG.GenericCrud.Services.IHistoricalCrudService{T}" />
+    // TODO: Mark async method as async in method name^
     public class HistoricalCrudService<T1, T2> :
         ICrudService<T1, T2>,
         IHistoricalCrudService<T1, T2> where T2 : class, IEntity<T1>, new()
@@ -62,13 +63,6 @@ namespace LSG.GenericCrud.Services
         }
 
         /// <summary>
-        /// Creates the specified entity.
-        /// </summary>
-        /// <param name="entity">The entity.</param>
-        /// <returns></returns>
-        public virtual T2 Create(T2 entity) => CreateAsync(entity).GetAwaiter().GetResult();
-
-        /// <summary>
         /// Creates the asynchronous.
         /// </summary>
         /// <param name="entity">The entity.</param>
@@ -93,14 +87,6 @@ namespace LSG.GenericCrud.Services
 
             return createdEntity;
         }
-
-        /// <summary>
-        /// Updates the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <param name="entity">The entity.</param>
-        /// <returns></returns>
-        public virtual T2 Update(T1 id, T2 entity) => UpdateAsync(id, entity).GetAwaiter().GetResult();
 
         /// <summary>
         /// Updates the asynchronous.
@@ -129,13 +115,6 @@ namespace LSG.GenericCrud.Services
 
             return modifiedEntity;
         }
-
-        /// <summary>
-        /// Deletes the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        public virtual T2 Delete(T1 id) => DeleteAsync(id).GetAwaiter().GetResult();
 
         /// <summary>
         /// Deletes the asynchronous.
@@ -190,14 +169,6 @@ namespace LSG.GenericCrud.Services
         }
 
         /// <summary>
-        /// Restores the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
-        public virtual T2 Restore(T1 id) => RestoreAsync(id).GetAwaiter().GetResult();
-
-        /// <summary>
         /// Restores the asynchronous.
         /// </summary>
         /// <param name="id">The identifier.</param>
@@ -239,14 +210,6 @@ namespace LSG.GenericCrud.Services
 
             return await UpdateAsync(entityId, entity);
         }
-
-        /// <summary>
-        /// Gets the history.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        /// <exception cref="LSG.GenericCrud.Exceptions.EntityNotFoundException"></exception>
-        public virtual IEnumerable<IEntity> GetHistory(T1 id) => GetHistoryAsync(id).GetAwaiter().GetResult();
 
         /// <summary>
         /// Gets the history asynchronous.
@@ -392,7 +355,6 @@ namespace LSG.GenericCrud.Services
 
         }
 
-
         private bool IsNewStuffAvailable(T2 entity, HistoricalEvent historicalEvent)
         {
             if (!(entity is ICreatedInfo && entity is IModifiedInfo)) throw new NotSupportedException("Entity must implement ICreatedInfo and IModifiedInfo");
@@ -515,12 +477,6 @@ namespace LSG.GenericCrud.Services
             snapshotChangeset.Changes = _historicalCrudReadService.ExtractChanges(sourceObject, actual);
             return snapshotChangeset;
         }
-
-
-
-        public virtual IEnumerable<T2> GetAll() => GetAllAsync().GetAwaiter().GetResult();
-
-        public virtual T2 GetById(T1 id) => GetByIdAsync(id).GetAwaiter().GetResult();
 
         public virtual async Task<IEnumerable<T2>> GetAllAsync() => await _service.GetAllAsync();
 
