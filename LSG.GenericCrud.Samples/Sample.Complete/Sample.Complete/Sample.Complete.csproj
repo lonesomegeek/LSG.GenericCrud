@@ -6,7 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\AccountsController.cs" />
+    <Compile Remove="Controllers\Old Controllers\**" />
+    <Content Remove="Controllers\Old Controllers\**" />
+    <EmbeddedResource Remove="Controllers\Old Controllers\**" />
+    <None Remove="Controllers\Old Controllers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Controllers\AccountsDtoController.cs" />
     <Compile Remove="Controllers\ContactsController.cs" />
     <Compile Remove="Controllers\HistoricalAccountsController.cs" />

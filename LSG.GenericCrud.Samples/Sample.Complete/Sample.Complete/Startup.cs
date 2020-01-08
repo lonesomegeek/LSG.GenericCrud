@@ -47,7 +47,7 @@ namespace Sample.Complete
 
             // Specifies to use this context with an InMemory Database connection
             //services.AddDbContext<MyContext>(opt => opt.UseInMemoryDatabase());
-            services.AddDbContext<MyContext>(opt => opt.UseSqlServer("server=(localdb)\\mssqllocaldb;Initial Catalog=Sample.Complete"));
+            services.AddDbContext<MyContext>(opt => opt.UseSqlServer("server=localhost;Initial Catalog=LSG.GenericCrud.Sample.Complete;Integrated Security=True;"));
 
             // Map our dynamic repository to our custom context
             services.AddTransient<IDbContext, MyContext>();
