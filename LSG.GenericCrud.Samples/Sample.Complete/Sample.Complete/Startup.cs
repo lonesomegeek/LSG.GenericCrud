@@ -47,14 +47,13 @@ namespace Sample.Complete
 
             // Specifies to use this context with an InMemory Database connection
             //services.AddDbContext<MyContext>(opt => opt.UseInMemoryDatabase());
-            services.AddDbContext<MyContext>(opt => opt.UseSqlServer("server=(localdb)\\mssqllocaldb;Initial Catalog=MySampleDb_2"));
+            services.AddDbContext<MyContext>(opt => opt.UseSqlServer("server=(localdb)\\mssqllocaldb;Initial Catalog=Sample.Complete"));
 
             // Map our dynamic repository to our custom context
             services.AddTransient<IDbContext, MyContext>();
 
             // Add data fillers
             services.AddTransient<IEntityDataFiller, CreatedFiller>();
-            services.AddTransient<IEntityDataFiller, ModifiedFiller>();
             services.AddTransient<IEntityDataFiller, SoftwareDeleteByStatusDataFiller>();
 
             // My ByDataFiller is using an external repository that will provide information about the actual user
@@ -62,13 +61,13 @@ namespace Sample.Complete
 
             // LSG.GenericCrud generics injection
             services.AddScoped(typeof(ICrudService<Guid, AccountDto>), typeof(CrudService<Guid, AccountDto, Account>));
-            services.AddScoped(typeof(IHistoricalCrudService<Guid, AccountDto>), typeof(SampleCustomLayerDtoService));
+            services.AddScoped(typeof(IHistoricalCrudService<Guid, AccountDto>), typeof(AccountService));
+
             services.AddScoped<IHistoricalCrudController<Guid, AccountDto>, HistoricalCrudController<Guid, AccountDto>>();
             services.AddScoped<IHistoricalCrudRestoreController<Guid, AccountDto>, HistoricalCrudController<Guid, AccountDto>>();
+            
             services.AddCrud();
             services.AddCrudDto();
-
-
         }
 
         /// <summary>
