@@ -6,6 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\AccountsController.cs" />
+    <Compile Remove="Controllers\AccountsDtoController.cs" />
+    <Compile Remove="Controllers\ContactsController.cs" />
+    <Compile Remove="Controllers\HistoricalAccountsController.cs" />
+    <Compile Remove="Controllers\HistoricalEventsController.cs" />
+    <Compile Remove="Controllers\UlidController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>

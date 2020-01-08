@@ -14,10 +14,17 @@ namespace Sample.Complete.Models
         }
 
         public DbSet<HistoricalEvent> HistoricalEvents { get; set; }
+        public DbSet<HistoricalChangeset> HistoricalChangesets { get; set; }
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Contact> Contacts { get; set; }
 
         public DbSet<MyUlid> Ulids { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Account>().HasQueryFilter(_ => _.Status != "Deleted");
+
+        }
     }
 }

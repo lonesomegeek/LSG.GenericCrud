@@ -28,11 +28,8 @@ namespace Sample.Complete.Controllers
             _restoreController = restoreController;
         }
 
-        public Task<IActionResult> HeadById(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
+        [HttpHead("{id}")]
+        public async Task<IActionResult> HeadById(Guid id) => await _controller.HeadById(id);
         [HttpPost]
         public async Task<ActionResult<AccountDto>> Create([FromBody] AccountDto dto) => await _controller.Create(dto);
         [HttpDelete("{id}")]

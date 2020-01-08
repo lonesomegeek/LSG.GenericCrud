@@ -3,7 +3,9 @@ using LSG.GenericCrud.Models;
 
 namespace Sample.Complete.Models.Entities
 {
-    public class Account : IEntity
+    public class Account : 
+        IEntity,
+        IStatusable
     {
         public Account()
         {
@@ -11,5 +13,6 @@ namespace Sample.Complete.Models.Entities
         }
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public string Status { get; set; }
     }
 }

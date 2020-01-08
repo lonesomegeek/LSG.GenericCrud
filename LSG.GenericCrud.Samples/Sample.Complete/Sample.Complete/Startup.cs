@@ -18,6 +18,8 @@ using LSG.GenericCrud.Helpers;
 using LSG.GenericCrud.Controllers;
 using System;
 using LSG.GenericCrud.Dto.Services;
+using Sample.Complete.Services;
+using Sample.Complete.Models.DataFillers;
 
 namespace Sample.Complete
 {
@@ -44,20 +46,23 @@ namespace Sample.Complete
             services.AddMvc();
 
             // Specifies to use this context with an InMemory Database connection
-            services.AddDbContext<MyContext>(opt => opt.UseInMemoryDatabase());
+            //services.AddDbContext<MyContext>(opt => opt.UseInMemoryDatabase());
+            services.AddDbContext<MyContext>(opt => opt.UseSqlServer("server=(localdb)\\mssqllocaldb;Initial Catalog=MySampleDb_2"));
+
             // Map our dynamic repository to our custom context
             services.AddTransient<IDbContext, MyContext>();
-            
+
             // Add data fillers
-            services.AddTransient<IEntityDataFiller, DateDataFiller>();
-            services.AddTransient<IEntityDataFiller, ByDataFiller>();
+            services.AddTransient<IEntityDataFiller, CreatedFiller>();
+            services.AddTransient<IEntityDataFiller, ModifiedFiller>();
+            services.AddTransient<IEntityDataFiller, SoftwareDeleteByStatusDataFiller>();
 
             // My ByDataFiller is using an external repository that will provide information about the actual user
             services.AddTransient<IUserInfoRepository, UserInfoRepository>();
 
             // LSG.GenericCrud generics injection
             services.AddScoped(typeof(ICrudService<Guid, AccountDto>), typeof(CrudService<Guid, AccountDto, Account>));
-            services.AddScoped(typeof(IHistoricalCrudService<Guid, AccountDto>), typeof(HistoricalCrudService<Guid, AccountDto, Account>));
+            services.AddScoped(typeof(IHistoricalCrudService<Guid, AccountDto>), typeof(SampleCustomLayerDtoService));
             services.AddScoped<IHistoricalCrudController<Guid, AccountDto>, HistoricalCrudController<Guid, AccountDto>>();
             services.AddScoped<IHistoricalCrudRestoreController<Guid, AccountDto>, HistoricalCrudController<Guid, AccountDto>>();
             services.AddCrud();
@@ -92,6 +97,12 @@ namespace Sample.Complete
 
             app.UseMvc();
 
+            // database initialization
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<MyContext>();
+                context.Database.EnsureCreated();
+            }
         }
     }
 }
