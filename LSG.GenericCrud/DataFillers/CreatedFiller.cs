@@ -19,14 +19,12 @@ namespace LSG.GenericCrud.DataFillers
 
         public bool IsEntitySupported(EntityEntry entry) => entry.Entity is ICreatedInfo && entry.State == EntityState.Added;
 
-        public object Fill(EntityEntry entry)
+        public async Task<object> FillAsync(EntityEntry entry)
         {
             var entity = ((ICreatedInfo)entry.Entity);
             entity.CreatedBy = _userInfoRepository?.GetUserInfo();
             entity.CreatedDate = DateTime.Now;
             return entity;
         }
-
-        public Task<object> FillAsync(EntityEntry entry) => Task.Run(() => Fill(entry));
     }
 }
