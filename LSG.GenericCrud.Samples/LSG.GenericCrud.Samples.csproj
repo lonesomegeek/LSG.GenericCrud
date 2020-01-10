@@ -19,11 +19,39 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="Sample.Complete\**" />
+    <Compile Remove="Sample.CrudOptions\**" />
+    <Compile Remove="Sample.DataFiller\**" />
+    <Compile Remove="Sample.Dto\**" />
+    <Compile Remove="Sample.GenericCrud.VS\**" />
+    <Compile Remove="Sample.GlobalFilters\**" />
+    <Compile Remove="Sample.HistoricalCrud\**" />
     <Compile Remove="_OldSamples\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="Sample.Complete\**" />
+    <Content Remove="Sample.CrudOptions\**" />
+    <Content Remove="Sample.DataFiller\**" />
+    <Content Remove="Sample.Dto\**" />
+    <Content Remove="Sample.GenericCrud.VS\**" />
+    <Content Remove="Sample.GlobalFilters\**" />
+    <Content Remove="Sample.HistoricalCrud\**" />
     <Content Remove="_OldSamples\**" />
+    <EmbeddedResource Remove="Sample.Complete\**" />
+    <EmbeddedResource Remove="Sample.CrudOptions\**" />
+    <EmbeddedResource Remove="Sample.DataFiller\**" />
+    <EmbeddedResource Remove="Sample.Dto\**" />
+    <EmbeddedResource Remove="Sample.GenericCrud.VS\**" />
+    <EmbeddedResource Remove="Sample.GlobalFilters\**" />
+    <EmbeddedResource Remove="Sample.HistoricalCrud\**" />
     <EmbeddedResource Remove="_OldSamples\**" />
     <None Remove="$(SpaRoot)**" />
+    <None Remove="Sample.Complete\**" />
+    <None Remove="Sample.CrudOptions\**" />
+    <None Remove="Sample.DataFiller\**" />
+    <None Remove="Sample.Dto\**" />
+    <None Remove="Sample.GenericCrud.VS\**" />
+    <None Remove="Sample.GlobalFilters\**" />
+    <None Remove="Sample.HistoricalCrud\**" />
     <None Remove="_OldSamples\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
