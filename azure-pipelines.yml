@@ -12,4 +12,17 @@ steps:
     displayName: 'dotnet build $(buildConfiguration)'
     inputs:
       command: 'build'
+      configuration: $(buildConfiguration)
       projects: 'LSG.GenericCrud/*.csproj'
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet pack $(buildConfiguration)'
+    inputs:
+      command: 'pack'
+      configuration: $(buildConfiguration)
+      projects: 'LSG.GenericCrud/*.csproj'
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'drop'
+      publishLocation: 'Container'
