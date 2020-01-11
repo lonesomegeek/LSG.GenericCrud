@@ -9,11 +9,20 @@ variables:
 
 steps:
   - task: DotNetCoreCLI@2
-    displayName: 'dotnet build $(buildConfiguration)'
+    displayName: 'LSG.GenericCrud - dotnet build $(buildConfiguration)'
     inputs:
       command: 'build'
       configuration: $(buildConfiguration)
       projects: 'LSG.GenericCrud/*.csproj'
+      arguments: '-o $(Build.ArtifactStagingDirectory)'
+      modifyOutputPath: true
+
+  - task: DotNetCoreCLI@2
+    displayName: 'LSG.GenericCrud.Dto - dotnet build $(buildConfiguration)'
+    inputs:
+      command: 'build'
+      configuration: $(buildConfiguration)
+      projects: 'LSG.GenericCrud.Dto/*.csproj'
       arguments: '-o $(Build.ArtifactStagingDirectory)'
       modifyOutputPath: true
 
