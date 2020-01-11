@@ -14,7 +14,7 @@ steps:
       command: 'build'
       configuration: $(buildConfiguration)
       projects: 'LSG.GenericCrud/*.csproj'
-      arguments: '-o $(Build.ArtifactStagingDirectory'
+      arguments: '-o $(Build.ArtifactStagingDirectory)'
       modifyOutputPath: true
 
   - task: DotNetCoreCLI@2
