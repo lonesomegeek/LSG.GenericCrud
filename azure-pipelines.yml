@@ -53,13 +53,12 @@ stages:
 
   - stage: deploy
     displayName: deploy
-    
+    dependsOn: build
     jobs:
     - deployment: 'production'
       pool:
         vmImage: 'ubuntu-latest'
       environment: nuget production
-      dependsOn: build
       strategy:
         runOnce:
           deploy:      
