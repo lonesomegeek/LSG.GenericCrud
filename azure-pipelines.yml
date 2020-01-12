@@ -5,7 +5,9 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  buildConfiguration: 'Release'
+  - group: 'General Variables'
+  - name: 'buildConfiguration'
+    value: 'Release'
   
 steps:
   - task: DotNetCoreCLI@2
@@ -32,6 +34,6 @@ steps:
     inputs:
       command: 'push'
       packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-      arguments: '-k oy2ej5xxyyblxco2l2iaa7qy2ncuzxbetkgvi6luyxl2ya'
+      arguments: '-k $(NugetApiKey)'
       nuGetFeedType: 'external'
       publishFeedCredentials: 'lonesomegeek'
