@@ -14,8 +14,8 @@ steps:
       command: 'build'
       configuration: $(buildConfiguration)
       projects: 'LSG.GenericCrud/*.csproj'
-      arguments: '-o $(Build.ArtifactStagingDirectory)'
-      modifyOutputPath: true
+      # arguments: '-o $(Build.ArtifactStagingDirectory)'
+      # modifyOutputPath: true
 
   - task: DotNetCoreCLI@2
     displayName: 'LSG.GenericCrud.Dto - dotnet build $(buildConfiguration)'
@@ -23,15 +23,20 @@ steps:
       command: 'build'
       configuration: $(buildConfiguration)
       projects: 'LSG.GenericCrud.Dto/*.csproj'
-      arguments: '-o $(Build.ArtifactStagingDirectory)'
-      modifyOutputPath: true
+      # arguments: '-o $(Build.ArtifactStagingDirectory)'
+      # modifyOutputPath: true
 
-  - task: DotNetCoreCLI@2
-    displayName: 'dotnet pack $(buildConfiguration)'
+  # - task: DotNetCoreCLI@2
+  #   displayName: 'dotnet pack $(buildConfiguration)'
+  #   inputs:
+  #     command: 'pack'
+  #     packagesToPack: 'LSG.GenericCrud/*.csproj'
+  #     # versioningScheme: 'byBuildNumber'
+
+  - task: CopyFiles@2
     inputs:
-      command: 'pack'
-      packagesToPack: 'LSG.GenericCrud/*.csproj'
-      # versioningScheme: 'byBuildNumber'
+      Contents: '**/*.nupkg'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
   - task: PublishBuildArtifacts@1
     inputs:
