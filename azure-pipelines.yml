@@ -50,7 +50,8 @@ stages:
           #     nuGetFeedType: 'external'
           #     publishFeedCredentials: 'lonesomegeek'
           #     verbosityPush: 'Normal'
-  - stage:
+
+  - stage: deploy
     displayName: deploy
     
     jobs:
