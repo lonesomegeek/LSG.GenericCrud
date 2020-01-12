@@ -6,7 +6,7 @@ stages:
     displayName: build   
     
     jobs:
-      - job: build
+      - job: 'b1'
         strategy:
           maxParallel: 2
 
@@ -50,7 +50,7 @@ stages:
           #     publishFeedCredentials: 'lonesomegeek'
           #     verbosityPush: 'Normal'
 
-  - stage: deploy
+  - stage: 'deploy'
     displayName: deploy
     dependsOn: 'build'
     jobs:
