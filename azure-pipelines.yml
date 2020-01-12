@@ -46,3 +46,22 @@ stages:
           #     nuGetFeedType: 'external'
           #     publishFeedCredentials: 'lonesomegeek'
           #     verbosityPush: 'Normal'
+  - stage:
+    displayName: deploy
+    
+    jobs:
+    - deployment: 'LSG.GenericCrud'
+      pool:
+        vmImage: 'ubuntu-latest'
+      environment: nuget production
+      strategy:
+        runOnce:
+          deploy:      
+            steps:
+                - task: NuGetCommand@2
+                  inputs:
+                    command: 'push'
+                    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+                    nuGetFeedType: 'external'
+                    publishFeedCredentials: 'lonesomegeek'
+                    verbosityPush: 'Normal'
