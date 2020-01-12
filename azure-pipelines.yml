@@ -2,9 +2,8 @@
 # - master
 
 stages:
-  - stage: build
-    displayName: build
-    
+  - stage: 'build'
+    displayName: build   
     
     jobs:
       - job: build
@@ -42,7 +41,6 @@ stages:
             inputs:
               PathtoPublish: '$(Build.ArtifactStagingDirectory)'
               ArtifactName: 'drop'
-              publishLocation: 'Container'
           # - task: NuGetCommand@2
           #   inputs:
           #     command: 'push'
@@ -53,7 +51,7 @@ stages:
 
   - stage: deploy
     displayName: deploy
-    dependsOn: build
+    dependsOn: 'build'
     jobs:
     - deployment: 'production'
       pool:
