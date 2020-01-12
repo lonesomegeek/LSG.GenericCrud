@@ -6,7 +6,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-
+  
 steps:
   - task: DotNetCoreCLI@2
     displayName: 'LSG.GenericCrud - dotnet build $(buildConfiguration)'
@@ -14,8 +14,6 @@ steps:
       command: 'build'
       projects: 'LSG.GenericCrud/*.csproj'
       arguments: '-c $(buildConfiguration)'
-      # arguments: '-o $(Build.ArtifactStagingDirectory)'
-      # modifyOutputPath: true
 
   - task: DotNetCoreCLI@2
     displayName: 'LSG.GenericCrud.Dto - dotnet build $(buildConfiguration)'
@@ -23,15 +21,6 @@ steps:
       command: 'build'
       projects: 'LSG.GenericCrud.Dto/*.csproj'
       arguments: '-c $(buildConfiguration)'
-      # arguments: '-o $(Build.ArtifactStagingDirectory)'
-      # modifyOutputPath: true
-
-  # - task: DotNetCoreCLI@2
-  #   displayName: 'dotnet pack $(buildConfiguration)'
-  #   inputs:
-  #     command: 'pack'
-  #     packagesToPack: 'LSG.GenericCrud/*.csproj'
-  #     # versioningScheme: 'byBuildNumber'
 
   - task: CopyFiles@2
     inputs:
@@ -39,8 +28,13 @@ steps:
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
       flattenFolders: true
 
-  - task: PublishBuildArtifacts@1
+  - task: NuGetAuthenticate@0
     inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: 'drop'
-      publishLocation: 'Container'
+      nuGetServiceConnections: 'lonesomegeek'
+      
+  - task: NuGetCommand@2
+    inputs:
+      command: 'push'
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+      nuGetFeedType: 'external'
+      publishFeedCredentials: 'lonesomegeek'
