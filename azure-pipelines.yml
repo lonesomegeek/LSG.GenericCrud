@@ -58,6 +58,7 @@ stages:
       pool:
         vmImage: 'ubuntu-latest'
       environment: nuget production
+      dependsOn: build
       strategy:
         runOnce:
           deploy:      
