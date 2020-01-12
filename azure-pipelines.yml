@@ -30,8 +30,8 @@ steps:
     displayName: 'dotnet pack $(buildConfiguration)'
     inputs:
       command: 'pack'
-      configuration: $(buildConfiguration)
-      projects: 'LSG.GenericCrud/*.csproj'
+      packagesToPack: 'LSG.GenericCrud/*.csproj'
+      versioningScheme: 'byBuildNumber'
 
   - task: PublishBuildArtifacts@1
     inputs:
