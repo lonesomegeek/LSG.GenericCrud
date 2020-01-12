@@ -41,7 +41,6 @@ stages:
           displayName: 'publish artifacts'
           inputs:
             PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-            ArtifactName: 'drop'
         # - task: NuGetCommand@2
         #   inputs:
         #     command: 'push'
