@@ -12,8 +12,8 @@ steps:
     displayName: 'LSG.GenericCrud - dotnet build $(buildConfiguration)'
     inputs:
       command: 'build'
-      configuration: $(buildConfiguration)
       projects: 'LSG.GenericCrud/*.csproj'
+      arguments: '-c $(buildConfiguration)'
       # arguments: '-o $(Build.ArtifactStagingDirectory)'
       # modifyOutputPath: true
 
@@ -21,8 +21,8 @@ steps:
     displayName: 'LSG.GenericCrud.Dto - dotnet build $(buildConfiguration)'
     inputs:
       command: 'build'
-      configuration: $(buildConfiguration)
       projects: 'LSG.GenericCrud.Dto/*.csproj'
+      arguments: '-c $(buildConfiguration)'
       # arguments: '-o $(Build.ArtifactStagingDirectory)'
       # modifyOutputPath: true
 
@@ -43,3 +43,4 @@ steps:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'drop'
       publishLocation: 'Container'
+      flattenFolders: true
