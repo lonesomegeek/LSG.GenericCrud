@@ -34,6 +34,6 @@ steps:
     inputs:
       command: 'push'
       packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-      arguments: '-k $NugetApiKey'
+      # arguments: '-k $NugetApiKey'
+      arguments: '-k oy2dizsooqcp3fdqzaqq4lkvnnfgvl2uzgktivqq7d5zqe'
       nuGetFeedType: 'external'
-      publishFeedCredentials: 'lonesomegeek'
