@@ -38,6 +38,7 @@ stages:
               TargetFolder: '$(Build.ArtifactStagingDirectory)'
               flattenFolders: true
           - task: PublishBuildArtifacts@1
+            displayName: 'publish artifacts'
             inputs:
               PathtoPublish: '$(Build.ArtifactStagingDirectory)'
               ArtifactName: 'drop'
@@ -56,7 +57,7 @@ stages:
     - deployment: 'production'
       pool:
         vmImage: 'ubuntu-latest'
-      environment: nuget production
+      environment: 'nuget production'
       strategy:
         runOnce:
           deploy:      
