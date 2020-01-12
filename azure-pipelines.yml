@@ -62,7 +62,6 @@ stages:
         runOnce:
           deploy:      
             steps:
-              - task: 
               - task: NuGetCommand@2
                 inputs:
                   command: 'push'
