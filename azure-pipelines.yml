@@ -28,13 +28,10 @@ steps:
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
       flattenFolders: true
 
-  - task: NuGetAuthenticate@0
-    inputs:
-      nuGetServiceConnections: 'lonesomegeek'
-      
   - task: NuGetCommand@2
     inputs:
       command: 'push'
       packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+      arguments: '-k oy2ej5xxyyblxco2l2iaa7qy2ncuzxbetkgvi6luyxl2ya'
       nuGetFeedType: 'external'
       publishFeedCredentials: 'lonesomegeek'
