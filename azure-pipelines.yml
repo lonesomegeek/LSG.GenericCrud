@@ -38,7 +38,11 @@ stages:
               Contents: '**/*.nupkg'
               TargetFolder: '$(Build.ArtifactStagingDirectory)'
               flattenFolders: true
-
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)/**/*.nupkg'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
           # - task: NuGetCommand@2
           #   inputs:
           #     command: 'push'
@@ -58,10 +62,11 @@ stages:
         runOnce:
           deploy:      
             steps:
-                - task: NuGetCommand@2
-                  inputs:
-                    command: 'push'
-                    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-                    nuGetFeedType: 'external'
-                    publishFeedCredentials: 'lonesomegeek'
-                    verbosityPush: 'Normal'
+              - task: 
+              - task: NuGetCommand@2
+                inputs:
+                  command: 'push'
+                  packagesToPush: '$(Agent.BuildDirectory)/drop/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+                  nuGetFeedType: 'external'
+                  publishFeedCredentials: 'lonesomegeek'
+                  verbosityPush: 'Normal'
