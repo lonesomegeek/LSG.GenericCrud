@@ -31,7 +31,7 @@ steps:
     inputs:
       command: 'pack'
       packagesToPack: 'LSG.GenericCrud/*.csproj'
-      versioningScheme: 'byBuildNumber'
+      # versioningScheme: 'byBuildNumber'
 
   - task: PublishBuildArtifacts@1
     inputs:
