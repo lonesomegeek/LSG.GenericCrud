@@ -30,10 +30,18 @@ steps:
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
       flattenFolders: true
 
+  # - task: NuGetCommand@2
+  #   inputs:
+  #     command: 'push'
+  #     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+  #     # arguments: '-k $NugetApiKey'
+  #     arguments: '-k oy2dizsooqcp3fdqzaqq4lkvnnfgvl2uzgktivqq7d5zqe'
+  #     nuGetFeedType: 'external'
+
   - task: NuGetCommand@2
     inputs:
       command: 'push'
       packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-      # arguments: '-k $NugetApiKey'
-      arguments: '-k oy2dizsooqcp3fdqzaqq4lkvnnfgvl2uzgktivqq7d5zqe'
       nuGetFeedType: 'external'
+      publishFeedCredentials: 'lonesomegeek'
+      verbosityPush: 'Normal'
