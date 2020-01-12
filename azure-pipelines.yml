@@ -1,46 +1,48 @@
 # trigger:
 # - master
 
-pool:
-  vmImage: 'ubuntu-latest'
+stages:
+  - stage: build
+    displayName: build
+    
+    
+    jobs:
+      - job: build
+        strategy:
+          maxParallel: 2
 
-variables:
-  - name: 'buildConfiguration'
-    value: 'Release'
-  
-steps:
-  - task: DotNetCoreCLI@2
-    displayName: 'LSG.GenericCrud - dotnet build $(buildConfiguration)'
-    inputs:
-      command: 'build'
-      projects: 'LSG.GenericCrud/*.csproj'
-      arguments: '-c $(buildConfiguration)'
+        pool:
+          vmImage: 'ubuntu-latest'
 
-  - task: DotNetCoreCLI@2
-    displayName: 'LSG.GenericCrud.Dto - dotnet build $(buildConfiguration)'
-    inputs:
-      command: 'build'
-      projects: 'LSG.GenericCrud.Dto/*.csproj'
-      arguments: '-c $(buildConfiguration)'
+        variables:
+          - name: 'buildConfiguration'
+            value: 'Release'
+            
+        steps:
+          - task: DotNetCoreCLI@2
+            displayName: 'LSG.GenericCrud - dotnet build $(buildConfiguration)'
+            inputs:
+              command: 'build'
+              projects: 'LSG.GenericCrud/*.csproj'
+              arguments: '-c $(buildConfiguration)'
 
-  - task: CopyFiles@2
-    inputs:
-      Contents: '**/*.nupkg'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
-      flattenFolders: true
+          - task: DotNetCoreCLI@2
+            displayName: 'LSG.GenericCrud.Dto - dotnet build $(buildConfiguration)'
+            inputs:
+              command: 'build'
+              projects: 'LSG.GenericCrud.Dto/*.csproj'
+              arguments: '-c $(buildConfiguration)'
 
-  # - task: NuGetCommand@2
-  #   inputs:
-  #     command: 'push'
-  #     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-  #     # arguments: '-k $NugetApiKey'
-  #     arguments: '-k oy2dizsooqcp3fdqzaqq4lkvnnfgvl2uzgktivqq7d5zqe'
-  #     nuGetFeedType: 'external'
+          - task: CopyFiles@2
+            inputs:
+              Contents: '**/*.nupkg'
+              TargetFolder: '$(Build.ArtifactStagingDirectory)'
+              flattenFolders: true
 
-  - task: NuGetCommand@2
-    inputs:
-      command: 'push'
-      packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-      nuGetFeedType: 'external'
-      publishFeedCredentials: 'lonesomegeek'
-      verbosityPush: 'Normal'
+          # - task: NuGetCommand@2
+          #   inputs:
+          #     command: 'push'
+          #     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+          #     nuGetFeedType: 'external'
+          #     publishFeedCredentials: 'lonesomegeek'
+          #     verbosityPush: 'Normal'
