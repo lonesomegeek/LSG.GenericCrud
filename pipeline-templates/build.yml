@@ -1,6 +1,5 @@
 parameters:
-  projectName: ''
-  projectPath: ''
+  project: ''
   configuration: ''
 
 jobs:
@@ -15,13 +14,12 @@ jobs:
         projects: '${{ parameters.projectPath }}/*.csproj'
         arguments: '-c ${{ parameters.configuration }}'
     - task: CopyFiles@2
-      inputs:
-        Contents: '**/*.nupkg'        
+      inputs:        
+        Contents: '**/*'
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
         flattenFolders: true
-    - task: PublishBuildArtifacts@1
+    - task: PublishPipelineArtifact@1
       displayName: 'publish artifacts'
       inputs:
-        #PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        targetPath: '$(Build.ArtifactStagingDirectory)' 
+        targetPath: '$(Build.ArtifactStagingDirectory)'
         artifactName: '${{ parameters.projectName }}'
