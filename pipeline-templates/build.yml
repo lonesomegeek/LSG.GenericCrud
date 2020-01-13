@@ -3,16 +3,16 @@ parameters:
   configuration: ''
 
 jobs:
-- job: 'build_${{parameters.project.projectName}}'
+- job: 'build_${{ parameters.project.projectName }}'
   pool:
     vmImage: 'ubuntu-latest'
   steps:
     - task: DotNetCoreCLI@2
-      displayName: 'dotnet build $(parameters.configuration)'
+      displayName: 'dotnet build ${{ parameters.configuration }}'
       inputs:
         command: 'build'
-        projects: '$(parameters.project.projectPath)/*.csproj'
-        arguments: '-c $(parameters.configuration)'
+        projects: '${{ parameters.project.projectPath }}/*.csproj'
+        arguments: '-c ${{ parameters.configuration }}'
     - task: CopyFiles@2
       inputs:
         Contents: '**/*.nupkg'
