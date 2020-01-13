@@ -3,7 +3,7 @@ parameters:
   configuration: ''
 
 jobs:
-- job: 'build_${{ parameters.projectName }}'
+- job: 'build'
   pool:
     vmImage: 'ubuntu-latest'
   steps:
