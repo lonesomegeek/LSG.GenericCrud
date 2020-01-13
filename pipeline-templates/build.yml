@@ -3,7 +3,7 @@ parameters:
   configuration: ''
 
 jobs:
-- job: 'build_${{ parameters.projectName }}'
+- job: '${{ parameters.projectName }}'
   pool:
     vmImage: 'ubuntu-latest'
   steps:
@@ -18,7 +18,7 @@ jobs:
         # Contents: '**/*.nupkg'
         Contents: '**/*'
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
-        flattenFolders: true
+        # flattenFolders: true
     - task: PublishBuildArtifacts@1
       displayName: 'publish artifacts'
       inputs:
