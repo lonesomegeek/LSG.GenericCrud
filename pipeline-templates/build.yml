@@ -4,6 +4,7 @@ parameters:
 
 jobs:
 - job: '${{ parameters.projectName }}'
+  displayName: 'build: ${{ parameters.projectPath }}'
   pool:
     vmImage: 'ubuntu-latest'
   steps:
@@ -19,7 +20,7 @@ jobs:
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
         flattenFolders: true
     - task: PublishPipelineArtifact@1
-      displayName: 'publish artifacts'
+      displayName: 'Publish artifacts'
       inputs:
         targetPath: '$(Build.ArtifactStagingDirectory)'
         artifactName: '${{ parameters.projectName }}'
