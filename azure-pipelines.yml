@@ -8,11 +8,11 @@ stages:
   jobs:
   - template: pipeline-templates/build.yml
     parameters:
-      project-name: "LSG.GenericCrud"
+      projectName: "LSG.GenericCrud"
       configuration: "Release"
   - template: pipeline-templates/build.yml
     parameters:
-      project-name: "LSG.GenericCrud.Dto"
+      projectName: "LSG.GenericCrud.Dto"
       configuration: "Release"
 - stage: 'deployment'
   dependsOn: 'build'

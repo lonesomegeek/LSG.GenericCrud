@@ -2,19 +2,23 @@ parameters:
   projectName: ''
   configuration: ''
 
-steps:
-  - task: DotNetCoreCLI@2
-    displayName: 'dotnet build $(parameters.configuration)'
-    inputs:
-      command: 'build'
-      projects: '$(parameters.projectName)/*.csproj'
-      arguments: '-c $(parameters.configuration)'
-  - task: CopyFiles@2
-    inputs:
-      Contents: '**/*.nupkg'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
-      flattenFolders: true
-  - task: PublishBuildArtifacts@1
-    displayName: 'publish artifacts'
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+jobs:
+- job: 'build_${{ parameters.projectName }}'
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet build $(parameters.configuration)'
+      inputs:
+        command: 'build'
+        projects: '$(parameters.projectName)/*.csproj'
+        arguments: '-c $(parameters.configuration)'
+    - task: CopyFiles@2
+      inputs:
+        Contents: '**/*.nupkg'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+        flattenFolders: true
+    - task: PublishBuildArtifacts@1
+      displayName: 'publish artifacts'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
