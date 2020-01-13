@@ -3,7 +3,7 @@ parameters:
   configuration: ''
 
 jobs:
-- job: 'build_${{ parameters.project.projectName }}'
+- job: 'build_${{ parameters.projectName }}'
   pool:
     vmImage: 'ubuntu-latest'
   steps:
@@ -11,7 +11,7 @@ jobs:
       displayName: 'dotnet build ${{ parameters.configuration }}'
       inputs:
         command: 'build'
-        projects: '${{ parameters.project.projectPath }}/*.csproj'
+        projects: '${{ parameters.projectPath }}/*.csproj'
         arguments: '-c ${{ parameters.configuration }}'
     - task: CopyFiles@2
       inputs:
