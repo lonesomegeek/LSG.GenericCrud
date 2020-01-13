@@ -8,7 +8,7 @@ jobs:
     displayName: 'nuget release: ${{ project.projectName }}'
     pool:
       vmImage: 'ubuntu-latest'
-    environment: ${{ parameters.pool }}
+    environment: ${{ parameters.environment }}
     strategy:
       runOnce:
         deploy:
