@@ -5,7 +5,7 @@ parameters:
 jobs:
 - ${{ each project in parameters.projects }}:
   - deployment: '${{ project.jobId }}'
-    displayName: 'nuget release: ${{ project.projectName }}'
+    displayName: 'nuget push: ${{ project.projectName }}'
     pool:
       vmImage: 'ubuntu-latest'
     environment: ${{ parameters.environment }}
