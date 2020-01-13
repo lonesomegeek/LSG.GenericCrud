@@ -1,5 +1,6 @@
 parameters:
-  project: ''
+  projectName: ''
+  projectPath: ''
   configuration: ''
 
 jobs:
@@ -15,11 +16,12 @@ jobs:
         arguments: '-c ${{ parameters.configuration }}'
     - task: CopyFiles@2
       inputs:
-        # Contents: '**/*.nupkg'
-        Contents: '**/*'
+        Contents: '**/*.nupkg'        
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
-        # flattenFolders: true
+        flattenFolders: true
     - task: PublishBuildArtifacts@1
       displayName: 'publish artifacts'
       inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        #PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        targetPath: '$(Build.ArtifactStagingDirectory)' 
+        artifactName: '${{ paramaters.projectName }}
