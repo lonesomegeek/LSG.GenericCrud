@@ -23,4 +23,4 @@ stages:
     parameters:
       projects:
       - projectName: "LSG.GenericCrud"
-      # - projectName: "LSG.GenericCrud.Dto"
+      - projectName: "LSG.GenericCrud.Dto"
