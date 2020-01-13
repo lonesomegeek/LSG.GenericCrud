@@ -3,7 +3,7 @@ parameters:
   configuration: ''
 
 jobs:
-- job: 'build_${{ project.projectName }}'
+- job: 'build_$(project.projectName)'
   pool:
     vmImage: 'ubuntu-latest'
   steps:
