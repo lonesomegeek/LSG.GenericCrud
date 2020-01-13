@@ -22,5 +22,8 @@ stages:
   - template: pipeline-templates/release.yml
     parameters:
       projects:
-      - projectName: "LSG.GenericCrud"
-      - projectName: "LSG.GenericCrud.Dto"
+      - projectName: "LSG_GenericCrud"
+        projectPath: "LSG.GenericCrud"
+      - projectName: "LSG_GenericCrud_Dto"
+        projectPath: "LSG.GenericCrud.Dto"
+        

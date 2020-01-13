@@ -16,7 +16,7 @@ jobs:
         arguments: '-c ${{ parameters.configuration }}'
     - task: CopyFiles@2
       inputs:        
-        Contents: '**/*'
+        Contents: '**/*.nupkg'
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
         flattenFolders: true
     - task: PublishPipelineArtifact@1

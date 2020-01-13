@@ -16,7 +16,7 @@ jobs:
             - task: NuGetCommand@2
               inputs:
                 command: 'push'
-                packagesToPush: '$(Agent.BuildDirectory)/**/*.nupkg;!$(Agent.BuildDirectory)/**/*.symbols.nupkg'
+                packagesToPush: '$(Agent.BuildDirectory)/${{ project.projectName }}/**/*.nupkg;!$(Agent.BuildDirectory)/**/*.symbols.nupkg'
                 nuGetFeedType: 'external'
                 publishFeedCredentials: 'lonesomegeek'
                 verbosityPush: 'Normal'
