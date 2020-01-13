@@ -16,11 +16,11 @@ stages:
       projectName: "LSG_GenericCrud_Dto"
       projectPath: "LSG.GenericCrud.Dto"
       configuration: "Release"  
-# - stage: 'deployment'
-#   dependsOn: 'build'
-#   jobs:
-#   - template: pipeline-templates/release.yml
-#     parameters:
-#       projects:
-#       - projectName: "LSG.GenericCrud"
-#       - projectName: "LSG.GenericCrud.Dto"
+- stage: 'deployment'
+  dependsOn: 'build'
+  jobs:
+  - template: pipeline-templates/release.yml
+    parameters:
+      projects:
+      - projectName: "LSG.GenericCrud"
+      - projectName: "LSG.GenericCrud.Dto"
