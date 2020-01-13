@@ -18,3 +18,7 @@ stages:
   dependsOn: 'build'
   jobs:
   - template: pipeline-templates/release.yml
+    parameters:
+      projects:
+      - projectName: "LSG.GenericCrud"
+      - projectName: "LSG.GenericCrud.Dto"
