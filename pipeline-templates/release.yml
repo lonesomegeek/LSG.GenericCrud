@@ -1,0 +1,21 @@
+parameters:
+  pool: 'nuget production'
+  projects: ''
+
+jobs:
+- ${{ each project in parameters.projects }}:
+  - deployment: 'nuget_release_${{ project.jobId }}'
+    displayName: 'nuget release: ${{ project.projectName }}'
+    pool: '${{ parameters.pool }}'
+
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - task: NuGetCommand@2
+              inputs:
+                command: 'push'
+                packagesToPush: '$(Agent.BuildDirectory)/**/*.nupkg;!$(Agent.BuildDirectory)/**/*.symbols.nupkg'
+                nuGetFeedType: 'external'
+                publishFeedCredentials: 'lonesomegeek'
+                verbosityPush: 'Normal'

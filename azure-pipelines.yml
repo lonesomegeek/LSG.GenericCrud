@@ -6,82 +6,15 @@ stages:
   displayName: build   
   
   jobs:
-    - job: 'b1'
-      strategy:
-        maxParallel: 2
-
-      pool:
-        vmImage: 'ubuntu-latest'
-
-      variables:
-        - name: 'buildConfiguration'
-          value: 'Release'
-          
-      steps:
-        - task: DotNetCoreCLI@2
-          displayName: 'LSG.GenericCrud - dotnet build $(buildConfiguration)'
-          inputs:
-            command: 'build'
-            projects: 'LSG.GenericCrud/*.csproj'
-            arguments: '-c $(buildConfiguration)'
-
-        - task: DotNetCoreCLI@2
-          displayName: 'LSG.GenericCrud.Dto - dotnet build $(buildConfiguration)'
-          inputs:
-            command: 'build'
-            projects: 'LSG.GenericCrud.Dto/*.csproj'
-            arguments: '-c $(buildConfiguration)'
-
-        - task: CopyFiles@2
-          inputs:
-            Contents: '**/*.nupkg'
-            TargetFolder: '$(Build.ArtifactStagingDirectory)'
-            flattenFolders: true
-        - task: PublishBuildArtifacts@1
-          displayName: 'publish artifacts'
-          inputs:
-            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        # - task: NuGetCommand@2
-        #   inputs:
-        #     command: 'push'
-        #     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-        #     nuGetFeedType: 'external'
-        #     publishFeedCredentials: 'lonesomegeek'
-        #     verbosityPush: 'Normal'
-
-- stage: "deployment"
-  #dependsOn: 'build'
-  displayName: "deployment"
+  - template: pipeline-templates/build.yml
+    parameters:
+      project-name: "LSG.GenericCrud"
+      configuration: "Release"
+  - template: pipeline-templates/build.yml
+    parameters:
+      project-name: "LSG.GenericCrud.Dto"
+      configuration: "Release"
+- stage: 'deployment'
+  dependsOn: 'build'
   jobs:
-  - deployment: "release"
-    displayName: "release"
-    pool:
-      vmImage: 'ubuntu-latest'
-    environment: 'nuget production'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-            - script: 'echo hello'
-
-
-
-# - stage: 'deploy'
-#   displayName: deploy
-#   dependsOn: 'build'
-#   jobs:
-#   - deployment: 'production'
-#     pool:
-#       vmImage: 'ubuntu-latest'
-#     environment: 'nuget production'
-#     strategy:
-#       runOnce:
-#         deploy:      
-#           steps:
-#             - task: NuGetCommand@2
-#               inputs:
-#                 command: 'push'
-#                 packagesToPush: '$(Agent.BuildDirectory)/**/*.nupkg;!$(Agent.BuildDirectory)/**/*.symbols.nupkg'
-#                 nuGetFeedType: 'external'
-#                 publishFeedCredentials: 'lonesomegeek'
-#                 verbosityPush: 'Normal'
+  - template: pipeline-templates/release.yml
