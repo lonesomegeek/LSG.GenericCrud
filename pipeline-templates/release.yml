@@ -1,13 +1,14 @@
 parameters:
-  pool: 'nuget production'
+  environment: 'nuget production'
   projects: ''
 
 jobs:
 - ${{ each project in parameters.projects }}:
   - deployment: 'nuget_release_${{ project.jobId }}'
     displayName: 'nuget release: ${{ project.projectName }}'
-    pool: '${{ parameters.pool }}'
-
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: ${{ parameters.pool }}
     strategy:
       runOnce:
         deploy:
