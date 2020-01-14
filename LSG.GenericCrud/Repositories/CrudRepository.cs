@@ -72,24 +72,6 @@ namespace LSG.GenericCrud.Repositories
             var result = await _context.Set<T2>().AddAsync(entity);
             return result.Entity;
         }
-            
-        /// <summary>
-        /// Updates the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <param name="entity">The entity.</param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public virtual T2 Update<T1, T2>(T1 id, T2 entity) where T2 : class, IEntity<T1>, new() => UpdateAsync(id, entity).GetAwaiter().GetResult();
-
-        /// <summary>
-        /// Updates the asynchronous.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <param name="entity">The entity.</param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public virtual Task<T2> UpdateAsync<T1, T2>(T1 id, T2 entity) where T2 : class, IEntity<T1>, new() => throw new NotImplementedException();
 
         /// <summary>
         /// Deletes the specified identifier.

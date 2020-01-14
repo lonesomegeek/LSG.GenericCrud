@@ -20,6 +20,7 @@ namespace LSG.GenericCrud.Controllers
     [ApiController]
     public class HistoricalCrudController<T1, T2> :
         ControllerBase,
+        ICrudController<T1, T2>,
         IHistoricalCrudController<T1, T2>,
         IHistoricalCrudCopyController<T1, T2>,
         IHistoricalCrudDeltaController<T1, T2>,
