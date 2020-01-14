@@ -5,7 +5,7 @@ parameters:
 jobs:
 - ${{ each project in parameters.projects }}:
   - deployment: '${{ project.jobId }}'
-    displayName: '${{ project.projectName }}'
+    displayName: '${{ project.projectPath }}'
     pool:
       vmImage: 'ubuntu-latest'
     environment: ${{ parameters.environment }}
