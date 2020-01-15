@@ -37,9 +37,7 @@ namespace LSG.GenericCrud.Helpers
         }
         public static void AddCrudService(this IServiceCollection services, Action<HistoricalCrudServiceOptions> options) 
         {
-            services.Configure(options);
-            
+            services.Configure(options);            
         }
-
     }
 }
