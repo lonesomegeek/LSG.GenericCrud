@@ -46,22 +46,6 @@ namespace LSG.GenericCrud.Repositories
         Task<T2> CreateAsync<T1, T2>(T2 entity) where T2 : class, IEntity<T1>, new();
 
         /// <summary>
-        /// Updates the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <param name="entity">The entity.</param>
-        /// <returns></returns>
-        T2 Update<T1, T2>(T1 id, T2 entity) where T2 : class, IEntity<T1>, new();
-
-        /// <summary>
-        /// Updates the asynchronous.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <param name="entity">The entity.</param>
-        /// <returns></returns>
-        Task<T2> UpdateAsync<T1, T2>(T1 id, T2 entity) where T2 : class, IEntity<T1>, new();
-
-        /// <summary>
         /// Deletes the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
