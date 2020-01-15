@@ -10,6 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using Microsoft.Extensions.Options;
 
 namespace LSG.GenericCrud.Services
 {
@@ -32,7 +33,7 @@ namespace LSG.GenericCrud.Services
         private readonly ICrudRepository _repository;
 
         private readonly IUserInfoRepository _userInfoRepository;
-        private readonly IHistoricalCrudServiceOptions _options;
+        private readonly HistoricalCrudServiceOptions _options;
         private readonly IHistoricalCrudReadService<T1, T2> _historicalCrudReadService;
 
         public bool AutoCommit { get; set; }
@@ -46,18 +47,15 @@ namespace LSG.GenericCrud.Services
             ICrudService<T1, T2> service,
             ICrudRepository repository,
             IUserInfoRepository userInfoRepository,
-            IHistoricalCrudReadService<T1, T2> historicalCrudReadService/*, IHistoricalCrudServiceOptions options*/)
+            IHistoricalCrudReadService<T1, T2> historicalCrudReadService,
+            IOptions<HistoricalCrudServiceOptions> options)
         {
             _service = service;
             _repository = repository;
             _service.AutoCommit = false;
             _userInfoRepository = userInfoRepository;
             _historicalCrudReadService = historicalCrudReadService;
-
-            // TODO: Remove mocking structure here, for v4.0, setup will be hardcoded, a new feature will cover a configurable option for this
-            var optionsMock = new Mock<IHistoricalCrudServiceOptions>();
-            optionsMock.Setup(_ => _.ShowMyNewStuff).Returns(true);
-            _options = optionsMock.Object;
+            _options = options.Value == null ? HistoricalCrudServiceOptions.DefaultValues : options.Value;
 
             AutoCommit = false;
         }

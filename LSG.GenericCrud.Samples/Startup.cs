@@ -40,6 +40,7 @@ namespace Sample.App
             services.AddTransient<IEntityDataFiller, ModifiedFiller>();
 
             services.AddCrud();
+            services.AddCrudService((options) => options.ShowMyNewStuff = true);
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
