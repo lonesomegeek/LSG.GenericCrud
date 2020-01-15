@@ -16,12 +16,6 @@ namespace LSG.GenericCrud.Repositories
         DbSet<TEntity> Set<TEntity>() where TEntity : class;
 
         /// <summary>
-        /// Saves the changes.
-        /// </summary>
-        /// <returns></returns>
-        int SaveChanges();
-
-        /// <summary>
         /// Saves the changes async.
         /// </summary>
         /// <returns></returns>
