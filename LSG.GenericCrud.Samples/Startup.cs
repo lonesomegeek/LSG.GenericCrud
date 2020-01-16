@@ -1,21 +1,12 @@
-using LSG.GenericCrud.DataFillers;
-using LSG.GenericCrud.Helpers;
-using LSG.GenericCrud.Repositories;
-using LSG.GenericCrud.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Sample.App.Models;
-using Sample.Complete.Repositories;
+using Microsoft.Extensions.Hosting;
 
-namespace Sample.App
+namespace LSG.GenericCrud.Samples
 {
     public class Startup
     {
@@ -29,19 +20,7 @@ namespace Sample.App
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
-            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            services.AddDbContext<MyContext>(opt => opt.UseSqlServer("server=(localdb)\\mssqllocaldb;Initial Catalog=MySampleDb"));
-            services.AddTransient<IDbContext, MyContext>();
-            services.AddTransient<IUserInfoRepository, UserInfoRepository>();
-            services.AddTransient<IEntityDataFiller, CreatedFiller>();
-            services.AddTransient<IEntityDataFiller, ModifiedFiller>();
-
-            services.AddCrud();
-            services.AddCrudService((options) => options.ShowMyNewStuff = true);
-
+            services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -50,7 +29,7 @@ namespace Sample.App
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -65,13 +44,18 @@ namespace Sample.App
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseSpaStaticFiles();
-
-            app.UseMvc(routes =>
+            if (!env.IsDevelopment())
             {
-                routes.MapRoute(
+                app.UseSpaStaticFiles();
+            }
+
+            app.UseRouting();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
+                    pattern: "{controller}/{action=Index}/{id?}");
             });
 
             app.UseSpa(spa =>

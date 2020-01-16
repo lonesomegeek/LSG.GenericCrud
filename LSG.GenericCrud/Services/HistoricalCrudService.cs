@@ -2,14 +2,11 @@
 using LSG.GenericCrud.Helpers;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
-using Moq;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Microsoft.Extensions.Options;
 
 namespace LSG.GenericCrud.Services
