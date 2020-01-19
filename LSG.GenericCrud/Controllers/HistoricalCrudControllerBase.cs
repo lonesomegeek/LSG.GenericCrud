@@ -18,7 +18,7 @@ namespace LSG.GenericCrud.Controllers
     /// <seealso cref="LSG.GenericCrud.Controllers.CrudAsyncController{T}" />
     [Route("api/[controller]")]
     [ApiController]
-    public class HistoricalCrudController<T1, T2> :
+    public class HistoricalCrudControllerBase<T1, T2> :
         ControllerBase,
         ICrudController<T1, T2>,
         IHistoricalCrudController<T1, T2>,
@@ -38,7 +38,7 @@ namespace LSG.GenericCrud.Controllers
         /// Initializes a new instance of the <see cref="HistoricalCrudAsyncController{T}"/> class.
         /// </summary>
         /// <param name="historicalCrudService">The historical crud service.</param>
-        public HistoricalCrudController(ICrudController<T1, T2> crudController, IHistoricalCrudService<T1, T2> historicalCrudService)
+        public HistoricalCrudControllerBase(ICrudController<T1, T2> crudController, IHistoricalCrudService<T1, T2> historicalCrudService)
         {
             _crudController = crudController;
             _historicalCrudService = historicalCrudService;
