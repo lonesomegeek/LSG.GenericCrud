@@ -18,15 +18,15 @@ namespace LSG.GenericCrud.Helpers
         /// <param name="services">The services.</param>
         public static void AddCrud(this IServiceCollection services)
         {
-            services.AddScoped(typeof(ICrudController<,>), typeof(CrudController<,>));
-            services.AddScoped(typeof(ICrudCopyController<,>), typeof(CrudController<,>));
+            services.AddScoped(typeof(ICrudController<,>), typeof(CrudControllerBase<,>));
+            services.AddScoped(typeof(ICrudCopyController<,>), typeof(CrudControllerBase<,>));
 
-            services.AddScoped(typeof(IHistoricalCrudController<,>), typeof(HistoricalCrudController<,>));
-            services.AddScoped(typeof(IHistoricalCrudReadService<,>), typeof(HistoricalCrudReadService<,>));
+            services.AddScoped(typeof(IHistoricalCrudController<,>), typeof(HistoricalCrudControllerBase<,>));
+            services.AddScoped(typeof(IHistoricalCrudReadService<,>), typeof(HistoricalCrudControllerBase<,>));
 
-            services.AddScoped(typeof(ICrudService<,>), typeof(CrudService<,>));
+            services.AddScoped(typeof(ICrudService<,>), typeof(CrudServiceBase<,>));
             services.AddScoped(typeof(ICrudRepository), typeof(CrudRepository));
-            services.AddScoped(typeof(IHistoricalCrudService<,>), typeof(HistoricalCrudService<,>));
+            services.AddScoped(typeof(IHistoricalCrudService<,>), typeof(HistoricalCrudServiceBase<,>));
         }
         public static void AddCrudService(this IServiceCollection services)
         {

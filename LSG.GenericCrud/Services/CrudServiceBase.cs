@@ -16,7 +16,7 @@ namespace LSG.GenericCrud.Services
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="LSG.GenericCrud.Services.ICrudService{T}" />
-    public class CrudService<T1, T2> : ICrudService<T1, T2> where T2 : class, IEntity<T1>, new()
+    public class CrudServiceBase<T1, T2> : ICrudService<T1, T2> where T2 : class, IEntity<T1>, new()
     {
         /// <summary>
         /// The repository
@@ -27,7 +27,7 @@ namespace LSG.GenericCrud.Services
         /// Initializes a new instance of the <see cref="CrudService{T}"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
-        public CrudService(ICrudRepository repository)
+        public CrudServiceBase(ICrudRepository repository)
         {
             _repository = repository;
             AutoCommit = true;
