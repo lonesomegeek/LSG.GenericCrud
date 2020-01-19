@@ -16,7 +16,7 @@ namespace LSG.GenericCrud.Controllers
     /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
     [Route("api/[controller]")]
     [ApiController]
-    public class CrudController<T1, T2> :
+    public class CrudControllerBase<T1, T2> :
         ControllerBase,
         ICrudController<T1, T2>,
         ICrudCopyController<T1, T2>
@@ -31,7 +31,7 @@ namespace LSG.GenericCrud.Controllers
         /// Initializes a new instance of the <see cref="CrudAsyncController{T}"/> class.
         /// </summary>
         /// <param name="service">The service.</param>
-        public CrudController(ICrudService<T1, T2> service)
+        public CrudControllerBase(ICrudService<T1, T2> service)
         {
             _service = service;
         }

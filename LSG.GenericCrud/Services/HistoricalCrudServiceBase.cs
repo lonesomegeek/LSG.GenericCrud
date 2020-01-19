@@ -18,9 +18,10 @@ namespace LSG.GenericCrud.Services
     /// <seealso cref="LSG.GenericCrud.Services.CrudService{T}" />
     /// <seealso cref="LSG.GenericCrud.Services.IHistoricalCrudService{T}" />
     // TODO: Mark async method as async in method name^
-    public class HistoricalCrudService<T1, T2> :
+    public class HistoricalCrudServiceBase<T1, T2> :
         ICrudService<T1, T2>,
-        IHistoricalCrudService<T1, T2> where T2 : class, IEntity<T1>, new()
+        IHistoricalCrudService<T1, T2>,
+        IHistoricalCrudReadService<T1, T2> where T2 : class, IEntity<T1>, new()
     {
         private readonly ICrudService<T1, T2> _service;
 
@@ -40,7 +41,7 @@ namespace LSG.GenericCrud.Services
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="eventRepository">The event repository.</param>
-        public HistoricalCrudService(
+        public HistoricalCrudServiceBase(
             ICrudService<T1, T2> service,
             ICrudRepository repository,
             IUserInfoRepository userInfoRepository,
@@ -476,5 +477,37 @@ namespace LSG.GenericCrud.Services
         public virtual async Task<IEnumerable<T2>> GetAllAsync() => await _service.GetAllAsync();
 
         public virtual async Task<T2> GetByIdAsync(T1 id) => await _service.GetByIdAsync(id);
+
+        public List<Change> ExtractChanges<T>(T source, T destination)
+        {
+            if (destination == null) throw new ArgumentNullException(nameof(destination));
+            var changes = new List<Change>();
+
+            destination
+                .GetType()
+                .GetProperties()
+                .Where(_ => _.DeclaringType == destination.GetType() && !Attribute.IsDefined(_, typeof(IgnoreInChangesetAttribute)))
+                .ToList()
+                .ForEach(_ => changes.Add(new Change()
+                {
+                    FieldName = _.Name,
+                    FromValue = source.GetType().GetProperty(_.Name)?.GetValue(source),
+                    ToValue = destination.GetType().GetProperty(_.Name)?.GetValue(destination)
+                }));
+
+            return changes;
+        }
+
+        public DateTime? GetLastTimeViewed<T2>(T1 id)
+        {
+            var lastView = _repository
+                .GetAll<Guid, HistoricalEvent>()
+                .SingleOrDefault(_ =>
+                    _.EntityId == id.ToString() &&
+                    _.EntityName == typeof(T2).FullName &&
+                    _.Action == HistoricalActions.Read.ToString() &&
+                    _.CreatedBy == _userInfoRepository.GetUserInfo());
+            return lastView?.CreatedDate ?? DateTime.MinValue;
+        }
     }
 }
