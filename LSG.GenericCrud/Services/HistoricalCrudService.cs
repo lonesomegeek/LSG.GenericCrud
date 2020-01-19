@@ -19,7 +19,7 @@ namespace LSG.GenericCrud.Services
     /// <seealso cref="LSG.GenericCrud.Services.IHistoricalCrudService{T}" />
     // TODO: Mark async method as async in method name^
     public class HistoricalCrudService<T1, T2> :
-        ICrudService<T1, T2>,
+        //ICrudService<T1, T2>,
         IHistoricalCrudService<T1, T2> where T2 : class, IEntity<T1>, new()
     {
         private readonly ICrudService<T1, T2> _service;
