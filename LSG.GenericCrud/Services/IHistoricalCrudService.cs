@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,29 +11,8 @@ namespace LSG.GenericCrud.Services
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="LSG.GenericCrud.Services.ICrudService{T}" />
-    public interface IHistoricalCrudService<T> : IHistoricalCrudService<Guid, T> where T : class, IEntity<Guid>, new()
-    { }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <seealso cref="LSG.GenericCrud.Services.ICrudService{T}" />
     public interface IHistoricalCrudService<T1, T2> : ICrudService<T1, T2> where T2 : class, IEntity<T1>, new()
-    {
-        /// <summary>
-        /// Restores the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        T2 Restore(T1 id);
-        /// <summary>
-        /// Gets the history.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        IEnumerable<IEntity> GetHistory(T1 id);
-        /// <summary>
+    {   /// <summary>
         /// Restores the asynchronous.
         /// </summary>
         /// <param name="id">The identifier.</param>

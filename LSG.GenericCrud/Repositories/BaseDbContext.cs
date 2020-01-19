@@ -34,34 +34,6 @@ namespace LSG.GenericCrud.Repositories
         {
             _serviceProvider = serviceProvider;
             _dataFillers = _serviceProvider?.GetServices<IEntityDataFiller>();
-
-        }
-
-        /// <summary>
-        /// Saves all changes made in this context to the database.
-        /// </summary>
-        /// <returns>
-        /// The number of state entries written to the database.
-        /// </returns>
-        /// <remarks>
-        /// This method will automatically call <see cref="M:Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker.DetectChanges" /> to discover any
-        /// changes to entity instances before saving to the underlying database. This can be disabled via
-        /// <see cref="P:Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker.AutoDetectChangesEnabled" />.
-        /// </remarks>
-        public override int SaveChanges()
-        {
-            if (_dataFillers != null)
-            {
-                var entries = ChangeTracker.Entries();
-                foreach (var entry in entries)
-                {
-                    foreach (var dataFiller in _dataFillers)
-                    {
-                        if (dataFiller.IsEntitySupported(entry)) dataFiller.Fill(entry);
-                    }
-                }
-            }
-            return base.SaveChanges();
         }
 
         /// <summary>

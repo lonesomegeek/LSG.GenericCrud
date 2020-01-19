@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LSG.GenericCrud.Controllers
 {
-    public interface ICrudController<T> : ICrudController<Guid, T> where T : class, IEntity<Guid>, new() { }
-
     public interface ICrudController<T1, T2> where T2 : class, IEntity<T1>, new()
     {
         /// <summary>
