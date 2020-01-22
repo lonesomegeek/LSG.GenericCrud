@@ -53,7 +53,7 @@ namespace LSG.GenericCrud.Services
             _service.AutoCommit = false;
             _userInfoRepository = userInfoRepository;
             _historicalCrudReadService = historicalCrudReadService;
-            _options = options.Value == null ? HistoricalCrudServiceOptions.DefaultValues : options.Value;
+            _options = options == null || options.Value == null ? HistoricalCrudServiceOptions.DefaultValues : options.Value;
 
             AutoCommit = false;
         }
