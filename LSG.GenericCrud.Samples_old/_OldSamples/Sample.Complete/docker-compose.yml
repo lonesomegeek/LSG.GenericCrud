@@ -1,8 +1,0 @@
-version: '3'
-
-services:
-  sample.complete:
-    image: sample.complete
-    build:
-      context: ./Sample.Complete
-      dockerfile: Dockerfile

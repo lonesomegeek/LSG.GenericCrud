@@ -1,7 +1,11 @@
+using LSG.GenericCrud.DataFillers;
+using LSG.GenericCrud.Helpers;
+using LSG.GenericCrud.Samples.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,6 +30,12 @@ namespace LSG.GenericCrud.Samples
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            services.AddDbContext<SampleContext>(opt => opt.UseSqlServer("server=(localdb)\\mssqllocaldb;Initial Catalog=MySampleDb"));
+            //services.AddTransient<IUserInfoRepository, UserInfoRepository>();
+            services.AddTransient<IEntityDataFiller, CreatedFiller>();
+            services.AddTransient<IEntityDataFiller, ModifiedFiller>();
+            services.AddCrud();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,9 +1,9 @@
 ﻿using LSG.GenericCrud.Controllers;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
+using LSG.GenericCrud.Samples.Models;
 using LSG.GenericCrud.Services;
 using Microsoft.AspNetCore.Mvc;
-using Sample.App.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
