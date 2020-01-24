@@ -32,7 +32,6 @@ namespace LSG.GenericCrud.Services
 
         private readonly IUserInfoRepository _userInfoRepository;
         private readonly HistoricalCrudServiceOptions _options;
-        private readonly IHistoricalCrudReadService<T1, T2> _historicalCrudReadService;
 
         public bool AutoCommit { get; set; }
 
@@ -45,14 +44,12 @@ namespace LSG.GenericCrud.Services
             ICrudService<T1, T2> service,
             ICrudRepository repository,
             IUserInfoRepository userInfoRepository,
-            IHistoricalCrudReadService<T1, T2> historicalCrudReadService,
             IOptions<HistoricalCrudServiceOptions> options)
         {
             _service = service;
             _repository = repository;
             _service.AutoCommit = false;
             _userInfoRepository = userInfoRepository;
-            _historicalCrudReadService = historicalCrudReadService;
             _options = options == null || options.Value == null ? HistoricalCrudServiceOptions.DefaultValues : options.Value;
 
             AutoCommit = false;
@@ -382,7 +379,7 @@ namespace LSG.GenericCrud.Services
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
 
-            if (request.From == null) request.From = _historicalCrudReadService.GetLastTimeViewed<T2>(id);
+            if (request.From == null) request.From = GetLastTimeViewed<T2>(id);
             if (request.To == null) request.To = DateTime.MaxValue;
 
             if (request.Mode == DeltaRequestModes.Snapshot) return await GetDeltaSnapshot(id, request.From.Value, request.To.Value);
@@ -448,7 +445,7 @@ namespace LSG.GenericCrud.Services
             changeset.EventName = nextEvent.Action;
             changeset.Changes = 
                 currentEvent.Action != HistoricalActions.Delete.ToString() ? 
-                    _historicalCrudReadService.ExtractChanges(currentObject, nextObject) : 
+                    ExtractChanges(currentObject, nextObject) : 
                     null;
 
             return changeset;
@@ -465,12 +462,12 @@ namespace LSG.GenericCrud.Services
             var snapshotChangeset = new SnapshotChangeset();
             snapshotChangeset.EntityTypeName = sourceEvent.EntityName;
             snapshotChangeset.EntityId = sourceEvent.EntityId;
-            snapshotChangeset.LastViewed = _historicalCrudReadService.GetLastTimeViewed<T2>(actual.Id).Value;
+            snapshotChangeset.LastViewed = GetLastTimeViewed<T2>(actual.Id).Value;
             snapshotChangeset.LastModifiedBy = events.Last().CreatedBy;
             snapshotChangeset.LastModifiedEvent = events.Last().Action;
             snapshotChangeset.LastModifiedDate = events.Last().CreatedDate.Value;
             // TODO: Bug here if entity is deleted or not found
-            snapshotChangeset.Changes = _historicalCrudReadService.ExtractChanges(sourceObject, actual);
+            snapshotChangeset.Changes = ExtractChanges(sourceObject, actual);
             return snapshotChangeset;
         }
 
