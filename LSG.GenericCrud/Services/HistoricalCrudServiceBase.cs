@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
 
 namespace LSG.GenericCrud.Services
 {
@@ -32,6 +33,7 @@ namespace LSG.GenericCrud.Services
 
         private readonly IUserInfoRepository _userInfoRepository;
         private readonly HistoricalCrudServiceOptions _options;
+        private readonly IDbContext _context;
 
         public bool AutoCommit { get; set; }
 
@@ -44,13 +46,15 @@ namespace LSG.GenericCrud.Services
             ICrudService<T1, T2> service,
             ICrudRepository repository,
             IUserInfoRepository userInfoRepository,
-            IOptions<HistoricalCrudServiceOptions> options)
+            IOptions<HistoricalCrudServiceOptions> options,
+            IDbContext context)
         {
             _service = service;
             _repository = repository;
             _service.AutoCommit = false;
             _userInfoRepository = userInfoRepository;
             _options = options == null || options.Value == null ? HistoricalCrudServiceOptions.DefaultValues : options.Value;
+            _context = context;
 
             AutoCommit = false;
         }
@@ -396,7 +400,16 @@ namespace LSG.GenericCrud.Services
                 from e in historicalEvents
                 join c in historicalChangesets on e.Id equals c.EventId
                 where e.EntityId == id.ToString() && c.CreatedDate >= fromTimestamp && c.CreatedDate <= toTimestamp
-                select e;
+                select new HistoricalEvent
+                {
+                    Action = e.Action,
+                    Changeset = c,
+                    CreatedBy = e.CreatedBy,
+                    CreatedDate = e.CreatedDate,
+                    EntityId = e.EntityId,
+                    EntityName = e.EntityName,
+                    Id = e.Id
+                };
 
             if (!events.Any()) throw new NoHistoryException();
 
@@ -407,22 +420,20 @@ namespace LSG.GenericCrud.Services
         public async Task<DifferentialChangeset> GetDeltaDifferential(T1 id, DateTime fromTimestamp, DateTime toTimestamp)
         {
             // snapshot from creation date
-            var events = _repository
-                .GetAll<Guid, HistoricalEvent>()
+            // Note: we need to use _context instead of repository to have access to DbSet Include Feature
+            var events = _context
+                .Set<HistoricalEvent>()
+                .Include(_ => _.Changeset)
                 .Where(_ => _.EntityId == id.ToString() && _.CreatedDate >= fromTimestamp && _.CreatedDate <= toTimestamp && _.Action != HistoricalActions.Read.ToString())
-                .ToList()
                 .OrderBy(_ => _.CreatedDate);
 
             if (events == null || !events.Any()) throw new NoHistoryException();
-            //.Skip(1);
 
             return await ExtractDifferentialChangeset(id, events);
         }
 
-        public async Task<DifferentialChangeset> ExtractDifferentialChangeset(T1 id, IOrderedEnumerable<HistoricalEvent> events)
+        public async Task<DifferentialChangeset> ExtractDifferentialChangeset(T1 id, IOrderedQueryable<HistoricalEvent> events)
         {
-            var changesets = await _repository.GetAllAsync<Guid, HistoricalChangeset>(); // TODO: keep it there, include changesets in context
-
             var differentialChangeset = new DifferentialChangeset();
             differentialChangeset.EntityId = id.ToString();
             differentialChangeset.EntityTypeName = events.First().EntityName;

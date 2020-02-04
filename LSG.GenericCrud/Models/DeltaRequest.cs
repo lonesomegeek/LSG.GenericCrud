@@ -7,7 +7,6 @@ namespace LSG.GenericCrud.Models
 {
     public class DeltaRequest
     {
-        [JsonConverter(typeof(StringEnumConverter))]
         public DeltaRequestModes Mode { get; set; }
         public DateTime? From { get; set; }
         public DateTime? To { get; set; }

@@ -12,6 +12,7 @@ namespace LSG.GenericCrud.Samples.Models
         ICreatedInfo,
         IModifiedInfo
     {
+        [IgnoreInChangeset]
         public Guid Id { get; set; }
         public string Name { get; set; }
         [IgnoreInChangeset]
