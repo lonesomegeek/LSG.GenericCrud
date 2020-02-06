@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
 
 namespace LSG.GenericCrud.Services
 {
@@ -32,7 +33,7 @@ namespace LSG.GenericCrud.Services
 
         private readonly IUserInfoRepository _userInfoRepository;
         private readonly HistoricalCrudServiceOptions _options;
-        private readonly IHistoricalCrudReadService<T1, T2> _historicalCrudReadService;
+        private readonly IDbContext _context;
 
         public bool AutoCommit { get; set; }
 
@@ -45,15 +46,15 @@ namespace LSG.GenericCrud.Services
             ICrudService<T1, T2> service,
             ICrudRepository repository,
             IUserInfoRepository userInfoRepository,
-            IHistoricalCrudReadService<T1, T2> historicalCrudReadService,
-            IOptions<HistoricalCrudServiceOptions> options)
+            IOptions<HistoricalCrudServiceOptions> options,
+            IDbContext context)
         {
             _service = service;
             _repository = repository;
             _service.AutoCommit = false;
             _userInfoRepository = userInfoRepository;
-            _historicalCrudReadService = historicalCrudReadService;
             _options = options == null || options.Value == null ? HistoricalCrudServiceOptions.DefaultValues : options.Value;
+            _context = context;
 
             AutoCommit = false;
         }
@@ -382,7 +383,7 @@ namespace LSG.GenericCrud.Services
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
 
-            if (request.From == null) request.From = _historicalCrudReadService.GetLastTimeViewed<T2>(id);
+            if (request.From == null) request.From = GetLastTimeViewed<T2>(id);
             if (request.To == null) request.To = DateTime.MaxValue;
 
             if (request.Mode == DeltaRequestModes.Snapshot) return await GetDeltaSnapshot(id, request.From.Value, request.To.Value);
@@ -399,7 +400,16 @@ namespace LSG.GenericCrud.Services
                 from e in historicalEvents
                 join c in historicalChangesets on e.Id equals c.EventId
                 where e.EntityId == id.ToString() && c.CreatedDate >= fromTimestamp && c.CreatedDate <= toTimestamp
-                select e;
+                select new HistoricalEvent
+                {
+                    Action = e.Action,
+                    Changeset = c,
+                    CreatedBy = e.CreatedBy,
+                    CreatedDate = e.CreatedDate,
+                    EntityId = e.EntityId,
+                    EntityName = e.EntityName,
+                    Id = e.Id
+                };
 
             if (!events.Any()) throw new NoHistoryException();
 
@@ -410,22 +420,20 @@ namespace LSG.GenericCrud.Services
         public async Task<DifferentialChangeset> GetDeltaDifferential(T1 id, DateTime fromTimestamp, DateTime toTimestamp)
         {
             // snapshot from creation date
-            var events = _repository
-                .GetAll<Guid, HistoricalEvent>()
+            // Note: we need to use _context instead of repository to have access to DbSet Include Feature
+            var events = _context
+                .Set<HistoricalEvent>()
+                .Include(_ => _.Changeset)
                 .Where(_ => _.EntityId == id.ToString() && _.CreatedDate >= fromTimestamp && _.CreatedDate <= toTimestamp && _.Action != HistoricalActions.Read.ToString())
-                .ToList()
                 .OrderBy(_ => _.CreatedDate);
 
             if (events == null || !events.Any()) throw new NoHistoryException();
-            //.Skip(1);
 
             return await ExtractDifferentialChangeset(id, events);
         }
 
-        public async Task<DifferentialChangeset> ExtractDifferentialChangeset(T1 id, IOrderedEnumerable<HistoricalEvent> events)
+        public async Task<DifferentialChangeset> ExtractDifferentialChangeset(T1 id, IOrderedQueryable<HistoricalEvent> events)
         {
-            var changesets = await _repository.GetAllAsync<Guid, HistoricalChangeset>(); // TODO: keep it there, include changesets in context
-
             var differentialChangeset = new DifferentialChangeset();
             differentialChangeset.EntityId = id.ToString();
             differentialChangeset.EntityTypeName = events.First().EntityName;
@@ -448,7 +456,7 @@ namespace LSG.GenericCrud.Services
             changeset.EventName = nextEvent.Action;
             changeset.Changes = 
                 currentEvent.Action != HistoricalActions.Delete.ToString() ? 
-                    _historicalCrudReadService.ExtractChanges(currentObject, nextObject) : 
+                    ExtractChanges(currentObject, nextObject) : 
                     null;
 
             return changeset;
@@ -465,12 +473,12 @@ namespace LSG.GenericCrud.Services
             var snapshotChangeset = new SnapshotChangeset();
             snapshotChangeset.EntityTypeName = sourceEvent.EntityName;
             snapshotChangeset.EntityId = sourceEvent.EntityId;
-            snapshotChangeset.LastViewed = _historicalCrudReadService.GetLastTimeViewed<T2>(actual.Id).Value;
+            snapshotChangeset.LastViewed = GetLastTimeViewed<T2>(actual.Id).Value;
             snapshotChangeset.LastModifiedBy = events.Last().CreatedBy;
             snapshotChangeset.LastModifiedEvent = events.Last().Action;
             snapshotChangeset.LastModifiedDate = events.Last().CreatedDate.Value;
             // TODO: Bug here if entity is deleted or not found
-            snapshotChangeset.Changes = _historicalCrudReadService.ExtractChanges(sourceObject, actual);
+            snapshotChangeset.Changes = ExtractChanges(sourceObject, actual);
             return snapshotChangeset;
         }
 
