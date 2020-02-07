@@ -114,7 +114,7 @@ namespace LSG.GenericCrud.Dto.Services
         private readonly ICrudRepository _repository;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CrudService{TDto, TEntity}"/> class.
+        /// Initializes a new instance of the <see cref="CrudServiceBase{TDto, TEntity}"/> class.
         /// </summary>
         /// <param name="service"></param>
         /// <param name="repository">The repository.</param>
