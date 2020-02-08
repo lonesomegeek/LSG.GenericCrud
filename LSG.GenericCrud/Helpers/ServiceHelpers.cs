@@ -28,6 +28,7 @@ namespace LSG.GenericCrud.Helpers
             services.AddScoped(typeof(ICrudRepository), typeof(CrudRepository));
             services.AddScoped(typeof(IHistoricalCrudService<,>), typeof(HistoricalCrudServiceBase<,>));
         }
+
         public static void AddCrudService(this IServiceCollection services)
         {
             AddCrudService(services, (options) =>
