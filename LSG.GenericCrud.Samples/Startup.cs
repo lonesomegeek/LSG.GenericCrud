@@ -2,6 +2,7 @@ using LSG.GenericCrud.Controllers;
 using LSG.GenericCrud.DataFillers;
 using LSG.GenericCrud.Helpers;
 using LSG.GenericCrud.Repositories;
+using LSG.GenericCrud.Samples.Controllers;
 using LSG.GenericCrud.Samples.Models;
 using LSG.GenericCrud.Samples.Services;
 using LSG.GenericCrud.Services;
@@ -13,6 +14,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace LSG.GenericCrud.Samples
 {
@@ -52,14 +55,16 @@ namespace LSG.GenericCrud.Samples
             services.AddScoped(typeof(IHistoricalCrudController<,>), typeof(HistoricalCrudControllerBase<,>));
             
             services.AddScoped(typeof(IHistoricalCrudReadService<,>), typeof(HistoricalCrudControllerBase<,>));
-            
+
             //services.AddScoped(typeof(IHistoricalCrudService<,>), typeof(HistoricalCrudServiceBase<,>));
+            services.AddScoped(typeof(ICrudService<Guid, Account>), typeof(CustomInheritedCrudService<Guid, Account>));
             services.AddScoped(typeof(ICrudService<,>), typeof(CustomImplementedCrudService<,>));
             services.AddScoped(typeof(CrudServiceBase<,>));
             //services.AddScoped(typeof(ICrudService<,>), typeof(CrudServiceBase<,>));
 
             services.AddScoped(typeof(ICrudRepository), typeof(CrudRepository));
 
+            services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
 
 
             // to inject a specific layer for all type of object that implemend IEntity<T>

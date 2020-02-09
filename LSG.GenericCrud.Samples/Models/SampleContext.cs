@@ -20,6 +20,7 @@ namespace LSG.GenericCrud.Samples.Models
         public DbSet<HistoricalEvent> HistoricalEvents { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<Account> Accounts { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
 
     }
 }

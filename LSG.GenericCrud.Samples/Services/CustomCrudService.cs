@@ -1,6 +1,7 @@
 ﻿using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
 using LSG.GenericCrud.Services;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,12 @@ namespace LSG.GenericCrud.Samples.Services
 {
     public class CustomInheritedCrudService<T1, T2> : CrudServiceBase<T1, T2> where T2 : class, IEntity<T1>, new()
     {
-        public CustomInheritedCrudService(ICrudRepository repository) : base(repository) { }
+        public CustomInheritedCrudService(
+            ICrudRepository repository,
+            ILogger<CustomInheritedCrudService<T1, T2>> logger) : base(repository) 
+        {
+            logger.LogInformation($"In custom service layer for {typeof(T2).Name}");
+        }
 
         public override Task<T2> CopyAsync(T1 id) => base.CopyAsync(id);
         public override Task<T2> CreateAsync(T2 entity) => base.CreateAsync(entity);
@@ -24,9 +30,12 @@ namespace LSG.GenericCrud.Samples.Services
     {
         private readonly CrudServiceBase<T1, T2> _service;
 
-        public CustomImplementedCrudService(CrudServiceBase<T1, T2> service)
+        public CustomImplementedCrudService(CrudServiceBase<T1, T2> service,
+            ILogger<CustomImplementedCrudService<T1, T2>> logger)
         {
+
             _service = service;
+            logger.LogInformation($"In custom service layer for {typeof(T2).Name}");
         }
 
         public bool AutoCommit { get; set; }
