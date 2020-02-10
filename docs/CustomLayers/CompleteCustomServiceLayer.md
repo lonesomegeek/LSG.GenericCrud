@@ -1,3 +1,5 @@
+Here is a sample of what to do if you want to have complete control over your service layer. With that method you can bypass all *base* code of my library. This method is **really** similar to the [Custom Service Layer Implementation](./CustomServiceLayerImplementation.md) at the exception that there is no forwaring (proxy) to my library.
+
 ```csharp
 public class CompleteCustomImplementedCrudService<T1, T2> : ICrudService<T1, T2> where T2 : class, IEntity<T1>, new()
 {

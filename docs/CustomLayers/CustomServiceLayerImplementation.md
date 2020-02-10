@@ -1,3 +1,5 @@
+Here is a sample of how to "implement" from *CrudServiceBase* code base in a custom service layer.
+
 ```csharp
 public class CustomImplementedCrudService<T1, T2> : ICrudService<T1, T2> where T2 : class, IEntity<T1>, new()
 {
@@ -18,3 +20,4 @@ public class CustomImplementedCrudService<T1, T2> : ICrudService<T1, T2> where T
     public async Task<T2> UpdateAsync(T1 id, T2 entity) => await _service.UpdateAsync(id, entity);
 }
 ```
+You can do whateaver you want before or after the *base* action. But, you can't change the *base* behaviour.

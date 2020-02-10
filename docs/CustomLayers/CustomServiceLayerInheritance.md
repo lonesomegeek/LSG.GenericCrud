@@ -1,3 +1,5 @@
+Here is a sample of how to "inherit" from *CrudServiceBase* code base in a custom service layer.
+
 ```csharp
 public class CustomInheritedCrudService<T1, T2> : CrudServiceBase<T1, T2> where T2 : class, IEntity<T1>, new()
 {
@@ -11,3 +13,4 @@ public class CustomInheritedCrudService<T1, T2> : CrudServiceBase<T1, T2> where 
     public override Task<T2> UpdateAsync(T1 id, T2 entity) => base.UpdateAsync(id, entity);        
 }
 ```
+You can do whateaver you want before or after the *base* action. But, you can't change the *base* behaviour.
