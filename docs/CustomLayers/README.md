@@ -1,9 +1,12 @@
-Each call that goes through the library controller base class *CrudControllerBase*, goes exactly through these 3 layers:
+# How to customize CRUD layers
+This document will explain how you can further customize what is shipped OOTB (out of the box).
+
+Each call that goes through the library controller base class *CrudControllerBase* goes exactly through these 3 layers:
 - Controller Layer
 - Service Layer
 - Repository Layer
 
-Here is an exhaustive view of how you can customize the way you want the interaction with these three layers.
+Here is an exhaustive view of how you can customize the interaction of these three layers.
 
 ## Controller
 When you create your custom controller (ie.: AccountsController), you state that you are differente from *CrudControllerBase* class. With ASP.NET Core MVC, you can't go there without creating a custom controller to let MVC know what are the routes and entities you want to publish with your API.
@@ -21,19 +24,12 @@ When you have special needs, you may need to change the behaviour of the *CrudSe
 To do so, you have a few options:
 - Custom service layer from inheritance of the *CrudServiceBase* class: [Documentation](./CustomServiceLayerInheritance.md)
 - Custom service layer implementation from part of the *ICrudService* interface and part of the *CrudServiceBase* class: [Documentation](./CustomServiceLayerImplementation.md)
-- Complete custom service layer implementation inheriting from *ICrusService*
+- Complete custom service layer implementation inheriting from *ICrusService*: [Documentation](./CompleteCustomServiceLayer.md)
+
 Note: All the steps shown also applies to:
 - HistoricalCrudServiceBase
 - CrudServiceBase (from LSG.GenericCrud.DTO library)
 - HistoricalCrudServiceBase (from LSG.GenericCrud.DTO library)
-
-Inheritance vs Implementation
-## Inheritance
-You "Inherit/Resuse" code from "Base" class.
-Advantages:
-- fewer code to write
-Inconvenients:
-- less flexible, you are stuck with the code provided
 
 ## Repository
 When you have special needs, you may need to change the behaviour of the *CrudRepository* class. You may want to change/adapt in may ways, for exemple:
@@ -49,14 +45,16 @@ TODO: Complete
 
 ## How injection works
 You can use the builtin injection with three different kind of injections:
-- Scoped (AddScoped): TODO
-- Transient (AddTransient): TODO
-- Singleton (AddSingleton): TODO
+- Scoped (AddScoped): Dependency instance created once per client request (connection)
+- Transient (AddTransient): Dependency instance created each time it is needed
+- Singleton (AddSingleton): Dependency instance created once and always reused (even in different client requet)
+Further documentation from Microsoft: [Documentation](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-3.1#service-lifetimes)
 
 But... This if where it get really interesting. Let's say you have a special need for an entity. This particular *Account* entity (but not the others) is in need for a custom service layer (ie.: CustomServiceLayerWithTransactionApprobation). Here is a sample of what you do today:
 ```csharp
 services.AddCrud();
 ```
+Now with more knowledge about the injection system, you can further customize the specific layer needed for you particular entity.
 ```csharp
 services.AddScoped<ICrudService<Guid, Account>, CustomServiceLayerWithTransactionApprobation<Guid, Account>>();
 services.AddCrud();
