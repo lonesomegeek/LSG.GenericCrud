@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LSG.GenericCrud.Helpers;
+using LSG.GenericCrud.Repositories;
 using LSG.GenericCrud.Samples.OData.Models;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
@@ -9,6 +11,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,6 +35,12 @@ namespace LSG.GenericCrud.Samples.OData
             services.AddControllers(options => options.EnableEndpointRouting = false);
             // odata services
             services.AddOData();
+
+            services.AddDbContext<SampleContext>(opt => opt.UseSqlServer("server=(localdb)\\mssqllocaldb;Initial Catalog=MySampleDb"));
+            services.AddTransient<IDbContext, SampleContext>();
+
+            services.AddCrud();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
