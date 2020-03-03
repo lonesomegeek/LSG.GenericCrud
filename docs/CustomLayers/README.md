@@ -9,7 +9,7 @@ Each call that goes through the library controller base class *CrudControllerBas
 Here is an exhaustive view of how you can customize the interaction of these three layers.
 
 ## Controller
-When you create your custom controller (ie.: AccountsController), you state that you are differente from *CrudControllerBase* class. With ASP.NET Core MVC, you can't go there without creating a custom controller to let MVC know what are the routes and entities you want to publish with your API.
+When you create your custom controller (ie.: AccountsController), you state that you are different from *CrudControllerBase* class. With ASP.NET Core MVC, you can't go there without creating a custom controller to let MVC know what are the routes and entities you want to publish with your API.
 
 Here is the flow:
 - TODO: Insert flow here
