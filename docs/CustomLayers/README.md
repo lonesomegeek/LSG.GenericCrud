@@ -6,13 +6,15 @@ Each call that goes through the library controller base class *CrudControllerBas
 - Service Layer
 - Repository Layer
 
-Here is an exhaustive view of how you can customize the interaction of these three layers.
+Here is sequence diagrams of the actual flow of information:
+- For Standard CRUD: [Sequence diagram for standard CRUD](./sequence-StandardCrud.png)
+- For Historical CRUD: [Sequence diagram for historical CRUD](./sequence-HistoricalCrud.png)
+
+
+If you want to further customize each layers, here is an exhaustive view of how you can customize the interaction of these three layers.
 
 ## Controller
 When you create your custom controller (ie.: AccountsController), you state that you are different from *CrudControllerBase* class. With ASP.NET Core MVC, you can't go there without creating a custom controller to let MVC know what are the routes and entities you want to publish with your API.
-
-Here is the flow:
-- TODO: Insert flow here
 
 # Service
 When you have special needs, you may need to change the behaviour of the *CrudServiceBase* class. You may want to change/adapt it in many ways, for exemple:
