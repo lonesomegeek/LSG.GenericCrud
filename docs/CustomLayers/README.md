@@ -24,9 +24,11 @@ When you have special needs, you may need to change the behaviour of the *CrudSe
 - ...
 
 To do so, you have a few options:
-- Custom service layer from inheritance of the *CrudServiceBase* class: [Documentation](./CustomServiceLayerInheritance.md)
-- Custom service layer implementation from part of the *ICrudService* interface and part of the *CrudServiceBase* class: [Documentation](./CustomServiceLayerImplementation.md)
-- Complete custom service layer implementation inheriting from *ICrusService*: [Documentation](./CompleteCustomServiceLayer.md)
+1. Custom service layer from inheritance of the *CrudServiceBase* class: [Documentation](./CustomServiceLayerInheritance.md)
+2. Custom service layer implementation from part of the *ICrudService* interface and part of the *CrudServiceBase* class: [Documentation](./CustomServiceLayerImplementation.md)
+3. Complete custom service layer implementation inheriting from *ICrusService*: [Documentation](./CompleteCustomServiceLayer.md)
+
+As an example, the [DTO custom service layer](../../LSG.GenericCrud.Dto/Services/CrudService.cs) is a custom service layer of type #2.
 
 Note: All the steps shown also applies to:
 - HistoricalCrudServiceBase
