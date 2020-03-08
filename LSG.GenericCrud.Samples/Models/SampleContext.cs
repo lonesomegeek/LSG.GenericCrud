@@ -1,5 +1,6 @@
 ﻿using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
+using LSG.GenericCrud.Samples.Controllers;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,5 +19,8 @@ namespace LSG.GenericCrud.Samples.Models
         public DbSet<HistoricalChangeset> HistoricalChangesets { get; set; }
         public DbSet<HistoricalEvent> HistoricalEvents { get; set; }
         public DbSet<Item> Items { get; set; }
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
+
     }
 }
