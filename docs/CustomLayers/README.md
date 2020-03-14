@@ -65,3 +65,5 @@ What this code does is:
 - When the code will be in need of a service layer for the *Account* entity (ICrudService<Guid, Account>), the injector will inject your custom service layer (CustomServiceLayerWithTransactionApprobation<Guid, Account>)
 - When the code will be in need of a service layer for something else (ICrudService<,>), the injector will inject the default service layer (CrudServiceBase<,>)
 Note: the <,> means any type of T1 and any type of T2
+
+TODO: Add links to complete sample documentation
