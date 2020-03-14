@@ -21,6 +21,7 @@ This library is used to provide simplified RESTful [CRUD](https://en.wikipedia.o
 - Generic CRUD Controller layer
 - Generic CRUD Service layer
 - Generic CRUD Repository layer 
+- -== **NEW** ==-: More information on [how to customize each layers](./docs/CustomLayers/README.md)
 
 This library allies injection (IoC), minimum codebase for maximum efficiency.
 
@@ -56,12 +57,11 @@ Legend
 
 # Prerequisites
 You need:
-- [.NET Core 2.2 SDK](https://dotnet.microsoft.com/download/dotnet-core/2.2) (for any of the options below)
+- [.NET Core 3.1 SDK](https://dotnet.microsoft.com/download/dotnet-core/3.1) (for any of the options below)
 
 You also need one of these options below:
-- [Visual Studio](https://www.visualstudio.com/downloads/), at least a version that supports aspnetcore 2.2 (Visual Studio 2017 Update 9+ - v15.9+)
+- [Visual Studio](https://www.visualstudio.com/downloads/), at least a version that supports aspnetcore 3.1 ([Visual Studio 2016 - v16.4+](https://devblogs.microsoft.com/dotnet/announcing-net-core-3-1/))
 - [Visual Studio Code](https://code.visualstudio.com/)
-- For superheroes: A command line, notepad, and some will-power =P
 
 # Features supported, by library
 
@@ -76,7 +76,7 @@ I've designed this library to be pretty extensible. Here is some features suppor
 - [LSG.GenericCrud.Dto](https://www.nuget.org/packages/LSG.GenericCrud.Dto/)
     - DTO to Entity (and Entity to DTO) mapping for Crud\<T> or HistoricalCrud\<T> controllers: [More details](./docs/FeatureDTO.md)
 
-> Note that all libraries supports customized layer for each layer: *more details to come*
+> Note that all libraries supports [customized layer for each layer](./docs/CustomLayers/README.md)
 
 Future ideas that can/will eventually be supported (feel free to help if you want!):
 - Per entity security policies
@@ -84,11 +84,13 @@ Future ideas that can/will eventually be supported (feel free to help if you wan
 - *and more*...
 
 # Release notes
+- [v5.0 Release Notes](docs/ReleaseNotes-v5.0.md)
 - [v4.1 Release Notes](docs/ReleaseNotes-v4.1.md)
 - [v4.0 Release Notes](docs/ReleaseNotes-v4.0.md)
 - [v3.0 Release Notes](docs/ReleaseNotes-v3.0.md)
 
 # Breaking changes
+- [From v4.0 to v5.0](docs/BreakingChangesFrom-v4.0-to-v5.0.md)
 - [From v3.0 to v4.0](docs/BreakingChangesFrom-v3.0-to-v4.0.md)
 - [From v2.1 to v3.0](docs/BreakingChangesFrom-v2.1-to-v3.0.md)
 - [From v2.0 to v2.1](docs/BreakingChangesFrom-v2.0-to-v2.1.md)
