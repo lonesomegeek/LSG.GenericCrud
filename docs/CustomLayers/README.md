@@ -24,9 +24,9 @@ When you have special needs, you may need to change the behaviour of the *CrudSe
 - ...
 
 To do so, you have a few options:
-1. Custom service layer from inheritance of the *CrudServiceBase* class: [Documentation](./CustomServiceLayerInheritance.md)
-2. Custom service layer implementation from part of the *ICrudService* interface and part of the *CrudServiceBase* class: [Documentation](./CustomServiceLayerImplementation.md)
-3. Complete custom service layer implementation inheriting from *ICrusService*: [Documentation](./CompleteCustomServiceLayer.md)
+1. Custom service layer from *inheritance* of the *CrudServiceBase* class: [Documentation](./CustomServiceLayerInheritance.md)
+2. Custom service layer *implementation* from part of the *ICrudService* interface and part of the *CrudServiceBase* class: [Documentation](./CustomServiceLayerImplementation.md)
+3. *Complete* custom service layer *implementation* inheriting from *ICrusService*: [Documentation](./CompleteCustomServiceLayer.md)
 
 As an example, the [DTO custom service layer](../../LSG.GenericCrud.Dto/Services/CrudService.cs) is a custom service layer of type #2.
 
@@ -44,17 +44,15 @@ When you have special needs, you may need to change the behaviour of the *CrudRe
 - ...
 
 TODO: Complete
-    
-    - 
 
 ## How injection works
 You can use the builtin injection with three different kind of injections:
-- Scoped (AddScoped): Dependency instance created once per client request (connection)
-- Transient (AddTransient): Dependency instance created each time it is needed
-- Singleton (AddSingleton): Dependency instance created once and always reused (even in different client requet)
+- Scoped (AddScoped): Dependency instance created once per client request (connection/session)
+- Transient (AddTransient): Dependency instance created each time an object is created with this dependency
+- Singleton (AddSingleton): Dependency instance created once and always reused (even in different client sessions)
 Further documentation from Microsoft: [Documentation](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-3.1#service-lifetimes)
 
-But... This if where it get really interesting. Let's say you have a special need for an entity. This particular *Account* entity (but not the others) is in need for a custom service layer (ie.: CustomServiceLayerWithTransactionApprobation). Here is a sample of what you do today:
+But... This is where it get really interesting. Let's say you have a special need for an entity. This particular *Account* entity (but not the others) is in need for a custom service layer (ie.: CustomServiceLayerWithTransactionApprobation). Here is a sample of what you do today:
 ```csharp
 services.AddCrud();
 ```
