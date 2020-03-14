@@ -24,9 +24,15 @@ When you have special needs, you may need to change the behaviour of the *CrudSe
 - ...
 
 To do so, you have a few options:
+<<<<<<< HEAD
 1. Custom service layer from *inheritance* of the *CrudServiceBase* class: [Documentation](./CustomServiceLayerInheritance.md)
 2. Custom service layer *implementation* from part of the *ICrudService* interface and part of the *CrudServiceBase* class: [Documentation](./CustomServiceLayerImplementation.md)
 3. *Complete* custom service layer *implementation* inheriting from *ICrusService*: [Documentation](./CompleteCustomServiceLayer.md)
+=======
+1. Custom service layer from inheritance of the *CrudServiceBase* class: [Documentation](./CustomServiceLayerInheritance.md)
+2. Custom service layer implementation from part of the *ICrudService* interface and part of the *CrudServiceBase* class: [Documentation](./CustomServiceLayerImplementation.md)
+3. Complete custom service layer implementation inheriting from *ICrusService*: [Documentation](./CompleteCustomServiceLayer.md)
+>>>>>>> origin/version/5.0.0
 
 As an example, the [DTO custom service layer](../../LSG.GenericCrud.Dto/Services/CrudService.cs) is a custom service layer of type #2.
 
@@ -53,6 +59,7 @@ You can use the builtin injection with three different kind of injections:
 Further documentation from Microsoft: [Documentation](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-3.1#service-lifetimes)
 
 But... This is where it get really interesting. Let's say you have a special need for an entity. This particular *Account* entity (but not the others) is in need for a custom service layer (ie.: CustomServiceLayerWithTransactionApprobation). Here is a sample of what you do today:
+
 ```csharp
 services.AddCrud();
 ```
@@ -64,6 +71,8 @@ services.AddCrud();
 What this code does is:
 - When the code will be in need of a service layer for the *Account* entity (ICrudService<Guid, Account>), the injector will inject your custom service layer (CustomServiceLayerWithTransactionApprobation<Guid, Account>)
 - When the code will be in need of a service layer for something else (ICrudService<,>), the injector will inject the default service layer (CrudServiceBase<,>)
+
 Note: the <,> means any type of T1 and any type of T2
 
 TODO: Add links to complete sample documentation
+
