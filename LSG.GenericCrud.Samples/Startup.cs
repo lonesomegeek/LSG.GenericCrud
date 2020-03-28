@@ -38,7 +38,7 @@ namespace LSG.GenericCrud.Samples
                 configuration.RootPath = "ClientApp/dist";
             });
 
-            services.AddDbContext<SampleContext>(opt => opt.UseSqlServer("server=(localdb)\\mssqllocaldb;Initial Catalog=MySampleDb"));
+            services.AddDbContext<SampleContext>(opt => opt.UseSqlServer("server=localhost;user id=sa;password=Sapassword1!;Initial Catalog=MySampleDb"));
             services.AddTransient<IDbContext, SampleContext>();
             services.AddTransient<IUserInfoRepository, UserInfoRepository>();
             services.AddTransient<IEntityDataFiller, CreatedFiller>();
@@ -56,7 +56,7 @@ namespace LSG.GenericCrud.Samples
             
             services.AddScoped(typeof(IHistoricalCrudReadService<,>), typeof(HistoricalCrudControllerBase<,>));
 
-            //services.AddScoped(typeof(IHistoricalCrudService<,>), typeof(HistoricalCrudServiceBase<,>));
+            services.AddScoped(typeof(IHistoricalCrudService<,>), typeof(HistoricalCrudServiceBase<,>));
             services.AddScoped(typeof(ICrudService<Guid, Account>), typeof(CustomInheritedCrudService<Guid, Account>));
             services.AddScoped(typeof(ICrudService<,>), typeof(CustomImplementedCrudService<,>));
             services.AddScoped(typeof(CrudServiceBase<,>));

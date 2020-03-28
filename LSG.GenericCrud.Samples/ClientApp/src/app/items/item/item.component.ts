@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./item.component.css']
 })
 export class ItemComponent implements OnInit {
-  // @ViewChild('agGrid') agGrid: AgGridAngular;
+  @ViewChild('agGrid') agGrid: AgGridAngular;
 
   public rows: Observable<Item[]>;
   columnDefs: any[] = [
@@ -29,7 +29,7 @@ export class ItemComponent implements OnInit {
     // .http
     // .get<Item[]>(this.baseUrl + this.baseRoute);
     this.rows = this.service.getAll();
-    // this.agGrid.rowDoubleClicked.subscribe(row => this.rowDoubleClicked(row));
+    this.agGrid.rowDoubleClicked.subscribe(row => this.rowDoubleClicked(row));
   }
 
   rowDoubleClicked(row: any) {

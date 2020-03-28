@@ -1,5 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import "~ag-grid-community/dist/styles/ag-grid.css";
+@import "~ag-grid-community/dist/styles/ag-theme-balham.css";
+
 /* Provide sufficient contrast against white background */
 a {
   color: #0366d6;

@@ -9,9 +9,9 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
-import { AgGridModule } from 'ag-grid-angular';
 import { ItemComponent } from './items/item/item.component';
 import { ItemDetailComponent } from './items/item-detail/item-detail.component';
+import { AgGridModule } from 'ag-grid-angular';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,9 @@ import { ItemDetailComponent } from './items/item-detail/item-detail.component';
     NavMenuComponent,
     HomeComponent,
     CounterComponent,
-    FetchDataComponent
+    FetchDataComponent,
+    ItemComponent,
+    ItemDetailComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -33,7 +35,6 @@ import { ItemDetailComponent } from './items/item-detail/item-detail.component';
       { path: 'items', component: ItemComponent },
       { path: 'items/:id', component: ItemDetailComponent },
       { path: 'items/create', component: ItemDetailComponent },
-      
     ])
   ],
   providers: [],
