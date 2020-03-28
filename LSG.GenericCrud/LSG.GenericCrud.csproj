@@ -8,7 +8,7 @@
     <PackageTags>generic crud webapi aspnetcore</PackageTags>
     <Description>This library provides a set of tools to enable CRUD rapidly on any aspnetcore Web APIs.</Description>
     <Version>5.0.0-alpha4</Version>
-    <CodeAnalysisRuleSet>LSG.GenericCrud.ruleset</CodeAnalysisRuleSet>
+    <!-- <CodeAnalysisRuleSet>LSG.GenericCrud.ruleset</CodeAnalysisRuleSet> -->
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,7 +18,7 @@
     <PackageReference Include="System.Text.Json" Version="4.7.0" />
   </ItemGroup>
 
-  <ItemGroup>
+  <!-- <ItemGroup>
     <None Update="Templates\CrudController.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>CrudController.cs</LastGenOutput>
@@ -35,5 +35,5 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CrudController.tt</DependentUpon>
     </Compile>
-  </ItemGroup>
+  </ItemGroup> -->
 </Project>
