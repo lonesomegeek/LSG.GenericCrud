@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./item.component.css']
 })
 export class ItemComponent implements OnInit {
-  @ViewChild('agGrid') agGrid: AgGridAngular;
+  @ViewChild('agGrid', undefined) agGrid: AgGridAngular;
 
   public rows: Observable<Item[]>;
   columnDefs: any[] = [

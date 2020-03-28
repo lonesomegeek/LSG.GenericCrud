@@ -229,3 +229,7 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+Databases/log/*
+Databases/data/*
+Databases/secrets/*
