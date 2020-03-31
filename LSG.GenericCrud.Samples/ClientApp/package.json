@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "8.2.12",
     "@angular/platform-server": "8.2.12",
     "@angular/router": "8.2.12",
+    "@babel/compat-data": "^7.8.0",
     "@nguniversal/module-map-ngfactory-loader": "8.1.1",
     "ag-grid-angular": "^22.0.2",
     "ag-grid-community": "^22.0.2",
