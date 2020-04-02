@@ -21,7 +21,7 @@ import { AgGridModule } from 'ag-grid-angular';
     CounterComponent,
     FetchDataComponent,
     ItemComponent,
-    ItemDetailComponent,
+    ItemDetailComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -34,7 +34,7 @@ import { AgGridModule } from 'ag-grid-angular';
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'items', component: ItemComponent },
       { path: 'items/:id', component: ItemDetailComponent },
-      { path: 'items/create', component: ItemDetailComponent },
+      { path: 'items/create', component: ItemDetailComponent }
     ])
   ],
   providers: [],
