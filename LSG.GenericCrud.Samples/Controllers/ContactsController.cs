@@ -1,9 +1,8 @@
 ﻿using LSG.GenericCrud.Controllers;
-using LSG.GenericCrud.Models;
+using LSG.GenericCrud.Samples.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LSG.GenericCrud.Samples.Controllers
@@ -38,11 +37,5 @@ namespace LSG.GenericCrud.Samples.Controllers
 
         [HttpPut("{id}")]
         public Task<IActionResult> Update(Guid id, [FromBody] Contact entity) => _controller.Update(id, entity);
-    }
-
-    public class Contact : IEntity<Guid>
-    {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
     }
 }
