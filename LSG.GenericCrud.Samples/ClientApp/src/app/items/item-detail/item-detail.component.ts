@@ -49,13 +49,13 @@ export class ItemDetailComponent implements OnInit {
 
   create() {
     this.service.postOne(this.row).subscribe(result => {      
-      this.router.navigate(['/items/' + (result as Item).id]);      
+      this.router.navigate(['/objects/' + (result as Item).id]);      
     })
   }
 
   delete() {
     this.service.deleteOne(this.selectedId).subscribe(result => {
-      this.router.navigate(['/items']);
+      this.router.navigate(['/objects']);
       
     });
   }

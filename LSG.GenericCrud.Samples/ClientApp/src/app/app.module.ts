@@ -32,9 +32,9 @@ import { AgGridModule } from 'ag-grid-angular';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'items', component: ItemComponent },
-      { path: 'items/:id', component: ItemDetailComponent },
-      { path: 'items/create', component: ItemDetailComponent }
+      { path: 'objects', component: ItemComponent },
+      { path: 'objects/:id', component: ItemDetailComponent },
+      { path: 'objects/create', component: ItemDetailComponent }
     ])
   ],
   providers: [],

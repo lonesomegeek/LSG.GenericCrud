@@ -18,7 +18,7 @@ export class ItemComponent implements OnInit {
   columnDefs: any[] = [
     { headerName: 'Id', field: 'id', sortable: true },
     { headerName: 'Name', field: 'name', sortable: true }];
-  baseRoute: string = "api/items";
+  baseRoute: string = "api/objects";
   constructor(
     private service: ItemService,
     private router: Router
@@ -33,6 +33,6 @@ export class ItemComponent implements OnInit {
   }
 
   rowDoubleClicked(row: any) {
-    this.router.navigate(['/items/' + row.data.id]);
+    this.router.navigate(['/objects/' + row.data.id]);
   }
 }
