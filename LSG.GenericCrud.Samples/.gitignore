@@ -230,6 +230,6 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 
-Databases/log/*
-Databases/data/*
-Databases/secrets/*
+Databases/docker_data/log/*
+Databases/docker_data/data/*
+Databases/docker_data/secrets/*

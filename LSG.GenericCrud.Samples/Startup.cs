@@ -57,7 +57,7 @@ namespace LSG.GenericCrud.Samples
             services.AddScoped(typeof(IHistoricalCrudReadService<,>), typeof(HistoricalCrudControllerBase<,>));
 
             services.AddScoped(typeof(IHistoricalCrudService<,>), typeof(HistoricalCrudServiceBase<,>));
-            services.AddScoped(typeof(ICrudService<Guid, Account>), typeof(CustomInheritedCrudService<Guid, Account>));
+            // services.AddScoped(typeof(ICrudService<Guid, Account>), typeof(CustomInheritedCrudService<Guid, Account>));
             services.AddScoped(typeof(ICrudService<,>), typeof(CustomImplementedCrudService<,>));
             services.AddScoped(typeof(CrudServiceBase<,>));
             //services.AddScoped(typeof(ICrudService<,>), typeof(CrudServiceBase<,>));
