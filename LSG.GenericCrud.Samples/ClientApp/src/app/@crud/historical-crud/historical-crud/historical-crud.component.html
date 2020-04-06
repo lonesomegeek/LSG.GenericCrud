@@ -1,0 +1,10 @@
+<p>historical-crud works!</p>
+
+<button [routerLink]="['/objects/create']">Create</button>
+
+<ag-grid-angular style="width: 500px; height: 500px;"
+                 #agGrid
+                 class="ag-theme-balham"
+                 [rowData]="rows | async"
+                 [columnDefs]="columnDefs">
+</ag-grid-angular>

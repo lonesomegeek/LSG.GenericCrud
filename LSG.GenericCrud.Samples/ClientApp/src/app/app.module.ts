@@ -12,6 +12,13 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ItemComponent } from './items/item/item.component';
 import { ItemDetailComponent } from './items/item-detail/item-detail.component';
 import { AgGridModule } from 'ag-grid-angular';
+import { CrudComponent } from './@crud/crud/crud.component';
+import { ObjectComponent } from './objects/object/object.component';
+import { ObjectDetailComponent } from './objects/object-detail/object-detail.component';
+import { HistoricalDetailComponent } from './@crud/historical-crud/historical-detail/historical-detail.component';
+import { HistoricalCrudComponent } from './@crud/historical-crud/historical-crud/historical-crud.component';
+import { ShareComponent } from './shares/share/share.component';
+import { ShareDetailComponent } from './shares/share-detail/share-detail.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +28,14 @@ import { AgGridModule } from 'ag-grid-angular';
     CounterComponent,
     FetchDataComponent,
     ItemComponent,
-    ItemDetailComponent
+    ItemDetailComponent,
+    CrudComponent,
+    HistoricalCrudComponent,
+    ObjectComponent,
+    ObjectDetailComponent,
+    HistoricalDetailComponent,
+    ShareComponent,
+    ShareDetailComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -32,9 +46,15 @@ import { AgGridModule } from 'ag-grid-angular';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'objects', component: ItemComponent },
-      { path: 'objects/:id', component: ItemDetailComponent },
-      { path: 'objects/create', component: ItemDetailComponent }
+
+      { path: 'objects', component: ObjectComponent,  },
+      { path: 'objects/:id', component: ObjectDetailComponent,  },
+      { path: 'objects/create', component: ObjectDetailComponent,  },
+
+      { path: 'shares',         component: ShareComponent,  },
+      { path: 'shares/:id',     component: ShareDetailComponent,  },
+      { path: 'shares/create',  component: ShareDetailComponent,  },
+
     ])
   ],
   providers: [],

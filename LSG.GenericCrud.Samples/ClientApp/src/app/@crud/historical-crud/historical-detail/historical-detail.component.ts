@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Item } from 'src/app/models/item';
-import { ItemService } from '../item.service';
 import { Observable } from 'rxjs';
+import { ItemService } from 'src/app/items/item.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-item-detail',
-  templateUrl: './item-detail.component.html',
-  styleUrls: ['./item-detail.component.css']
+  selector: 'app-historical-detail',
+  templateUrl: './historical-detail.component.html',
+  styleUrls: ['./historical-detail.component.css']
 })
-export class ItemDetailComponent implements OnInit {
-  row: Item;
+export class HistoricalDetailComponent implements OnInit {
+  row: any;
   selectedId: string;
-  mode : string = "read";
+  mode: string = "read";
   isEditing: boolean = false;
   history: Observable<History[]>;
   historyColumnDefs: any[] = [
@@ -35,7 +34,7 @@ export class ItemDetailComponent implements OnInit {
       this.service.makeRead(this.selectedId).subscribe();
       this.history = this.service.getOneHistory(this.selectedId);
     } else {
-      this.row = new Item();
+      this.row = {};
     }
   }
 
@@ -48,15 +47,15 @@ export class ItemDetailComponent implements OnInit {
   }
 
   create() {
-    this.service.postOne(this.row).subscribe(result => {      
-      this.router.navigate(['/objects']);      
+    this.service.postOne(this.row).subscribe(result => {
+      this.router.navigate(['/objects']);
     })
   }
 
   delete() {
     this.service.deleteOne(this.selectedId).subscribe(result => {
       this.router.navigate(['/objects']);
-      
+
     });
   }
 
@@ -65,7 +64,4 @@ export class ItemDetailComponent implements OnInit {
       this.editDeactivate();
     });
   }
-
-
 }
-

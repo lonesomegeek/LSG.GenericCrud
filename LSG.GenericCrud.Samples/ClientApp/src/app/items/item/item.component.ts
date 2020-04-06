@@ -18,6 +18,7 @@ export class ItemComponent implements OnInit {
   columnDefs: any[] = [
     { headerName: 'Id', field: 'id', sortable: true },
     { headerName: 'Name', field: 'name', sortable: true }];
+    
   baseRoute: string = "api/objects";
   constructor(
     private service: ItemService,
@@ -25,9 +26,6 @@ export class ItemComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.rows = this
-    // .http
-    // .get<Item[]>(this.baseUrl + this.baseRoute);
     this.rows = this.service.getAll();
     this.agGrid.rowDoubleClicked.subscribe(row => this.rowDoubleClicked(row));
   }
