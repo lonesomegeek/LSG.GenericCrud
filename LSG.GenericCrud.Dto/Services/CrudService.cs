@@ -124,8 +124,8 @@ namespace LSG.GenericCrud.Dto.Services
             _service = service;
             _mapper = mapper;
             _repository = repository;
-            AutoCommit = false;
-            _service.AutoCommit = false;
+            AutoCommit = true;
+            _service.AutoCommit = true;
         }
 
         public bool AutoCommit { get; set; }
