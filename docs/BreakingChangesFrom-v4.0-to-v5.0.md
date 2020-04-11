@@ -7,3 +7,5 @@ Not used and not maintained
     | In controller class | ICrudController\<MyEntity\> | ICrudController\<Guid, MyEntity\> |
     | In custom service class | ICrudServce\<MyEntity\> | ICrudService\<Guid, MyEntity\> |
     | In Startup.cs | services.AddScoped(typeof(ICrudService\<\>), typeof(CustomImplementedCrudService\<\>)); | services.AddScoped(typeof(ICrudService\<,\>), typeof(CustomImplementedCrudService\<,\>)); |
+
+- CrudController now CrudControllerBase, HistoricalCrudController now, ... CrudService, HistoricalCrudService
