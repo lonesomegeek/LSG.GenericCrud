@@ -9,6 +9,16 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
+import { ItemComponent } from './items/item/item.component';
+import { ItemDetailComponent } from './items/item-detail/item-detail.component';
+import { AgGridModule } from 'ag-grid-angular';
+import { CrudComponent } from './@crud/crud/crud.component';
+import { ObjectComponent } from './objects/object/object.component';
+import { ObjectDetailComponent } from './objects/object-detail/object-detail.component';
+import { HistoricalDetailComponent } from './@crud/historical-crud/historical-detail/historical-detail.component';
+import { HistoricalCrudComponent } from './@crud/historical-crud/historical-crud/historical-crud.component';
+import { ShareComponent } from './shares/share/share.component';
+import { ShareDetailComponent } from './shares/share-detail/share-detail.component';
 
 @NgModule({
   declarations: [
@@ -16,16 +26,35 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
     NavMenuComponent,
     HomeComponent,
     CounterComponent,
-    FetchDataComponent
+    FetchDataComponent,
+    ItemComponent,
+    ItemDetailComponent,
+    CrudComponent,
+    HistoricalCrudComponent,
+    ObjectComponent,
+    ObjectDetailComponent,
+    HistoricalDetailComponent,
+    ShareComponent,
+    ShareDetailComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    AgGridModule.withComponents([]),
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
+
+      { path: 'objects', component: ObjectComponent,  },
+      { path: 'objects/:id', component: ObjectDetailComponent,  },
+      { path: 'objects/create', component: ObjectDetailComponent,  },
+
+      { path: 'shares',         component: ShareComponent,  },
+      { path: 'shares/:id',     component: ShareDetailComponent,  },
+      { path: 'shares/create',  component: ShareDetailComponent,  },
+
     ])
   ],
   providers: [],
