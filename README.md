@@ -9,8 +9,8 @@
 This library provides many built-in ASP.NET Core Web API routes for simplified and [DRY] REST Apis!
 
 Simpliest scenarios:
-- Using Visual Studio Code (or command line): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudioCode.md)
-- Using Visual Studio (2017 update 9+ - v15.9+): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudio.md)
+- Using Visual Studio Code (or command line): [Tutorial](docs/Tutorials/1_TutorialAcocuntCrudVisualStudioCode.md)
+- Using Visual Studio (2017 update 9+ - v15.9+): [Tutorial](docs/Tutorials/1_TutorialAcocuntCrudVisualStudio.md)
 
 Want to have a look to *more samples*, take a look at [these samples](LSG.GenericCrud.Samples/README.md)
 
@@ -66,13 +66,13 @@ You also need one of these options below:
 I've designed this library to be pretty extensible. Here is some features supported and links to further documentation:
 
 - [LSG.GenericCrud](https://www.nuget.org/packages/LSG.GenericCrud/) 
-    - Untyped entity key: [More details](./docs/FeatureUntypedEntityKey.md)
-    - Entity history tracking: [More details](./docs/FeatureHistoricalCrud.md)
+    - Untyped entity key: [More details](./docs/Features/UntypedEntityKey.md)
+    - Entity history tracking: [More details](./docs/Features/HistoricalCrud.md)
         - Copy of an existing object into another one
         - Readeable CRUD, to let you know personaly (as a user) if something has changed since last view
-    - Data fillers: [More details](./docs/FeatureDataFillers.md)
+    - Data fillers: [More details](./docs/Features/DataFillers.md)
 - [LSG.GenericCrud.Dto](https://www.nuget.org/packages/LSG.GenericCrud.Dto/)
-    - DTO to Entity (and Entity to DTO) mapping for Crud\<T> or HistoricalCrud\<T> controllers: [More details](./docs/FeatureDTO.md)
+    - DTO to Entity (and Entity to DTO) mapping for Crud\<T> or HistoricalCrud\<T> controllers: [More details](./docs/Features/DTO.md)
 
 > Note that all libraries supports [customized layer for each layer](./docs/CustomLayers/README.md)
 
@@ -82,18 +82,18 @@ Future ideas that can/will eventually be supported (feel free to help if you wan
 - *and more*...
 
 # Release notes
-- [v5.0 Release Notes](docs/ReleaseNotes-v5.0.md)
-- [v4.1 Release Notes](docs/ReleaseNotes-v4.1.md)
-- [v4.0 Release Notes](docs/ReleaseNotes-v4.0.md)
-- [v3.0 Release Notes](docs/ReleaseNotes-v3.0.md)
+- [v5.0 Release Notes](docs/ReleaseNotes/v5.0.md)
+- [v4.1 Release Notes](docs/ReleaseNotes/v4.1.md)
+- [v4.0 Release Notes](docs/ReleaseNotes/v4.0.md)
+- [v3.0 Release Notes](docs/ReleaseNotes/v3.0.md)
 
 # Breaking changes
-- [From v4.0 to v5.0](docs/BreakingChangesFrom-v4.0-to-v5.0.md)
-- [From v3.0 to v4.0](docs/BreakingChangesFrom-v3.0-to-v4.0.md)
-- [From v2.1 to v3.0](docs/BreakingChangesFrom-v2.1-to-v3.0.md)
-- [From v2.0 to v2.1](docs/BreakingChangesFrom-v2.0-to-v2.1.md)
-- [From v1.* to v2.*](docs/BreakingChangesFrom-v1-to-v2.md)
-- [Previous notes](docs/OldReleaseNotes.md)
+- [From v4.0 to v5.0](docs/BreakingChanges/From-v4.0-to-v5.0.md)
+- [From v3.0 to v4.0](docs/BreakingChanges/From-v3.0-to-v4.0.md)
+- [From v2.1 to v3.0](docs/BreakingChanges/From-v2.1-to-v3.0.md)
+- [From v2.0 to v2.1](docs/BreakingChanges/From-v2.0-to-v2.1.md)
+- [From v1.* to v2.*](docs/BreakingChanges/From-v1-to-v2.md)
+- [Previous notes](docs/ReleaseNotes/OldReleaseNotes.md)
 
 <!-- References -->
 
