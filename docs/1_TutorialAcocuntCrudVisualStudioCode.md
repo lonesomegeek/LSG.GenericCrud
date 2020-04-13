@@ -80,9 +80,7 @@ Note: For sake of clarity, the documentation does not include references (using)
     [ApiController]
     public class AccountsController : CrudControllerBase<Guid, Account>
     {
-        public AccountsController(ICrudService<Guid, Account> service) : base(service)
-        {
-        }
+        public AccountsController(ICrudService<Guid, Account> service) : base(service) {}
     }
     ```
 

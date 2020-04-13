@@ -10,7 +10,7 @@ Two steps are required to enable data fillers:
 - Add an injection specification
 
 ### Create a DateTimeDataFiller
-You need to create a class that will implements *IEntityDataFiller\<T>*. This interface is used by the DAL to detect data fillers. Type *T* can be:
+You need to create a class that will implements *IEntityDataFiller\<,>*. This interface is used by the DAL to detect data fillers. Type *T* can be:
 - An abstract class (generic)
 - A specific type
 - An interface
@@ -46,6 +46,5 @@ To enable your new datafiller, you need to adapt *Startup.cs* class, *ConfigureS
 services.AddTransient<IEntityDataFiller<BaseEntity>, DateDataFiller>();
 ```
 
-## Samples
-
-Here is a link to the DataFiller source code sample: [Link](https://github.com/lonesomegeek/LSG.GenericCrud.Samples/tree/master/Sample.DataFiller)
+## Samples TODO: Adjust where the new sample will place this feature
+Here is a link to the DataFiller source code sample: [Link](./TODO)
