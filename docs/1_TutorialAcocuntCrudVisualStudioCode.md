@@ -1,12 +1,6 @@
 LSG.GenericCrud - Visual Studio Code Simple Scenario
 =
 
-Complete source code is available [here](https://github.com/lonesomegeek/LSG.GenericCrud/tree/master/LSG.GenericCrud.Samples/Sample.GenericCrud.VSCode)
-
-## What you will create in this tutorial
-
-This sample show you all the steps required to use this library using Visual Studio Code.
-
 At this end of this tutorial, your Visual Studio Code workspace should look like this:
 
 ![](img/2017-09-04-14-30-29.png)
@@ -26,7 +20,7 @@ Using the command line, execute the following commands:
 - Create a new **dotnet core web** app
 
     ```bash
-    dotnet new web -o Sample.GenericCrud
+    dotnet new webapi -o Sample.GenericCrud
     ```
 
 - Enter newly created folder
@@ -59,12 +53,8 @@ Note: For sake of clarity, the documentation does not include references (using)
 
 - Add a new class, in **Models** folder, named: **Account.cs**
     ```csharp
-    public class Account : IEntity
+    public class Account : IEntity<Guid>
     {
-        public Account()
-        {
-            Id = Guid.NewGuid();
-        }
         public Guid Id { get; set; }
         public string Name { get; set; }
     }
@@ -87,58 +77,34 @@ Note: For sake of clarity, the documentation does not include references (using)
 - Add a new class, in **Controllers** folder, named: **AccountsController.cs**
     ```csharp
     [Route("api/[controller]")]
-    public class AccountsController : CrudController<Account>
+    [ApiController]
+    public class AccountsController : CrudControllerBase<Guid, Account>
     {
-        public AccountsController(ICrudController<Guid, Account> controller) : base(controller)
+        public AccountsController(ICrudService<Guid, Account> service) : base(service)
         {
         }
     }
     ```
 
 ### Final adjustments
-Adjust **Startup.cs** class to enable injection and GenericCrud modules. The class should look like this.
+Adjust **Startup.cs** class to enable injection and GenericCrud modules in **ConfigureServices** method. The class should look like this.
 
 ```csharp
-public class Startup
+public void ConfigureServices(IServiceCollection services)
 {
-        public void ConfigureServices(IServiceCollection services)
-        {
-            // to activate mvc service
-            services.AddMvc();
-            // to load an InMemory EntityFramework context
-            services.AddDbContext<SampleContext>(opt => opt.UseInMemoryDatabase("Sample.GenericCrud"));
-            services.AddTransient<IDbContext, SampleContext>();
-            // inject needed service and repository layers
-            services.AddCrud();
-        }
-
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseMvc();
-        }
+    // to activate mvc service
+    services.AddControllers();
+    // to load an InMemory EntityFramework context
+    services.AddDbContext<SampleContext>(opt => opt.UseInMemoryDatabase("Sample.GenericCrud"));
+    services.AddTransient<IDbContext, SampleContext>();
+    // inject needed service and repository layers
+    services.AddCrud();
 }
 ```
 
 ## Start application
 
-- Restore .NET libraries
-
-```bash
-dotnet restore
-```
-
-- Build the project
-
-```bash
-dotnet build
-```
-
-- Execute the project
+- In a terminal, execute the project
 
 ```bash
 dotnet run
@@ -147,7 +113,8 @@ dotnet run
 - Go to **http://localhost:5000/api/accounts**, and you are done!
 
 ## Testing!
-
 Here is a [Postman](https://www.getpostman.com/) collection to test your new RESTful CRUD api
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/090af27316cd23c61951)
+
+Note: If you want to use this postman collection, you will have to change the Web Service Settings (App URL) to use **port 5000**.

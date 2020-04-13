@@ -1,12 +1,6 @@
 LSG.GenericCrud - Visual Studio Simple Scenario
 =
 
-Complete source code is available [here](https://github.com/lonesomegeek/LSG.GenericCrud/tree/master/LSG.GenericCrud.Samples/Sample.GenericCrud.VSCode)
-
-## What you will create in this tutorial
-
-This sample show you all the steps required to use this library using Visual Studio 2017 update 9+ - v15.9+.
-
 At this end of this tutorial, your Visual Studio workspace should look like this:
 
 ![](img/2017-09-05-12-22-03.png)
@@ -22,23 +16,23 @@ and you will have these routes available for the account entity
 | DELETE | /api/accounts/:id | Delete one account    |
 
 ## Prerequisites
-- Visual Studio 2017 update 9+ (v15.9+)
-- .NET core 2.2 SDK
+- Visual Studio 2019 update 9+ (v16.4+)
+- .NET core 3.1 SDK
 
 ## Getting started
 In Visual Studio, execute the following actions:
 - Create a new project:
-    - Category: **Visual C#, Web**
-    - Project Type: **ASP.NET Core Web Application**
-    - Name: **Sample.GenericCrud**
+    - Project Type: **ASP.NET Core Web Application (C#)**
+    - Click Next
+    - Project name: **Sample.GenericCrud**
+    - Click Create
 
 - Select in the next windows 
-    - Framework: .NET Framework or .NET Core
-    - Version: ASP.NET Core 2.2
-    - Model: **API**    
+    - Framework: .NET Core
+    - Version: ASP.NET Core 3.1
+    - Model: **API**  
+    - Click create  
     
-    **Note:** You can choose to target .NET Framework or .NET Core because the LSG.GenericCrud library is .NET Standard 2.0 Compliant. The important thing is to use the **ASP.NET Core Web Application** architecture.
-
 - When the project is created, make sure you add a reference to these Nuget packages:
     - LSG.GenericCrud
     - Microsoft.EntityFrameworkCore.InMemory
@@ -54,12 +48,8 @@ Note: For sake of clarity, the documentation does not include references (using)
 
 - Add a new class, in **Models** folder, named: **Account.cs**
     ```csharp
-    public class Account : IEntity
+    public class Account : IEntity<Guid>
     {
-        public Account()
-        {
-            Id = Guid.NewGuid();
-        }
         public Guid Id { get; set; }
         public string Name { get; set; }
     }
@@ -77,46 +67,31 @@ Note: For sake of clarity, the documentation does not include references (using)
 
 ### Create API controller
 
-- Create a new folder named (if not already created): **Controllers**
-
 - Add a new class, in **Controllers** folder, named: **AccountsController.cs**
     ```csharp
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountsController : CrudController<Account>
+    public class AccountsController : CrudControllerBase<Guid, Account>
     {
-        public AccountsController(ICrudController<Guid, Account> controller) : base(controller)
+        public AccountsController(ICrudService<Guid, Account> service) : base(service)
         {
         }
     }
     ```
 
 ### Final adjustments
-Adjust **Startup.cs** class to enable injection and GenericCrud modules. The class should look like this.
+Adjust **Startup.cs** class to enable injection and GenericCrud modules in **ConfigureServices** method. The class should look like this.
 
 ```csharp
-public class Startup
+public void ConfigureServices(IServiceCollection services)
 {
-    public void ConfigureServices(IServiceCollection services)
-    {
-        // to activate mvc service
-        services.AddMvc();
-        // to load an InMemory EntityFramework context
-        services.AddDbContext<SampleContext>(opt => opt.UseInMemoryDatabase("Sample.GenericCrud"));
-        services.AddTransient<IDbContext, SampleContext>();
-        // inject needed service and repository layers
-        services.AddCrud();
-    }
-
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-    {
-        if (env.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-        }
-
-        app.UseMvc();
-    }
+    // to activate mvc service
+    services.AddControllers();
+    // to load an InMemory EntityFramework context
+    services.AddDbContext<SampleContext>(opt => opt.UseInMemoryDatabase("Sample.GenericCrud"));
+    services.AddTransient<IDbContext, SampleContext>();
+    // inject needed service and repository layers
+    services.AddCrud();
 }
 ```
 
@@ -127,9 +102,8 @@ Press F5 (to compile and run the web app). After a while, a web page will open.
 - Go to **http://localhost:\<PORT\>/api/accounts**, and you are done!
 
 ## Testing!
-
-Note: If you want to use this postman collection, you will have to change the Web Service Settings (App URL) to use **port 5000**. (right-click project, properties, debug)
-
 Here is a [Postman](https://www.getpostman.com/) collection to test your new RESTful CRUD api
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/090af27316cd23c61951)
+
+Note: If you want to use this postman collection, you will have to change the Web Service Settings (App URL) to use **port 5000**. (right-click project, properties, debug)

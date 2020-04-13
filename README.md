@@ -6,7 +6,7 @@
 
 # TL;DR - Getting started / Tutorials
 
-This library provides many built-in ASP.NET Core Web API routes for simplified and DRY REST Apis!
+This library provides many built-in ASP.NET Core Web API routes for simplified and [DRY] REST Apis!
 
 Simpliest scenarios:
 - Using Visual Studio Code (or command line): [Tutorial](docs/1_TutorialAcocuntCrudVisualStudioCode.md)
@@ -14,14 +14,12 @@ Simpliest scenarios:
 
 Want to have a look to *more samples*, take a look at [these samples](LSG.GenericCrud.Samples/README.md)
 
-> Before diving into more complex scenarios (and if you want to understand the underlying architecture), you should take a rapid view at [this explanation of the new architecture in v3.*](./docs/ReleaseNotes-v3.0.md).
-
 # Introduction
-This library is used to provide simplified RESTful [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) apis with a multilayer architecture:
+This library is used to provide simplified RESTful [CRUD] apis with a multilayer architecture:
 - Generic CRUD Controller layer
 - Generic CRUD Service layer
 - Generic CRUD Repository layer 
-- -== **NEW** ==-: More information on [how to customize each layers](./docs/CustomLayers/README.md)
+- -== **NEW** ==- More information on [how to customize each layers](./docs/CustomLayers/README.md)
 
 This library allies injection (IoC), minimum codebase for maximum efficiency.
 
@@ -96,3 +94,8 @@ Future ideas that can/will eventually be supported (feel free to help if you wan
 - [From v2.0 to v2.1](docs/BreakingChangesFrom-v2.0-to-v2.1.md)
 - [From v1.* to v2.*](docs/BreakingChangesFrom-v1-to-v2.md)
 - [Previous notes](docs/OldReleaseNotes.md)
+
+<!-- References -->
+
+[CRUD]: https://en.wikipedia.org/wiki/Create,_read,_update_and_delete
+[DRY]: https://en.wikipedia.org/wiki/Don%27t_repeat_yourself
