@@ -10,11 +10,12 @@ Here is sequence diagrams of the actual flow of information:
 - For Standard CRUD: [Sequence diagram for standard CRUD](./sequence-StandardCrud.png)
 - For Historical CRUD: [Sequence diagram for historical CRUD](./sequence-HistoricalCrud.png)
 
-
 If you want to further customize each layers, here is an exhaustive view of how you can customize the interaction of these three layers.
 
 ## Controller
 When you create your custom controller (ie.: AccountsController), you state that you are different from *CrudControllerBase* class. With ASP.NET Core MVC, you can't go there without creating a custom controller to let MVC know what are the routes and entities you want to publish with your API.
+
+See the [Visual-Studio-Code-Tutorial] for more information.
 
 # Service
 When you have special needs, you may need to change the behaviour of the *CrudServiceBase* class. You may want to change/adapt it in many ways, for exemple:
@@ -24,10 +25,11 @@ When you have special needs, you may need to change the behaviour of the *CrudSe
 - ...
 
 To do so, you have a few options:
-1. Custom service layer from *inheritance* of the *CrudServiceBase* class: [Documentation](./CustomServiceLayerInheritance.md)
-2. Custom service layer *implementation* from part of the *ICrudService* interface and part of the *CrudServiceBase* class: [Documentation](./CustomServiceLayerImplementation.md)
-3. *Complete* custom service layer *implementation* inheriting from *ICrusService*: [Documentation](./CompleteCustomServiceLayer.md)
+1. Custom service layer *inheriting* the *CrudServiceBase* class: [Documentation](./CrudServiceBase/Inheritance.md)
+2. Custom service layer *implementation* from part of the *ICrudService* interface and part of the *CrudServiceBase* class: [Documentation](./CrudServiceBase/Implementation.md)
+3. *Complete* custom service layer *implementation* inheriting from *ICrusService*: [Documentation](./CrudServiceBase/CompleteCustom.md)
 
+TODO: Review that with samples
 As an example, the [DTO custom service layer](../../LSG.GenericCrud.Dto/Services/CrudService.cs) is a custom service layer of type #2.
 
 Note: All the steps shown also applies to:
@@ -70,3 +72,5 @@ Note: the <,> means any type of T1 and any type of T2
 
 TODO: Add links to complete sample documentation
 
+<!-- References -->
+[Visual-Studio-Code-Tutorial]: ../Tutorials/VisualStudioCode.md

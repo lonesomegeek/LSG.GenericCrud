@@ -1,21 +1,21 @@
 # Feature: Entity history tracking @ Historical CRUD
-I've been in many scenario when I was asked to track the evolution of an entity through time in an application. This feature simplifies the acquisition of:
+I've been asked in the past how can I simplify how to track the evolution of an entity through time in an application. This feature simplifies the acquisition of:
 - the what? What has changed, What action as been executed 
 - *the when?* When did the action occured
 - *the who*? Who did the manipulation on the entity
 
-**Note:** The *when?* and the *who?* is not supported natively by HistoricalCrudController\<T> but is covered by [Feature: DataFiller\<T>](./FeatureDataFillers.md).
+**Note:** The *when?* and the *who?* is not supported natively by HistoricalCrudController\<,> but is covered by [Feature: DataFiller\<,>](./FeatureDataFillers.md).
 
-The history tracking feature enables automatic history tracking with few modifications to existing controllers CrudController\<T>.
+The history tracking feature enables automatic history tracking with few modifications to existing controllers CrudController\<,>.
 
 ## What is happening behind the scenes
 Before getting into further details, I think this is important for you to understand what is happening behind the scenes.
 
-First of all, when you will define a controller inheriting from HistoricalCrudController\<T>, it will absolutely need a compatible data access layer (DAL) that supports historical transactions. If you do not specifies a compatible *history-ready* DAL to your HistoricalCrudController\<T>, your entity modifications will be saved, but not the history trackng.
+First of all, when you will define a controller inheriting from HistoricalCrudController\<,>, it will absolutely need a compatible data access layer (DAL) that supports historical transactions. If you do not specifies a compatible *history-ready* DAL to your HistoricalCrudController\<,>, your entity modifications will be saved, but not the history trackng.
 
 Also, the historical events are saved aside of the entities. That means that all historical events of all kind on all entities will be stored in the same table.
 
-Actions that are tracked by HistoricalCrudControllee\<T>:
+Actions that are tracked by HistoricalCrudControllee\<,>:
 - Create: First event tracked obviously when the entity is created
 - Update: All update events that may occur after the creation
 - Delete: This event can only occur once (or never) and it marks the deletion event of the entity
@@ -24,13 +24,13 @@ You should know that the entity transaction and history transaction occurs at th
 
 ## How to make it "Historical"
 To enable the *Historical* feature, you have few steps to do to make the thing work:
-- Change your controller definition to inherit from HistoricalCrudController\<T>
+- Change your controller definition to inherit from HistoricalCrudController\<,>
 - Change your controller constructor to be injected an *Historical-ready* repository (data access layer @ dal)
 - Adapt your database context to support *HistoricalEvents* dataset
 - Adapt DAL injection
 
 ### Controller adaptation
-Here is a configuration with CrudController\<T> controller:
+Here is a configuration with CrudController\<,> controller:
 
 ```csharp
 [Route("api/[controller]")]
@@ -40,7 +40,7 @@ public class AccountsController : CrudController<Account>
 }
 ```
 
-Here is a configuration with HistoricalCrudController\<T> controller:
+Here is a configuration with HistoricalCrudController\<,> controller:
 ```csharp
 [Route("api/[controller]")]
 public class AccountsController : HistoricalCrudController<Account>
@@ -55,7 +55,7 @@ Adjust your existing context class to include this property:
 public DbSet<HistoricalEvent> HistoricalEvents { get; set; }
 public DbSet<HistoricalChangeset> HistoricalChangesets { get; set; }	
 ```
-This inclusion will enables the HistoricalCrud\<T> DAL to do the tracking of all the events. In future release, I may put settings to let you choose where to drop the entity events (up to you).
+This inclusion will enables the HistoricalCrud\<,> DAL to do the tracking of all the events. In future release, I may put settings to let you choose where to drop the entity events (up to you).
 
 ### DAL injection adaptation
 In **Startup.cs**, add a new injection configuration in *ConfigureServices(...)*
@@ -63,8 +63,8 @@ In **Startup.cs**, add a new injection configuration in *ConfigureServices(...)*
 services.AddScoped(typeof(IHistoricalCrudService<>), typeof(HistoricalCrudService<>));
 ```
 
-## It is a CrudController\<T> plus...
-This is programatically-talking a CrudController\<T> with history tracking but with more routes. As a reminder, here is the default routes provided with a CrudController\<T>:
+## It is a CrudController\<,> plus...
+This is programatically-talking a CrudController\<,> with history tracking but with more routes. As a reminder, here is the default routes provided with a CrudController\<,>:
 
 | 	 | Verb    |	Route	                                 | Results   | Description |
 |----|----------|--------------------------------------------|-----------|-------------|
@@ -76,7 +76,7 @@ This is programatically-talking a CrudController\<T> with history tracking but w
 | C  |	DELETE  | /[entity]/:id	                             | 200,404	 | Delete an object |
 | C  |	POST    | /[entity]/:id/copy	                     | 201,404	 | Copy active version of an object in a new object |
 
-You will get more routes with an HistoricalCrudController\<T>:
+You will get more routes with an HistoricalCrudController\<,>:
 
 | HC |	GET	    | /[entity]/:id/history	                     | 200,404	 | Get transaction history of an object |
 | HC |	POST    | /[entity]/:id/restore	                     | 201,404	 | Restore a deleted object in a new object |

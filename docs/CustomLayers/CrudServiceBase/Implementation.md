@@ -23,7 +23,7 @@ public class CustomImplementedCrudService<T1, T2> : ICrudService<T1, T2> where T
 
 Here is a better overview of what you can do before and after each action with this sequence diagram. Please note that with this technique, you can do whateaver you want before or after the *base* action, but, you can't change the *base* behaviour.
 
-[<img src="./sequence-StandardCrud_CustomService.png">](./sequence-StandardCrud_CustomService.png)
+[<img src="../assets/sequence-StandardCrud_CustomService.png">](../assets/sequence-StandardCrud_CustomService.png)
 
 ```csharp
 public class CustomImplementedCrudService<T1, T2> : ICrudService<T1, T2> where T2 : class, IEntity<T1>, new()
