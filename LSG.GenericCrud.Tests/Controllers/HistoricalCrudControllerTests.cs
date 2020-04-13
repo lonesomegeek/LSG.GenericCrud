@@ -41,7 +41,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.RestoreAsync(It.IsAny<Guid>())).ReturnsAsync(_entity);
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var result = await controller.RestoreFromDeletedEntity(_entity.Id);
 
@@ -54,7 +54,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.RestoreAsync(It.IsAny<Guid>())).ThrowsAsync(new EntityNotFoundException());
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var result = await controller.RestoreFromDeletedEntity(_entity.Id);
 
@@ -67,7 +67,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.GetHistoryAsync(It.IsAny<Guid>())).ReturnsAsync(_events);
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var result = await controller.GetHistory(_entity.Id);
 
@@ -80,7 +80,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.GetHistoryAsync(It.IsAny<Guid>())).ThrowsAsync(new EntityNotFoundException());
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
             
             var result = await controller.GetHistory(_entity.Id);
 
@@ -94,7 +94,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var controllerMock = new Mock<ICrudController<Guid, TestEntity>>();
             controllerMock.Setup(_ => _.GetAll()).ReturnsAsync(new OkObjectResult(_entities));
-            var controller = new HistoricalCrudController<Guid, TestEntity>(controllerMock.Object, null);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(controllerMock.Object, null);
 
             var result = await controller.GetAll();
 
@@ -107,7 +107,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.GetReadStatusAsync()).ReturnsAsync(_statuses);
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.GetReadStatus();
 
@@ -120,7 +120,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.GetReadStatusByIdAsync(It.IsAny<Guid>())).ReturnsAsync(_status);
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.GetReadStatusById(_entity.Id);
 
@@ -133,7 +133,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.GetReadStatusByIdAsync(It.IsAny<Guid>())).ThrowsAsync(new EntityNotFoundException());
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.GetReadStatusById(_entity.Id);
 
@@ -146,7 +146,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var controllerMock = new Mock<ICrudController<Guid, TestEntity>>();
             controllerMock.Setup(_ => _.GetById(It.IsAny<Guid>())).ReturnsAsync(new OkObjectResult(_entity));
-            var controller = new HistoricalCrudController<Guid, TestEntity>(controllerMock.Object, null);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(controllerMock.Object, null);
 
             var result = await controller.GetById(_entity.Id);
 
@@ -159,7 +159,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var controllerMock = new Mock<ICrudController<Guid, TestEntity>>();
             controllerMock.Setup(_ => _.HeadById(It.IsAny<Guid>())).ReturnsAsync(new OkResult());
-            var controller = new HistoricalCrudController<Guid, TestEntity>(controllerMock.Object, null);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(controllerMock.Object, null);
 
             await controller.HeadById(_entity.Id);
 
@@ -171,7 +171,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.CreateAsync(It.IsAny<TestEntity>())).ReturnsAsync(_entity);
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.Create(_entity);
 
@@ -183,7 +183,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         public async void Update_ReturnsAsyncModifiedEntity()
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.Update(_entity.Id, _entity);
 
@@ -196,7 +196,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.UpdateAsync(It.IsAny<Guid>(), It.IsAny<TestEntity>())).Throws<EntityNotFoundException>();
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.Update(_entity.Id, _entity);
 
@@ -208,7 +208,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         public async void Delete_ReturnsAsyncOk()
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.Delete(_entity.Id);
 
@@ -221,7 +221,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.DeleteAsync(It.IsAny<Guid>())).Throws<EntityNotFoundException>();
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.Delete(_entity.Id);
 
@@ -234,7 +234,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.CopyAsync(It.IsAny<Guid>())).ThrowsAsync(new EntityNotFoundException());
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.Copy(_entity.Id);
 
@@ -247,7 +247,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.CopyAsync(It.IsAny<Guid>())).ReturnsAsync(_entity);
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.Copy(_entity.Id);
 
@@ -260,7 +260,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.CopyFromChangeset(It.IsAny<Guid>(), It.IsAny<Guid>())).ReturnsAsync(_entity);
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.CopyFromChangeset(_entity.Id, new Guid());
 
@@ -274,7 +274,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.CopyFromChangeset(It.IsAny<Guid>(), It.IsAny<Guid>())).ThrowsAsync(new EntityNotFoundException());
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.CopyFromChangeset(_entity.Id, new Guid());
 
@@ -287,7 +287,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.CopyFromChangeset(It.IsAny<Guid>(), It.IsAny<Guid>())).ThrowsAsync(new ChangesetNotFoundException());
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.CopyFromChangeset(_entity.Id, new Guid());
 
@@ -300,7 +300,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.CopyFromChangeset(It.IsAny<Guid>(), It.IsAny<Guid>())).ThrowsAsync(new Exception());
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.CopyFromChangeset(_entity.Id, new Guid());
 
@@ -313,7 +313,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.RestoreFromChangeset(It.IsAny<Guid>(), It.IsAny<Guid>())).ThrowsAsync(new EntityNotFoundException());
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.RestoreFromChangeset(_entity.Id, new Guid());
 
@@ -327,7 +327,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.RestoreFromChangeset(It.IsAny<Guid>(), It.IsAny<Guid>())).ThrowsAsync(new ChangesetNotFoundException());
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.RestoreFromChangeset(_entity.Id, new Guid());
 
@@ -340,7 +340,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.RestoreFromChangeset(It.IsAny<Guid>(), It.IsAny<Guid>())).ThrowsAsync(new Exception());
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.RestoreFromChangeset(_entity.Id, new Guid());
 
@@ -353,7 +353,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.RestoreFromChangeset(It.IsAny<Guid>(), It.IsAny<Guid>())).ReturnsAsync(_entity);
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.RestoreFromChangeset(_entity.Id, new Guid());
 
@@ -366,7 +366,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         public async void MarkAllAsRead_ReturnsNoContent()
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.MarkAllAsRead();
 
@@ -378,7 +378,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         public async void MarkAllAsUnread_ReturnsNoContent()
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.MarkAllAsUnread();
 
@@ -390,7 +390,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         public async void MarkOneAsRead_ReturnsOk()
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.MarkOneAsRead(_entity.Id);
 
@@ -403,7 +403,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.MarkOneAsRead(It.IsAny<Guid>())).ThrowsAsync(new EntityNotFoundException());
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.MarkOneAsRead(_entity.Id);
 
@@ -415,7 +415,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         public async void MarkOneAsUnread_ReturnsOk()
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.MarkOneAsUnread(_entity.Id);
 
@@ -428,7 +428,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.MarkOneAsUnread(It.IsAny<Guid>())).ThrowsAsync(new EntityNotFoundException());
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.MarkOneAsUnread(_entity.Id);
 
@@ -441,7 +441,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.Delta(It.IsAny<Guid>(), It.IsAny<DeltaRequest>())).ReturnsAsync(new { });
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.Delta(_entity.Id, new DeltaRequest());
 
@@ -454,7 +454,7 @@ namespace LSG.GenericCrud.Tests.Controllers
         {
             var serviceMock = new Mock<IHistoricalCrudService<Guid, TestEntity>>();
             serviceMock.Setup(_ => _.Delta(It.IsAny<Guid>(), It.IsAny<DeltaRequest>())).ThrowsAsync(new EntityNotFoundException());
-            var controller = new HistoricalCrudController<Guid, TestEntity>(null, serviceMock.Object);
+            var controller = new HistoricalCrudControllerBase<Guid, TestEntity>(null, serviceMock.Object);
 
             var actionResult = await controller.Delta(_entity.Id, new DeltaRequest());
 

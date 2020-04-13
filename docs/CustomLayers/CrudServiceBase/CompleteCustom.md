@@ -21,4 +21,4 @@ Here is a better overview of what you can do with this sequence diagram. You can
 - Write entirely new code for your need
 - ...
 
-[<img src="./sequence-StandardCrud_CustomService.png">](./sequence-StandardCrud_CustomService.png)
+[<img src="../assets/sequence-StandardCrud_CustomService.png">](../assets/sequence-StandardCrud_CustomService.png)
