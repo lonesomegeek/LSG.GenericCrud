@@ -9,8 +9,8 @@
 This library provides many built-in ASP.NET Core Web API routes for simplified and [DRY] REST Apis!
 
 Simpliest scenarios:
-- Using Visual Studio Code (or command line): [Tutorial](docs/Tutorials/1_TutorialAcocuntCrudVisualStudioCode.md)
-- Using Visual Studio (2017 update 9+ - v15.9+): [Tutorial](docs/Tutorials/1_TutorialAcocuntCrudVisualStudio.md)
+- Using Visual Studio Code (or command line): [Tutorial](docs/Tutorials/VisualStudioCode.md)
+- Using Visual Studio (2019 v16.4+): [Tutorial](docs/Tutorials/VisualStudio.md)
 
 Want to have a look to *more samples*, take a look at [these samples](LSG.GenericCrud.Samples/README.md)
 
@@ -58,7 +58,7 @@ You need:
 - [.NET Core 3.1 SDK](https://dotnet.microsoft.com/download/dotnet-core/3.1) (for any of the options below)
 
 You also need one of these options below:
-- [Visual Studio](https://www.visualstudio.com/downloads/), at least a version that supports aspnetcore 3.1 ([Visual Studio 2016 - v16.4+](https://devblogs.microsoft.com/dotnet/announcing-net-core-3-1/))
+- [Visual Studio](https://www.visualstudio.com/downloads/), at least a version that supports aspnetcore 3.1 ([Visual Studio 2019 - v16.4+](https://devblogs.microsoft.com/dotnet/announcing-net-core-3-1/))
 - [Visual Studio Code](https://code.visualstudio.com/)
 
 # Features supported, by library
