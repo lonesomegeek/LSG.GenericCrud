@@ -18,8 +18,7 @@ namespace LSG.GenericCrud.Samples.Models
         }
         public DbSet<HistoricalChangeset> HistoricalChangesets { get; set; }
         public DbSet<HistoricalEvent> HistoricalEvents { get; set; }
-        // public DbSet<Item> Items { get; set; }
-        public DbSet<Object> Objects { get; set; }
+        public DbSet<Item> Items { get; set; }
         public DbSet<Share> Shares { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<User> Users { get;set; }

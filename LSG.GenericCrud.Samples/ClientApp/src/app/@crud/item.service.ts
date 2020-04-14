@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class ItemService {
-  baseRoute: string = "api/objects";
+  baseRoute: string = "api/items";
 
   constructor(
     private http: HttpClient,

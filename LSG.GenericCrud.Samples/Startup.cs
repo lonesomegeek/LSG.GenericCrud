@@ -38,7 +38,7 @@ namespace LSG.GenericCrud.Samples
                 configuration.RootPath = "ClientApp/dist";
             });
 
-            services.AddDbContext<SampleContext>(opt => opt.UseSqlServer("server=localhost;user id=sa;password=Sapassword1!;Initial Catalog=MySampleDb"));
+            services.AddDbContext<SampleContext>(opt => opt.UseSqlServer("server=localhost;user id=sa;password=Sapassword1!;Initial Catalog=LSG.GenericCrud.Samples"));
             services.AddTransient<IDbContext, SampleContext>();
             services.AddTransient<IUserInfoRepository, UserInfoRepository>();
             services.AddTransient<IEntityDataFiller, CreatedFiller>();

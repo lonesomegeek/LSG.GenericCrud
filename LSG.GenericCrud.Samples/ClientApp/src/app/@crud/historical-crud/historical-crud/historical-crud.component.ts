@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { ItemService } from 'src/app/items/item.service';
 import { AgGridAngular } from 'ag-grid-angular';
+import { ItemService } from '../../item.service';
 
 @Component({
   selector: 'app-historical-crud',

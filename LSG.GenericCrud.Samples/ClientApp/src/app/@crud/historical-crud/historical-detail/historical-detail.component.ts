@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ItemService } from 'src/app/items/item.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ItemService } from '../../item.service';
 
 @Component({
   selector: 'app-historical-detail',
