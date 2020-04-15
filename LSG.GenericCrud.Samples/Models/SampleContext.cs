@@ -10,9 +10,7 @@ namespace LSG.GenericCrud.Samples.Models
         BaseDbContext,
         IDbContext
     {
-        public SampleContext(DbContextOptions options, IServiceProvider serviceProvider) : base(options, serviceProvider)
-        {
-        }
+        public SampleContext(DbContextOptions options, IServiceProvider serviceProvider) : base(options, serviceProvider) {}
         public DbSet<HistoricalChangeset> HistoricalChangesets { get; set; }
         public DbSet<HistoricalEvent> HistoricalEvents { get; set; }
         public DbSet<Item> Items { get; set; }
@@ -20,6 +18,8 @@ namespace LSG.GenericCrud.Samples.Models
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Contributor> Contributors { get; set; }
         public DbSet<Entities.User> Users { get;set; }
+        public DbSet<Hook> Hooks { get;set; }
+        public DbSet<BlogPost> BlogPosts { get;set; }
 
     }
 }
