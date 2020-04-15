@@ -48,13 +48,13 @@ export class HistoricalDetailComponent implements OnInit {
 
   create() {
     this.service.postOne(this.row).subscribe(result => {
-      this.router.navigate(['/objects']);
+      this.router.navigate(['/items']);
     })
   }
 
   delete() {
     this.service.deleteOne(this.selectedId).subscribe(result => {
-      this.router.navigate(['/objects']);
+      this.router.navigate(['/items']);
 
     });
   }
