@@ -15,19 +15,27 @@ export class HistoricalCrudComponent implements OnInit {
   public rows: Observable<any[]>;
   public columnDefs: any[];
 
+  public entityName: string;
   public baseRoute: string;
 
   constructor(
     private router: Router,
     private service: ItemService
-  ) { }
+  ) {    
+    this.entityName = this.service.entityName;
+    this.baseRoute = "api/" + this.service.entityName;
+    // this.service.entityName = this.entityName;
+    console.log("crud entity name: " + this.entityName);
+  }
 
   ngOnInit() {
+    this.service.baseRoute = "api/" + this.service.entityName; 
+
     this.rows = this.service.getAll();
     this.agGrid.rowDoubleClicked.subscribe(row => this.rowDoubleClicked(row));
   }
 
   rowDoubleClicked(row: any) {
-    this.router.navigate(['/objects/' + row.data.id]);
+    this.router.navigate(['/' + this.entityName + '/' + row.data.id]);
   }
 }

@@ -10,6 +10,7 @@ import { ItemService } from '../../item.service';
 })
 export class HistoricalDetailComponent implements OnInit {
   row: any;
+  entityName: string;
   selectedId: string;
   mode: string = "read";
   isEditing: boolean = false;
@@ -48,13 +49,13 @@ export class HistoricalDetailComponent implements OnInit {
 
   create() {
     this.service.postOne(this.row).subscribe(result => {
-      this.router.navigate(['/items']);
+      this.router.navigate(['/' + this.entityName]);
     })
   }
 
   delete() {
     this.service.deleteOne(this.selectedId).subscribe(result => {
-      this.router.navigate(['/items']);
+      this.router.navigate(['/' + this.entityName]);
 
     });
   }

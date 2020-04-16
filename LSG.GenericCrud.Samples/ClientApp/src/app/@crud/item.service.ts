@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, OnInit } from '@angular/core';
 import { Item } from '../models/item';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -6,13 +6,19 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class ItemService {
-  baseRoute: string = "api/items";
+export class ItemService implements OnInit {
+  baseRoute: string;
 
+  entityName: string;
   constructor(
     private http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string,
-  ) { }
+  ) {
+    this.baseRoute = "api/" + this.entityName;
+    console.log("entity name: " + this.entityName);
+
+  }
+  ngOnInit(): void {}
 
   getAll() : Observable<Item[]> { return this.http.get<Item[]>(this.baseUrl + this.baseRoute); }
   getOne(id : string) : Observable<Item> { return this.http.get<Item>(this.baseUrl + this.baseRoute + "/" + id); }

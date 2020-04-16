@@ -8,7 +8,7 @@ namespace LSG.GenericCrud.Samples.Models.Entities
     {
         public Guid Id { get; set; }
         public Guid ContactId { get; set; }
-        public Guid ObjectId { get; set; }
+        public Guid ItemId { get; set; }
         public string Description { get;set; }
         public DateTime SharingReminder { get;set; }
     }
