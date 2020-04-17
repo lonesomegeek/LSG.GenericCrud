@@ -7,16 +7,13 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class ItemService implements OnInit {
-  baseRoute: string;
-
-  entityName: string;
+  public baseRoute: string;
+  public entityName: string;
   constructor(
     private http: HttpClient,
-    @Inject('BASE_URL') private baseUrl: string,
+    @Inject('BASE_URL') private baseUrl: string
   ) {
     this.baseRoute = "api/" + this.entityName;
-    console.log("entity name: " + this.entityName);
-
   }
   ngOnInit(): void {}
 

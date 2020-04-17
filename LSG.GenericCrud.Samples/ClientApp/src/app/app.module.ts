@@ -17,6 +17,7 @@ import { ShareComponent } from './shares/share/share.component';
 import { ShareDetailComponent } from './shares/share-detail/share-detail.component';
 import { ItemComponent } from './items/item/item.component';
 import { ItemDetailComponent } from './items/item-detail/item-detail.component';
+import { TestComponent } from './test/test.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ItemDetailComponent } from './items/item-detail/item-detail.component';
     ShareComponent,
     ShareDetailComponent,
     ItemComponent,
-    ItemDetailComponent
+    ItemDetailComponent,
+    TestComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -50,6 +52,7 @@ import { ItemDetailComponent } from './items/item-detail/item-detail.component';
       { path: 'shares',         component: ShareComponent,  },
       { path: 'shares/:id',     component: ShareDetailComponent,  },
       { path: 'shares/create',  component: ShareDetailComponent,  },
+      { path: 'test',           component: TestComponent }
 
     ])
   ],
