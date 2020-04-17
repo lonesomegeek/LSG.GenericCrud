@@ -1,13 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { HistoricalDetailComponent } from 'src/app/@crud/historical-crud/historical-detail/historical-detail.component';
 
 @Component({
   selector: 'app-share-detail',
-  templateUrl: '../../@crud/historical-crud/historical-detail/historical-detail.component.html'
+  templateUrl: './share-detail.component.html',
+  styleUrls: ['./share-detail.component.css']
 })
-export class ShareDetailComponent extends HistoricalDetailComponent implements OnInit {
+export class ShareDetailComponent implements OnInit {
+  entityName: string = "shares";
+  columnDefs = [
+    { headerName: 'Id', field: 'id', sortable: true },
+    { headerName: 'ContactId', field: 'contactId', sortable: true },
+    { headerName: 'ItemId', field: 'itemId', sortable: true },
+    { headerName: 'Description', field: 'description', sortable: true }];
+  constructor() { }
+
   ngOnInit() {
-    super.entityName = "shares";
-    super.ngOnInit();
   }
 }

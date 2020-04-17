@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ItemService } from '../../item.service';
@@ -10,11 +10,13 @@ import { ItemService } from '../../item.service';
 })
 export class HistoricalDetailComponent implements OnInit {
   row: any;
+  @Input()
   entityName: string;
   selectedId: string;
   mode: string = "read";
   isEditing: boolean = false;
   history: Observable<History[]>;
+  
   historyColumnDefs: any[] = [
     { headerName: 'Action', field: 'action', sortable: true },
     { headerName: 'By', field: 'createdBy', sortable: true },
@@ -30,6 +32,9 @@ export class HistoricalDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.service.entityName = this.entityName;    
+    this.service.baseRoute = "api/" + this.service.entityName; 
+
     if (this.mode != "create") {
       this.service.getOne(this.selectedId).subscribe(e => { this.row = e; });
       this.service.makeRead(this.selectedId).subscribe();

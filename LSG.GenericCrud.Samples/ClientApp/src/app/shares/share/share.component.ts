@@ -1,32 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { HistoricalCrudComponent } from 'src/app/@crud/historical-crud/historical-crud/historical-crud.component';
-import { Router } from '@angular/router';
-import { ItemService } from 'src/app/@crud/item.service';
 
 @Component({
   selector: 'app-share',
-  templateUrl: '../../@crud/historical-crud/historical-crud/historical-crud.component.html'
+  templateUrl: './share.component.html',
+  styleUrls: ['./share.component.css']
 })
-export class ShareComponent extends HistoricalCrudComponent implements OnInit {
-  constructor(
-    router: Router,
-    service: ItemService
-  ) {   
-    service.entityName = "shares";
-    super(router, service);
-
-    super.entityName = "shares";
-    super.columnDefs = [
-      { headerName: 'Id', field: 'id', sortable: true },
-      { headerName: 'Contact', field: 'contactId', sortable: true },
-      { headerName: 'Item', field: 'itemId', sortable: true },      
-      { headerName: 'Reminder', field: 'sharingReminder', sortable: true },
-      { headerName: 'Description', field: 'description', sortable: true }];
-  }
+export class ShareComponent implements OnInit {
+  entityName: string = "shares";
+  columnDefs = [
+    { headerName: 'Id', field: 'id', sortable: true },
+    { headerName: 'ContactId', field: 'contactId', sortable: true },
+    { headerName: 'ItemId', field: 'itemId', sortable: true },
+    { headerName: 'SharingReminder', field: 'sharingReminder', sortable: true },
+    { headerName: 'Description', field: 'description', sortable: true }];
+  constructor() { }
 
   ngOnInit() {
-    super.entityName = "items";    
-    
-    super.ngOnInit();
   }
 }

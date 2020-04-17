@@ -1,14 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { HistoricalDetailComponent } from 'src/app/@crud/historical-crud/historical-detail/historical-detail.component';
 
 @Component({
   selector: 'app-item-detail',
-  templateUrl: '../../@crud/historical-crud/historical-detail/historical-detail.component.html'
+  templateUrl: './item-detail.component.html',
+  styleUrls: ['./item-detail.component.css']
 })
-export class ItemDetailComponent extends HistoricalDetailComponent implements OnInit {
+export class ItemDetailComponent implements OnInit {
+  entityName: string = "items";
+  columnDefs = [
+    { headerName: 'Id', field: 'id', sortable: true },
+    { headerName: 'Name', field: 'name', sortable: true },
+    { headerName: 'Description', field: 'description', sortable: true }];
+  constructor() { }
 
   ngOnInit() {
-    super.entityName = "items";
-    super.ngOnInit();
   }
 }
