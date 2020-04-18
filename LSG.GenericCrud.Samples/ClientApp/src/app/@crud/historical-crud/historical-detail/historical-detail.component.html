@@ -5,6 +5,7 @@ Mode: {{mode}}
 
 <p>This component demonstrates fetching data from the server.</p>
 
+
 <p *ngIf="!row"><em>Loading...</em></p>
 <button *ngIf="mode=='read'" (click)="editActivate()">Edit</button>
 
@@ -12,29 +13,48 @@ Mode: {{mode}}
 <button *ngIf="mode=='create'" (click)="create()">Create</button>
 <button *ngIf="mode=='edit'" (click)="editDeactivate()">Cancel</button>
 <button *ngIf="mode=='edit'" (click)="delete()">Delete</button>
+
 <table class='table table-striped' *ngIf="row">
   <thead>
     <tr>
-      <th>Name</th>   
-      <th>Description</th>   
+      <ng-container *ngFor="let columnDef of columnDefs">
+        <th *ngIf="!columnDef.hideInForm">{{columnDef.headerName}}</th>
+      </ng-container>
+      
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td *ngIf="mode=='read'">{{ row.name }}</td> 
-      <td *ngIf="mode!='read'"><input required [(ngModel)]="row.name" name="name"></td> 
-      
-      <td *ngIf="mode=='read'">{{ row.description }}</td> 
-      <td *ngIf="mode!='read'"><input required [(ngModel)]="row.description" name="description"></td> 
+      <ng-container *ngFor="let columnDef of columnDefs">
+        <td *ngIf="mode=='read' && !columnDef.hideInForm">{{ row[columnDef.field] }}</td>
+        <td *ngIf="mode!='read' && !columnDef.hideInForm"><input required [(ngModel)]="row[columnDef.field]" name="row[columnDef.field]"></td>
+      </ng-container>
+    </tr>
+  </tbody>
+</table>
+
+
+<table class='table table-striped' *ngIf="row">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td *ngIf="mode=='read'">{{ row.name }}</td>
+      <td *ngIf="mode!='read'"><input required [(ngModel)]="row.name" name="name"></td>
+
+      <td *ngIf="mode=='read'">{{ row.description }}</td>
+      <td *ngIf="mode!='read'"><input required [(ngModel)]="row.description" name="description"></td>
     </tr>
   </tbody>
 </table>
 <div *ngIf="mode=='read'">
   <h1>History</h1>
   <p *ngIf="!history"><em>Loading...</em></p>
-  <ag-grid-angular style="width: 500px; height: 500px;"
-                   class="ag-theme-balham"
-                   [rowData]="history | async"
-                   [columnDefs]="historyColumnDefs">
+  <ag-grid-angular style="width: 500px; height: 500px;" class="ag-theme-balham" [rowData]="history | async"
+    [columnDefs]="historyColumnDefs">
   </ag-grid-angular>
 </div>

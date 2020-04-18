@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class ShareDetailComponent implements OnInit {
   entityName: string = "shares";
   columnDefs = [
-    { headerName: 'Id', field: 'id', sortable: true },
+    { headerName: 'Id', field: 'id', sortable: true, hideInForm: true },
     { headerName: 'ContactId', field: 'contactId', sortable: true },
     { headerName: 'ItemId', field: 'itemId', sortable: true },
     { headerName: 'Description', field: 'description', sortable: true }];

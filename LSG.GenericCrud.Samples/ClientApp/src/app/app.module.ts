@@ -17,6 +17,7 @@ import { ItemComponent } from './items/item/item.component';
 import { ItemDetailComponent } from './items/item-detail/item-detail.component';
 import { ShareComponent } from './shares/share/share.component';
 import { ShareDetailComponent } from './shares/share-detail/share-detail.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { ShareDetailComponent } from './shares/share-detail/share-detail.compone
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    CommonModule,
     AgGridModule.withComponents([]),
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },

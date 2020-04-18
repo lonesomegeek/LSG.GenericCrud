@@ -12,6 +12,8 @@ export class HistoricalDetailComponent implements OnInit {
   row: any;
   @Input()
   entityName: string;
+  @Input()
+  columnDefs: any[];
   selectedId: string;
   mode: string = "read";
   isEditing: boolean = false;
