@@ -1,6 +1,8 @@
 using System;
 using AutoMapper;
 using LSG.GenericCrud.DataFillers;
+using LSG.GenericCrud.Dto.Helpers;
+using LSG.GenericCrud.Dto.Services;
 using LSG.GenericCrud.Helpers;
 using LSG.GenericCrud.Repositories;
 using LSG.GenericCrud.Samples.Models;
