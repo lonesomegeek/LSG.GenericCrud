@@ -7,8 +7,6 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
 import { HomeComponent } from './components/home/home.component';
-import { CounterComponent } from './components/counter/counter.component';
-import { FetchDataComponent } from './components/fetch-data/fetch-data.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { ItemComponent } from './components/items/item/item.component';
 import { ItemDetailComponent } from './components/items/item-detail/item-detail.component';
@@ -25,14 +23,13 @@ import { BlobPostComponent } from './components/blog-posts/blob-post/blob-post.c
 import { BlobPostDetailComponent } from './components/blog-posts/blob-post-detail/blob-post-detail.component';
 import { CrudComponent } from './components/@crud/crud/crud.component';
 import { CrudDetailComponent } from './components/@crud/crud-detail/crud-detail.component';
+import { AboutComponent } from './components/about/about.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
-    FetchDataComponent,
     CrudComponent,
     CrudDetailComponent,
     ShareComponent,
@@ -46,7 +43,8 @@ import { CrudDetailComponent } from './components/@crud/crud-detail/crud-detail.
     UserComponent,
     UserDetailComponent,
     BlobPostComponent,
-    BlobPostDetailComponent],
+    BlobPostDetailComponent,
+    AboutComponent],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
@@ -55,9 +53,8 @@ import { CrudDetailComponent } from './components/@crud/crud-detail/crud-detail.
     AgGridModule.withComponents([]),
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
-
+      { path: 'about', component: AboutComponent },
+      
       { path: 'items', component: ItemComponent,  },
       { path: 'items/:id', component: ItemDetailComponent,  },
       { path: 'items/create', component: ItemDetailComponent,  },

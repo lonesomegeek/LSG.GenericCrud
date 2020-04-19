@@ -30,7 +30,7 @@
 <div *ngIf="mode=='read' && showHistory">
   <h1>History</h1>
   <p *ngIf="!history"><em>Loading...</em></p>
-  <ag-grid-angular style="width: 500px; height: 500px;" class="ag-theme-balham" [rowData]="history | async"
+  <ag-grid-angular style="height: 500px;" class="ag-theme-balham" [rowData]="history | async"
     [columnDefs]="historyColumnDefs">
   </ag-grid-angular>
 </div>
