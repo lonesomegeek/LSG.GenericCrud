@@ -77,6 +77,10 @@ import { CrudDetailComponent } from './@crud/crud-detail/crud-detail.component';
       { path: 'users',         component: UserComponent,  },
       { path: 'users/:id',     component: UserDetailComponent,  },
       { path: 'users/create',  component: UserDetailComponent,  },
+
+      { path: 'blogposts',         component: BlobPostComponent,  },
+      { path: 'blogposts/:id',     component: BlobPostDetailComponent,  },
+      { path: 'blogposts/create',  component: BlobPostDetailComponent,  },
     ])
   ],
   providers: [],
