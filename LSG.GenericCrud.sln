@@ -16,7 +16,9 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "LSG.GenericCrud.Database", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LSG.GenericCrud.Benchmark", "LSG.GenericCrud.Benchmark\LSG.GenericCrud.Benchmark.csproj", "{BB1F34D8-04BF-4C2E-BC65-C57F963F2D61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LSG.GenericCrud.Samples", "LSG.GenericCrud.Samples\LSG.GenericCrud.Samples.csproj", "{22FD7F21-6208-47EB-8D3C-7E7485608C0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LSG.GenericCrud.Samples", "LSG.GenericCrud.Samples\LSG.GenericCrud.Samples.csproj", "{22FD7F21-6208-47EB-8D3C-7E7485608C0D}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "LSG.GenericCrud.Samples.Database", "LSG.GenericCrud.Samples.Database\LSG.GenericCrud.Samples.Database.sqlproj", "{F2B52A52-8FF2-44E6-8DD8-CF256AAD0BF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +52,12 @@ Global
 		{22FD7F21-6208-47EB-8D3C-7E7485608C0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22FD7F21-6208-47EB-8D3C-7E7485608C0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22FD7F21-6208-47EB-8D3C-7E7485608C0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2B52A52-8FF2-44E6-8DD8-CF256AAD0BF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2B52A52-8FF2-44E6-8DD8-CF256AAD0BF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2B52A52-8FF2-44E6-8DD8-CF256AAD0BF4}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F2B52A52-8FF2-44E6-8DD8-CF256AAD0BF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2B52A52-8FF2-44E6-8DD8-CF256AAD0BF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2B52A52-8FF2-44E6-8DD8-CF256AAD0BF4}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
