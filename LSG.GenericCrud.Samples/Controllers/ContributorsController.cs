@@ -3,13 +3,15 @@ using LSG.GenericCrud.Samples.Models.Entities;
 using LSG.GenericCrud.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LSG.GenericCrud.Samples.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UsersController : HistoricalCrudControllerBase<Guid, User>
+    public class ContributorsController : CrudControllerBase<Guid, Contributor>
     {
-        public UsersController(ICrudController<Guid, User> crudController, IHistoricalCrudService<Guid, User> historicalCrudService) : base(crudController, historicalCrudService) {}    
+        public ContributorsController(ICrudService<Guid, Contributor> service) : base(service) {}
     }
 }

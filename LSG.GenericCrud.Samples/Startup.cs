@@ -4,6 +4,7 @@ using LSG.GenericCrud.Helpers;
 using LSG.GenericCrud.Repositories;
 using LSG.GenericCrud.Samples.Controllers;
 using LSG.GenericCrud.Samples.Models;
+using LSG.GenericCrud.Samples.Models.Entities;
 using LSG.GenericCrud.Samples.Services;
 using LSG.GenericCrud.Services;
 using Microsoft.AspNetCore.Builder;
@@ -38,7 +39,7 @@ namespace LSG.GenericCrud.Samples
                 configuration.RootPath = "ClientApp/dist";
             });
 
-            services.AddDbContext<SampleContext>(opt => opt.UseSqlServer("server=localhost;user id=sa;password=Sapassword1!;Initial Catalog=MySampleDb"));
+            services.AddDbContext<SampleContext>(opt => opt.UseSqlServer("server=localhost;user id=sa;password=Sapassword1!;Initial Catalog=LSG.GenericCrud.Samples"));
             services.AddTransient<IDbContext, SampleContext>();
             services.AddTransient<IUserInfoRepository, UserInfoRepository>();
             services.AddTransient<IEntityDataFiller, CreatedFiller>();
@@ -46,25 +47,25 @@ namespace LSG.GenericCrud.Samples
 
 
             // to inject a specific layer for all type of object that implemend IEntity<T>
-            services.AddScoped(typeof(ICrudService<,>), typeof(CustomImplementedCrudService<,>));
+            // services.AddScoped(typeof(ICrudService<Guid, Share>), typeof(CustomImplementedCrudService<Guid, Share>));
 
-            //services.AddCrud();
-            services.AddScoped(typeof(ICrudController<,>), typeof(CrudControllerBase<,>));
-            services.AddScoped(typeof(ICrudCopyController<,>), typeof(CrudControllerBase<,>));
+            services.AddCrud();
+            // services.AddScoped(typeof(ICrudController<,>), typeof(CrudControllerBase<,>));
+            // services.AddScoped(typeof(ICrudCopyController<,>), typeof(CrudControllerBase<,>));
 
-            services.AddScoped(typeof(IHistoricalCrudController<,>), typeof(HistoricalCrudControllerBase<,>));
+            // services.AddScoped(typeof(IHistoricalCrudController<,>), typeof(HistoricalCrudControllerBase<,>));
             
-            services.AddScoped(typeof(IHistoricalCrudReadService<,>), typeof(HistoricalCrudControllerBase<,>));
+            // services.AddScoped(typeof(IHistoricalCrudReadService<,>), typeof(HistoricalCrudControllerBase<,>));
 
-            services.AddScoped(typeof(IHistoricalCrudService<,>), typeof(HistoricalCrudServiceBase<,>));
-            // services.AddScoped(typeof(ICrudService<Guid, Account>), typeof(CustomInheritedCrudService<Guid, Account>));
-            services.AddScoped(typeof(ICrudService<,>), typeof(CustomImplementedCrudService<,>));
-            services.AddScoped(typeof(CrudServiceBase<,>));
-            //services.AddScoped(typeof(ICrudService<,>), typeof(CrudServiceBase<,>));
+            // services.AddScoped(typeof(IHistoricalCrudService<,>), typeof(HistoricalCrudServiceBase<,>));
+            // // services.AddScoped(typeof(ICrudService<Guid, Account>), typeof(CustomInheritedCrudService<Guid, Account>));
+            // services.AddScoped(typeof(ICrudService<,>), typeof(CustomImplementedCrudService<,>));
+            // services.AddScoped(typeof(CrudServiceBase<,>));
+            // //services.AddScoped(typeof(ICrudService<,>), typeof(CrudServiceBase<,>));
 
-            services.AddScoped(typeof(ICrudRepository), typeof(CrudRepository));
+            // services.AddScoped(typeof(ICrudRepository), typeof(CrudRepository));
 
-            services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+            // services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
 
 
             // to inject a specific layer for all type of object that implemend IEntity<T>

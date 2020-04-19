@@ -5,20 +5,26 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
-import { ItemComponent } from './items/item/item.component';
-import { ItemDetailComponent } from './items/item-detail/item-detail.component';
+import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
+import { HomeComponent } from './components/home/home.component';
+import { CounterComponent } from './components/counter/counter.component';
+import { FetchDataComponent } from './components/fetch-data/fetch-data.component';
 import { AgGridModule } from 'ag-grid-angular';
-import { CrudComponent } from './@crud/crud/crud.component';
-import { ObjectComponent } from './objects/object/object.component';
-import { ObjectDetailComponent } from './objects/object-detail/object-detail.component';
-import { HistoricalDetailComponent } from './@crud/historical-crud/historical-detail/historical-detail.component';
-import { HistoricalCrudComponent } from './@crud/historical-crud/historical-crud/historical-crud.component';
-import { ShareComponent } from './shares/share/share.component';
-import { ShareDetailComponent } from './shares/share-detail/share-detail.component';
+import { ItemComponent } from './components/items/item/item.component';
+import { ItemDetailComponent } from './components/items/item-detail/item-detail.component';
+import { ShareComponent } from './components/shares/share/share.component';
+import { ShareDetailComponent } from './components/shares/share-detail/share-detail.component';
+import { CommonModule } from '@angular/common';
+import { ContactComponent } from './components/contacts/contact/contact.component';
+import { ContactDetailComponent } from './components/contacts/contact-detail/contact-detail.component';
+import { ContributorComponent } from './components/contributors/contributor/contributor.component';
+import { ContributorDetailComponent } from './components/contributors/contributor-detail/contributor-detail.component';
+import { UserComponent } from './components/users/user/user.component';
+import { UserDetailComponent } from './components/users/user-detail/user-detail.component';
+import { BlobPostComponent } from './components/blog-posts/blob-post/blob-post.component';
+import { BlobPostDetailComponent } from './components/blog-posts/blob-post-detail/blob-post-detail.component';
+import { CrudComponent } from './components/@crud/crud/crud.component';
+import { CrudDetailComponent } from './components/@crud/crud-detail/crud-detail.component';
 
 @NgModule({
   declarations: [
@@ -27,34 +33,54 @@ import { ShareDetailComponent } from './shares/share-detail/share-detail.compone
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
+    CrudComponent,
+    CrudDetailComponent,
+    ShareComponent,
+    ShareDetailComponent,
     ItemComponent,
     ItemDetailComponent,
-    CrudComponent,
-    HistoricalCrudComponent,
-    ObjectComponent,
-    ObjectDetailComponent,
-    HistoricalDetailComponent,
-    ShareComponent,
-    ShareDetailComponent
-  ],
+    ContactComponent,
+    ContactDetailComponent,
+    ContributorComponent,
+    ContributorDetailComponent,
+    UserComponent,
+    UserDetailComponent,
+    BlobPostComponent,
+    BlobPostDetailComponent],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    CommonModule,
     AgGridModule.withComponents([]),
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
 
-      { path: 'objects', component: ObjectComponent,  },
-      { path: 'objects/:id', component: ObjectDetailComponent,  },
-      { path: 'objects/create', component: ObjectDetailComponent,  },
+      { path: 'items', component: ItemComponent,  },
+      { path: 'items/:id', component: ItemDetailComponent,  },
+      { path: 'items/create', component: ItemDetailComponent,  },
 
       { path: 'shares',         component: ShareComponent,  },
       { path: 'shares/:id',     component: ShareDetailComponent,  },
       { path: 'shares/create',  component: ShareDetailComponent,  },
 
+      { path: 'contacts',         component: ContactComponent,  },
+      { path: 'contacts/:id',     component: ContactDetailComponent,  },
+      { path: 'contacts/create',  component: ContactDetailComponent,  },
+
+      { path: 'contributors',         component: ContributorComponent,  },
+      { path: 'contributors/:id',     component: ContributorDetailComponent,  },
+      { path: 'contributors/create',  component: ContributorDetailComponent,  },
+
+      { path: 'users',         component: UserComponent,  },
+      { path: 'users/:id',     component: UserDetailComponent,  },
+      { path: 'users/create',  component: UserDetailComponent,  },
+
+      { path: 'blogposts',         component: BlobPostComponent,  },
+      { path: 'blogposts/:id',     component: BlobPostDetailComponent,  },
+      { path: 'blogposts/create',  component: BlobPostDetailComponent,  },
     ])
   ],
   providers: [],
