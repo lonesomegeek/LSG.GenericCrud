@@ -1,14 +1,14 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { BaseService } from '../../base.service';
+import { BaseService } from '../base.service';
 
 @Component({
-  selector: 'app-historical-detail',
-  templateUrl: './historical-detail.component.html',
-  styleUrls: ['./historical-detail.component.css']
+  selector: 'app-crud-detail',
+  templateUrl: './crud-detail.component.html',
+  styleUrls: ['./crud-detail.component.css']
 })
-export class HistoricalDetailComponent implements OnInit {
+export class CrudDetailComponent implements OnInit {
   row: any;
   @Input()
   entityName: string;

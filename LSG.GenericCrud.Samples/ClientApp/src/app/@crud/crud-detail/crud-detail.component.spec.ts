@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HistoricalCrudComponent } from './historical-crud.component';
+import { CrudDetailComponent } from './crud-detail.component';
 
-describe('HistoricalCrudComponent', () => {
-  let component: HistoricalCrudComponent;
-  let fixture: ComponentFixture<HistoricalCrudComponent>;
+describe('CrudDetailComponent', () => {
+  let component: CrudDetailComponent;
+  let fixture: ComponentFixture<CrudDetailComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HistoricalCrudComponent ]
+      declarations: [ CrudDetailComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HistoricalCrudComponent);
+    fixture = TestBed.createComponent(CrudDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

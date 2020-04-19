@@ -10,9 +10,6 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { AgGridModule } from 'ag-grid-angular';
-import { CrudComponent } from './@crud/crud/crud.component';
-import { HistoricalDetailComponent } from './@crud/historical-crud/historical-detail/historical-detail.component';
-import { HistoricalCrudComponent } from './@crud/historical-crud/historical-crud/historical-crud.component';
 import { ItemComponent } from './items/item/item.component';
 import { ItemDetailComponent } from './items/item-detail/item-detail.component';
 import { ShareComponent } from './shares/share/share.component';
@@ -26,6 +23,8 @@ import { UserComponent } from './users/user/user.component';
 import { UserDetailComponent } from './users/user-detail/user-detail.component';
 import { BlobPostComponent } from './blog-posts/blob-post/blob-post.component';
 import { BlobPostDetailComponent } from './blog-posts/blob-post-detail/blob-post-detail.component';
+import { CrudComponent } from './@crud/crud/crud.component';
+import { CrudDetailComponent } from './@crud/crud-detail/crud-detail.component';
 
 @NgModule({
   declarations: [
@@ -35,8 +34,7 @@ import { BlobPostDetailComponent } from './blog-posts/blob-post-detail/blob-post
     CounterComponent,
     FetchDataComponent,
     CrudComponent,
-    HistoricalCrudComponent,
-    HistoricalDetailComponent,
+    CrudDetailComponent,
     ShareComponent,
     ShareDetailComponent,
     ItemComponent,

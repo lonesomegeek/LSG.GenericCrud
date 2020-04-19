@@ -1,1 +1,10 @@
-<p>crud works!</p>
+<h1>{{entityName}}</h1>
+
+<button routerLink="create">Create</button>
+
+<ag-grid-angular style="width: 500px; height: 500px;"
+                 #agGrid
+                 class="ag-theme-balham"
+                 [rowData]="rows | async"
+                 [columnDefs]="columnDefs">
+</ag-grid-angular>
