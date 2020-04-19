@@ -8,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 export class ItemComponent implements OnInit {
   entityName: string = "items";
   columnDefs = [
-    { headerName: 'Id', field: 'id', sortable: true },
+    { headerName: 'Id', field: 'id', sortable: true, hideInForm: true },
     { headerName: 'Name', field: 'name', sortable: true },
-    { headerName: 'Description', field: 'description', sortable: true }];
+    { headerName: 'Price', field: 'price', sortable: true },
+    { headerName: 'Color', field: 'color', sortable: true }];
   constructor() { }
 
   ngOnInit() {
