@@ -34,7 +34,7 @@ Mode: {{mode}}
 </table>
 
 
-<table class='table table-striped' *ngIf="row">
+<!-- <table class='table table-striped' *ngIf="row">
   <thead>
     <tr>
       <th>Name</th>
@@ -50,8 +50,8 @@ Mode: {{mode}}
       <td *ngIf="mode!='read'"><input required [(ngModel)]="row.description" name="description"></td>
     </tr>
   </tbody>
-</table>
-<div *ngIf="mode=='read'">
+</table> -->
+<div *ngIf="mode=='read' && showHistory">
   <h1>History</h1>
   <p *ngIf="!history"><em>Loading...</em></p>
   <ag-grid-angular style="width: 500px; height: 500px;" class="ag-theme-balham" [rowData]="history | async"

@@ -18,7 +18,8 @@ export class HistoricalDetailComponent implements OnInit {
   mode: string = "read";
   isEditing: boolean = false;
   history: Observable<History[]>;
-  
+  @Input()
+  showHistory: boolean = false;
   historyColumnDefs: any[] = [
     { headerName: 'Action', field: 'action', sortable: true },
     { headerName: 'By', field: 'createdBy', sortable: true },
