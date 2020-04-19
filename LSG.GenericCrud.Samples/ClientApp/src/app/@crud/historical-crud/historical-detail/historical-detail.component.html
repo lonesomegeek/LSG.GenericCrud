@@ -1,10 +1,4 @@
-<p>historical-detail works!</p>
-
-Mode: {{mode}}
-<h1>Items</h1>
-
-<p>This component demonstrates fetching data from the server.</p>
-
+<h1>{{entityName}}</h1>
 
 <p *ngIf="!row"><em>Loading...</em></p>
 <button *ngIf="mode=='read'" (click)="editActivate()">Edit</button>
@@ -33,24 +27,6 @@ Mode: {{mode}}
   </tbody>
 </table>
 
-
-<!-- <table class='table table-striped' *ngIf="row">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td *ngIf="mode=='read'">{{ row.name }}</td>
-      <td *ngIf="mode!='read'"><input required [(ngModel)]="row.name" name="name"></td>
-
-      <td *ngIf="mode=='read'">{{ row.description }}</td>
-      <td *ngIf="mode!='read'"><input required [(ngModel)]="row.description" name="description"></td>
-    </tr>
-  </tbody>
-</table> -->
 <div *ngIf="mode=='read' && showHistory">
   <h1>History</h1>
   <p *ngIf="!history"><em>Loading...</em></p>
