@@ -12,10 +12,13 @@
             <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/items']">Items</a>
+            <a class="nav-link text-dark" [routerLink]="['/shares']">Sharing</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/shares']">Shares</a>
+            <a class="nav-link text-dark" [routerLink]="['/blogposts']">Blog</a>
+          </li>
+          <!-- <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['/items']">Items</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/contacts']">Contacts</a>
@@ -25,12 +28,30 @@
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/users']">Users</a>
-          </li>
+          </li> -->
           <li class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/about']">About</a>
           </li>
         </ul>
-      </div>
-    </div>
+      </div>      
+    </div>    
   </nav>
+  <!-- <nav aria-label="breadcrumb">
+    <div class="container">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item" [routerLinkActive]="['link-active']"><a [routerLink]="['/']">Home</a></li>
+      <li class="breadcrumb-item active"  [routerLink]="['/shares']" aria-current="page">Library</li>
+    </ol>
+  </div>
+  </nav> -->
+<!-- 
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Home</a></li>
+      <li class="breadcrumb-item"><a href="#">Library</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Data</li>
+    </ol>
+  </nav> -->
+
+
 </header>

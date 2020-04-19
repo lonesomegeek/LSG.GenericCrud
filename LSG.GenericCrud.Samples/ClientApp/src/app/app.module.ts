@@ -54,7 +54,7 @@ import { AboutComponent } from './components/about/about.component';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'about', component: AboutComponent },
-      
+
       { path: 'items', component: ItemComponent,  },
       { path: 'items/:id', component: ItemDetailComponent,  },
       { path: 'items/create', component: ItemDetailComponent,  },
