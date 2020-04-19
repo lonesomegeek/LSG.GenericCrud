@@ -18,6 +18,12 @@ import { ItemDetailComponent } from './items/item-detail/item-detail.component';
 import { ShareComponent } from './shares/share/share.component';
 import { ShareDetailComponent } from './shares/share-detail/share-detail.component';
 import { CommonModule } from '@angular/common';
+import { ContactComponent } from './contacts/contact/contact.component';
+import { ContactDetailComponent } from './contacts/contact-detail/contact-detail.component';
+import { ContributorComponent } from './contributors/contributor/contributor.component';
+import { ContributorDetailComponent } from './contributors/contributor-detail/contributor-detail.component';
+import { UserComponent } from './users/user/user.component';
+import { UserDetailComponent } from './users/user-detail/user-detail.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +38,13 @@ import { CommonModule } from '@angular/common';
     ShareComponent,
     ShareDetailComponent,
     ItemComponent,
-    ItemDetailComponent],
+    ItemDetailComponent,
+    ContactComponent,
+    ContactDetailComponent,
+    ContributorComponent,
+    ContributorDetailComponent,
+    UserComponent,
+    UserDetailComponent],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
@@ -52,6 +64,17 @@ import { CommonModule } from '@angular/common';
       { path: 'shares/:id',     component: ShareDetailComponent,  },
       { path: 'shares/create',  component: ShareDetailComponent,  },
 
+      { path: 'contacts',         component: ContactComponent,  },
+      { path: 'contacts/:id',     component: ContactDetailComponent,  },
+      { path: 'contacts/create',  component: ContactDetailComponent,  },
+
+      { path: 'contributors',         component: ContributorComponent,  },
+      { path: 'contributors/:id',     component: ContributorDetailComponent,  },
+      { path: 'contributors/create',  component: ContributorDetailComponent,  },
+
+      { path: 'users',         component: UserComponent,  },
+      { path: 'users/:id',     component: UserDetailComponent,  },
+      { path: 'users/create',  component: UserDetailComponent,  },
     ])
   ],
   providers: [],
