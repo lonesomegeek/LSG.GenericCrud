@@ -1,22 +1,19 @@
-using LSG.GenericCrud.Controllers;
+using System;
+using AutoMapper;
 using LSG.GenericCrud.DataFillers;
 using LSG.GenericCrud.Helpers;
 using LSG.GenericCrud.Repositories;
-using LSG.GenericCrud.Samples.Controllers;
 using LSG.GenericCrud.Samples.Models;
+using LSG.GenericCrud.Samples.Models.DTOs;
 using LSG.GenericCrud.Samples.Models.Entities;
-using LSG.GenericCrud.Samples.Services;
 using LSG.GenericCrud.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
 
 namespace LSG.GenericCrud.Samples
 {
@@ -32,6 +29,8 @@ namespace LSG.GenericCrud.Samples
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -49,7 +48,10 @@ namespace LSG.GenericCrud.Samples
             // to inject a specific layer for all type of object that implemend IEntity<T>
             // services.AddScoped(typeof(ICrudService<Guid, Share>), typeof(CustomImplementedCrudService<Guid, Share>));
 
+            services.AddScoped(typeof(ICrudService<Guid, ItemDto>), typeof(CrudServiceBase<Guid, ItemDto, Item>));
+
             services.AddCrud();
+            services.AddCrudDto();
             // services.AddScoped(typeof(ICrudController<,>), typeof(CrudControllerBase<,>));
             // services.AddScoped(typeof(ICrudCopyController<,>), typeof(CrudControllerBase<,>));
 
