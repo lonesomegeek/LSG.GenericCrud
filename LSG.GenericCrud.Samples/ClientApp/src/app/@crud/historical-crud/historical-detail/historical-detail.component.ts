@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ItemService } from '../../item.service';
+import { BaseService } from '../../base.service';
 
 @Component({
   selector: 'app-historical-detail',
@@ -26,7 +26,7 @@ export class HistoricalDetailComponent implements OnInit {
     { headerName: 'At', field: 'createdDate', sortable: true }];
 
   constructor(
-    private service: ItemService,
+    private service: BaseService,
     private router: Router,
     route: ActivatedRoute
   ) {
@@ -35,13 +35,15 @@ export class HistoricalDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.service.entityName = this.entityName;    
-    this.service.baseRoute = "api/" + this.service.entityName; 
+    this.service.entityName = this.entityName;
+    this.service.baseRoute = "api/" + this.service.entityName;
 
     if (this.mode != "create") {
       this.service.getOne(this.selectedId).subscribe(e => { this.row = e; });
-      this.service.makeRead(this.selectedId).subscribe();
-      this.history = this.service.getOneHistory(this.selectedId);
+      if (this.showHistory) {
+        this.service.makeRead(this.selectedId).subscribe();
+        this.history = this.service.getOneHistory(this.selectedId);
+      }
     } else {
       this.row = {};
     }

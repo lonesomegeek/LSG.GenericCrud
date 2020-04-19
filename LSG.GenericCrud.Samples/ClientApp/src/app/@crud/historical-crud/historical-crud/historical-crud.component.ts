@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { AgGridAngular } from 'ag-grid-angular';
-import { ItemService } from '../../item.service';
+import { BaseService } from '../../base.service';
 
 @Component({
   selector: 'app-historical-crud',
@@ -23,7 +23,7 @@ export class HistoricalCrudComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private service: ItemService
+    private service: BaseService
   ) {}
 
   ngOnInit() {

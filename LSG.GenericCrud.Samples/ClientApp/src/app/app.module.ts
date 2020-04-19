@@ -24,6 +24,8 @@ import { ContributorComponent } from './contributors/contributor/contributor.com
 import { ContributorDetailComponent } from './contributors/contributor-detail/contributor-detail.component';
 import { UserComponent } from './users/user/user.component';
 import { UserDetailComponent } from './users/user-detail/user-detail.component';
+import { BlobPostComponent } from './blog-posts/blob-post/blob-post.component';
+import { BlobPostDetailComponent } from './blog-posts/blob-post-detail/blob-post-detail.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,9 @@ import { UserDetailComponent } from './users/user-detail/user-detail.component';
     ContributorComponent,
     ContributorDetailComponent,
     UserComponent,
-    UserDetailComponent],
+    UserDetailComponent,
+    BlobPostComponent,
+    BlobPostDetailComponent],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,

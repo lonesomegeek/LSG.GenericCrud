@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class ItemService implements OnInit {
+export class BaseService implements OnInit {
   public baseRoute: string;
   public entityName: string;
   constructor(
