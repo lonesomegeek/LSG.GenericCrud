@@ -99,7 +99,7 @@ namespace LSG.GenericCrud.Dto.Services
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     /// <seealso cref="LSG.GenericCrud.Services.CrudService{TEntity}" />
     /// <seealso cref="LSG.GenericCrud.Services.ICrudService{TDto}" />
-    public class CrudService<TId, TDto, TEntity> :
+    public class CrudServiceBase<TId, TDto, TEntity> :
         ICrudService<TId, TDto>
         where TDto : IEntity<TId>
         where TEntity : class, IEntity<TId>, new()
@@ -119,7 +119,7 @@ namespace LSG.GenericCrud.Dto.Services
         /// <param name="service"></param>
         /// <param name="repository">The repository.</param>
         /// <param name="mapper">The mapper.</param>
-        public CrudService(ICrudService<TId, TEntity> service, ICrudRepository repository, IMapper mapper)
+        public CrudServiceBase(ICrudService<TId, TEntity> service, ICrudRepository repository, IMapper mapper)
         {
             _service = service;
             _mapper = mapper;

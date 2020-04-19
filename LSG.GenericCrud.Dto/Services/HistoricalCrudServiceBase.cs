@@ -142,7 +142,7 @@ namespace LSG.GenericCrud.Dto.Services
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     /// <seealso cref="LSG.GenericCrud.Services.HistoricalCrudService{TEntity}" />
     /// <seealso cref="LSG.GenericCrud.Services.IHistoricalCrudService{TDto}" />
-    public class HistoricalCrudService<TId, TDto, TEntity> :
+    public class HistoricalCrudServiceBase<TId, TDto, TEntity> :
         ICrudService<TId, TDto>,
         IHistoricalCrudService<TId, TDto>
         where TDto : class, IEntity<TId>, new()
@@ -154,7 +154,7 @@ namespace LSG.GenericCrud.Dto.Services
         private readonly IUserInfoRepository _userInfoRepository;
         private readonly IHistoricalCrudReadService<TId, TEntity> _historicalCrudReadService;
 
-        public HistoricalCrudService(
+        public HistoricalCrudServiceBase(
             IHistoricalCrudService<TId, TEntity> service,
             ICrudRepository repository,
             IUserInfoRepository userInfoRepository,
