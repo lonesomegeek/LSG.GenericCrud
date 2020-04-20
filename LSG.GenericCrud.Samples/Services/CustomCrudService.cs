@@ -1,5 +1,6 @@
 ﻿using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
+using LSG.GenericCrud.Samples.Models.Entities;
 using LSG.GenericCrud.Services;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,15 +12,31 @@ namespace LSG.GenericCrud.Samples.Services
 {
     public class CustomInheritedCrudService<T1, T2> : CrudServiceBase<T1, T2> where T2 : class, IEntity<T1>, new()
     {
+        private ICrudService<Guid, Hook> _hookService;
+        private ICrudRepository _repository;
         public CustomInheritedCrudService(
+            ICrudService<Guid, Hook> hookService,
             ICrudRepository repository,
             ILogger<CustomInheritedCrudService<T1, T2>> logger) : base(repository) 
         {
+            _hookService = hookService;
+            _repository = repository;
             logger.LogInformation($"In custom service layer for {typeof(T2).Name}");
         }
 
         public override Task<T2> CopyAsync(T1 id) => base.CopyAsync(id);
-        public override Task<T2> CreateAsync(T2 entity) => base.CreateAsync(entity);
+        public override async Task<T2> CreateAsync(T2 entity) {
+            // create hook when a new entity is created
+            var createdEntity = await base.CreateAsync(entity);
+            var createdHook = await _hookService.CreateAsync(new Hook {
+                Name = "Test1",
+                URL = "about:blank",
+                EntityId = createdEntity.Id.ToString(),
+                EntityName = typeof(T2).FullName
+            });
+
+            return createdEntity;
+        }
         public override Task<T2> DeleteAsync(T1 id) => base.DeleteAsync(id);
         public override Task<IEnumerable<T2>> GetAllAsync() => base.GetAllAsync();
         public override Task<T2> GetByIdAsync(T1 id) => base.GetByIdAsync(id);

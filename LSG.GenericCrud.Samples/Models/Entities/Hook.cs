@@ -8,6 +8,8 @@ namespace LSG.GenericCrud.Samples.Models.Entities
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string Description { get;set; }
+        public string URL { get;set; }
+        public string EntityId { get;set; }
+        public string EntityName { get;set; }
     }
 }

@@ -8,6 +8,7 @@ using LSG.GenericCrud.Repositories;
 using LSG.GenericCrud.Samples.Models;
 using LSG.GenericCrud.Samples.Models.DTOs;
 using LSG.GenericCrud.Samples.Models.Entities;
+using LSG.GenericCrud.Samples.Services;
 using LSG.GenericCrud.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -40,7 +41,7 @@ namespace LSG.GenericCrud.Samples
                 configuration.RootPath = "ClientApp/dist";
             });
 
-            services.AddDbContext<SampleContext>(opt => opt.UseSqlServer("server=localhost;user id=sa;password=Sapassword1!;Initial Catalog=LSG.GenericCrud.Samples"));
+            services.AddDbContext<SampleContext>(opt => opt.UseSqlServer("server=localhost;user id=sa;password=Sapassword1!;Initial Catalog=LSG.GenericCrud.Samples"), ServiceLifetime.Transient);
             services.AddTransient<IDbContext, SampleContext>();
             services.AddTransient<IUserInfoRepository, UserInfoRepository>();
             services.AddTransient<IEntityDataFiller, CreatedFiller>();
@@ -53,9 +54,13 @@ namespace LSG.GenericCrud.Samples
             services.AddScoped(typeof(ICrudService<Guid, ItemDto>), typeof(CrudServiceBase<Guid, ItemDto, Item>));
             services.AddScoped(typeof(ICrudService<Guid, UserDto>), typeof(CrudServiceBase<Guid, UserDto, User>));
             services.AddScoped(typeof(ICrudService<Guid, BlogPostDto>), typeof(CrudServiceBase<Guid, BlogPostDto, BlogPost>));
+           
 
             services.AddCrud();
             services.AddCrudDto();
+
+                        services.AddTransient(typeof(ICrudService<Guid, Share>), typeof(CustomInheritedCrudService<Guid, Share>));
+
             // services.AddScoped(typeof(ICrudController<,>), typeof(CrudControllerBase<,>));
             // services.AddScoped(typeof(ICrudCopyController<,>), typeof(CrudControllerBase<,>));
 
