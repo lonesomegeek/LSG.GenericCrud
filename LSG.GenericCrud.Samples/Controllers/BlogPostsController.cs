@@ -1,6 +1,7 @@
 using LSG.GenericCrud.Controllers;
 using LSG.GenericCrud.Models;
 using LSG.GenericCrud.Repositories;
+using LSG.GenericCrud.Samples.Models.DTOs;
 using LSG.GenericCrud.Samples.Models.Entities;
 using LSG.GenericCrud.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -14,13 +15,13 @@ namespace Sample.App.Controllers
     [ApiController]
     public class BlogPostsController :
             ControllerBase,
-            IHistoricalCrudController<Guid, BlogPost> {
-        private readonly IHistoricalCrudController<Guid, BlogPost> _controller;
+            IHistoricalCrudController<Guid, BlogPostDto> {
+        private readonly IHistoricalCrudController<Guid, BlogPostDto> _controller;
         private readonly ICrudRepository _repository;
         private readonly IUserInfoRepository _userInfoReposiory;
 
         public BlogPostsController(
-            IHistoricalCrudController<Guid, BlogPost> controller,
+            IHistoricalCrudController<Guid, BlogPostDto> controller,
             ICrudRepository repository,
             IUserInfoRepository userInfoReposiory)
         {
@@ -33,33 +34,33 @@ namespace Sample.App.Controllers
         public async Task<IActionResult> HeadById(Guid id) => await _controller.HeadById(id);
 
         [HttpPost]
-        public async Task<ActionResult<BlogPost>> Create([FromBody] BlogPost entity) => await _controller.Create(entity);
+        public async Task<ActionResult<BlogPostDto>> Create([FromBody] BlogPostDto entity) => await _controller.Create(entity);
         [HttpDelete("{id}")]
-        public async Task<ActionResult<BlogPost>> Delete(Guid id) => await _controller.Delete(id);
+        public async Task<ActionResult<BlogPostDto>> Delete(Guid id) => await _controller.Delete(id);
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BlogPost>>> GetAll() => await _controller.GetAll();
+        public async Task<ActionResult<IEnumerable<BlogPostDto>>> GetAll() => await _controller.GetAll();
         [Route("{id}")]
         [HttpGet]
-        public async Task<ActionResult<BlogPost>> GetById(Guid id) => await _controller.GetById(id);
+        public async Task<ActionResult<BlogPostDto>> GetById(Guid id) => await _controller.GetById(id);
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] BlogPost entity) => await _controller.Update(id, entity);
+        public async Task<IActionResult> Update(Guid id, [FromBody] BlogPostDto entity) => await _controller.Update(id, entity);
         [HttpGet("{id}/history")]
         public async Task<IActionResult> GetHistory(Guid id) => await _controller.GetHistory(id);
         [HttpPost("{id}/restore")]
         public async Task<IActionResult> Restore(Guid id) => throw new NotImplementedException();
         [HttpPost("read")]
-        public virtual async Task<IActionResult> MarkAllAsRead() => await ((IHistoricalCrudReadStatusController<Guid, BlogPost>)_controller).MarkAllAsRead();
+        public virtual async Task<IActionResult> MarkAllAsRead() => await ((IHistoricalCrudReadStatusController<Guid, BlogPostDto>)_controller).MarkAllAsRead();
         [HttpPost("unread")]
-        public virtual async Task<IActionResult> MarkAllAsUnread() => await ((IHistoricalCrudReadStatusController<Guid, BlogPost>)_controller).MarkAllAsUnread();
+        public virtual async Task<IActionResult> MarkAllAsUnread() => await ((IHistoricalCrudReadStatusController<Guid, BlogPostDto>)_controller).MarkAllAsUnread();
         [HttpPost("{id}/read")]
-        public virtual async Task<IActionResult> MarkOneAsRead(Guid id) => await ((IHistoricalCrudReadStatusController<Guid, BlogPost>)_controller).MarkOneAsRead(id);
+        public virtual async Task<IActionResult> MarkOneAsRead(Guid id) => await ((IHistoricalCrudReadStatusController<Guid, BlogPostDto>)_controller).MarkOneAsRead(id);
         [HttpPost("{id}/unread")]
-        public virtual async Task<IActionResult> MarkOneAsUnread(Guid id) => await ((IHistoricalCrudReadStatusController<Guid, BlogPost>)_controller).MarkOneAsUnread(id);
+        public virtual async Task<IActionResult> MarkOneAsUnread(Guid id) => await ((IHistoricalCrudReadStatusController<Guid, BlogPostDto>)_controller).MarkOneAsUnread(id);
         [HttpGet("read-status")]
-        public virtual async Task<ActionResult<IEnumerable<ReadeableStatus<BlogPost>>>> GetReadStatus() => await ((IHistoricalCrudReadStatusController<Guid, BlogPost>)_controller).GetReadStatus();
+        public virtual async Task<ActionResult<IEnumerable<ReadeableStatus<BlogPostDto>>>> GetReadStatus() => await ((IHistoricalCrudReadStatusController<Guid, BlogPostDto>)_controller).GetReadStatus();
         [HttpGet("{id}/read-status")]
-        public virtual async Task<ActionResult<ReadeableStatus<BlogPost>>> GetReadStatusById(Guid id) => await ((IHistoricalCrudReadStatusController<Guid, BlogPost>)_controller).GetReadStatusById(id);
+        public virtual async Task<ActionResult<ReadeableStatus<BlogPostDto>>> GetReadStatusById(Guid id) => await ((IHistoricalCrudReadStatusController<Guid, BlogPostDto>)_controller).GetReadStatusById(id);
         [HttpPost("{id}/delta")]
-        public virtual async Task<IActionResult> Delta(Guid id, DeltaRequest request) => await ((IHistoricalCrudDeltaController<Guid, BlogPost>)_controller).Delta(id, request);
+        public virtual async Task<IActionResult> Delta(Guid id, DeltaRequest request) => await ((IHistoricalCrudDeltaController<Guid, BlogPostDto>)_controller).Delta(id, request);
     }
 }

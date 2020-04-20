@@ -51,6 +51,8 @@ namespace LSG.GenericCrud.Samples
             // services.AddScoped(typeof(ICrudService<Guid, Share>), typeof(CustomImplementedCrudService<Guid, Share>));
 
             services.AddScoped(typeof(ICrudService<Guid, ItemDto>), typeof(CrudServiceBase<Guid, ItemDto, Item>));
+            services.AddScoped(typeof(ICrudService<Guid, UserDto>), typeof(CrudServiceBase<Guid, UserDto, User>));
+            services.AddScoped(typeof(ICrudService<Guid, BlogPostDto>), typeof(CrudServiceBase<Guid, BlogPostDto, BlogPost>));
 
             services.AddCrud();
             services.AddCrudDto();
