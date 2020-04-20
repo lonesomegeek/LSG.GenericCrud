@@ -72,4 +72,7 @@
   <ItemGroup>
     <None Include="LSG.GenericCrud.Samples.Database.publish.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="LSG.GenericCrud.Samples.Database.refactorlog" />
+  </ItemGroup>
 </Project>

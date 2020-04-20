@@ -4,5 +4,6 @@
 	[Name] [nvarchar](50) NULL
 
 	-- constraints
-	CONSTRAINT PK_Users PRIMARY KEY (Id)
+	CONSTRAINT PK_Users PRIMARY KEY (Id), 
+    [SomeSecretValue] NVARCHAR(MAX) NULL
 )
