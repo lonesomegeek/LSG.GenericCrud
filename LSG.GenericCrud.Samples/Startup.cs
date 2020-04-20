@@ -22,11 +22,13 @@ namespace LSG.GenericCrud.Samples
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
+            Environment = environment;
             Configuration = configuration;
         }
 
+        public IWebHostEnvironment Environment { get; private set; }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -41,7 +43,12 @@ namespace LSG.GenericCrud.Samples
                 configuration.RootPath = "ClientApp/dist";
             });
 
-            services.AddDbContext<SampleContext>(opt => opt.UseSqlServer("server=localhost;user id=sa;password=Sapassword1!;Initial Catalog=LSG.GenericCrud.Samples"), ServiceLifetime.Transient);
+            if (Environment.IsProduction()) {
+                services.AddDbContext<SampleContext>(opt => opt.UseInMemoryDatabase("LSG.GenericCrud.Samples"), ServiceLifetime.Transient);
+            } else if (Environment.IsDevelopment()) {
+                services.AddDbContext<SampleContext>(opt => opt.UseSqlServer("server=localhost;user id=sa;password=Sapassword1!;Initial Catalog=LSG.GenericCrud.Samples"), ServiceLifetime.Transient);
+            }
+            // services.AddDbContext<SampleContext>(opt => opt.UseSqlServer("server=localhost;user id=sa;password=Sapassword1!;Initial Catalog=LSG.GenericCrud.Samples"), ServiceLifetime.Transient);
             services.AddTransient<IDbContext, SampleContext>();
             services.AddTransient<IUserInfoRepository, UserInfoRepository>();
             services.AddTransient<IEntityDataFiller, CreatedFiller>();
