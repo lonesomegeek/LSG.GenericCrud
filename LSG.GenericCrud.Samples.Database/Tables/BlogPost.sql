@@ -5,5 +5,6 @@
 	[Text] [nvarchar](max) NULL
 
 	-- constraints
-	CONSTRAINT PK_BlogPost PRIMARY KEY (Id)
+	CONSTRAINT PK_BlogPost PRIMARY KEY (Id), 
+    [Hash] NVARCHAR(MAX) NULL
 )

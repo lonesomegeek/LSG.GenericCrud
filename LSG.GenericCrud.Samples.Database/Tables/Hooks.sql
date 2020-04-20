@@ -2,8 +2,10 @@
 (
 	[Id] [uniqueidentifier] NOT NULL,
 	[Name] [nvarchar](50) NULL,
-	[Description] [nvarchar](max) NULL
+	[URL] [nvarchar](max) NULL
 
 	-- constraints
-	CONSTRAINT PK_Hooks PRIMARY KEY (Id)
+	CONSTRAINT PK_Hooks PRIMARY KEY (Id), 
+    [EntityId] NVARCHAR(MAX) NULL, 
+    [EntityName] NVARCHAR(MAX) NULL
 )
