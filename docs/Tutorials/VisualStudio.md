@@ -97,7 +97,7 @@ public void ConfigureServices(IServiceCollection services)
 
 Press F5 (to compile and run the web app). After a while, a web page will open.
 
-- Go to **http://localhost:\<PORT\>/api/accounts**, and you are done!
+- Go to **http://localhost:5000/api/accounts**, and you are done!
 
 ## Testing!
 Here is a [Postman](https://www.getpostman.com/) collection to test your new RESTful CRUD api
