@@ -8,6 +8,8 @@ I've been asked in the past how can I simplify how to track the evolution of an 
 
 The history tracking feature enables automatic history tracking with few modifications to existing controllers CrudController\<,>.
 
+Here is a link to an HistoricalCrud source code sample: [Link](https://github.com/lonesomegeek/LSG.GenericCrud/tree/version/4.1.1/LSG.GenericCrud.Samples/Sample.HistoricalCrud/Sample.HistoricalCrud)
+
 ## What is happening behind the scenes
 Before getting into further details, I think this is important for you to understand what is happening behind the scenes.
 
@@ -89,7 +91,3 @@ You will get more routes with an HistoricalCrudController\<,>:
 | HC |	POST    | /[entity]/unread	                         | 201	     | Mark all object as "unread" |
 | HC |	POST    | /[entity]/:id/unread	                     | 201,404	 | Mark one object as "unread" |
 | HC |	POST    | /[entity]/:id/delta	                     | 201,404	 | Extract change delta of one object |
-
-## Samples
-
-Here is a link to an historical crud source code sample: [Link](https://github.com/lonesomegeek/LSG.GenericCrud.Samples/blob/master/Sample.HistoricalCrud/README.md)

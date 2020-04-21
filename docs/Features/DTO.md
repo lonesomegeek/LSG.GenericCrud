@@ -15,6 +15,9 @@ First thing to do, is abstracting the business entity tighted to technologies (i
 I'm not a master in technical explanation of DTO, but it is really working. And my library is supporting it natively, so ... USE IT :)
 You will need to import this nuget package to get DTO feature working: [LSG.GenericCrud.Dto](https://www.nuget.org/packages/LSG.GenericCrud.Dto/)
 
+Here is a link to a DTO mapping source code sample: [Link](https://github.com/lonesomegeek/LSG.GenericCrud/tree/version/4.1.1/LSG.GenericCrud.Samples/Sample.Dto/Sample.Dto)
+
+
 ## What is happening behind the scenes
 Before getting into further details, I think this is important for you to understand what is happening behind the scenes.
 
@@ -100,7 +103,3 @@ public class AccountsController : CrudController<Guid, AccountDto>
 The differences are:
 - The class inherits from a different type: a CrudController able to manage TDto, TEntity mapping
 - A second parameter is needed in the default constructor, this paramter is used to pass an injected auto mapper definition to the execution flow.
-
-## Samples TODO: Adjust where the new sample will place this feature, pretty sure that the samples need to be changed
-
-Here is a link to the DTO mapping source code sample: [Link](https://github.com/lonesomegeek/LSG.GenericCrud.Samples/tree/master/Sample.Dto)
