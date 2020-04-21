@@ -7,8 +7,8 @@ Each call that goes through the library controller base class *CrudControllerBas
 - Repository Layer
 
 Here is sequence diagrams of the actual flow of information:
-- For Standard CRUD: [Sequence diagram for standard CRUD](./sequence-StandardCrud.png)
-- For Historical CRUD: [Sequence diagram for historical CRUD](./sequence-HistoricalCrud.png)
+- For Standard CRUD: [Sequence diagram for standard CRUD](assets/sequence-StandardCrud.png)
+- For Historical CRUD: [Sequence diagram for historical CRUD](assets/sequence-HistoricalCrud.png)
 
 If you want to further customize each layers, here is an exhaustive view of how you can customize the interaction of these three layers.
 
@@ -30,7 +30,7 @@ To do so, you have a few options:
 3. *Complete* custom service layer *implementation* inheriting from *ICrusService*: [Documentation](./CrudServiceBase/CompleteCustom.md)
 
 TODO: Review that with samples
-As an example, the [DTO custom service layer](../../LSG.GenericCrud.Dto/Services/CrudService.cs) is a custom service layer of type #2.
+As an example, the [DTO custom service layer](../../LSG.GenericCrud.Dto/Services/CrudServiceBase.cs) is a custom service layer of type #2.
 
 Note: All the steps shown also applies to:
 - HistoricalCrudServiceBase
