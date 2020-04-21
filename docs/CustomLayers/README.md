@@ -7,8 +7,8 @@ Each call that goes through the library controller base class *CrudControllerBas
 - Repository Layer
 
 Here is sequence diagrams of the actual flow of information:
-- For Standard CRUD: [Sequence diagram for standard CRUD](./sequence-StandardCrud.png)
-- For Historical CRUD: [Sequence diagram for historical CRUD](./sequence-HistoricalCrud.png)
+- For Standard CRUD: [Sequence diagram for standard CRUD](assets/sequence-StandardCrud.png)
+- For Historical CRUD: [Sequence diagram for historical CRUD](assets/sequence-HistoricalCrud.png)
 
 If you want to further customize each layers, here is an exhaustive view of how you can customize the interaction of these three layers.
 
