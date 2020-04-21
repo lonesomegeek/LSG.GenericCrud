@@ -2,13 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <!-- <GeneratePackageOnBuild>true</GeneratePackageOnBuild> -->
+    <Version>5.0.0-beta2</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>LSG.GenericCrud</PackageId>
     <Authors>lonesomegeek</Authors>
-    <Company />
-    <PackageTags>generic crud webapi aspnetcore</PackageTags>
+    <Company>lonesomegeek</Company>
+    <Product>LSG.GenericCrud</Product>
+    <RootNamespace>LSG.GenericCrud</RootNamespace>
+    <AssemblyName>LSG.GenericCrud</AssemblyName>
     <Description>This library provides a set of tools to enable CRUD rapidly on any aspnetcore Web APIs.</Description>
-    <Version>5.0.0-beta1</Version>
-    <!-- <CodeAnalysisRuleSet>LSG.GenericCrud.ruleset</CodeAnalysisRuleSet> -->
+    <PackageTags>generic crud webapi aspnetcore</PackageTags>    
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,23 +20,4 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="System.Text.Json" Version="4.7.0" />
   </ItemGroup>
-
-  <!-- <ItemGroup>
-    <None Update="Templates\CrudController.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>CrudController.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Templates\CrudController.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CrudController.tt</DependentUpon>
-    </Compile>
-  </ItemGroup> -->
 </Project>
