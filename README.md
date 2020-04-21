@@ -12,7 +12,9 @@ Simpliest scenarios:
 - Using Visual Studio Code (or command line): [Tutorial](docs/Tutorials/VisualStudioCode.md)
 - Using Visual Studio (2019 v16.4+): [Tutorial](docs/Tutorials/VisualStudio.md)
 
-Want to have a look to *more samples*, take a look at [these samples](LSG.GenericCrud.Samples/README.md)
+Demo app built on the library:
+- URL: http://genericcrud-demo.lonesomegeek.com
+- [Documentation](LSG.GenericCrud.Samples/README.md)
 
 # Introduction
 This library is used to provide simplified RESTful [CRUD] apis with a multilayer architecture:
@@ -58,8 +60,9 @@ You need:
 - [.NET Core 3.1 SDK](https://dotnet.microsoft.com/download/dotnet-core/3.1) (for any of the options below)
 
 You also need one of these options below:
-- [Visual Studio](https://www.visualstudio.com/downloads/), at least a version that supports aspnetcore 3.1 ([Visual Studio 2019 - v16.4+](https://devblogs.microsoft.com/dotnet/announcing-net-core-3-1/))
+- [Visual Studio](https://www.visualstudio.com/downloads/) ([Visual Studio 2019 - v16.4+](https://devblogs.microsoft.com/dotnet/announcing-net-core-3-1/))
 - [Visual Studio Code](https://code.visualstudio.com/)
+- Notepad ;)
 
 # Features supported, by library
 
@@ -71,15 +74,9 @@ I've designed this library to be pretty extensible. Here is some features suppor
         - Copy of an existing object into another one
         - Readeable CRUD, to let you know personaly (as a user) if something has changed since last view
     - Data fillers: [More details](./docs/Features/DataFillers.md)
+    - Customize each layers: [More details](./docs/CustomLayers/README.md)
 - [LSG.GenericCrud.Dto](https://www.nuget.org/packages/LSG.GenericCrud.Dto/)
     - DTO to Entity (and Entity to DTO) mapping for Crud\<T> or HistoricalCrud\<T> controllers: [More details](./docs/Features/DTO.md)
-
-> Note that all libraries supports [customized layer for each layer](./docs/CustomLayers/README.md)
-
-Future ideas that can/will eventually be supported (feel free to help if you want!):
-- Per entity security policies
-- Complete web app with api samples
-- *and more*...
 
 # Release notes
 - [v5.0 Release Notes](docs/ReleaseNotes/v5.0.md)

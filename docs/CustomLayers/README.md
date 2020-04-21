@@ -30,7 +30,7 @@ To do so, you have a few options:
 3. *Complete* custom service layer *implementation* inheriting from *ICrusService*: [Documentation](./CrudServiceBase/CompleteCustom.md)
 
 TODO: Review that with samples
-As an example, the [DTO custom service layer](../../LSG.GenericCrud.Dto/Services/CrudService.cs) is a custom service layer of type #2.
+As an example, the [DTO custom service layer](../../LSG.GenericCrud.Dto/Services/CrudServiceBase.cs) is a custom service layer of type #2.
 
 Note: All the steps shown also applies to:
 - HistoricalCrudServiceBase
