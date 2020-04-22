@@ -29,7 +29,6 @@ To do so, you have a few options:
 2. Custom service layer *implementation* from part of the *ICrudService* interface and part of the *CrudServiceBase* class: [Documentation](./CrudServiceBase/Implementation.md)
 3. *Complete* custom service layer *implementation* inheriting from *ICrusService*: [Documentation](./CrudServiceBase/CompleteCustom.md)
 
-TODO: Review that with samples
 As an example, the [DTO custom service layer](../../LSG.GenericCrud.Dto/Services/CrudServiceBase.cs) is a custom service layer of type #2.
 
 Note: All the steps shown also applies to:
@@ -69,8 +68,6 @@ What this code does is:
 - When the code will be in need of a service layer for something else (ICrudService<,>), the injector will inject the default service layer (CrudServiceBase<,>)
 
 Note: the <,> means any type of T1 and any type of T2
-
-TODO: Add links to complete sample documentation
 
 <!-- References -->
 [Visual-Studio-Code-Tutorial]: ../Tutorials/VisualStudioCode.md
