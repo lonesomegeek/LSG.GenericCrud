@@ -9,3 +9,5 @@ Not used and not maintained
     | In Startup.cs | services.AddScoped(typeof(ICrudService\<\>), typeof(CustomImplementedCrudService\<\>)); | services.AddScoped(typeof(ICrudService\<,\>), typeof(CustomImplementedCrudService\<,\>)); |
 
 - CrudController now CrudControllerBase, HistoricalCrudController now, ... CrudService, HistoricalCrudService
+
+TODO
