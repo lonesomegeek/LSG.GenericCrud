@@ -51,7 +51,8 @@ You can use the builtin injection with three different kind of injections:
 - Scoped (AddScoped): Dependency instance created once per client request (connection/session)
 - Transient (AddTransient): Dependency instance created each time an object is created with this dependency
 - Singleton (AddSingleton): Dependency instance created once and always reused (even in different client sessions)
-Further documentation from Microsoft: [Documentation](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-3.1#service-lifetimes)
+
+Further injection documentation from Microsoft: [Documentation](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-3.1#service-lifetimes)
 
 But... This is where it get really interesting. Let's say you have a special need for an entity. This particular *Account* entity (but not the others) is in need for a custom service layer (ie.: CustomServiceLayerWithTransactionApprobation). Here is a sample of what you do today:
 
