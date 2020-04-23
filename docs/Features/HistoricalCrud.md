@@ -80,6 +80,8 @@ This is programatically-talking a CrudController\<,> with history tracking but w
 
 You will get more routes with an HistoricalCrudController\<,>:
 
+| 	 | Verb    |	Route	                                 | Results   | Description |
+|----|----------|--------------------------------------------|-----------|-------------|
 | HC |	GET	    | /[entity]/:id/history	                     | 200,404	 | Get transaction history of an object |
 | HC |	POST    | /[entity]/:id/restore	                     | 201,404	 | Restore a deleted object in a new object |
 | HC |	POST    | /[entity]/:entityId/restore/:changesetId	 | 201,404	 | Restore a version of an object in the same object |
