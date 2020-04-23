@@ -42,7 +42,8 @@ namespace LSG.GenericCrud.Benchmark
     }
     [MemoryDiagnoser]
     [MinColumn, MaxColumn, MeanColumn, MedianColumn]
-    [SimpleJob(RunStrategy.Throughput, launchCount: 1, warmupCount: 5, targetCount: 20)]
+    [SimpleJob(RunStrategy.Throughput, launchCount: 2, warmupCount: 1, targetCount: 5)]
+    [RPlotExporter]
     public class CrudBenchmark
     {
         private readonly ICrudController<Guid, Item> _controller;
@@ -72,41 +73,42 @@ namespace LSG.GenericCrud.Benchmark
 
         [Benchmark]
         public async Task Create() => await _controller.Create(new Item());
-        //[Benchmark]
-        //public async Task Read() => await _controller.GetById(Guid.NewGuid());
-        //[Benchmark]
-        //public async Task ReadAll() => await _controller.GetAll();
-        //[Benchmark]
-        //public async Task Update() => await _controller.Update(Guid.NewGuid(), new Item());
-        //[Benchmark]
-        //public async Task Delete() => await _controller.Delete(Guid.NewGuid());
-        //[Benchmark]
-        //public async Task CreateAndRead()
-        //{
-        //    var createdEntityResult = await _controller.Create(new Item());
-        //    var createdEntity = ((Item)((CreatedAtActionResult)createdEntityResult.Result).Value);
-        //    await _controller.GetById(createdEntity.Id);
-        //}
-        //[Benchmark]
-        //public async Task CreateAndDelete()
-        //{
-        //    var createdEntityResult = await _controller.Create(new Item());
-        //    var createdEntity = ((Item)((CreatedAtActionResult)createdEntityResult.Result).Value);
-        //    await _controller.Delete(createdEntity.Id);
-        //}
-        //[Benchmark]
-        //public async Task CreateAndUpdate()
-        //{
-        //    var createdEntityResult = await _controller.Create(new Item());
-        //    var createdEntity = ((Item)((CreatedAtActionResult)createdEntityResult.Result).Value);
-        //    createdEntity.Name = "Modified Value";
-        //    var updatedEntityResult = await _controller.Update(createdEntity.Id, createdEntity);
-        //}
+        [Benchmark]
+        public async Task Read() => await _controller.GetById(Guid.NewGuid());
+        [Benchmark]
+        public async Task ReadAll() => await _controller.GetAll();
+        [Benchmark]
+        public async Task Update() => await _controller.Update(Guid.NewGuid(), new Item());
+        [Benchmark]
+        public async Task Delete() => await _controller.Delete(Guid.NewGuid());
+        [Benchmark]
+        public async Task CreateAndRead()
+        {
+           var createdEntityResult = await _controller.Create(new Item());
+           var createdEntity = ((Item)((CreatedAtActionResult)createdEntityResult.Result).Value);
+           await _controller.GetById(createdEntity.Id);
+        }
+        [Benchmark]
+        public async Task CreateAndDelete()
+        {
+           var createdEntityResult = await _controller.Create(new Item());
+           var createdEntity = ((Item)((CreatedAtActionResult)createdEntityResult.Result).Value);
+           await _controller.Delete(createdEntity.Id);
+        }
+        [Benchmark]
+        public async Task CreateAndUpdate()
+        {
+           var createdEntityResult = await _controller.Create(new Item());
+           var createdEntity = ((Item)((CreatedAtActionResult)createdEntityResult.Result).Value);
+           createdEntity.Name = "Modified Value";
+           var updatedEntityResult = await _controller.Update(createdEntity.Id, createdEntity);
+        }
     }
 
     [MemoryDiagnoser]
     [MinColumn, MaxColumn, MeanColumn, MedianColumn]
-    [SimpleJob(RunStrategy.Throughput, launchCount: 1, warmupCount: 5, targetCount: 20)]
+    [SimpleJob(RunStrategy.Throughput, launchCount: 2, warmupCount: 1, targetCount: 5)]
+    [RPlotExporter]
     public class HistoricalCrudBenchmark
     {
         private readonly ICrudController<Guid, Item> _controller;
@@ -143,45 +145,49 @@ namespace LSG.GenericCrud.Benchmark
 
         [Benchmark]
         public async Task Create() => await _controller.Create(new Item());
-        //[Benchmark]
-        //public async Task Read() => await _controller.GetById(Guid.NewGuid());
-        //[Benchmark]
-        //public async Task ReadAll() => await _controller.GetAll();
-        //[Benchmark]
-        //public async Task Update() => await _controller.Update(Guid.NewGuid(), new Item());
-        //[Benchmark]
-        //public async Task Delete() => await _controller.Delete(Guid.NewGuid());
-        //[Benchmark]
-        //public async Task CreateAndRead()
-        //{
-        //    var createdEntityResult = await _controller.Create(new Item());
-        //    var createdEntity = ((Item)((CreatedAtActionResult)createdEntityResult.Result).Value);
-        //    await _controller.GetById(createdEntity.Id);
-        //}
-        //[Benchmark]
-        //public async Task CreateAndDelete()
-        //{
-        //    var createdEntityResult = await _controller.Create(new Item());
-        //    var createdEntity = ((Item)((CreatedAtActionResult)createdEntityResult.Result).Value);
-        //    await _controller.Delete(createdEntity.Id);
-        //}
-        //[Benchmark]
-        //public async Task CreateAndUpdate()
-        //{
-        //    var createdEntityResult = await _controller.Create(new Item());
-        //    var createdEntity = ((Item)((CreatedAtActionResult)createdEntityResult.Result).Value);
-        //    createdEntity.Name = "Modified Value";
-        //    var updatedEntityResult = await _controller.Update(createdEntity.Id, createdEntity);
-        //}
+        [Benchmark]
+        public async Task Read() => await _controller.GetById(Guid.NewGuid());
+        [Benchmark]
+        public async Task ReadAll() => await _controller.GetAll();
+        [Benchmark]
+        public async Task Update() => await _controller.Update(Guid.NewGuid(), new Item());
+        [Benchmark]
+        public async Task Delete() => await _controller.Delete(Guid.NewGuid());
+        [Benchmark]
+        public async Task CreateAndRead()
+        {
+           var createdEntityResult = await _controller.Create(new Item());
+           var createdEntity = ((Item)((CreatedAtActionResult)createdEntityResult.Result).Value);
+           await _controller.GetById(createdEntity.Id);
+        }
+        [Benchmark]
+        public async Task CreateAndDelete()
+        {
+           var createdEntityResult = await _controller.Create(new Item());
+           var createdEntity = ((Item)((CreatedAtActionResult)createdEntityResult.Result).Value);
+           await _controller.Delete(createdEntity.Id);
+        }
+        [Benchmark]
+        public async Task CreateAndUpdate()
+        {
+           var createdEntityResult = await _controller.Create(new Item());
+           var createdEntity = ((Item)((CreatedAtActionResult)createdEntityResult.Result).Value);
+           createdEntity.Name = "Modified Value";
+           var updatedEntityResult = await _controller.Update(createdEntity.Id, createdEntity);
+        }
     }
     class Program
     {
-        static void Main(string[] args)
-        {
-            var summary = BenchmarkRunner
-                .Run<HistoricalCrudBenchmark>(/*new DebugInProcessConfig()*/);
-                //.Run<IntroSetupCleanupIteration>(/*new DebugInProcessConfig()*/);
-            Console.WriteLine(summary);
-        }
+        // static void Main(string[] args)
+        // {
+        //     var summary = BenchmarkRunner
+        //         .Run<HistoricalCrudBenchmark>(/*new DebugInProcessConfig()*/);
+        //         BenchmarkRunner.Run<CrudBenchmark>();
+        //         //.Run<IntroSetupCleanupIteration>(/*new DebugInProcessConfig()*/);
+        //     Console.WriteLine(summary);
+        // }
+
+        public static void Main(string[] args) => BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args);
+
     }
 }
