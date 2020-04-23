@@ -1,4 +1,4 @@
-# Breaking changes
+# Breaking changes from v2.1 to v3.*
 ## Dependencies
 - Switch from netcore 2.0 to 2.2
 - Switch from aspnetcore 2.0 to 2.2
