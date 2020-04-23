@@ -9,5 +9,4 @@ Not used and not maintained
     | In Startup.cs | services.AddScoped(typeof(ICrudService\<\>), typeof(CustomImplementedCrudService\<\>)); | services.AddScoped(typeof(ICrudService\<,\>), typeof(CustomImplementedCrudService\<,\>)); |
 
 - CrudController now CrudControllerBase, HistoricalCrudController now, ... CrudService, HistoricalCrudService
-
-TODO
+- The library is now .NET Standard 2.1 compliant. This means that your application using my library must target .NET Core 3.0 and above (https://docs.microsoft.com/en-us/dotnet/standard/net-standard#net-implementation-support). If you need support for .NET Standard 2.0, use the v4.* instead.
