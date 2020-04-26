@@ -1,17 +1,25 @@
-# LSG.GenericCrud.Samples
-Here is some samples to illustrate different scenarios mixing all features around to give you the more codebase to reuse in your apps!
 
-## List of samples with exmplaination
+# Introduction
+This demo is a simple web app to manage items you have at home and with who you have shared them. It is also to show you how to integrate entities managed by the LSG.GenericCrud with a frontend application. This sample include these entities:
 
-Here is an exhausted list of the samples with explaination:
+| Type          | Type of controller       | Type of implementation | DTO |
+|---------------|--------------------------|------------------------|-----|
+| [Contact]     | CrudController           | Implemented            | No  |
+| [Item]        | CrudController           | Implemented            | Yes |
+| [Share]       | HistoricalCrudController | [CustomService]        | No  |
+| [Contributor] | CrudController           | Inherited              | No  |
+| [User]        | HistoricalCrudController | Inherited              | Yes |
+| [Hook]        | CrudController           | Inherited              | No  |
+| [BlogPost]    | HistoricalCrudController | Implemented            | Yes |
 
-| Samples folder | Explanation | Controller Used | Repository Used | Visual Studio version |
-|----------------|-------------|----------------|-------------|-------------|
-| [Sample.GenericCrud.VS](./Sample.GenericCrud.VS/README.md) | Simple CRUD for Account Entity | CrudController\<T> | Crud\<T> | Visual Studio |
-| [Sample.GenericCrud.VSCode](./Sample.GenericCrud.VSCode/README.md) | Simple CRUD for Account Entity | CrudController\<T> | Crud\<T> | Visual Studio Code |
-| [Sample.HistoricalCrud](./Sample.HistoricalCrud/README.md) | Simple Historical CRUD with Account Entity | HistoricalCrudController\<T> | HistoricalCrud\<T> | Visual Studio |
-| [Sample.Dto](./Sample.Dto/README.md) | CRUD with DTO pattern | CrudController\<T> | Crud\<T> | Visual Studio |
-| [Sample.DataFiller](./Sample.DataFiller/README.md) | Use of data filler with crud | CrudController\<T> | Crud\<T> | Visual Studio |
-| [Sample.Complete](./Sample.Complete/README.md) | Full sample with many entities and many scenarios | * | * | Visual Studio |
-| [Sample.GlobalFilters](./Sample.GlobalFilters/README.md) | A more complex sample to show the work of this library with Entity Framework GlobalFilters. | * | * | Visual Studio |
-| [Sample.CrudOptions](./Sample.CrudOptions/README.md) | A sample with OpenId/OAuth2.0 AuthN/AuthZ and customizable routing options. | * | * | Visual Studio |
+The [CustomService] layer that will act as a webhook handler for shares. When a specific action configured hits an endpoint, if a webhook is configured, it will be trigger.
+
+<!-- References -->
+[Contact]: Controllers/ContactsController.cs
+[Item]: Controllers/ItemsController.cs
+[Share]: Controllers/SharesController.cs
+[Contributor]: Controllers/ContributorsController.cs
+[User]: Controllers/UsersController.cs
+[Hook]: Controllers/HooksController.cs
+[BlogPost]: Controllers/BlogPostsController.cs
+[CustomService]: Services/CustomCrudService.cs

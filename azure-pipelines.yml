@@ -1,0 +1,29 @@
+trigger:
+- none
+
+stages:
+- stage: 'build'
+  displayName: build   
+  
+  jobs:
+  - template: pipeline-templates/build.yml
+    parameters:
+      projectName: "LSG_GenericCrud"
+      projectPath: "LSG.GenericCrud"
+      configuration: "Release"
+  - template: pipeline-templates/build.yml
+    parameters:
+      projectName: "LSG_GenericCrud_Dto"
+      projectPath: "LSG.GenericCrud.Dto"
+      configuration: "Release"  
+- stage: 'deployment'
+  dependsOn: 'build'
+  jobs:
+  - template: pipeline-templates/release.yml
+    parameters:
+      projects:
+      - projectName: "LSG_GenericCrud"
+        projectPath: "LSG.GenericCrud"
+      - projectName: "LSG_GenericCrud_Dto"
+        projectPath: "LSG.GenericCrud.Dto"
+        

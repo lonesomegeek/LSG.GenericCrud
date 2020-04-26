@@ -1,0 +1,22 @@
+parameters:
+  environment: 'nuget production'
+  projects: ''
+
+jobs:
+- ${{ each project in parameters.projects }}:
+  - deployment: '${{ project.jobId }}'
+    displayName: '${{ project.projectPath }}'
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: ${{ parameters.environment }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - task: NuGetCommand@2
+              inputs:
+                command: 'push'
+                packagesToPush: '$(Agent.BuildDirectory)/${{ project.projectName }}/**/*.nupkg;!$(Agent.BuildDirectory)/**/*.symbols.nupkg'
+                nuGetFeedType: 'external'
+                publishFeedCredentials: 'lonesomegeek'
+                verbosityPush: 'Normal'

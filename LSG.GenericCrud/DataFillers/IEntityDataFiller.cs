@@ -18,12 +18,6 @@ namespace LSG.GenericCrud.DataFillers
         /// </returns>
         bool IsEntitySupported(EntityEntry entry);
         /// <summary>
-        /// Fills the specified entry.
-        /// </summary>
-        /// <param name="entry">The entry.</param>
-        /// <returns></returns>
-        object Fill(EntityEntry entry);
-        /// <summary>
         /// Fills the specified entry async.
         /// </summary>
         /// <param name="entry">The entry.</param>

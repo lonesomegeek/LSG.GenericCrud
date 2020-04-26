@@ -30,7 +30,7 @@ namespace LSG.GenericCrud.Models
                 .GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly)
                 .Where(_ =>
                     _.DeclaringType == typeof(T)
-                    /*&& !Attribute.IsDefined(_, typeof(IgnoreInChangesetAttribute))*/);
+                    && !Attribute.IsDefined(_, typeof(IgnoreInChangesetAttribute)));
 
             foreach (var prop in properties)
             {
