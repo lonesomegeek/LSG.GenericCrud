@@ -1,7 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { LocationStrategy, HashLocationStrategy, CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AgGridModule } from 'ag-grid-angular';
 
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
@@ -40,10 +41,29 @@ import { AppRoutingModule } from './app.routing';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts';
+import { HomeComponent } from './views/home/home.component';
+import { ContactComponent } from './views/contacts/contact/contact.component';
+import { ContactDetailComponent } from './views/contacts/contact-detail/contact-detail.component';
+import { CrudComponent } from './views/@crud/crud/crud.component';
+import { CrudDetailComponent } from './views/@crud/crud-detail/crud-detail.component';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ContributorComponent } from './views/contributors/contributor/contributor.component';
+import { ContributorDetailComponent } from './views/contributors/contributor-detail/contributor-detail.component';
+import { AboutComponent } from './views/about/about.component';
+import { ItemComponent } from './views/items/item/item.component';
+import { ItemDetailComponent } from './views/items/item-detail/item-detail.component';
+import { ShareComponent } from './views/shares/share/share.component';
+import { ShareDetailComponent } from './views/shares/share-detail/share-detail.component';
+import { UserComponent } from './views/users/user/user.component';
+import { UserDetailComponent } from './views/users/user-detail/user-detail.component';
+import { BlogPostComponent } from './views/blog-posts/blog-post/blog-post.component';
+import { BlogPostDetailComponent } from './views/blog-posts/blog-post-detail/blog-post-detail.component';
 
 @NgModule({
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    HttpClientModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     AppAsideModule,
@@ -54,7 +74,10 @@ import { ChartsModule } from 'ng2-charts';
     PerfectScrollbarModule,
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
-    ChartsModule
+    ChartsModule,
+    FormsModule,
+    CommonModule,
+    AgGridModule.withComponents([])
   ],
   declarations: [
     AppComponent,
@@ -62,7 +85,23 @@ import { ChartsModule } from 'ng2-charts';
     P404Component,
     P500Component,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    HomeComponent,
+    ContactComponent,
+    ContactDetailComponent,
+    ContributorComponent,
+    ContributorDetailComponent,
+    AboutComponent,
+    ItemComponent,
+    ItemDetailComponent,
+    ShareComponent,
+    ShareDetailComponent,
+    UserComponent,
+    UserDetailComponent,
+    CrudComponent,
+    CrudDetailComponent,
+    BlogPostComponent,
+    BlogPostDetailComponent
   ],
   providers: [{
     provide: LocationStrategy,
