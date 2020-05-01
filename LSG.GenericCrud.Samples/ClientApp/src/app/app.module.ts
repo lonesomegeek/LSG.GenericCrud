@@ -59,6 +59,7 @@ import { UserComponent } from './views/users/user/user.component';
 import { UserDetailComponent } from './views/users/user-detail/user-detail.component';
 import { BlogPostComponent } from './views/blog-posts/blog-post/blog-post.component';
 import { BlogPostDetailComponent } from './views/blog-posts/blog-post-detail/blog-post-detail.component';
+import { TestsModule } from './tests/tests.module';
 
 @NgModule({
   imports: [
@@ -77,6 +78,7 @@ import { BlogPostDetailComponent } from './views/blog-posts/blog-post-detail/blo
     ChartsModule,
     FormsModule,
     CommonModule,
+    TestsModule,
     AgGridModule.withComponents([])
   ],
   declarations: [
