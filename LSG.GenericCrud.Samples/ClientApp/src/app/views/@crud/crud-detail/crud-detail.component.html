@@ -1,6 +1,56 @@
 <h1>{{entityName}}</h1>
 
 <p *ngIf="!row"><em>Loading...</em></p>
+
+<div class="card">
+  <div class="card-header">
+    <strong>{{entityName}}</strong> form
+  </div>
+  <div class="card-body">
+    <form action="" class="form-horizontal ng-untouched ng-pristine ng-valid" method="post" novalidate=""
+      data-bitwarden-watching="1">
+      <ng-container *ngFor="let columnDef of columnDefs">
+        <ng-container *ngIf="!columnDef.hideInForm">
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="hf-{{columnDef.headerName}}">{{columnDef.headerName}}</label>
+            <div class="col-md-9">
+              <input class="form-control" *ngIf="mode=='read'" value="{{row[columnDef.field]}}" name="{{columnDef.field}}" id="{{columnDef.field}}" disabled>
+              <input class="form-control" *ngIf="mode=='edit'" required [(ngModel)]="row[columnDef.field]" name="{{columnDef.field}}" id="{{columnDef.field}}">
+              <input class="form-control" *ngIf="mode=='create'" required [(ngModel)]="row[columnDef.field]"
+                name="{{columnDef.field}}" id="{{columnDef.field}}">
+              <span class="help-block">Please enter your {{columnDef.headerName}}</span>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </form>
+  </div>
+  <div class="card-footer">
+    <button *ngIf="mode=='read'" class="btn btn-sm btn-primary" (click)="editActivate()"><i
+        class="fa fa-dot-circle-o"></i> Edit</button>
+
+
+    <button *ngIf="mode=='edit'" class="btn btn-sm btn-primary" (click)="save()"><i class="fa fa-dot-circle-o"></i>
+      Save</button>
+    <button *ngIf="mode=='edit'" (click)="editDeactivate()" class="btn btn-sm" type="submit"><i
+        class="fa fa-dot-circle-o"></i> Cancel</button>
+
+    <button *ngIf="mode=='create'" (click)="create()" class="btn btn-sm btn-primary" type="submit"><i
+        class="fa fa-dot-circle-o"></i> Create</button>
+    <button *ngIf="mode=='edit'" class="btn btn-sm btn-danger" (click)="delete()"><i class="fa fa-ban"></i>
+      Delete</button>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+<!-- 
 <button *ngIf="mode=='read'" (click)="editActivate()">Edit</button>
 
 <button *ngIf="mode=='edit'" (click)="save()">Save</button>
@@ -14,18 +64,19 @@
       <ng-container *ngFor="let columnDef of columnDefs">
         <th *ngIf="!columnDef.hideInForm">{{columnDef.headerName}}</th>
       </ng-container>
-      
+
     </tr>
   </thead>
   <tbody>
     <tr>
       <ng-container *ngFor="let columnDef of columnDefs">
         <td *ngIf="mode=='read' && !columnDef.hideInForm">{{ row[columnDef.field] }}</td>
-        <td *ngIf="mode!='read' && !columnDef.hideInForm"><input required [(ngModel)]="row[columnDef.field]" name="row[columnDef.field]"></td>
+        <td *ngIf="mode!='read' && !columnDef.hideInForm"><input required [(ngModel)]="row[columnDef.field]"
+            name="row[columnDef.field]"></td>
       </ng-container>
     </tr>
   </tbody>
-</table>
+</table> -->
 
 <div *ngIf="mode=='read' && showHistory">
   <h1>History</h1>

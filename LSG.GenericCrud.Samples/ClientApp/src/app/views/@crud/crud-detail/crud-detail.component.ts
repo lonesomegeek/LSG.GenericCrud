@@ -73,6 +73,7 @@ export class CrudDetailComponent implements OnInit {
   save() {
     this.service.putOne(this.selectedId, this.row).subscribe(result => {
       this.editDeactivate();
+      this.router.navigate(['/' + this.entityName]);
     });
   }
 }

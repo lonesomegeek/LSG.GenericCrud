@@ -1,68 +1,75 @@
-<h1>Hello!</h1>
-<p>Welcome to my demo single-page application, built with:</p>
+<p>Welcome to my single-page application demo, built with:</p>
 <ul>
   <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a
       href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
   <li><a href='https://angular.io/'>Angular</a> and <a href='http://www.typescriptlang.org/'>TypeScript</a> for
     client-side code</li>
   <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
+  <li>Powered by <a href="https://coreui.io/angular">CoreUI for Angular</a></li>
 </ul>
 <p>This demo is a simple web app to manage items you have at home and with who you have shared them. It is also to
   show you how to integrate entities managed by the <a href="https://www.github.com/lonesomegeek/LSG.GenericCrud"
     target="_blank">LSG.GenericCrud</a> with a frontend application. This
   sample include these entities:</p>
 
-<table class="table table-borderless">
-  <thead>
-    <tr>
-      <th>Entity type</th>
-      <th>Controller type</th>
-      <th>Implementation type</th>
-      <th>DTO</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><a [routerLink]="['/contacts']">Contact</a></td>
-      <td>CrudController</td>
-      <td>Implemented</td>
-      <td>No</td>
-    </tr>
-    <tr>
-      <td><a [routerLink]="['/items']">Item</a></td>
-      <td>CrudController</td>
-      <td>Implemented</td>
-      <td>Yes</td>
-    </tr>
-    <tr>
-      <td><a [routerLink]="['/shares']">Share</a></td>
-      <td>HistoricalCrudController</td>
-      <td>CustomService</td>
-      <td>No</td>
-    </tr>
-    <tr>
-      <td><a [routerLink]="['/contributors']">Contributor</a></td>
-      <td>CrudController</td>
-      <td>Inherited</td>
-      <td>No</td>
-    </tr>
-    <tr>
-      <td><a [routerLink]="['/users']">User</a></td>
-      <td>HistoricalCrudController</td>
-      <td>Inherited</td>
-      <td>Yes</td>
-    </tr>
-    <tr>
-      <td><a [routerLink]="['/blogposts']">BlogPost</a></td>
-      <td>HistoricalCrudController</td>
-      <td>Implemented</td>
-      <td>Yes</td>
-    </tr>
-    <tr>
-      <td><a [routerLink]="['/hooks']">Hook</a></td>
-      <td>CrudController</td>
-      <td>Inherited</td>
-      <td>No</td>
-    </tr>
-  </tbody>
-</table>
+<div class="card">
+  <div class="card-header">
+    <i class="fa fa-align-justify"></i> Demonstrated entities
+  </div>
+  <div class="card-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Entity type</th>
+          <th>Controller type</th>
+          <th>Implementation type</th>
+          <th>DTO</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a [routerLink]="['/contacts']">Contact</a></td>
+          <td>CrudController</td>
+          <td>Implemented</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><a [routerLink]="['/items']">Item</a></td>
+          <td>CrudController</td>
+          <td>Implemented</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td><a [routerLink]="['/shares']">Share</a></td>
+          <td>HistoricalCrudController</td>
+          <td>CustomService</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><a [routerLink]="['/contributors']">Contributor</a></td>
+          <td>CrudController</td>
+          <td>Inherited</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><a [routerLink]="['/users']">User</a></td>
+          <td>HistoricalCrudController</td>
+          <td>Inherited</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td><a [routerLink]="['/blogposts']">BlogPost</a></td>
+          <td>HistoricalCrudController</td>
+          <td>Implemented</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td><a [routerLink]="['/hooks']">Hook</a></td>
+          <td>CrudController</td>
+          <td>Inherited</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
