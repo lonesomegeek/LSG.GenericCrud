@@ -5,8 +5,9 @@ import { TestComponent } from './test/test.component';
 import { TestDetailComponent } from './test-detail/test-detail.component';
 
 const routes: Routes = [
-  { path: '',       component: TestComponent,       data: { title: 'Tests' } },
-  { path: 'create', component: TestDetailComponent, data: { title: 'Create'} }]
+  { path: '', data: { title: 'Tests' }, children: [
+    { path: '',       component: TestComponent,       data: { title: 'List' } },
+    { path: 'create', component: TestDetailComponent, data: { title: 'Create'} } ] } ];
 
 @NgModule({
   declarations: [],
@@ -16,4 +17,5 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
+
 export class TestsRoutingModule { }

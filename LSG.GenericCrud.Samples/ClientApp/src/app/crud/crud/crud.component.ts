@@ -1,5 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Crud } from '../../models/crud';
+import { Component, OnInit, Input, Inject } from '@angular/core';
+import { CrudBase } from '../../models/crud';
+import { BaseService } from '../../views/@crud/base.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-crud',
@@ -8,11 +11,19 @@ import { Crud } from '../../models/crud';
 })
 export class CrudComponent implements OnInit {
   @Input()
-  model: Crud;
+  model: CrudBase;
+  service: BaseService;
+  rows: Observable<any[]>;
 
-  constructor() { }
+  constructor(
+    private httpClient: HttpClient,
+    @Inject('BASE_URL') private baseUrl: string) { 
+    this.service = new BaseService(httpClient, baseUrl);
+  }
 
-  ngOnInit(): void {
+  ngOnInit(): void {  
+    this.service.baseRoute = "api/" + this.model.entityName;
+    this.rows = this.service.getAll();
   }
 
 }

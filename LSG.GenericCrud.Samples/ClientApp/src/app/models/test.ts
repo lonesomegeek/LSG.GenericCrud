@@ -1,12 +1,12 @@
-import { Crud } from './crud';
+import { CrudBase } from './crud';
 import { ColumnDef } from './column-def';
 
-export class Test implements Crud {
+export class Test implements CrudBase {
 
     id: string;
     name : string;
     
-    entityName: string = "tests";
+    entityName: string = "items";
     columnDefs: ColumnDef[] = [
         { headerName: 'Id', field: 'id', sortable: true, hideInForm: true },
         { headerName: 'Name', field: 'name', sortable: true, hideInForm: false }
