@@ -1,7 +1,7 @@
 rm -fR bin
 dotnet build -c Release
 dotnet publish -c Release -o bin/app
-cp Dockerfile bin/app
+# cp Dockerfile bin/app
 
 docker build -t lsg.genericcrud.samples:5.0.1 .
 

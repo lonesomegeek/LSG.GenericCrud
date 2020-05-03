@@ -20,6 +20,7 @@ import { UserComponent } from './views/users/user/user.component';
 import { UserDetailComponent } from './views/users/user-detail/user-detail.component';
 import { BlogPostComponent } from './views/blog-posts/blog-post/blog-post.component';
 import { BlogPostDetailComponent } from './views/blog-posts/blog-post-detail/blog-post-detail.component';
+import { BlogComponent } from './views/blog-posts/blog/blog.component';
 
 export const routes: Routes = [
   {
@@ -76,6 +77,7 @@ export const routes: Routes = [
       { path: 'users/:id',     component: UserDetailComponent,  },
       { path: 'users/create',  component: UserDetailComponent,  },
 
+      { path: 'blog',              component: BlogComponent,  },
       { path: 'blogposts',         component: BlogPostComponent,  },
       { path: 'blogposts/:id',     component: BlogPostDetailComponent,  },
       { path: 'blogposts/create',  component: BlogPostDetailComponent,  },

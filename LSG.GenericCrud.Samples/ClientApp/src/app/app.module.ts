@@ -58,6 +58,7 @@ import { UserDetailComponent } from './views/users/user-detail/user-detail.compo
 import { BlogPostComponent } from './views/blog-posts/blog-post/blog-post.component';
 import { BlogPostDetailComponent } from './views/blog-posts/blog-post-detail/blog-post-detail.component';
 import { TestsModule } from './tests/tests.module';
+import { BlogComponent } from './views/blog-posts/blog/blog.component';
 
 @NgModule({
   imports: [
@@ -100,6 +101,7 @@ import { TestsModule } from './tests/tests.module';
     CrudDetailComponent,
     BlogPostComponent,
     BlogPostDetailComponent,
+    BlogComponent,
   ],
   providers: [{
     provide: LocationStrategy,
