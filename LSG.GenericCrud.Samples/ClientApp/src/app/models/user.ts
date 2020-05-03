@@ -1,17 +1,18 @@
 import { CrudBase } from './crud';
 import { ColumnDef } from './column-def';
 
-export class Test implements CrudBase {
-
+export class User implements CrudBase {
     id: string;
-    name : string;
-    
-    entityName: string = "items";
-    routeName: string = "tests";
+    name: string;
+
     showHistory: boolean = false;
+
+    entityName: string = "users";
+    routeName: string = "users-test";
     
     columnDefs: ColumnDef[] = [
         { headerName: 'Id', field: 'id', sortable: true, hideInForm: true },
         { headerName: 'Name', field: 'name', sortable: true, hideInForm: false }
     ];
+    
 }

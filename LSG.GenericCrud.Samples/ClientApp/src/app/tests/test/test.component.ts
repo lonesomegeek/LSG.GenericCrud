@@ -7,12 +7,5 @@ import { CrudBase } from '../../models/crud';
   templateUrl: './test.component.html',
   styleUrls: ['./test.component.css']
 })
-export class TestComponent implements OnInit {
-  model: CrudBase = new Test();
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+// export class TestComponent<T extends CrudBase> implements OnInit {
+export class TestComponent { }

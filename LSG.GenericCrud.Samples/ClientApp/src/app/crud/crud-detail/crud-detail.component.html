@@ -1,10 +1,10 @@
- <h1>{{entityName}}</h1>
+ <h1>{{model.entityName}}</h1>
 
 <p *ngIf="mode != 'create' && !row"><em>Loading...</em></p>
 
 <div class="card">
   <div class="card-header">
-    <strong>{{entityName}}</strong> form
+    <strong>{{model.entityName}}</strong> form
   </div>
   <div class="card-body">
     <form action="" class="form-horizontal ng-untouched ng-pristine ng-valid" method="post" novalidate=""
@@ -42,7 +42,7 @@
   </div>
 </div>
 
-<div *ngIf="mode=='read' && showHistory">
+<div *ngIf="mode=='read' && model.showHistory">
   <h1>History</h1>
   <p *ngIf="!history"><em>Loading...</em></p>
   <ag-grid-angular style="height: 500px;" class="ag-theme-balham" [rowData]="history | async"

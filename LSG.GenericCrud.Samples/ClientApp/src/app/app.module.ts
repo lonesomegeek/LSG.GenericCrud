@@ -103,7 +103,7 @@ import { TestsModule } from './tests/tests.module';
     CrudComponent,
     CrudDetailComponent,
     BlogPostComponent,
-    BlogPostDetailComponent
+    BlogPostDetailComponent,
   ],
   providers: [{
     provide: LocationStrategy,

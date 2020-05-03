@@ -5,5 +5,6 @@ export interface CrudBase {
     entityName: string;
     routeName: string;
     columnDefs: ColumnDef[];
+    showHistory: boolean;
 }
 
