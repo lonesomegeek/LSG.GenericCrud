@@ -7,6 +7,8 @@ export class Test implements CrudBase {
     name : string;
     
     entityName: string = "items";
+    routeName: string = "tests";
+    
     columnDefs: ColumnDef[] = [
         { headerName: 'Id', field: 'id', sortable: true, hideInForm: true },
         { headerName: 'Name', field: 'name', sortable: true, hideInForm: false }

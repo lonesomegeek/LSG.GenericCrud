@@ -34,7 +34,7 @@ export class CrudComponent implements OnInit, AfterViewInit {
   }
 
   rowDoubleClicked(row: any) {
-    this.router.navigate(['/' + this.model.entityName + '/' + row.data.id]);
+    this.router.navigate(['/' + this.model.routeName + '/' + row.data.id]);
   }
 
 }

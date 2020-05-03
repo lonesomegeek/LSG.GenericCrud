@@ -33,10 +33,14 @@ export class CrudDetailComponent implements OnInit {
   ) {
     this.selectedId = route.snapshot.params["id"];
     this.service = new BaseService(this.httpClient, this.baseUrl)
-    if (!this.selectedId) this.mode = "create";
+    if (!this.selectedId) {
+      this.mode = "create";
+      this.row = {};
+    }
   }
 
   ngOnInit(): void {
+    debugger;
     this.service.baseRoute = "api/" + this.model.entityName;
     if (this.mode != "create") {      
         this.service.getOne(this.selectedId).subscribe(e => { this.row = e; });
@@ -46,5 +50,31 @@ export class CrudDetailComponent implements OnInit {
         }      
     }
   }
+  editActivate() {
+    this.mode = "edit";
+  }
 
+  editDeactivate() {
+    this.mode = "read";
+  }
+
+  create() {
+    this.service.postOne(this.row).subscribe(result => {
+      this.router.navigate(['/' + this.model.routeName]);
+    })
+  }
+
+  delete() {
+    this.service.deleteOne(this.selectedId).subscribe(result => {
+      this.router.navigate(['/' + this.model.routeName]);
+
+    });
+  }
+
+  save() {
+    this.service.putOne(this.selectedId, this.row).subscribe(result => {
+      this.editDeactivate();
+      this.router.navigate(['/' + this.model.routeName]);
+    });
+  }
 }
