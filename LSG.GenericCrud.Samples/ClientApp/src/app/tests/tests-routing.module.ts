@@ -7,7 +7,8 @@ import { TestDetailComponent } from './test-detail/test-detail.component';
 const routes: Routes = [
   { path: '', data: { title: 'Tests' }, children: [
     { path: '',       component: TestComponent,       data: { title: 'List' } },
-    { path: 'create', component: TestDetailComponent, data: { title: 'Create'} } ] } ];
+    { path: 'create', component: TestDetailComponent, data: { title: 'Create'} },
+    { path: ':id',    component: TestDetailComponent, data: { title: 'Edit'} } ] } ];
 
 @NgModule({
   declarations: [],
