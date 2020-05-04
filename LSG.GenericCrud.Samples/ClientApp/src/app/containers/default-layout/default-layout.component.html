@@ -1,10 +1,3 @@
-<app-header
-  [navbarBrandRouterLink]="['/home']"
-  [fixed]="true"
-  [navbarBrandFull]="{src: 'assets/img/brand/logo.svg', width: 89, height: 25, alt: 'LSG.GenericCrud'}">
-  <ul class="nav navbar-nav d-md-down-none"></ul>
-  <ul class="nav navbar-nav ml-auto"></ul>
-</app-header>
 <div class="app-body">
   <app-sidebar #appSidebar [fixed]="true" [display]="'lg'" [minimized]="sidebarMinimized" (minimizedChange)="toggleMinimize($event)">
     <app-sidebar-nav [navItems]="navItems" [perfectScrollbar] [disabled]="appSidebar.minimized"></app-sidebar-nav>
@@ -28,6 +21,6 @@
 
 </div>
 <app-footer>
-  <span><a href="https://coreui.io">CoreUI</a> &copy; 2018 creativeLabs.</span>
+  <span><a target="_blank" href="https://www.github.com/lonesomegeek/LSG.GenericCrud">LSG.GenericCrud</a> &copy; 2020 <a target="_blank" href="https://github.com/lonesomegeek">lonesomegeek</a></span>
   <span class="ml-auto">Powered by <a href="https://coreui.io/angular">CoreUI for Angular</a></span>
 </app-footer>
