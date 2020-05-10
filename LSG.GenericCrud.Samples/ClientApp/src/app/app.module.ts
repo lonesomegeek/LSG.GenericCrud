@@ -1,86 +1,112 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+import { LocationStrategy, HashLocationStrategy, CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AgGridModule } from 'ag-grid-angular';
+
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+  suppressScrollX: true
+};
 
 import { AppComponent } from './app.component';
-import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
-import { HomeComponent } from './components/home/home.component';
-import { AgGridModule } from 'ag-grid-angular';
-import { ItemComponent } from './components/items/item/item.component';
-import { ItemDetailComponent } from './components/items/item-detail/item-detail.component';
-import { ShareComponent } from './components/shares/share/share.component';
-import { ShareDetailComponent } from './components/shares/share-detail/share-detail.component';
-import { CommonModule } from '@angular/common';
-import { ContactComponent } from './components/contacts/contact/contact.component';
-import { ContactDetailComponent } from './components/contacts/contact-detail/contact-detail.component';
-import { ContributorComponent } from './components/contributors/contributor/contributor.component';
-import { ContributorDetailComponent } from './components/contributors/contributor-detail/contributor-detail.component';
-import { UserComponent } from './components/users/user/user.component';
-import { UserDetailComponent } from './components/users/user-detail/user-detail.component';
-import { BlobPostComponent } from './components/blog-posts/blob-post/blob-post.component';
-import { BlobPostDetailComponent } from './components/blog-posts/blob-post-detail/blob-post-detail.component';
-import { CrudComponent } from './components/@crud/crud/crud.component';
-import { CrudDetailComponent } from './components/@crud/crud-detail/crud-detail.component';
-import { AboutComponent } from './components/about/about.component';
+
+// Import containers
+import { DefaultLayoutComponent } from './containers';
+
+import { P404Component } from './views/error/404.component';
+import { P500Component } from './views/error/500.component';
+
+const APP_CONTAINERS = [
+  DefaultLayoutComponent
+];
+
+import {
+  AppAsideModule,
+  AppBreadcrumbModule,
+  AppHeaderModule,
+  AppFooterModule,
+  AppSidebarModule,
+} from '@coreui/angular';
+
+// Import routing module
+import { AppRoutingModule } from './app.routing';
+
+// Import 3rd party components
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { ChartsModule } from 'ng2-charts';
+import { HomeComponent } from './views/home/home.component';
+import { ContactComponent } from './views/contacts/contact/contact.component';
+import { ContactDetailComponent } from './views/contacts/contact-detail/contact-detail.component';
+import { CrudComponent } from './views/@crud/crud/crud.component';
+import { CrudDetailComponent } from './views/@crud/crud-detail/crud-detail.component';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ContributorComponent } from './views/contributors/contributor/contributor.component';
+import { ContributorDetailComponent } from './views/contributors/contributor-detail/contributor-detail.component';
+import { AboutComponent } from './views/about/about.component';
+import { ItemComponent } from './views/items/item/item.component';
+import { ItemDetailComponent } from './views/items/item-detail/item-detail.component';
+import { ShareComponent } from './views/shares/share/share.component';
+import { ShareDetailComponent } from './views/shares/share-detail/share-detail.component';
+import { UserComponent } from './views/users/user/user.component';
+import { UserDetailComponent } from './views/users/user-detail/user-detail.component';
+import { BlogPostComponent } from './views/blog-posts/blog-post/blog-post.component';
+import { BlogPostDetailComponent } from './views/blog-posts/blog-post-detail/blog-post-detail.component';
+import { TestsModule } from './tests/tests.module';
+import { BlogComponent } from './views/blog-posts/blog/blog.component';
 
 @NgModule({
+  imports: [
+    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    HttpClientModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    AppAsideModule,
+    AppBreadcrumbModule.forRoot(),
+    AppFooterModule,
+    AppHeaderModule,
+    AppSidebarModule,
+    PerfectScrollbarModule,
+    BsDropdownModule.forRoot(),
+    TabsModule.forRoot(),
+    ChartsModule,
+    FormsModule,
+    CommonModule,
+    TestsModule,
+    AgGridModule.withComponents([])
+  ],
   declarations: [
     AppComponent,
-    NavMenuComponent,
+    ...APP_CONTAINERS,
+    P404Component,
+    P500Component,
     HomeComponent,
-    CrudComponent,
-    CrudDetailComponent,
-    ShareComponent,
-    ShareDetailComponent,
-    ItemComponent,
-    ItemDetailComponent,
     ContactComponent,
     ContactDetailComponent,
     ContributorComponent,
     ContributorDetailComponent,
+    AboutComponent,
+    ItemComponent,
+    ItemDetailComponent,
+    ShareComponent,
+    ShareDetailComponent,
     UserComponent,
     UserDetailComponent,
-    BlobPostComponent,
-    BlobPostDetailComponent,
-    AboutComponent],
-  imports: [
-    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
-    HttpClientModule,
-    FormsModule,
-    CommonModule,
-    AgGridModule.withComponents([]),
-    RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'about', component: AboutComponent },
-
-      { path: 'items', component: ItemComponent,  },
-      { path: 'items/:id', component: ItemDetailComponent,  },
-      { path: 'items/create', component: ItemDetailComponent,  },
-
-      { path: 'shares',         component: ShareComponent,  },
-      { path: 'shares/:id',     component: ShareDetailComponent,  },
-      { path: 'shares/create',  component: ShareDetailComponent,  },
-
-      { path: 'contacts',         component: ContactComponent,  },
-      { path: 'contacts/:id',     component: ContactDetailComponent,  },
-      { path: 'contacts/create',  component: ContactDetailComponent,  },
-
-      { path: 'contributors',         component: ContributorComponent,  },
-      { path: 'contributors/:id',     component: ContributorDetailComponent,  },
-      { path: 'contributors/create',  component: ContributorDetailComponent,  },
-
-      { path: 'users',         component: UserComponent,  },
-      { path: 'users/:id',     component: UserDetailComponent,  },
-      { path: 'users/create',  component: UserDetailComponent,  },
-
-      { path: 'blogposts',         component: BlobPostComponent,  },
-      { path: 'blogposts/:id',     component: BlobPostDetailComponent,  },
-      { path: 'blogposts/create',  component: BlobPostDetailComponent,  },
-    ])
+    CrudComponent,
+    CrudDetailComponent,
+    BlogPostComponent,
+    BlogPostDetailComponent,
+    BlogComponent,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [{
+    provide: LocationStrategy,
+    useClass: HashLocationStrategy
+  }],
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }

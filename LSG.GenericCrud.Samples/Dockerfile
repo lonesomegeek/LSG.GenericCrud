@@ -11,6 +11,6 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS final
 WORKDIR /app
 # COPY --from=build /app .
-COPY /bin/publish .
+COPY /bin/app .
 CMD ASPNETCORE_URLS=http://*:$PORT dotnet LSG.GenericCrud.Samples.dll
 # ENTRYPOINT ["dotnet", "LSG.GenericCrud.Samples.dll"]
