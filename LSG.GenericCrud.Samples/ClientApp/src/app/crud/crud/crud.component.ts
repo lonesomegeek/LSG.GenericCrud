@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AgGridAngular } from 'ag-grid-angular';
 import { Router } from '@angular/router';
+import { ColumnDef } from '../../models/column-def';
 
 @Component({
   selector: 'app-crud',
@@ -36,5 +37,4 @@ export class CrudComponent implements OnInit, AfterViewInit {
   rowDoubleClicked(row: any) {
     this.router.navigate(['/' + this.model.routeName + '/' + row.data.id]);
   }
-
 }

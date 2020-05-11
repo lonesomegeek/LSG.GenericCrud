@@ -10,7 +10,7 @@ import { BaseService } from '../../@crud/base.service';
 export class BlogPostComponent implements OnInit {
   entityName: string = "blogposts";
   columnDefs = [
-    { headerName: 'Id', field: 'id', sortable: true },
+    { headerName: 'Id', field: 'id', sortable: true, hide: true },
     { headerName: 'Title', field: 'title', sortable: true },
     { headerName: 'Text', field: 'text', sortable: true }];  
   rows: Observable<any[]>;

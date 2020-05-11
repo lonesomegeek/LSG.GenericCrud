@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class ContactDetailComponent implements OnInit {
   entityName: string = "contacts";
   columnDefs = [
-    { headerName: 'Id', field: 'id', hideInForm: true, sortable: true },
+    { headerName: 'Id', field: 'id', hide: true, sortable: true },
     { headerName: 'Name', field: 'name', sortable: true },
     { headerName: 'Phone', field: 'phone', sortable: true }];
   constructor() { }

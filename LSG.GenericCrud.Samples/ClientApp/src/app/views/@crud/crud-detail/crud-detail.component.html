@@ -10,7 +10,7 @@
     <form action="" class="form-horizontal ng-untouched ng-pristine ng-valid" method="post" novalidate=""
       data-bitwarden-watching="1">
       <ng-container *ngFor="let columnDef of columnDefs">
-        <ng-container *ngIf="!columnDef.hideInForm">
+        <ng-container *ngIf="!columnDef.hide">
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="hf-{{columnDef.headerName}}">{{columnDef.headerName}}</label>
             <div class="col-md-9">

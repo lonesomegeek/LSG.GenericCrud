@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class ContributorDetailComponent implements OnInit {
   entityName: string = "contributors";
   columnDefs = [
-    { headerName: 'Id', field: 'id', sortable: true },
+    { headerName: 'Id', field: 'id', sortable: true, hide: true },
     { headerName: 'Name', field: 'name', sortable: true },
     { headerName: 'GitHubRepository', field: 'gitHubRepository', sortable: true }];
   constructor() { }

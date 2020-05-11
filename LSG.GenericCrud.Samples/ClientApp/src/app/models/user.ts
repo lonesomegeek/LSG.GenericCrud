@@ -11,8 +11,8 @@ export class User implements CrudBase {
     routeName: string = "users-test";
     
     columnDefs: ColumnDef[] = [
-        { headerName: 'Id', field: 'id', sortable: true, hideInForm: true },
-        { headerName: 'Name', field: 'name', sortable: true, hideInForm: false }
+        { headerName: 'Id', field: 'id', sortable: true, hide: true },
+        { headerName: 'Name', field: 'name', sortable: true, hide: false }
     ];
     
 }

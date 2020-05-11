@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class BlogPostDetailComponent implements OnInit {
   entityName: string = "blogposts";
   columnDefs = [
-    { headerName: 'Id', field: 'id', sortable: true },
+    { headerName: 'Id', field: 'id', sortable: true, hide: true },
     { headerName: 'Title', field: 'title', sortable: true },
     { headerName: 'Text', field: 'text', sortable: true }];  
   constructor() { }

@@ -11,7 +11,7 @@ export class Test implements CrudBase {
     showHistory: boolean = false;
     
     columnDefs: ColumnDef[] = [
-        { headerName: 'Id', field: 'id', sortable: true, hideInForm: true },
-        { headerName: 'Name', field: 'name', sortable: true, hideInForm: false }
+        { headerName: 'Id', field: 'id', sortable: true, hide: true },
+        { headerName: 'Name', field: 'name', sortable: true, hide: false }
     ];
 }

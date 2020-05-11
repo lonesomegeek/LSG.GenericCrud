@@ -11,7 +11,7 @@ export class History implements CrudBase {
     showHistory: boolean = false;
 
     columnDefs: ColumnDef[] = [
-        { headerName: 'Action', field: 'action', sortable: true, hideInForm: false },
-        { headerName: 'By', field: 'createdBy', sortable: true, hideInForm: false },
-        { headerName: 'At', field: 'createdDate', sortable: true, hideInForm: false }];
+        { headerName: 'Action', field: 'action', sortable: true, hide: false },
+        { headerName: 'By', field: 'createdBy', sortable: true, hide: false },
+        { headerName: 'At', field: 'createdDate', sortable: true, hide: false }];
 }
