@@ -12,7 +12,7 @@ Simpliest scenarios:
 - Using Visual Studio Code (or command line): [Tutorial](docs/Tutorials/VisualStudioCode.md)
 - Using Visual Studio (2019 v16.4+): [Tutorial](docs/Tutorials/VisualStudio.md)
 
-Demo app built on the library: http://genericcrud-demo.lonesomegeek.com. Here is the [Documentation](LSG.GenericCrud.Samples/README.md).
+- -== **NEW** ==- Demo app built on the library: http://genericcrud-demo.lonesomegeek.com. Here is the [Documentation](LSG.GenericCrud.Samples/README.md).
 
 # Introduction
 This library is used to provide simplified RESTful [CRUD] apis with a multilayer architecture:
