@@ -1,0 +1,51 @@
+ <h1>{{model.entityName}}</h1>
+
+<p *ngIf="mode != 'create' && !row"><em>Loading...</em></p>
+
+<div class="card">
+  <div class="card-header">
+    <strong>{{model.entityName}}</strong> form
+  </div>
+  <div class="card-body">
+    <form action="" class="form-horizontal ng-untouched ng-pristine ng-valid" method="post" novalidate=""
+      data-bitwarden-watching="1">
+      <ng-container *ngFor="let columnDef of model.columnDefs">
+        <ng-container *ngIf="!columnDef.hideInForm">
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="hf-{{columnDef.headerName}}">{{columnDef.headerName}}</label>
+            <div class="col-md-9">
+              <input class="form-control" *ngIf="mode=='read'" value="{{row[columnDef.field]}}" name="{{columnDef.field}}" id="{{columnDef.field}}" disabled>
+              <input class="form-control" *ngIf="mode=='edit'" required [(ngModel)]="row[columnDef.field]" name="{{columnDef.field}}" id="{{columnDef.field}}">
+              <input class="form-control" *ngIf="mode=='create'" required [(ngModel)]="row[columnDef.field]"
+                name="{{columnDef.field}}" id="{{columnDef.field}}">
+              <span class="help-block">Please enter your {{columnDef.headerName}}</span>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </form>
+  </div>
+  <div class="card-footer">
+    <button *ngIf="mode=='read'" class="btn btn-sm btn-primary" (click)="editActivate()"><i
+        class="fa fa-dot-circle-o"></i> Edit</button>
+
+
+    <button *ngIf="mode=='edit'" class="btn btn-sm btn-primary" (click)="save()"><i class="fa fa-dot-circle-o"></i>
+      Save</button>
+    <button *ngIf="mode=='edit'" (click)="editDeactivate()" class="btn btn-sm" type="submit"><i
+        class="fa fa-dot-circle-o"></i> Cancel</button>
+
+    <button *ngIf="mode=='create'" (click)="create()" class="btn btn-sm btn-primary" type="submit"><i
+        class="fa fa-dot-circle-o"></i> Create</button>
+    <button *ngIf="mode=='edit'" class="btn btn-sm btn-danger" (click)="delete()"><i class="fa fa-ban"></i>
+      Delete</button>
+  </div>
+</div>
+
+<div *ngIf="mode=='read' && model.showHistory">
+  <h1>History</h1>
+  <p *ngIf="!history"><em>Loading...</em></p>
+  <ag-grid-angular style="height: 500px;" class="ag-theme-balham" [rowData]="history | async"
+    [columnDefs]="historyColumnDefs">
+  </ag-grid-angular>
+</div> 

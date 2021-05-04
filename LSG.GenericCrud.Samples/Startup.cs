@@ -22,7 +22,9 @@ namespace LSG.GenericCrud.Samples
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
+        public Startup(
+            IConfiguration configuration,
+            IWebHostEnvironment environment)
         {
             Environment = environment;
             Configuration = configuration;
@@ -43,13 +45,16 @@ namespace LSG.GenericCrud.Samples
                 configuration.RootPath = "ClientApp/dist";
             });
 
-            if (Environment.IsProduction()) {
-                services.AddDbContext<SampleContext>(opt => opt.UseInMemoryDatabase("LSG.GenericCrud.Samples"), ServiceLifetime.Transient);
-            } else if (Environment.IsDevelopment()) {
-                services.AddDbContext<SampleContext>(opt => opt.UseSqlServer("server=localhost;user id=sa;password=Sapassword1!;Initial Catalog=LSG.GenericCrud.Samples"), ServiceLifetime.Transient);
-            }
             // services.AddDbContext<SampleContext>(opt => opt.UseSqlServer("server=localhost;user id=sa;password=Sapassword1!;Initial Catalog=LSG.GenericCrud.Samples"), ServiceLifetime.Transient);
             services.AddTransient<IDbContext, SampleContext>();
+            if (Environment.IsProduction())
+            {
+                services.AddDbContext<SampleContext>(opt => opt.UseInMemoryDatabase("LSG.GenericCrud.Samples"), ServiceLifetime.Transient);
+            }
+            else if (Environment.IsDevelopment())
+            {
+                services.AddDbContext<SampleContext>(opt => opt.UseSqlServer("server=localhost;user id=sa;password=Sapassword1!;Initial Catalog=LSG.GenericCrud.Samples"), ServiceLifetime.Transient);
+            }
             services.AddTransient<IUserInfoRepository, UserInfoRepository>();
             services.AddTransient<IEntityDataFiller, CreatedFiller>();
             services.AddTransient<IEntityDataFiller, ModifiedFiller>();
@@ -61,18 +66,18 @@ namespace LSG.GenericCrud.Samples
             services.AddScoped(typeof(ICrudService<Guid, ItemDto>), typeof(CrudServiceBase<Guid, ItemDto, Item>));
             services.AddScoped(typeof(ICrudService<Guid, UserDto>), typeof(CrudServiceBase<Guid, UserDto, User>));
             services.AddScoped(typeof(ICrudService<Guid, BlogPostDto>), typeof(CrudServiceBase<Guid, BlogPostDto, BlogPost>));
-           
+
 
             services.AddCrud();
             services.AddCrudDto();
 
-                        services.AddTransient(typeof(ICrudService<Guid, Share>), typeof(CustomInheritedCrudService<Guid, Share>));
+            services.AddTransient(typeof(ICrudService<Guid, Share>), typeof(CustomInheritedCrudService<Guid, Share>));
 
             // services.AddScoped(typeof(ICrudController<,>), typeof(CrudControllerBase<,>));
             // services.AddScoped(typeof(ICrudCopyController<,>), typeof(CrudControllerBase<,>));
 
             // services.AddScoped(typeof(IHistoricalCrudController<,>), typeof(HistoricalCrudControllerBase<,>));
-            
+
             // services.AddScoped(typeof(IHistoricalCrudReadService<,>), typeof(HistoricalCrudControllerBase<,>));
 
             // services.AddScoped(typeof(IHistoricalCrudService<,>), typeof(HistoricalCrudServiceBase<,>));
@@ -105,7 +110,7 @@ namespace LSG.GenericCrud.Samples
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             app.UseStaticFiles();
             if (!env.IsDevelopment())
             {
