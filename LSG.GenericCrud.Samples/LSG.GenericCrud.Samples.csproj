@@ -18,7 +18,7 @@
     <ProjectReference Include="..\LSG.GenericCrud\LSG.GenericCrud.csproj" />
     <ProjectReference Include="..\LSG.GenericCrud.Dto\LSG.GenericCrud.Dto.csproj" />
     
-    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
   </ItemGroup>
